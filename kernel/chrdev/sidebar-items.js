@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Registration","Character device registration."]]});

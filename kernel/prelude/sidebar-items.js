@@ -1,0 +1,1 @@
+initSidebarItems({"macro":[["module","Declares a kernel module."]],"struct":[["String","A UTF-8–encoded, growable string."]],"trait":[["ToOwned","A generalization of `Clone` to borrowed data."]],"type":[["KernelResult","A [`Result`] with an [`Error`] error type."]]});
