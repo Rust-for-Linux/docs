@@ -1,7 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/kernel/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/kernel/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -201,7 +200,27 @@
 <span id="198">198</span>
 <span id="199">199</span>
 <span id="200">200</span>
-</pre><div class="example-wrap"><pre class="rust ">
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+</pre><pre class="rust">
 <span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! The `kernel` crate.</span>
@@ -219,21 +238,23 @@
 <span class="attribute">#![<span class="ident">feature</span>(
     <span class="ident">allocator_api</span>,
     <span class="ident">alloc_error_handler</span>,
-    <span class="ident">const_fn</span>,
+    <span class="ident">associated_type_defaults</span>,
+    <span class="ident">const_fn_trait_bound</span>,
     <span class="ident">const_mut_refs</span>,
     <span class="ident">const_panic</span>,
+    <span class="ident">const_raw_ptr_deref</span>,
+    <span class="ident">const_unreachable_unchecked</span>,
+    <span class="ident">receiver_trait</span>,
     <span class="ident">try_reserve</span>
 )]</span>
-<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy</span>::<span class="ident">complexity</span>)]</span>
-<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy</span>::<span class="ident">correctness</span>)]</span>
-<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy</span>::<span class="ident">perf</span>)]</span>
-<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">clippy</span>::<span class="ident">style</span>)]</span>
 
 <span class="comment">// Ensure conditional compilation based on the kernel configuration works;</span>
 <span class="comment">// otherwise we may silently break things like initcall handling.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">CONFIG_RUST</span>))]</span>
-<span class="macro">compile_error</span><span class="macro">!</span>(<span class="string">&quot;Missing kernel configuration for conditional compilation&quot;</span>);
+<span class="macro">compile_error!</span>(<span class="string">&quot;Missing kernel configuration for conditional compilation&quot;</span>);
 
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">testlib</span>))]</span>
 <span class="kw">mod</span> <span class="ident">allocator</span>;
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
@@ -243,16 +264,23 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">c_types</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">chrdev</span>;
 <span class="kw">mod</span> <span class="ident">error</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">file</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">file_operations</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">miscdev</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pages</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">security</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">str</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">task</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">traits</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">linked_list</span>;
 <span class="kw">mod</span> <span class="ident">raw_list</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">rbtree</span>;
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">module_param</span>;
 
+<span class="kw">mod</span> <span class="ident">build_assert</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">prelude</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">print</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">random</span>;
@@ -262,16 +290,26 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">CONFIG_SYSCTL</span>)]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">sysctl</span>;
 
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">io_buffer</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">iov_iter</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">of</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">platdev</span>;
 <span class="kw">mod</span> <span class="ident">types</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">user_ptr</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::{<span class="ident">Error</span>, <span class="ident">KernelResult</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::{<span class="ident">CStr</span>, <span class="ident">Mode</span>};
+<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">build_error::build_error</span>;
+
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error</span>::{<span class="ident">Error</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::types</span>::{<span class="ident">Mode</span>, <span class="ident">ScopeGuard</span>};
 
 <span class="doccomment">/// Page size defined in terms of the `PAGE_SHIFT` macro from C.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`PAGE_SHIFT`]: ../include/asm-generic/page.h</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PAGE_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">bindings</span>::<span class="ident">PAGE_SHIFT</span>;
+<span class="doccomment">/// [`PAGE_SHIFT`]: ../../../include/asm-generic/page.h</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PAGE_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">bindings::PAGE_SHIFT</span>;
+
+<span class="doccomment">/// Prefix to appear before log messages printed from within the kernel crate.</span>
+<span class="kw">const</span> <span class="ident">__LOG_PREFIX</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span> <span class="string">b&quot;rust_kernel\0&quot;</span>;
 
 <span class="doccomment">/// The top level entrypoint to implementing a kernel module.</span>
 <span class="doccomment">///</span>
@@ -283,13 +321,13 @@
     <span class="doccomment">/// should do.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Equivalent to the `module_init` macro in the C API.</span>
-    <span class="kw">fn</span> <span class="ident">init</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">KernelResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">init</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
 }
 
 <span class="doccomment">/// Equivalent to `THIS_MODULE` in the C API.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// C header: `include/linux/export.h`</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ThisModule</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings</span>::<span class="ident">module</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ThisModule</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::module</span>);
 
 <span class="comment">// SAFETY: `THIS_MODULE` may be used from all threads within a module.</span>
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">ThisModule</span> {}
@@ -300,7 +338,7 @@
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The pointer must be equal to the right `THIS_MODULE`.</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_ptr</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings</span>::<span class="ident">module</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ThisModule</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_ptr</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::module</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ThisModule</span> {
         <span class="ident">ThisModule</span>(<span class="ident">ptr</span>)
     }
 
@@ -312,7 +350,7 @@
         <span class="comment">// use the built-in mutex in that case.</span>
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">CONFIG_SYSFS</span>)]</span>
         <span class="kw">unsafe</span> {
-            <span class="ident">bindings</span>::<span class="ident">kernel_param_lock</span>(<span class="self">self</span>.<span class="number">0</span>)
+            <span class="ident">bindings::kernel_param_lock</span>(<span class="self">self</span>.<span class="number">0</span>)
         }
 
         <span class="ident">KParamGuard</span> { <span class="ident">this_module</span>: <span class="self">self</span> }
@@ -332,7 +370,7 @@
         <span class="comment">// SAFETY: `kernel_param_lock` will check if the pointer is null and</span>
         <span class="comment">// use the built-in mutex in that case. The existance of `self`</span>
         <span class="comment">// guarantees that the lock is held.</span>
-        <span class="kw">unsafe</span> { <span class="ident">bindings</span>::<span class="ident">kernel_param_unlock</span>(<span class="self">self</span>.<span class="ident">this_module</span>.<span class="number">0</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">bindings::kernel_param_unlock</span>(<span class="self">self</span>.<span class="ident">this_module</span>.<span class="number">0</span>) }
     }
 }
 
@@ -341,6 +379,8 @@
 <span class="doccomment">/// # Example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use kernel::prelude::*;</span>
+<span class="doccomment">/// # use kernel::offset_of;</span>
 <span class="doccomment">/// struct Test {</span>
 <span class="doccomment">///     a: u64,</span>
 <span class="doccomment">///     b: u32,</span>
@@ -352,16 +392,16 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">offset_of</span> {
+<span class="macro">macro_rules!</span> <span class="ident">offset_of</span> {
     (<span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ty</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {{
-        <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">MaybeUninit</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="kw">type</span><span class="op">&gt;</span>::<span class="macro-nonterminal">uninit</span>();
+        <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">core::mem::MaybeUninit</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="kw">type</span><span class="op">&gt;</span><span class="macro-nonterminal">::uninit</span>();
         <span class="kw">let</span> <span class="ident">outer</span> <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">as_ptr</span>();
         <span class="comment">// To avoid warnings when nesting `unsafe` blocks.</span>
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_unsafe</span>)]</span>
         <span class="comment">// SAFETY: The pointer is valid and aligned, just not initialised; `addr_of` ensures that</span>
         <span class="comment">// we don&#39;t actually read from `outer` (which would be UB) nor create an intermediate</span>
         <span class="comment">// reference.</span>
-        <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">core</span>::<span class="ident">ptr</span>::<span class="macro">addr_of</span><span class="macro">!</span>((<span class="kw-2">*</span><span class="ident">outer</span>).$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>) } <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>;
+        <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="macro">core::ptr::addr_of!</span>((<span class="kw-2">*</span><span class="ident">outer</span>).$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>) } <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>;
         <span class="comment">// To avoid warnings when nesting `unsafe` blocks.</span>
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_unsafe</span>)]</span>
         <span class="comment">// SAFETY: The two pointers are within the same allocation block.</span>
@@ -379,6 +419,8 @@
 <span class="doccomment">/// # Example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use kernel::prelude::*;</span>
+<span class="doccomment">/// # use kernel::container_of;</span>
 <span class="doccomment">/// struct Test {</span>
 <span class="doccomment">///     a: u64,</span>
 <span class="doccomment">///     b: u32,</span>
@@ -393,15 +435,11 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">container_of</span> {
+<span class="macro">macro_rules!</span> <span class="ident">container_of</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ptr</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ty</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {{
-        <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro">offset_of</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="kw">type</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>);
-        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>).<span class="ident">offset</span>(<span class="op">-</span><span class="ident">offset</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="macro-nonterminal">$</span><span class="kw">type</span>
+        <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::offset_of!</span>(<span class="macro-nonterminal">$</span><span class="kw">type</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>);
+        <span class="kw">unsafe</span> { (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>).<span class="ident">offset</span>(<span class="op">-</span><span class="ident">offset</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="macro-nonterminal">$</span><span class="kw">type</span> }
     }}
 }
-
-<span class="attribute">#[<span class="macro-nonterminal">global_allocator</span>]</span>
-<span class="kw">static</span> <span class="ident">ALLOCATOR</span>: <span class="ident">allocator</span>::<span class="ident">KernelAllocator</span> <span class="op">=</span> <span class="ident">allocator</span>::<span class="ident">KernelAllocator</span>;
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>

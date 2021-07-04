@@ -1,0 +1,151 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/../../stdarch/crates/core_arch/src/aarch64/prefetch.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>prefetch.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../../../../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../../../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img src="../../../../../../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1"> 1</span>
+<span id="2"> 2</span>
+<span id="3"> 3</span>
+<span id="4"> 4</span>
+<span id="5"> 5</span>
+<span id="6"> 6</span>
+<span id="7"> 7</span>
+<span id="8"> 8</span>
+<span id="9"> 9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+</pre><pre class="rust">
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">use</span> <span class="ident">stdarch_test::assert_instr</span>;
+
+<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
+    <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.prefetch&quot;</span>]</span>
+    <span class="kw">fn</span> <span class="ident">prefetch</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i8</span>, <span class="ident">rw</span>: <span class="ident">i32</span>, <span class="ident">loc</span>: <span class="ident">i32</span>, <span class="ident">ty</span>: <span class="ident">i32</span>);
+}
+
+<span class="doccomment">/// See [`prefetch`](fn._prefetch.html).</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">_PREFETCH_READ</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">0</span>;
+
+<span class="doccomment">/// See [`prefetch`](fn._prefetch.html).</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">_PREFETCH_WRITE</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">1</span>;
+
+<span class="doccomment">/// See [`prefetch`](fn._prefetch.html).</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">_PREFETCH_LOCALITY0</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">0</span>;
+
+<span class="doccomment">/// See [`prefetch`](fn._prefetch.html).</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">_PREFETCH_LOCALITY1</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">1</span>;
+
+<span class="doccomment">/// See [`prefetch`](fn._prefetch.html).</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">_PREFETCH_LOCALITY2</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">2</span>;
+
+<span class="doccomment">/// See [`prefetch`](fn._prefetch.html).</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">_PREFETCH_LOCALITY3</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">3</span>;
+
+<span class="doccomment">/// Fetch the cache line that contains address `p` using the given `RW` and `LOCALITY`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `RW` must be one of:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * [`_PREFETCH_READ`](constant._PREFETCH_READ.html): the prefetch is preparing</span>
+<span class="doccomment">///   for a read.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * [`_PREFETCH_WRITE`](constant._PREFETCH_WRITE.html): the prefetch is preparing</span>
+<span class="doccomment">///   for a write.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `LOCALITY` must be one of:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * [`_PREFETCH_LOCALITY0`](constant._PREFETCH_LOCALITY0.html): Streaming or</span>
+<span class="doccomment">///   non-temporal prefetch, for data that is used only once.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * [`_PREFETCH_LOCALITY1`](constant._PREFETCH_LOCALITY1.html): Fetch into level 3 cache.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * [`_PREFETCH_LOCALITY2`](constant._PREFETCH_LOCALITY2.html): Fetch into level 2 cache.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * [`_PREFETCH_LOCALITY3`](constant._PREFETCH_LOCALITY3.html): Fetch into level 1 cache.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The prefetch memory instructions signal to the memory system that memory accesses</span>
+<span class="doccomment">/// from a specified address are likely to occur in the near future. The memory system</span>
+<span class="doccomment">/// can respond by taking actions that are expected to speed up the memory access when</span>
+<span class="doccomment">/// they do occur, such as preloading the specified address into one or more caches.</span>
+<span class="doccomment">/// Because these signals are only hints, it is valid for a particular CPU to treat</span>
+<span class="doccomment">/// any or all prefetch instructions as a NOP.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Arm&#39;s documentation](https://developer.arm.com/documentation/den0024/a/the-a64-instruction-set/memory-access-instructions/prefetching-memory?lang=en)</span>
+<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="string">&quot;prfm pldl1strm&quot;</span>, <span class="ident">RW</span> <span class="op">=</span> <span class="ident">_PREFETCH_READ</span>, <span class="ident">LOCALITY</span> <span class="op">=</span> <span class="ident">_PREFETCH_LOCALITY0</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="string">&quot;prfm pldl3keep&quot;</span>, <span class="ident">RW</span> <span class="op">=</span> <span class="ident">_PREFETCH_READ</span>, <span class="ident">LOCALITY</span> <span class="op">=</span> <span class="ident">_PREFETCH_LOCALITY1</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="string">&quot;prfm pldl2keep&quot;</span>, <span class="ident">RW</span> <span class="op">=</span> <span class="ident">_PREFETCH_READ</span>, <span class="ident">LOCALITY</span> <span class="op">=</span> <span class="ident">_PREFETCH_LOCALITY2</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="string">&quot;prfm pldl1keep&quot;</span>, <span class="ident">RW</span> <span class="op">=</span> <span class="ident">_PREFETCH_READ</span>, <span class="ident">LOCALITY</span> <span class="op">=</span> <span class="ident">_PREFETCH_LOCALITY3</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="string">&quot;prfm pstl1strm&quot;</span>, <span class="ident">RW</span> <span class="op">=</span> <span class="ident">_PREFETCH_WRITE</span>, <span class="ident">LOCALITY</span> <span class="op">=</span> <span class="ident">_PREFETCH_LOCALITY0</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="string">&quot;prfm pstl3keep&quot;</span>, <span class="ident">RW</span> <span class="op">=</span> <span class="ident">_PREFETCH_WRITE</span>, <span class="ident">LOCALITY</span> <span class="op">=</span> <span class="ident">_PREFETCH_LOCALITY1</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="string">&quot;prfm pstl2keep&quot;</span>, <span class="ident">RW</span> <span class="op">=</span> <span class="ident">_PREFETCH_WRITE</span>, <span class="ident">LOCALITY</span> <span class="op">=</span> <span class="ident">_PREFETCH_LOCALITY2</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="string">&quot;prfm pstl1keep&quot;</span>, <span class="ident">RW</span> <span class="op">=</span> <span class="ident">_PREFETCH_WRITE</span>, <span class="ident">LOCALITY</span> <span class="op">=</span> <span class="ident">_PREFETCH_LOCALITY3</span>))]</span>
+<span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">1</span>, <span class="number">2</span>)]</span>
+<span class="comment">// FIXME: Replace this with the standard ACLE __pld/__pldx/__pli/__plix intrinsics</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_prefetch</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">RW</span>: <span class="ident">i32</span>, <span class="kw">const</span> <span class="ident">LOCALITY</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i8</span>) {
+    <span class="comment">// We use the `llvm.prefetch` instrinsic with `cache type` = 1 (data cache).</span>
+    <span class="macro">static_assert_imm1!</span>(<span class="ident">RW</span>);
+    <span class="macro">static_assert_imm2!</span>(<span class="ident">LOCALITY</span>);
+    <span class="ident">prefetch</span>(<span class="ident">p</span>, <span class="ident">RW</span>, <span class="ident">LOCALITY</span>, <span class="number">1</span>);
+}
+</pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-search-index-js="../../../../../../../../../search-index.js" data-search-js="../../../../../../../../../search.js"></div><script src="../../../../../../../../../main.js"></script><script src="../../../../../../../../../source-script.js"></script><script src="../../../../../../../../../source-files.js"></script></body></html>

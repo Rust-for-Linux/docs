@@ -1,1 +1,0 @@
-initSidebarItems({"macro":[["module","Declares a kernel module."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["File","Wraps the kernel’s `struct file`."],["FileDescriptorReservation","A file descriptor reservation."]]});

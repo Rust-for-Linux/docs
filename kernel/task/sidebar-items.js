@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Task","Wraps the kernel’s `struct task_struct`."],["TaskRef","A wrapper for [`Task`] that doesn’t automatically decrement the refcount when dropped."]]});

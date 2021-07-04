@@ -1,0 +1,1 @@
+window.ALL_CRATES = ["alloc","compiler_builtins","core","kernel","macros"];

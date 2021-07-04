@@ -1,0 +1,5 @@
+(function() {var implementors = {};
+implementors["alloc"] = [{"text":"impl <a class=\"trait\" href=\"core/marker/trait.Copy.html\" title=\"trait core::marker::Copy\">Copy</a> for <a class=\"struct\" href=\"alloc/alloc/struct.Global.html\" title=\"struct alloc::alloc::Global\">Global</a>","synthetic":false,"types":["alloc::alloc::Global"]}];
+implementors["core"] = [];
+implementors["kernel"] = [{"text":"impl <a class=\"trait\" href=\"core/marker/trait.Copy.html\" title=\"trait core::marker::Copy\">Copy</a> for <a class=\"struct\" href=\"kernel/prelude/struct.Error.html\" title=\"struct kernel::prelude::Error\">Error</a>","synthetic":false,"types":["kernel::error::Error"]},{"text":"impl <a class=\"trait\" href=\"core/marker/trait.Copy.html\" title=\"trait core::marker::Copy\">Copy</a> for <a class=\"enum\" href=\"kernel/str/enum.CStrConvertError.html\" title=\"enum kernel::str::CStrConvertError\">CStrConvertError</a>","synthetic":false,"types":["kernel::str::CStrConvertError"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

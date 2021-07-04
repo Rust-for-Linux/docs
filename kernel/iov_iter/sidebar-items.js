@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["IovIter","Wraps the kernel’s `struct iov_iter`."]]});
