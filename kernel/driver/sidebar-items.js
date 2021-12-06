@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Module","A kernel module that only registers the given driver on init."],["Registration","The registration of a driver."]],"trait":[["DeviceRemoval","Custom code within device removal."],["DriverOps","A subsystem (e.g., PCI, Platform, Amba, etc.) that allows drivers to be written for it."]]});

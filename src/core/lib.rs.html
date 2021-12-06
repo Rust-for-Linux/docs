@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../core/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../core/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -314,8 +312,82 @@
 <span id="312">312</span>
 <span id="313">313</span>
 <span id="314">314</span>
-</pre><pre class="rust">
-<span class="doccomment">//! # The Rust Core Library</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+</pre><pre class="rust"><code><span class="doccomment">//! # The Rust Core Library</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! The Rust Core Library is the dependency-free[^free] foundation of [The</span>
 <span class="doccomment">//! Rust Standard Library](../std/index.html). It is the portable glue</span>
@@ -366,6 +438,10 @@
 <span class="comment">//</span>
 <span class="comment">// This cfg won&#39;t affect doc tests.</span>
 <span class="attribute">#![<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
+<span class="comment">// To run libcore tests without x.py without ending up with two copies of libcore, Miri needs to be</span>
+<span class="comment">// able to &quot;empty&quot; this crate. See &lt;https://github.com/rust-lang/miri-test-libstd/issues/4&gt;.</span>
+<span class="comment">// rustc itself never sets the feature, so this line has no affect there.</span>
+<span class="attribute">#![<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;miri-test-libstd&quot;</span>), <span class="ident">test</span>, <span class="ident">doctest</span>))]</span>
 <span class="attribute">#![<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;core&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.6.0&quot;</span>)]</span>
 <span class="attribute">#![<span class="ident">doc</span>(
     <span class="ident">html_playground_url</span> <span class="op">=</span> <span class="string">&quot;https://play.rust-lang.org/&quot;</span>,
@@ -373,119 +449,149 @@
     <span class="ident">test</span>(<span class="ident">no_crate_inject</span>, <span class="ident">attr</span>(<span class="ident">deny</span>(<span class="ident">warnings</span>))),
     <span class="ident">test</span>(<span class="ident">attr</span>(<span class="ident">allow</span>(<span class="ident">dead_code</span>, <span class="ident">deprecated</span>, <span class="ident">unused_variables</span>, <span class="ident">unused_mut</span>)))
 )]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(
+    <span class="ident">not</span>(<span class="ident">bootstrap</span>),
+    <span class="ident">doc</span>(<span class="ident">cfg_hide</span>(
+        <span class="ident">not</span>(<span class="ident">test</span>),
+        <span class="ident">any</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;miri-test-libstd&quot;</span>), <span class="ident">test</span>, <span class="ident">doctest</span>),
+        <span class="ident">no_fp_fmt_parse</span>,
+        <span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;16&quot;</span>,
+        <span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;32&quot;</span>,
+        <span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>,
+        <span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>,
+        <span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;16&quot;</span>,
+        <span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;32&quot;</span>,
+        <span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>,
+        <span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;ptr&quot;</span>,
+        <span class="ident">target_has_atomic_equal_alignment</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>,
+        <span class="ident">target_has_atomic_equal_alignment</span> <span class="op">=</span> <span class="string">&quot;16&quot;</span>,
+        <span class="ident">target_has_atomic_equal_alignment</span> <span class="op">=</span> <span class="string">&quot;32&quot;</span>,
+        <span class="ident">target_has_atomic_equal_alignment</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>,
+        <span class="ident">target_has_atomic_equal_alignment</span> <span class="op">=</span> <span class="string">&quot;ptr&quot;</span>,
+        <span class="ident">target_has_atomic_load_store</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>,
+        <span class="ident">target_has_atomic_load_store</span> <span class="op">=</span> <span class="string">&quot;16&quot;</span>,
+        <span class="ident">target_has_atomic_load_store</span> <span class="op">=</span> <span class="string">&quot;32&quot;</span>,
+        <span class="ident">target_has_atomic_load_store</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>,
+        <span class="ident">target_has_atomic_load_store</span> <span class="op">=</span> <span class="string">&quot;ptr&quot;</span>,
+    ))
+)]</span>
 <span class="attribute">#![<span class="ident">no_core</span>]</span>
+<span class="comment">//</span>
+<span class="comment">// Lints:</span>
+<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">rust_2021_incompatible_or_patterns</span>)]</span>
+<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">unsafe_op_in_unsafe_fn</span>)]</span>
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">deprecated_in_future</span>)]</span>
-<span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_debug_implementations</span>)]</span>
+<span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">explicit_outlives_requirements</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">rustc_allow_const_fn_unstable</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">allow_internal_unstable</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">arbitrary_self_types</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">asm</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">bool_to_option</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">cfg_target_has_atomic</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_heap</span>)]</span>
+<span class="comment">//</span>
+<span class="comment">// Library features for const fns:</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_align_of_val</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_alloc_layout</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_arguments_as_str</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_assert_type</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_discriminant</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_bigint_helper_methods</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_caller_location</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_cell_into_inner</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_discriminant</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_float_bits_conv</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_float_classify</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_heap</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_inherent_unchecked_arith</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_int_unchecked_arith</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_intrinsic_copy</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_intrinsic_forget</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_float_classify</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_float_bits_conv</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_int_unchecked_arith</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_inherent_unchecked_arith</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_mut_refs</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_refs_to_cell</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_panic</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_pin</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_fn_union</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_impl_trait</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_fn_floating_point_arithmetic</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_fn_fn_ptr_basics</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_fn_trait_bound</span>)]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">bootstrap</span>, <span class="ident">feature</span>(<span class="ident">const_fn</span>))]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_likely</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_maybe_uninit_as_ptr</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_maybe_uninit_assume_init</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_option</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_precise_live_drops</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_pin</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_replace</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_ptr_offset</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_ptr_offset_from</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_ptr_read</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_ptr_write</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_raw_ptr_comparison</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_raw_ptr_deref</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_size_of_val</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_slice_from_raw_parts</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_slice_ptr_len</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_size_of_val</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_swap</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_align_of_val</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_trait_impl</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_type_id</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_type_name</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_likely</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_unreachable_unchecked</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_maybe_uninit_assume_init</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_maybe_uninit_as_ptr</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">custom_inner_attributes</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_default_impls</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">duration_consts_2</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">ptr_metadata</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">slice_ptr_get</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">variant_count</span>)]</span>
+<span class="comment">//</span>
+<span class="comment">// Language features:</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">abi_unadjusted</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">allow_internal_unsafe</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">allow_internal_unstable</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">asm</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">associated_type_bounds</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">auto_traits</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">cfg_target_has_atomic</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_fn_floating_point_arithmetic</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_fn_fn_ptr_basics</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_fn_trait_bound</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_impl_trait</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_mut_refs</span>)]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">bootstrap</span>, <span class="ident">feature</span>(<span class="ident">const_panic</span>))]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_precise_live_drops</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_raw_ptr_deref</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_refs_to_cell</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">decl_macro</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">doc_cfg</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">doc_notable_trait</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">duration_consts_2</span>)]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">bootstrap</span>, <span class="ident">feature</span>(<span class="ident">extended_key_value_attributes</span>))]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">doc_primitive</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">exhaustive_patterns</span>)]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>), <span class="ident">feature</span>(<span class="ident">doc_cfg_hide</span>))]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">extern_types</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">fundamental</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">if_let_guard</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">intra_doc_pointers</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">intrinsics</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">lang_items</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">link_llvm_intrinsics</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">llvm_asm</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">min_specialization</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">mixed_integer_ops</span>)]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>), <span class="ident">feature</span>(<span class="ident">must_not_suspend</span>))]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">negative_impls</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">never_type</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">nll</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">exhaustive_patterns</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">no_core</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">auto_traits</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">no_coverage</span>)]</span> <span class="comment">// rust-lang/rust#84605</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">no_niche</span>)]</span> <span class="comment">// rust-lang/rust#68303</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">platform_intrinsics</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">prelude_import</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">ptr_metadata</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">repr_simd</span>, <span class="ident">platform_intrinsics</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">repr_simd</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">rustc_allow_const_fn_unstable</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">rustc_attrs</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">simd_ffi</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">min_specialization</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">staged_api</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">std_internals</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">stmt_expr_attributes</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">str_split_as_str</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">str_split_inclusive_as_str</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">char_indices_offset</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">trait_alias</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">transparent_unions</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">try_blocks</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">unboxed_closures</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">unsized_fn_params</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">unwind_attributes</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">variant_count</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">tbm_target_feature</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">sse4a_target_feature</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">arm_target_feature</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">powerpc_target_feature</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">mips_target_feature</span>)]</span>
+<span class="comment">//</span>
+<span class="comment">// Target features:</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">aarch64_target_feature</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">wasm_target_feature</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">adx_target_feature</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">arm_target_feature</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">avx512_target_feature</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">cmpxchg16b_target_feature</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">rtm_target_feature</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">f16c_target_feature</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">hexagon_target_feature</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_fn_transmute</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">abi_unadjusted</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">adx_target_feature</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">associated_type_bounds</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_caller_location</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">slice_ptr_get</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">no_niche</span>)]</span> <span class="comment">// rust-lang/rust#68303</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">no_coverage</span>)]</span> <span class="comment">// rust-lang/rust#84605</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">int_error_matching</span>)]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">bootstrap</span>, <span class="ident">feature</span>(<span class="ident">target_feature_11</span>))]</span>
-<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">unsafe_op_in_unsafe_fn</span>)]</span>
-<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">or_patterns_back_compat</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">mips_target_feature</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">powerpc_target_feature</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">rtm_target_feature</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">sse4a_target_feature</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">tbm_target_feature</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">wasm_target_feature</span>)]</span>
 
 <span class="comment">// allow using `core::` in intra-doc links</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_extern_crates</span>)]</span>
@@ -498,6 +604,16 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span> <span class="comment">// See #65860</span>
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">mod</span> <span class="ident">macros</span>;
+
+<span class="comment">// We don&#39;t export this through #[macro_export] for now, to avoid breakage.</span>
+<span class="comment">// See https://github.com/rust-lang/rust/issues/82913</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
+<span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;assert_matches&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;82775&quot;</span>)]</span>
+<span class="doccomment">/// Unstable module containing the unstable `assert_matches` macro.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">assert_matches</span> {
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;assert_matches&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;82775&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::macros</span>::{<span class="ident">assert_matches</span>, <span class="ident">debug_assert_matches</span>};
+}
 
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">mod</span> <span class="ident">internal_macros</span>;
@@ -576,7 +692,6 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">panic</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">panicking</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pin</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">raw</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">result</span>;
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;async_stream&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;79024&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">stream</span>;
@@ -627,7 +742,41 @@
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stdsimd&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;48556&quot;</span>)]</span>
 <span class="kw">mod</span> <span class="ident">core_arch</span>;
 
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">include_str!</span>(<span class="string">&quot;../../stdarch/crates/core_arch/src/core_arch_docs.md&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_arch&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">core_arch::arch</span>;
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">arch</span> {
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_arch&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::core_arch::arch</span>::<span class="kw-2">*</span>;
+
+    <span class="doccomment">/// Inline assembly.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Read the [unstable book] for the usage.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [unstable book]: ../../unstable-book/library-features/asm.html</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(
+        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;asm&quot;</span>,
+        <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;72016&quot;</span>,
+        <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;inline assembly is not stable enough for use and is subject to change&quot;</span>
+    )]</span>
+    <span class="attribute">#[<span class="ident">rustc_builtin_macro</span>]</span>
+    <span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">asm</span>(<span class="string">&quot;assembly template&quot;</span>, $(<span class="ident">operands</span>,)<span class="op">*</span> $(<span class="ident">options</span>($(<span class="ident">option</span>),<span class="kw-2">*</span>))<span class="question-mark">?</span>) {
+        <span class="comment">/* compiler built-in */</span>
+    }
+
+    <span class="doccomment">/// Module-level inline assembly.</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(
+        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;global_asm&quot;</span>,
+        <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;35119&quot;</span>,
+        <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;`global_asm!` is not stable enough for use and is subject to change&quot;</span>
+    )]</span>
+    <span class="attribute">#[<span class="ident">rustc_builtin_macro</span>]</span>
+    <span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">global_asm</span>(<span class="string">&quot;assembly template&quot;</span>, $(<span class="ident">operands</span>,)<span class="op">*</span> $(<span class="ident">options</span>($(<span class="ident">option</span>),<span class="kw-2">*</span>))<span class="question-mark">?</span>) {
+        <span class="comment">/* compiler built-in */</span>
+    }
+}
+
+<span class="macro">include!</span>(<span class="string">&quot;primitive_docs.rs&quot;</span>);
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
+</body></html>

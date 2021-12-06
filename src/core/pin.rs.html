@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/pin.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pin.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../core/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;pin.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pin.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../core/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -867,8 +865,50 @@
 <span id="865">865</span>
 <span id="866">866</span>
 <span id="867">867</span>
-</pre><pre class="rust">
-<span class="doccomment">//! Types that pin data to its location in memory.</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
+<span id="899">899</span>
+<span id="900">900</span>
+<span id="901">901</span>
+<span id="902">902</span>
+<span id="903">903</span>
+<span id="904">904</span>
+<span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Types that pin data to its location in memory.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! It is sometimes useful to have objects that are guaranteed not to move,</span>
 <span class="doccomment">//! in the sense that their placement in memory does not change, and can thus be relied upon.</span>
@@ -1029,9 +1069,9 @@
 <span class="doccomment">//! section needs to function correctly.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Notice that this guarantee does *not* mean that memory does not leak! It is still</span>
-<span class="doccomment">//! completely okay not ever to call [`drop`] on a pinned element (e.g., you can still</span>
+<span class="doccomment">//! completely okay to not ever call [`drop`] on a pinned element (e.g., you can still</span>
 <span class="doccomment">//! call [`mem::forget`] on a &lt;code&gt;[Pin]&lt;[Box]\&lt;T&gt;&gt;&lt;/code&gt;). In the example of the doubly-linked</span>
-<span class="doccomment">//! list, that element would just stay in the list. However you may not free or reuse the storage</span>
+<span class="doccomment">//! list, that element would just stay in the list. However you must not free or reuse the storage</span>
 <span class="doccomment">//! *without calling [`drop`]*.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # `Drop` implementation</span>
@@ -1238,24 +1278,24 @@
 <span class="doccomment">//! [Vec::push]: ../../std/vec/struct.Vec.html#method.push &quot;Vec::push&quot;</span>
 <span class="doccomment">//! [Rc]: ../../std/rc/struct.Rc.html &quot;rc::Rc&quot;</span>
 <span class="doccomment">//! [RefCell]: crate::cell::RefCell &quot;cell::RefCell&quot;</span>
-<span class="doccomment">//! [`drop`]: Drop::drop &quot;Drop::drop&quot;</span>
+<span class="doccomment">//! [`drop`]: Drop::drop</span>
 <span class="doccomment">//! [VecDeque]: ../../std/collections/struct.VecDeque.html &quot;collections::VecDeque&quot;</span>
 <span class="doccomment">//! [`ptr::write`]: crate::ptr::write &quot;ptr::write&quot;</span>
 <span class="doccomment">//! [`Future`]: crate::future::Future &quot;future::Future&quot;</span>
 <span class="doccomment">//! [drop-impl]: #drop-implementation</span>
 <span class="doccomment">//! [drop-guarantee]: #drop-guarantee</span>
 <span class="doccomment">//! [`poll`]: crate::future::Future::poll &quot;future::Future::poll&quot;</span>
-<span class="doccomment">//! [&amp;]: ../../std/primitive.reference.html &quot;shared reference&quot;</span>
-<span class="doccomment">//! [&amp;mut]: ../../std/primitive.reference.html &quot;mutable reference&quot;</span>
+<span class="doccomment">//! [&amp;]: reference &quot;shared reference&quot;</span>
+<span class="doccomment">//! [&amp;mut]: reference &quot;mutable reference&quot;</span>
 <span class="doccomment">//! [`unsafe`]: ../../std/keyword.unsafe.html &quot;keyword unsafe&quot;</span>
 
 <span class="attribute">#![<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cmp</span>::{<span class="self">self</span>, <span class="ident">PartialEq</span>, <span class="ident">PartialOrd</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::fmt</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::hash</span>::{<span class="ident">Hash</span>, <span class="ident">Hasher</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::marker</span>::{<span class="ident">Sized</span>, <span class="ident">Unpin</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ops</span>::{<span class="ident">CoerceUnsized</span>, <span class="ident">Deref</span>, <span class="ident">DerefMut</span>, <span class="ident">DispatchFromDyn</span>, <span class="ident">Receiver</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cmp</span>::{<span class="self">self</span>, <span class="ident">PartialEq</span>, <span class="ident">PartialOrd</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fmt</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::hash</span>::{<span class="ident">Hash</span>, <span class="ident">Hasher</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::marker</span>::{<span class="ident">Sized</span>, <span class="ident">Unpin</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ops</span>::{<span class="ident">CoerceUnsized</span>, <span class="ident">Deref</span>, <span class="ident">DerefMut</span>, <span class="ident">DispatchFromDyn</span>, <span class="ident">Receiver</span>};
 
 <span class="doccomment">/// A pinned pointer.</span>
 <span class="doccomment">///</span>
@@ -1290,11 +1330,11 @@
 <span class="kw">where</span>
     <span class="ident">P::Target</span>: <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">Q::Target</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">P::Target::eq</span>(<span class="self">self</span>, <span class="ident">other</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">P::Target::ne</span>(<span class="self">self</span>, <span class="ident">other</span>)
     }
 }
@@ -1307,30 +1347,30 @@
 <span class="kw">where</span>
     <span class="ident">P::Target</span>: <span class="ident">PartialOrd</span><span class="op">&lt;</span><span class="ident">Q::Target</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">cmp::Ordering</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">cmp::Ordering</span><span class="op">&gt;</span> {
         <span class="ident">P::Target::partial_cmp</span>(<span class="self">self</span>, <span class="ident">other</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">lt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">lt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">P::Target::lt</span>(<span class="self">self</span>, <span class="ident">other</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">le</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">le</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">P::Target::le</span>(<span class="self">self</span>, <span class="ident">other</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">gt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">gt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">P::Target::gt</span>(<span class="self">self</span>, <span class="ident">other</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">ge</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">ge</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Q</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">P::Target::ge</span>(<span class="self">self</span>, <span class="ident">other</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin_trait_impls&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.41.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Deref</span><span class="op">&lt;</span><span class="ident">Target</span>: <span class="ident">Ord</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Ord</span> <span class="kw">for</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">cmp::Ordering</span> {
+    <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">cmp::Ordering</span> {
         <span class="ident">P::Target::cmp</span>(<span class="self">self</span>, <span class="ident">other</span>)
     }
 }
@@ -1351,7 +1391,7 @@
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_pin&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76654&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">pointer</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">pointer</span>: <span class="ident">P</span>) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
         <span class="comment">// SAFETY: the value pointed to is `Unpin`, and so has no requirements</span>
         <span class="comment">// around pinning.</span>
         <span class="kw">unsafe</span> { <span class="ident">Pin::new_unchecked</span>(<span class="ident">pointer</span>) }
@@ -1364,7 +1404,7 @@
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_pin&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76654&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin_into_inner&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.39.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="ident">pin</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">P</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="ident">pin</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>) -&gt; <span class="ident">P</span> {
         <span class="ident">pin</span>.<span class="ident">pointer</span>
     }
 }
@@ -1438,7 +1478,7 @@
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_pin&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76654&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new_unchecked</span>(<span class="ident">pointer</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new_unchecked</span>(<span class="ident">pointer</span>: <span class="ident">P</span>) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
         <span class="ident">Pin</span> { <span class="ident">pointer</span> }
     }
 
@@ -1451,7 +1491,7 @@
     <span class="doccomment">/// ruled out by the contract of `Pin::new_unchecked`.</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">P::Target</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">P::Target</span><span class="op">&gt;</span> {
         <span class="comment">// SAFETY: see documentation on this function</span>
         <span class="kw">unsafe</span> { <span class="ident">Pin::new_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">pointer</span>) }
     }
@@ -1472,7 +1512,7 @@
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_pin&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76654&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin_into_inner&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.39.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">into_inner_unchecked</span>(<span class="ident">pin</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">P</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">into_inner_unchecked</span>(<span class="ident">pin</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>) -&gt; <span class="ident">P</span> {
         <span class="ident">pin</span>.<span class="ident">pointer</span>
     }
 }
@@ -1508,7 +1548,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">P::Target</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">P::Target</span><span class="op">&gt;</span> {
         <span class="comment">// SAFETY: see documentation on this function</span>
         <span class="kw">unsafe</span> { <span class="ident">Pin::new_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">pointer</span>) }
     }
@@ -1544,10 +1584,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`pin` module]: self#projections-and-structural-pinning</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map_unchecked</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">func</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">U</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map_unchecked</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">func</span>: <span class="ident">F</span>) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">U</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">U</span>: <span class="question-mark">?</span><span class="ident">Sized</span>,
-        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">U</span>,
+        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">U</span>,
     {
         <span class="kw">let</span> <span class="ident">pointer</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">pointer</span>;
         <span class="kw">let</span> <span class="ident">new_pointer</span> <span class="op">=</span> <span class="ident">func</span>(<span class="ident">pointer</span>);
@@ -1577,7 +1617,7 @@
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_pin&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76654&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">get_ref</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">get_ref</span>(<span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span> {
         <span class="self">self</span>.<span class="ident">pointer</span>
     }
 }
@@ -1585,9 +1625,10 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Converts this `Pin&lt;&amp;mut T&gt;` into a `Pin&lt;&amp;T&gt;` with the same lifetime.</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;`self` will be dropped if the result is not used&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_pin&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76654&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">into_ref</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">into_ref</span>(<span class="self">self</span>) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">Pin</span> { <span class="ident">pointer</span>: <span class="self">self</span>.<span class="ident">pointer</span> }
     }
 
@@ -1601,9 +1642,10 @@
     <span class="doccomment">/// the `Pin` itself. This method allows turning the `Pin` into a reference</span>
     <span class="doccomment">/// with the same lifetime as the original `Pin`.</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;`self` will be dropped if the result is not used&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_pin&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76654&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Unpin</span>,
     {
@@ -1621,9 +1663,10 @@
     <span class="doccomment">/// If the underlying data is `Unpin`, `Pin::get_mut` should be used</span>
     <span class="doccomment">/// instead.</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;`self` will be dropped if the result is not used&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_pin&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76654&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_unchecked_mut</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_unchecked_mut</span>(<span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span> {
         <span class="self">self</span>.<span class="ident">pointer</span>
     }
 
@@ -1642,11 +1685,12 @@
     <span class="doccomment">/// not move out of the argument you receive to the interior function.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`pin` module]: self#projections-and-structural-pinning</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;`self` will be dropped if the result is not used&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map_unchecked_mut</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">func</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">U</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">map_unchecked_mut</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">func</span>: <span class="ident">F</span>) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">U</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">U</span>: <span class="question-mark">?</span><span class="ident">Sized</span>,
-        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">U</span>,
+        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">U</span>,
     {
         <span class="comment">// SAFETY: the caller is responsible for not moving the</span>
         <span class="comment">// value out of this reference.</span>
@@ -1665,10 +1709,49 @@
     <span class="doccomment">/// never ends.</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin_static_ref&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;78186&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_pin&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76654&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">static_ref</span>(<span class="ident">r</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">static_ref</span>(<span class="ident">r</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">T</span>) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="comment">// SAFETY: The &#39;static borrow guarantees the data will not be</span>
         <span class="comment">// moved/invalidated until it gets dropped (which is never).</span>
         <span class="kw">unsafe</span> { <span class="ident">Pin::new_unchecked</span>(<span class="ident">r</span>) }
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">P</span>: <span class="ident">DerefMut</span><span class="op">&gt;</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Gets a pinned mutable reference from this nested pinned pointer.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This is a generic method to go from `Pin&lt;&amp;mut Pin&lt;Pointer&lt;T&gt;&gt;&gt;` to `Pin&lt;&amp;mut T&gt;`. It is</span>
+    <span class="doccomment">/// safe because the existence of a `Pin&lt;Pointer&lt;T&gt;&gt;` ensures that the pointee, `T`, cannot</span>
+    <span class="doccomment">/// move in the future, and this method does not enable the pointee to move. &quot;Malicious&quot;</span>
+    <span class="doccomment">/// implementations of `P::DerefMut` are likewise ruled out by the contract of</span>
+    <span class="doccomment">/// `Pin::new_unchecked`.</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin_deref_mut&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;86918&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;`self` will be dropped if the result is not used&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_deref_mut</span>(<span class="self">self</span>) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">P::Target</span><span class="op">&gt;</span> {
+        <span class="comment">// SAFETY: What we&#39;re asserting here is that going from</span>
+        <span class="comment">//</span>
+        <span class="comment">//     Pin&lt;&amp;mut Pin&lt;P&gt;&gt;</span>
+        <span class="comment">//</span>
+        <span class="comment">// to</span>
+        <span class="comment">//</span>
+        <span class="comment">//     Pin&lt;&amp;mut P::Target&gt;</span>
+        <span class="comment">//</span>
+        <span class="comment">// is safe.</span>
+        <span class="comment">//</span>
+        <span class="comment">// We need to ensure that two things hold for that to be the case:</span>
+        <span class="comment">//</span>
+        <span class="comment">// 1) Once we give out a `Pin&lt;&amp;mut P::Target&gt;`, an `&amp;mut P::Target` will not be given out.</span>
+        <span class="comment">// 2) By giving out a `Pin&lt;&amp;mut P::Target&gt;`, we do not risk of violating `Pin&lt;&amp;mut Pin&lt;P&gt;&gt;`</span>
+        <span class="comment">//</span>
+        <span class="comment">// The existence of `Pin&lt;P&gt;` is sufficient to guarantee #1: since we already have a</span>
+        <span class="comment">// `Pin&lt;P&gt;`, it must already uphold the pinning guarantees, which must mean that</span>
+        <span class="comment">// `Pin&lt;&amp;mut P::Target&gt;` does as well, since `Pin::as_mut` is safe. We do not have to rely</span>
+        <span class="comment">// on the fact that P is _also_ pinned.</span>
+        <span class="comment">//</span>
+        <span class="comment">// For #2, we need to ensure that code given a `Pin&lt;&amp;mut P::Target&gt;` cannot cause the</span>
+        <span class="comment">// `Pin&lt;P&gt;` to move? That is not possible, since `Pin&lt;&amp;mut P::Target&gt;` no longer retains</span>
+        <span class="comment">// any access to the `P` itself, much less the `Pin&lt;P&gt;`.</span>
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">get_unchecked_mut</span>() }.<span class="ident">as_mut</span>()
     }
 }
 
@@ -1679,7 +1762,7 @@
     <span class="doccomment">/// never ends.</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin_static_ref&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;78186&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_pin&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76654&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">static_mut</span>(<span class="ident">r</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">static_mut</span>(<span class="ident">r</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="comment">// SAFETY: The &#39;static borrow guarantees the data will not be</span>
         <span class="comment">// moved/invalidated until it gets dropped (which is never).</span>
         <span class="kw">unsafe</span> { <span class="ident">Pin::new_unchecked</span>(<span class="ident">r</span>) }
@@ -1689,14 +1772,14 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Deref</span><span class="op">&gt;</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">P::Target</span>;
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">P::Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">P::Target</span> {
         <span class="ident">Pin::get_ref</span>(<span class="ident">Pin::as_ref</span>(<span class="self">self</span>))
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">DerefMut</span><span class="op">&lt;</span><span class="ident">Target</span>: <span class="ident">Unpin</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">P::Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">P::Target</span> {
         <span class="ident">Pin::get_mut</span>(<span class="ident">Pin::as_mut</span>(<span class="self">self</span>))
     }
 }
@@ -1706,21 +1789,21 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">fmt::Debug</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Debug::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pointer</span>, <span class="ident">f</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">fmt::Display</span><span class="op">&gt;</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Display::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pointer</span>, <span class="ident">f</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">fmt::Pointer</span><span class="op">&gt;</span> <span class="ident">fmt::Pointer</span> <span class="kw">for</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Pointer::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">pointer</span>, <span class="ident">f</span>)
     }
 }
@@ -1735,5 +1818,7 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">P</span>, <span class="ident">U</span><span class="op">&gt;</span> <span class="ident">DispatchFromDyn</span><span class="op">&lt;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">P</span>: <span class="ident">DispatchFromDyn</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span> {}
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
+</body></html>

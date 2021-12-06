@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/../../stdarch/crates/core_arch/src/x86/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../../../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../../../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img src="../../../../../../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;..&#x2F;..&#x2F;stdarch&#x2F;crates&#x2F;core_arch&#x2F;src&#x2F;x86&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../../../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -860,8 +858,7 @@
 <span id="858">858</span>
 <span id="859">859</span>
 <span id="860">860</span>
-</pre><pre class="rust">
-<span class="doccomment">//! `x86` and `x86_64` intrinsics.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! `x86` and `x86_64` intrinsics.</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">intrinsics</span>, <span class="ident">marker::Sized</span>, <span class="ident">mem::transmute</span>};
 
@@ -1163,7 +1160,7 @@
     <span class="doccomment">/// 128-bit wide set of eight &#39;u16&#39; types, x86-specific</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This type is representing a 128-bit SIMD register which internally is consisted of</span>
-    <span class="doccomment">/// eight packed `u16` instances. It&#39;s purpose is for bf16 related intrinsic</span>
+    <span class="doccomment">/// eight packed `u16` instances. Its purpose is for bf16 related intrinsic</span>
     <span class="doccomment">/// implementations.</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">__m128bh</span>(<span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>);
 
@@ -1171,7 +1168,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This type is the same as the `__m128bh` type defined by Intel,</span>
     <span class="doccomment">/// representing a 256-bit SIMD register which internally is consisted of</span>
-    <span class="doccomment">/// 16 packed `u16` instances. It&#39;s purpose is for bf16 related intrinsic</span>
+    <span class="doccomment">/// 16 packed `u16` instances. Its purpose is for bf16 related intrinsic</span>
     <span class="doccomment">/// implementations.</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">__m256bh</span>(
         <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>,
@@ -1182,7 +1179,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This type is the same as the `__m128bh` type defined by Intel,</span>
     <span class="doccomment">/// representing a 512-bit SIMD register which internally is consisted of</span>
-    <span class="doccomment">/// 32 packed `u16` instances. It&#39;s purpose is for bf16 related intrinsic</span>
+    <span class="doccomment">/// 32 packed `u16` instances. Its purpose is for bf16 related intrinsic</span>
     <span class="doccomment">/// implementations.</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">__m512bh</span>(
         <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>, <span class="ident">u16</span>,
@@ -1227,57 +1224,57 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::test</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::test</span>::<span class="kw-2">*</span>;
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stdsimd_internal&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">m128iExt</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">as_m128i</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128i</span>;
+    <span class="kw">fn</span> <span class="ident">as_m128i</span>(<span class="self">self</span>) -&gt; <span class="ident">__m128i</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u8x16</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u8x16</span> {
+    <span class="kw">fn</span> <span class="ident">as_u8x16</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u8x16</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m128i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u16x8</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u16x8</span> {
+    <span class="kw">fn</span> <span class="ident">as_u16x8</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u16x8</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m128i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u32x4</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u32x4</span> {
+    <span class="kw">fn</span> <span class="ident">as_u32x4</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u32x4</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m128i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u64x2</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u64x2</span> {
+    <span class="kw">fn</span> <span class="ident">as_u64x2</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u64x2</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m128i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i8x16</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i8x16</span> {
+    <span class="kw">fn</span> <span class="ident">as_i8x16</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i8x16</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m128i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i16x8</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i16x8</span> {
+    <span class="kw">fn</span> <span class="ident">as_i16x8</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i16x8</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m128i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i32x4</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i32x4</span> {
+    <span class="kw">fn</span> <span class="ident">as_i32x4</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i32x4</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m128i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i64x2</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i64x2</span> {
+    <span class="kw">fn</span> <span class="ident">as_i64x2</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i64x2</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m128i</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">m128iExt</span> <span class="kw">for</span> <span class="ident">__m128i</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_m128i</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">as_m128i</span>(<span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>
     }
 }
@@ -1285,52 +1282,52 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stdsimd_internal&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">m256iExt</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">as_m256i</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256i</span>;
+    <span class="kw">fn</span> <span class="ident">as_m256i</span>(<span class="self">self</span>) -&gt; <span class="ident">__m256i</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u8x32</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u8x32</span> {
+    <span class="kw">fn</span> <span class="ident">as_u8x32</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u8x32</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m256i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u16x16</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u16x16</span> {
+    <span class="kw">fn</span> <span class="ident">as_u16x16</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u16x16</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m256i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u32x8</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u32x8</span> {
+    <span class="kw">fn</span> <span class="ident">as_u32x8</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u32x8</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m256i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u64x4</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u64x4</span> {
+    <span class="kw">fn</span> <span class="ident">as_u64x4</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u64x4</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m256i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i8x32</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i8x32</span> {
+    <span class="kw">fn</span> <span class="ident">as_i8x32</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i8x32</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m256i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i16x16</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i16x16</span> {
+    <span class="kw">fn</span> <span class="ident">as_i16x16</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i16x16</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m256i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i32x8</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i32x8</span> {
+    <span class="kw">fn</span> <span class="ident">as_i32x8</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i32x8</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m256i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i64x4</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i64x4</span> {
+    <span class="kw">fn</span> <span class="ident">as_i64x4</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i64x4</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m256i</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">m256iExt</span> <span class="kw">for</span> <span class="ident">__m256i</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_m256i</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">as_m256i</span>(<span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>
     }
 }
@@ -1338,17 +1335,17 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stdsimd_internal&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">m128Ext</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">as_m128</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">as_m128</span>(<span class="self">self</span>) -&gt; <span class="ident">__m128</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_f32x4</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::f32x4</span> {
+    <span class="kw">fn</span> <span class="ident">as_f32x4</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::f32x4</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m128</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">m128Ext</span> <span class="kw">for</span> <span class="ident">__m128</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_m128</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">as_m128</span>(<span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>
     }
 }
@@ -1356,17 +1353,17 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stdsimd_internal&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">m128dExt</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">as_m128d</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span>;
+    <span class="kw">fn</span> <span class="ident">as_m128d</span>(<span class="self">self</span>) -&gt; <span class="ident">__m128d</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_f64x2</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::f64x2</span> {
+    <span class="kw">fn</span> <span class="ident">as_f64x2</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::f64x2</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m128d</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">m128dExt</span> <span class="kw">for</span> <span class="ident">__m128d</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_m128d</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">as_m128d</span>(<span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>
     }
 }
@@ -1374,17 +1371,17 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stdsimd_internal&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">m256Ext</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">as_m256</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256</span>;
+    <span class="kw">fn</span> <span class="ident">as_m256</span>(<span class="self">self</span>) -&gt; <span class="ident">__m256</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_f32x8</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::f32x8</span> {
+    <span class="kw">fn</span> <span class="ident">as_f32x8</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::f32x8</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m256</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">m256Ext</span> <span class="kw">for</span> <span class="ident">__m256</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_m256</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">as_m256</span>(<span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>
     }
 }
@@ -1392,17 +1389,17 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stdsimd_internal&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">m256dExt</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">as_m256d</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256d</span>;
+    <span class="kw">fn</span> <span class="ident">as_m256d</span>(<span class="self">self</span>) -&gt; <span class="ident">__m256d</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_f64x4</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::f64x4</span> {
+    <span class="kw">fn</span> <span class="ident">as_f64x4</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::f64x4</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m256d</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">m256dExt</span> <span class="kw">for</span> <span class="ident">__m256d</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_m256d</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">as_m256d</span>(<span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>
     }
 }
@@ -1410,52 +1407,52 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stdsimd_internal&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">m512iExt</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">as_m512i</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m512i</span>;
+    <span class="kw">fn</span> <span class="ident">as_m512i</span>(<span class="self">self</span>) -&gt; <span class="ident">__m512i</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u8x64</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u8x64</span> {
+    <span class="kw">fn</span> <span class="ident">as_u8x64</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u8x64</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m512i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i8x64</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i8x64</span> {
+    <span class="kw">fn</span> <span class="ident">as_i8x64</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i8x64</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m512i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u16x32</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u16x32</span> {
+    <span class="kw">fn</span> <span class="ident">as_u16x32</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u16x32</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m512i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i16x32</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i16x32</span> {
+    <span class="kw">fn</span> <span class="ident">as_i16x32</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i16x32</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m512i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u32x16</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u32x16</span> {
+    <span class="kw">fn</span> <span class="ident">as_u32x16</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u32x16</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m512i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i32x16</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i32x16</span> {
+    <span class="kw">fn</span> <span class="ident">as_i32x16</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i32x16</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m512i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u64x8</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u64x8</span> {
+    <span class="kw">fn</span> <span class="ident">as_u64x8</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u64x8</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m512i</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i64x8</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i64x8</span> {
+    <span class="kw">fn</span> <span class="ident">as_i64x8</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i64x8</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m512i</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">m512iExt</span> <span class="kw">for</span> <span class="ident">__m512i</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_m512i</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">as_m512i</span>(<span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>
     }
 }
@@ -1463,17 +1460,17 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stdsimd_internal&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">m512Ext</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">as_m512</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m512</span>;
+    <span class="kw">fn</span> <span class="ident">as_m512</span>(<span class="self">self</span>) -&gt; <span class="ident">__m512</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_f32x16</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::f32x16</span> {
+    <span class="kw">fn</span> <span class="ident">as_f32x16</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::f32x16</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m512</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">m512Ext</span> <span class="kw">for</span> <span class="ident">__m512</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_m512</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">as_m512</span>(<span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>
     }
 }
@@ -1481,17 +1478,17 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stdsimd_internal&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">m512dExt</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">as_m512d</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m512d</span>;
+    <span class="kw">fn</span> <span class="ident">as_m512d</span>(<span class="self">self</span>) -&gt; <span class="ident">__m512d</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_f64x8</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::f64x8</span> {
+    <span class="kw">fn</span> <span class="ident">as_f64x8</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::f64x8</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m512d</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">m512dExt</span> <span class="kw">for</span> <span class="ident">__m512d</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_m512d</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">as_m512d</span>(<span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>
     }
 }
@@ -1499,32 +1496,32 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stdsimd_internal&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">m128bhExt</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">as_m128bh</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128bh</span>;
+    <span class="kw">fn</span> <span class="ident">as_m128bh</span>(<span class="self">self</span>) -&gt; <span class="ident">__m128bh</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u16x8</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u16x8</span> {
+    <span class="kw">fn</span> <span class="ident">as_u16x8</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u16x8</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m128bh</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i16x8</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i16x8</span> {
+    <span class="kw">fn</span> <span class="ident">as_i16x8</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i16x8</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m128bh</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u32x4</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u32x4</span> {
+    <span class="kw">fn</span> <span class="ident">as_u32x4</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u32x4</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m128bh</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i32x4</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i32x4</span> {
+    <span class="kw">fn</span> <span class="ident">as_i32x4</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i32x4</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m128bh</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">m128bhExt</span> <span class="kw">for</span> <span class="ident">__m128bh</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_m128bh</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">as_m128bh</span>(<span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>
     }
 }
@@ -1532,32 +1529,32 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stdsimd_internal&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">m256bhExt</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">as_m256bh</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256bh</span>;
+    <span class="kw">fn</span> <span class="ident">as_m256bh</span>(<span class="self">self</span>) -&gt; <span class="ident">__m256bh</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u16x16</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u16x16</span> {
+    <span class="kw">fn</span> <span class="ident">as_u16x16</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u16x16</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m256bh</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i16x16</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i16x16</span> {
+    <span class="kw">fn</span> <span class="ident">as_i16x16</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i16x16</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m256bh</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u32x8</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u32x8</span> {
+    <span class="kw">fn</span> <span class="ident">as_u32x8</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u32x8</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m256bh</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i32x8</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i32x8</span> {
+    <span class="kw">fn</span> <span class="ident">as_i32x8</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i32x8</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m256bh</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">m256bhExt</span> <span class="kw">for</span> <span class="ident">__m256bh</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_m256bh</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">as_m256bh</span>(<span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>
     }
 }
@@ -1565,104 +1562,104 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stdsimd_internal&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">m512bhExt</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">as_m512bh</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m512bh</span>;
+    <span class="kw">fn</span> <span class="ident">as_m512bh</span>(<span class="self">self</span>) -&gt; <span class="ident">__m512bh</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u16x32</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u16x32</span> {
+    <span class="kw">fn</span> <span class="ident">as_u16x32</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u16x32</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m512bh</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i16x32</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i16x32</span> {
+    <span class="kw">fn</span> <span class="ident">as_i16x32</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i16x32</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m512bh</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_u32x16</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::u32x16</span> {
+    <span class="kw">fn</span> <span class="ident">as_u32x16</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::u32x16</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m512bh</span>()) }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_i32x16</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span><span class="ident">::core_arch::simd::i32x16</span> {
+    <span class="kw">fn</span> <span class="ident">as_i32x16</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::core_arch::simd::i32x16</span> {
         <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">as_m512bh</span>()) }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">m512bhExt</span> <span class="kw">for</span> <span class="ident">__m512bh</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_m512bh</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">as_m512bh</span>(<span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>
     }
 }
 
 <span class="kw">mod</span> <span class="ident">eflags</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::eflags</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::eflags</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">fxsr</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::fxsr</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::fxsr</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">bswap</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::bswap</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::bswap</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">rdtsc</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::rdtsc</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::rdtsc</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">cpuid</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::cpuid</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::cpuid</span>::<span class="kw-2">*</span>;
 <span class="kw">mod</span> <span class="ident">xsave</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::xsave</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::xsave</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">sse</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::sse</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sse</span>::<span class="kw-2">*</span>;
 <span class="kw">mod</span> <span class="ident">sse2</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::sse2</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sse2</span>::<span class="kw-2">*</span>;
 <span class="kw">mod</span> <span class="ident">sse3</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::sse3</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sse3</span>::<span class="kw-2">*</span>;
 <span class="kw">mod</span> <span class="ident">ssse3</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::ssse3</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::ssse3</span>::<span class="kw-2">*</span>;
 <span class="kw">mod</span> <span class="ident">sse41</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::sse41</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sse41</span>::<span class="kw-2">*</span>;
 <span class="kw">mod</span> <span class="ident">sse42</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::sse42</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sse42</span>::<span class="kw-2">*</span>;
 <span class="kw">mod</span> <span class="ident">avx</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::avx</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::avx</span>::<span class="kw-2">*</span>;
 <span class="kw">mod</span> <span class="ident">avx2</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::avx2</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::avx2</span>::<span class="kw-2">*</span>;
 <span class="kw">mod</span> <span class="ident">fma</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::fma</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::fma</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">abm</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::abm</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::abm</span>::<span class="kw-2">*</span>;
 <span class="kw">mod</span> <span class="ident">bmi1</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::bmi1</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::bmi1</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">bmi2</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::bmi2</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::bmi2</span>::<span class="kw-2">*</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">stdarch_intel_sde</span>))]</span>
 <span class="kw">mod</span> <span class="ident">sse4a</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">stdarch_intel_sde</span>))]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::sse4a</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sse4a</span>::<span class="kw-2">*</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">stdarch_intel_sde</span>))]</span>
 <span class="kw">mod</span> <span class="ident">tbm</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">stdarch_intel_sde</span>))]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::tbm</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::tbm</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">pclmulqdq</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::pclmulqdq</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::pclmulqdq</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">aes</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::aes</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::aes</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">rdrand</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::rdrand</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::rdrand</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">sha</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::sha</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sha</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">adx</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::adx</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::adx</span>::<span class="kw-2">*</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">use</span> <span class="ident">stdarch_test::assert_instr</span>;
@@ -1670,56 +1667,58 @@
 <span class="doccomment">/// Generates the trap instruction `UD2`</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ud2</span>))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">ud2</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">ud2</span>() -&gt; <span class="op">!</span> {
     <span class="ident">intrinsics::abort</span>()
 }
 
 <span class="kw">mod</span> <span class="ident">avx512f</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::avx512f</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::avx512f</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">avx512bw</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::avx512bw</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::avx512bw</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">avx512cd</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::avx512cd</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::avx512cd</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">avx512ifma</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::avx512ifma</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::avx512ifma</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">avx512vbmi</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::avx512vbmi</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::avx512vbmi</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">avx512vbmi2</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::avx512vbmi2</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::avx512vbmi2</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">avx512vnni</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::avx512vnni</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::avx512vnni</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">avx512bitalg</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::avx512bitalg</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::avx512bitalg</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">avx512gfni</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::avx512gfni</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::avx512gfni</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">avx512vpopcntdq</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::avx512vpopcntdq</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::avx512vpopcntdq</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">avx512vaes</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::avx512vaes</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::avx512vaes</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">avx512vpclmulqdq</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::avx512vpclmulqdq</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::avx512vpclmulqdq</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">bt</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::bt</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::bt</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">rtm</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::rtm</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::rtm</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">f16c</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::f16c</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::f16c</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">avx512bf16</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::avx512bf16</span>::<span class="kw-2">*</span>;
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-search-index-js="../../../../../../../../../search-index.js" data-search-js="../../../../../../../../../search.js"></div><script src="../../../../../../../../../main.js"></script><script src="../../../../../../../../../source-script.js"></script><script src="../../../../../../../../../source-files.js"></script></body></html>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::avx512bf16</span>::<span class="kw-2">*</span>;
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-search-index-js="../../../../../../../../../search-index.js" data-search-js="../../../../../../../../../search.js"></div>
+    <script src="../../../../../../../../../main.js"></script><script src="../../../../../../../../../source-script.js"></script><script src="../../../../../../../../../source-files.js"></script>
+</body></html>

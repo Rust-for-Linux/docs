@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/iter/adapters/zip.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>zip.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;iter&#x2F;adapters&#x2F;zip.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>zip.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -497,11 +495,94 @@
 <span id="495">495</span>
 <span id="496">496</span>
 <span id="497">497</span>
-</pre><pre class="rust">
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cmp</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::fmt</span>::{<span class="self">self</span>, <span class="ident">Debug</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::iter</span>::{<span class="ident">DoubleEndedIterator</span>, <span class="ident">ExactSizeIterator</span>, <span class="ident">FusedIterator</span>, <span class="ident">Iterator</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::iter</span>::{<span class="ident">InPlaceIterable</span>, <span class="ident">SourceIter</span>, <span class="ident">TrustedLen</span>};
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cmp</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fmt</span>::{<span class="self">self</span>, <span class="ident">Debug</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::iter</span>::{<span class="ident">DoubleEndedIterator</span>, <span class="ident">ExactSizeIterator</span>, <span class="ident">FusedIterator</span>, <span class="ident">Iterator</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::iter</span>::{<span class="ident">InPlaceIterable</span>, <span class="ident">SourceIter</span>, <span class="ident">TrustedLen</span>};
 
 <span class="doccomment">/// An iterator that iterates two other iterators simultaneously.</span>
 <span class="doccomment">///</span>
@@ -519,12 +600,12 @@
     <span class="ident">a_len</span>: <span class="ident">usize</span>,
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Iterator</span>, <span class="ident">B</span>: <span class="ident">Iterator</span><span class="op">&gt;</span> <span class="ident">Zip</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">in</span> <span class="kw">crate</span><span class="ident">::iter</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">a</span>: <span class="ident">A</span>, <span class="ident">b</span>: <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Zip</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">crate</span>::iter</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">a</span>: <span class="ident">A</span>, <span class="ident">b</span>: <span class="ident">B</span>) -&gt; <span class="ident">Zip</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> {
         <span class="ident">ZipImpl::new</span>(<span class="ident">a</span>, <span class="ident">b</span>)
     }
-    <span class="kw">fn</span> <span class="ident">super_nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">A::Item</span>, <span class="ident">B::Item</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">super_nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">A::Item</span>, <span class="ident">B::Item</span>)<span class="op">&gt;</span> {
         <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span> <span class="ident">Iterator::next</span>(<span class="self">self</span>) {
-            <span class="kw">if</span> <span class="ident">n</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="kw">if</span> <span class="ident">n</span> <span class="op">==</span> <span class="number">0</span> {
                 <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>);
             }
             <span class="ident">n</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
@@ -556,7 +637,7 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iter_zip&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;83574&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">zip</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">A</span>, <span class="ident">b</span>: <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Zip</span><span class="op">&lt;</span><span class="ident">A::IntoIter</span>, <span class="ident">B::IntoIter</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">zip</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">A</span>, <span class="ident">b</span>: <span class="ident">B</span>) -&gt; <span class="ident">Zip</span><span class="op">&lt;</span><span class="ident">A::IntoIter</span>, <span class="ident">B::IntoIter</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">A</span>: <span class="ident">IntoIterator</span>,
     <span class="ident">B</span>: <span class="ident">IntoIterator</span>,
@@ -573,24 +654,25 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> (<span class="ident">A::Item</span>, <span class="ident">B::Item</span>);
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="ident">ZipImpl::next</span>(<span class="self">self</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
         <span class="ident">ZipImpl::size_hint</span>(<span class="self">self</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="ident">ZipImpl::nth</span>(<span class="self">self</span>, <span class="ident">n</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Item</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span>
     <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">TrustedRandomAccess</span>,
+        <span class="self">Self</span>: <span class="ident">TrustedRandomAccessNoCoerce</span>,
     {
         <span class="comment">// SAFETY: `ZipImpl::__iterator_get_unchecked` has same safety</span>
         <span class="comment">// requirements as `Iterator::__iterator_get_unchecked`.</span>
@@ -605,7 +687,7 @@
     <span class="ident">B</span>: <span class="ident">DoubleEndedIterator</span> <span class="op">+</span> <span class="ident">ExactSizeIterator</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">A::Item</span>, <span class="ident">B::Item</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">A::Item</span>, <span class="ident">B::Item</span>)<span class="op">&gt;</span> {
         <span class="ident">ZipImpl::next_back</span>(<span class="self">self</span>)
     }
 }
@@ -614,18 +696,77 @@
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="kw">trait</span> <span class="ident">ZipImpl</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span>;
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">a</span>: <span class="ident">A</span>, <span class="ident">b</span>: <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span>;
-    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>);
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span>;
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">a</span>: <span class="ident">A</span>, <span class="ident">b</span>: <span class="ident">B</span>) -&gt; <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>);
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">A</span>: <span class="ident">DoubleEndedIterator</span> <span class="op">+</span> <span class="ident">ExactSizeIterator</span>,
         <span class="ident">B</span>: <span class="ident">DoubleEndedIterator</span> <span class="op">+</span> <span class="ident">ExactSizeIterator</span>;
     <span class="comment">// This has the same safety requirements as `Iterator::__iterator_get_unchecked`</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Iterator</span><span class="op">&gt;</span><span class="ident">::Item</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Iterator</span><span class="op">&gt;</span><span class="ident">::Item</span>
     <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Iterator</span> <span class="op">+</span> <span class="ident">TrustedRandomAccess</span>;
+        <span class="self">Self</span>: <span class="ident">Iterator</span> <span class="op">+</span> <span class="ident">TrustedRandomAccessNoCoerce</span>;
+}
+
+<span class="comment">// Work around limitations of specialization, requiring `default` impls to be repeated</span>
+<span class="comment">// in intermediary impls.</span>
+<span class="macro">macro_rules!</span> <span class="ident">zip_impl_general_defaults</span> {
+    () =&gt; {
+        <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">a</span>: <span class="ident">A</span>, <span class="ident">b</span>: <span class="ident">B</span>) -&gt; <span class="self">Self</span> {
+            <span class="ident">Zip</span> {
+                <span class="ident">a</span>,
+                <span class="ident">b</span>,
+                <span class="ident">index</span>: <span class="number">0</span>, <span class="comment">// unused</span>
+                <span class="ident">len</span>: <span class="number">0</span>,   <span class="comment">// unused</span>
+                <span class="ident">a_len</span>: <span class="number">0</span>, <span class="comment">// unused</span>
+            }
+        }
+
+        <span class="attribute">#[<span class="ident">inline</span>]</span>
+        <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">A::Item</span>, <span class="ident">B::Item</span>)<span class="op">&gt;</span> {
+            <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">a</span>.<span class="ident">next</span>()<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">y</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">b</span>.<span class="ident">next</span>()<span class="question-mark">?</span>;
+            <span class="prelude-val">Some</span>((<span class="ident">x</span>, <span class="ident">y</span>))
+        }
+
+        <span class="attribute">#[<span class="ident">inline</span>]</span>
+        <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">super_nth</span>(<span class="ident">n</span>)
+        }
+
+        <span class="attribute">#[<span class="ident">inline</span>]</span>
+        <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">A::Item</span>, <span class="ident">B::Item</span>)<span class="op">&gt;</span>
+        <span class="kw">where</span>
+            <span class="ident">A</span>: <span class="ident">DoubleEndedIterator</span> <span class="op">+</span> <span class="ident">ExactSizeIterator</span>,
+            <span class="ident">B</span>: <span class="ident">DoubleEndedIterator</span> <span class="op">+</span> <span class="ident">ExactSizeIterator</span>,
+        {
+            <span class="comment">// The function body below only uses `self.a/b.len()` and `self.a/b.next_back()`</span>
+            <span class="comment">// and doesn’t call `next_back` too often, so this implementation is safe in</span>
+            <span class="comment">// the `TrustedRandomAccessNoCoerce` specialization</span>
+
+            <span class="kw">let</span> <span class="ident">a_sz</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">a</span>.<span class="ident">len</span>();
+            <span class="kw">let</span> <span class="ident">b_sz</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">b</span>.<span class="ident">len</span>();
+            <span class="kw">if</span> <span class="ident">a_sz</span> <span class="op">!</span><span class="op">=</span> <span class="ident">b_sz</span> {
+                <span class="comment">// Adjust a, b to equal length</span>
+                <span class="kw">if</span> <span class="ident">a_sz</span> <span class="op">&gt;</span> <span class="ident">b_sz</span> {
+                    <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">a_sz</span> <span class="op">-</span> <span class="ident">b_sz</span> {
+                        <span class="self">self</span>.<span class="ident">a</span>.<span class="ident">next_back</span>();
+                    }
+                } <span class="kw">else</span> {
+                    <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">b_sz</span> <span class="op">-</span> <span class="ident">a_sz</span> {
+                        <span class="self">self</span>.<span class="ident">b</span>.<span class="ident">next_back</span>();
+                    }
+                }
+            }
+            <span class="kw">match</span> (<span class="self">self</span>.<span class="ident">a</span>.<span class="ident">next_back</span>(), <span class="self">self</span>.<span class="ident">b</span>.<span class="ident">next_back</span>()) {
+                (<span class="prelude-val">Some</span>(<span class="ident">x</span>), <span class="prelude-val">Some</span>(<span class="ident">y</span>)) =&gt; <span class="prelude-val">Some</span>((<span class="ident">x</span>, <span class="ident">y</span>)),
+                (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) =&gt; <span class="prelude-val">None</span>,
+                <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
+            }
+        }
+    };
 }
 
 <span class="comment">// General Zip impl</span>
@@ -636,77 +777,54 @@
     <span class="ident">B</span>: <span class="ident">Iterator</span>,
 {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> (<span class="ident">A::Item</span>, <span class="ident">B::Item</span>);
-    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">a</span>: <span class="ident">A</span>, <span class="ident">b</span>: <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Zip</span> {
-            <span class="ident">a</span>,
-            <span class="ident">b</span>,
-            <span class="ident">index</span>: <span class="number">0</span>, <span class="comment">// unused</span>
-            <span class="ident">len</span>: <span class="number">0</span>,   <span class="comment">// unused</span>
-            <span class="ident">a_len</span>: <span class="number">0</span>, <span class="comment">// unused</span>
-        }
-    }
+
+    <span class="macro">zip_impl_general_defaults!</span> {}
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">A::Item</span>, <span class="ident">B::Item</span>)<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">a</span>.<span class="ident">next</span>()<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">y</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">b</span>.<span class="ident">next</span>()<span class="question-mark">?</span>;
-        <span class="prelude-val">Some</span>((<span class="ident">x</span>, <span class="ident">y</span>))
-    }
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">super_nth</span>(<span class="ident">n</span>)
-    }
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">A::Item</span>, <span class="ident">B::Item</span>)<span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">A</span>: <span class="ident">DoubleEndedIterator</span> <span class="op">+</span> <span class="ident">ExactSizeIterator</span>,
-        <span class="ident">B</span>: <span class="ident">DoubleEndedIterator</span> <span class="op">+</span> <span class="ident">ExactSizeIterator</span>,
-    {
-        <span class="kw">let</span> <span class="ident">a_sz</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">a</span>.<span class="ident">len</span>();
-        <span class="kw">let</span> <span class="ident">b_sz</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">b</span>.<span class="ident">len</span>();
-        <span class="kw">if</span> <span class="ident">a_sz</span> <span class="op">!</span><span class="op">=</span> <span class="ident">b_sz</span> {
-            <span class="comment">// Adjust a, b to equal length</span>
-            <span class="kw">if</span> <span class="ident">a_sz</span> <span class="op">&gt;</span> <span class="ident">b_sz</span> {
-                <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">a_sz</span> <span class="op">-</span> <span class="ident">b_sz</span> {
-                    <span class="self">self</span>.<span class="ident">a</span>.<span class="ident">next_back</span>();
-                }
-            } <span class="kw">else</span> {
-                <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">b_sz</span> <span class="op">-</span> <span class="ident">a_sz</span> {
-                    <span class="self">self</span>.<span class="ident">b</span>.<span class="ident">next_back</span>();
-                }
-            }
-        }
-        <span class="kw">match</span> (<span class="self">self</span>.<span class="ident">a</span>.<span class="ident">next_back</span>(), <span class="self">self</span>.<span class="ident">b</span>.<span class="ident">next_back</span>()) {
-            (<span class="prelude-val">Some</span>(<span class="ident">x</span>), <span class="prelude-val">Some</span>(<span class="ident">y</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">x</span>, <span class="ident">y</span>)),
-            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
-        }
-    }
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> (<span class="ident">a_lower</span>, <span class="ident">a_upper</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">a</span>.<span class="ident">size_hint</span>();
         <span class="kw">let</span> (<span class="ident">b_lower</span>, <span class="ident">b_upper</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">b</span>.<span class="ident">size_hint</span>();
 
         <span class="kw">let</span> <span class="ident">lower</span> <span class="op">=</span> <span class="ident">cmp::min</span>(<span class="ident">a_lower</span>, <span class="ident">b_lower</span>);
 
         <span class="kw">let</span> <span class="ident">upper</span> <span class="op">=</span> <span class="kw">match</span> (<span class="ident">a_upper</span>, <span class="ident">b_upper</span>) {
-            (<span class="prelude-val">Some</span>(<span class="ident">x</span>), <span class="prelude-val">Some</span>(<span class="ident">y</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">cmp::min</span>(<span class="ident">x</span>, <span class="ident">y</span>)),
-            (<span class="prelude-val">Some</span>(<span class="ident">x</span>), <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>),
-            (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="ident">y</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">y</span>),
-            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            (<span class="prelude-val">Some</span>(<span class="ident">x</span>), <span class="prelude-val">Some</span>(<span class="ident">y</span>)) =&gt; <span class="prelude-val">Some</span>(<span class="ident">cmp::min</span>(<span class="ident">x</span>, <span class="ident">y</span>)),
+            (<span class="prelude-val">Some</span>(<span class="ident">x</span>), <span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">x</span>),
+            (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="ident">y</span>)) =&gt; <span class="prelude-val">Some</span>(<span class="ident">y</span>),
+            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) =&gt; <span class="prelude-val">None</span>,
         };
 
         (<span class="ident">lower</span>, <span class="ident">upper</span>)
     }
 
-    <span class="ident">default</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_idx</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Iterator</span><span class="op">&gt;</span><span class="ident">::Item</span>
+    <span class="ident">default</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_idx</span>: <span class="ident">usize</span>) -&gt; <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Iterator</span><span class="op">&gt;</span><span class="ident">::Item</span>
     <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">TrustedRandomAccess</span>,
+        <span class="self">Self</span>: <span class="ident">TrustedRandomAccessNoCoerce</span>,
     {
         <span class="macro">unreachable!</span>(<span class="string">&quot;Always specialized&quot;</span>);
+    }
+}
+
+<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> <span class="ident">ZipImpl</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Zip</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">A</span>: <span class="ident">TrustedRandomAccessNoCoerce</span> <span class="op">+</span> <span class="ident">Iterator</span>,
+    <span class="ident">B</span>: <span class="ident">TrustedRandomAccessNoCoerce</span> <span class="op">+</span> <span class="ident">Iterator</span>,
+{
+    <span class="macro">zip_impl_general_defaults!</span> {}
+
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">cmp::min</span>(<span class="self">self</span>.<span class="ident">a</span>.<span class="ident">size</span>(), <span class="self">self</span>.<span class="ident">b</span>.<span class="ident">size</span>());
+        (<span class="ident">size</span>, <span class="prelude-val">Some</span>(<span class="ident">size</span>))
+    }
+
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Iterator</span><span class="op">&gt;</span><span class="ident">::Item</span> {
+        <span class="kw">let</span> <span class="ident">idx</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">index</span> <span class="op">+</span> <span class="ident">idx</span>;
+        <span class="comment">// SAFETY: the caller must uphold the contract for</span>
+        <span class="comment">// `Iterator::__iterator_get_unchecked`.</span>
+        <span class="kw">unsafe</span> { (<span class="self">self</span>.<span class="ident">a</span>.<span class="ident">__iterator_get_unchecked</span>(<span class="ident">idx</span>), <span class="self">self</span>.<span class="ident">b</span>.<span class="ident">__iterator_get_unchecked</span>(<span class="ident">idx</span>)) }
     }
 }
 
@@ -716,16 +834,18 @@
     <span class="ident">A</span>: <span class="ident">TrustedRandomAccess</span> <span class="op">+</span> <span class="ident">Iterator</span>,
     <span class="ident">B</span>: <span class="ident">TrustedRandomAccess</span> <span class="op">+</span> <span class="ident">Iterator</span>,
 {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">a</span>: <span class="ident">A</span>, <span class="ident">b</span>: <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">a</span>: <span class="ident">A</span>, <span class="ident">b</span>: <span class="ident">B</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">a_len</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">size</span>();
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">cmp::min</span>(<span class="ident">a_len</span>, <span class="ident">b</span>.<span class="ident">size</span>());
         <span class="ident">Zip</span> { <span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">index</span>: <span class="number">0</span>, <span class="ident">len</span>, <span class="ident">a_len</span> }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">A::Item</span>, <span class="ident">B::Item</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">A::Item</span>, <span class="ident">B::Item</span>)<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">len</span> {
             <span class="kw">let</span> <span class="ident">i</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">index</span>;
+            <span class="comment">// since get_unchecked executes code which can panic we increment the counters beforehand</span>
+            <span class="comment">// so that the same index won&#39;t be accessed twice, as required by TrustedRandomAccess</span>
             <span class="self">self</span>.<span class="ident">index</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             <span class="comment">// SAFETY: `i` is smaller than `self.len`, thus smaller than `self.a.len()` and `self.b.len()`</span>
             <span class="kw">unsafe</span> {
@@ -733,6 +853,7 @@
             }
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">A::MAY_HAVE_SIDE_EFFECT</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">a_len</span> {
             <span class="kw">let</span> <span class="ident">i</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">index</span>;
+            <span class="comment">// as above, increment before executing code that may panic</span>
             <span class="self">self</span>.<span class="ident">index</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             <span class="self">self</span>.<span class="ident">len</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             <span class="comment">// match the base implementation&#39;s potential side effects</span>
@@ -747,17 +868,19 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">index</span>;
         (<span class="ident">len</span>, <span class="prelude-val">Some</span>(<span class="ident">len</span>))
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">delta</span> <span class="op">=</span> <span class="ident">cmp::min</span>(<span class="ident">n</span>, <span class="self">self</span>.<span class="ident">len</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">index</span>);
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">index</span> <span class="op">+</span> <span class="ident">delta</span>;
         <span class="kw">while</span> <span class="self">self</span>.<span class="ident">index</span> <span class="op">&lt;</span> <span class="ident">end</span> {
             <span class="kw">let</span> <span class="ident">i</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">index</span>;
+            <span class="comment">// since get_unchecked executes code which can panic we increment the counters beforehand</span>
+            <span class="comment">// so that the same index won&#39;t be accessed twice, as required by TrustedRandomAccess</span>
             <span class="self">self</span>.<span class="ident">index</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             <span class="kw">if</span> <span class="ident">A::MAY_HAVE_SIDE_EFFECT</span> {
                 <span class="comment">// SAFETY: the usage of `cmp::min` to calculate `delta`</span>
@@ -779,7 +902,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">A::Item</span>, <span class="ident">B::Item</span>)<span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">A::Item</span>, <span class="ident">B::Item</span>)<span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">A</span>: <span class="ident">DoubleEndedIterator</span> <span class="op">+</span> <span class="ident">ExactSizeIterator</span>,
         <span class="ident">B</span>: <span class="ident">DoubleEndedIterator</span> <span class="op">+</span> <span class="ident">ExactSizeIterator</span>,
@@ -794,9 +917,12 @@
                 <span class="kw">let</span> <span class="ident">sz_a</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">a</span>.<span class="ident">size</span>();
                 <span class="kw">if</span> <span class="ident">A::MAY_HAVE_SIDE_EFFECT</span> <span class="op">&amp;&amp;</span> <span class="ident">sz_a</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">len</span> {
                     <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">sz_a</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">len</span> {
+                        <span class="comment">// since next_back() may panic we increment the counters beforehand</span>
+                        <span class="comment">// to keep Zip&#39;s state in sync with the underlying iterator source</span>
+                        <span class="self">self</span>.<span class="ident">a_len</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
                         <span class="self">self</span>.<span class="ident">a</span>.<span class="ident">next_back</span>();
                     }
-                    <span class="self">self</span>.<span class="ident">a_len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>;
+                    <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">a_len</span>, <span class="self">self</span>.<span class="ident">len</span>);
                 }
                 <span class="kw">let</span> <span class="ident">sz_b</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">b</span>.<span class="ident">size</span>();
                 <span class="kw">if</span> <span class="ident">B::MAY_HAVE_SIDE_EFFECT</span> <span class="op">&amp;&amp;</span> <span class="ident">sz_b</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">len</span> {
@@ -807,6 +933,8 @@
             }
         }
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">len</span> {
+            <span class="comment">// since get_unchecked executes code which can panic we increment the counters beforehand</span>
+            <span class="comment">// so that the same index won&#39;t be accessed twice, as required by TrustedRandomAccess</span>
             <span class="self">self</span>.<span class="ident">len</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
             <span class="self">self</span>.<span class="ident">a_len</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
             <span class="kw">let</span> <span class="ident">i</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>;
@@ -818,14 +946,6 @@
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
         }
-    }
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Iterator</span><span class="op">&gt;</span><span class="ident">::Item</span> {
-        <span class="kw">let</span> <span class="ident">idx</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">index</span> <span class="op">+</span> <span class="ident">idx</span>;
-        <span class="comment">// SAFETY: the caller must uphold the contract for</span>
-        <span class="comment">// `Iterator::__iterator_get_unchecked`.</span>
-        <span class="kw">unsafe</span> { (<span class="self">self</span>.<span class="ident">a</span>.<span class="ident">__iterator_get_unchecked</span>(<span class="ident">idx</span>), <span class="self">self</span>.<span class="ident">b</span>.<span class="ident">__iterator_get_unchecked</span>(<span class="ident">idx</span>)) }
     }
 }
 
@@ -843,6 +963,15 @@
 <span class="kw">where</span>
     <span class="ident">A</span>: <span class="ident">TrustedRandomAccess</span>,
     <span class="ident">B</span>: <span class="ident">TrustedRandomAccess</span>,
+{
+}
+
+<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+<span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;trusted_random_access&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
+<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> <span class="ident">TrustedRandomAccessNoCoerce</span> <span class="kw">for</span> <span class="ident">Zip</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">A</span>: <span class="ident">TrustedRandomAccessNoCoerce</span>,
+    <span class="ident">B</span>: <span class="ident">TrustedRandomAccessNoCoerce</span>,
 {
     <span class="kw">const</span> <span class="ident">MAY_HAVE_SIDE_EFFECT</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="ident">A::MAY_HAVE_SIDE_EFFECT</span> <span class="op">|</span><span class="op">|</span> <span class="ident">B::MAY_HAVE_SIDE_EFFECT</span>;
 }
@@ -866,16 +995,14 @@
 <span class="comment">// Arbitrarily selects the left side of the zip iteration as extractable &quot;source&quot;</span>
 <span class="comment">// it would require negative trait bounds to be able to try both</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inplace_iteration&quot;</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> <span class="ident">SourceIter</span> <span class="kw">for</span> <span class="ident">Zip</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span>
+<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> <span class="ident">SourceIter</span> <span class="kw">for</span> <span class="ident">Zip</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">A</span>: <span class="ident">SourceIter</span><span class="op">&lt;</span><span class="ident">Source</span> <span class="op">=</span> <span class="ident">S</span><span class="op">&gt;</span>,
-    <span class="ident">B</span>: <span class="ident">Iterator</span>,
-    <span class="ident">S</span>: <span class="ident">Iterator</span>,
+    <span class="ident">A</span>: <span class="ident">SourceIter</span>,
 {
-    <span class="kw">type</span> <span class="ident">Source</span> <span class="op">=</span> <span class="ident">S</span>;
+    <span class="kw">type</span> <span class="ident">Source</span> <span class="op">=</span> <span class="ident">A::Source</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_inner</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">S</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_inner</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">A::Source</span> {
         <span class="comment">// SAFETY: unsafe function forwarding to unsafe function with the same requirements</span>
         <span class="kw">unsafe</span> { <span class="ident">SourceIter::as_inner</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">a</span>) }
     }
@@ -891,23 +1018,25 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Debug</span>, <span class="ident">B</span>: <span class="ident">Debug</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Zip</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">ZipFmt::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
     }
 }
 
 <span class="kw">trait</span> <span class="ident">ZipFmt</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span>;
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Debug</span>, <span class="ident">B</span>: <span class="ident">Debug</span><span class="op">&gt;</span> <span class="ident">ZipFmt</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Zip</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> {
-    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Zip&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;a&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">a</span>).<span class="ident">field</span>(<span class="string">&quot;b&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">b</span>).<span class="ident">finish</span>()
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">TrustedRandomAccess</span>, <span class="ident">B</span>: <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">TrustedRandomAccess</span><span class="op">&gt;</span> <span class="ident">ZipFmt</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Zip</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">TrustedRandomAccessNoCoerce</span>, <span class="ident">B</span>: <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">TrustedRandomAccessNoCoerce</span><span class="op">&gt;</span> <span class="ident">ZipFmt</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span>
+    <span class="kw">for</span> <span class="ident">Zip</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span>
+{
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="comment">// It&#39;s *not safe* to call fmt on the contained iterators, since once</span>
         <span class="comment">// we start iterating they&#39;re in strange, potentially unsafe, states.</span>
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Zip&quot;</span>).<span class="ident">finish</span>()
@@ -920,36 +1049,72 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// The iterator&#39;s `size_hint` must be exact and cheap to call.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// `size` may not be overridden.</span>
+<span class="doccomment">/// `TrustedRandomAccessNoCoerce::size` may not be overridden.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// `&lt;Self as Iterator&gt;::__iterator_get_unchecked` must be safe to call</span>
-<span class="doccomment">/// provided the following conditions are met.</span>
+<span class="doccomment">/// All subtypes and all supertypes of `Self` must also implement `TrustedRandomAccess`.</span>
+<span class="doccomment">/// In particular, this means that types with non-invariant parameters usually can not have</span>
+<span class="doccomment">/// an impl for `TrustedRandomAccess` that depends on any trait bounds on such parameters, except</span>
+<span class="doccomment">/// for bounds that come from the respective struct/enum definition itself, or bounds involving</span>
+<span class="doccomment">/// traits that themselves come with a guarantee similar to this one.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// If `Self: ExactSizeIterator` then `self.len()` must always produce results consistent</span>
+<span class="doccomment">/// with `self.size()`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// If `Self: Iterator`, then `&lt;Self as Iterator&gt;::__iterator_get_unchecked(&amp;mut self, idx)`</span>
+<span class="doccomment">/// must be safe to call provided the following conditions are met.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// 1. `0 &lt;= idx` and `idx &lt; self.size()`.</span>
-<span class="doccomment">/// 2. If `self: !Clone`, then `get_unchecked` is never called with the same</span>
+<span class="doccomment">/// 2. If `Self: !Clone`, then `self.__iterator_get_unchecked(idx)` is never called with the same</span>
 <span class="doccomment">///    index on `self` more than once.</span>
-<span class="doccomment">/// 3. After `self.get_unchecked(idx)` has been called then `next_back` will</span>
-<span class="doccomment">///    only be called at most `self.size() - idx - 1` times.</span>
-<span class="doccomment">/// 4. After `get_unchecked` is called, then only the following methods will be</span>
-<span class="doccomment">///    called on `self`:</span>
-<span class="doccomment">///     * `std::clone::Clone::clone()`</span>
-<span class="doccomment">///     * `std::iter::Iterator::size_hint()`</span>
-<span class="doccomment">///     * `std::iter::DoubleEndedIterator::next_back()`</span>
-<span class="doccomment">///     * `std::iter::Iterator::__iterator_get_unchecked()`</span>
-<span class="doccomment">///     * `std::iter::TrustedRandomAccess::size()`</span>
+<span class="doccomment">/// 3. After `self.__iterator_get_unchecked(idx)` has been called, then `self.next_back()` will</span>
+<span class="doccomment">///    only be called at most `self.size() - idx - 1` times. If `Self: Clone` and `self` is cloned,</span>
+<span class="doccomment">///    then this number is calculated for `self` and its clone individually,</span>
+<span class="doccomment">///    but `self.next_back()` calls that happened before the cloning count for both `self` and the clone.</span>
+<span class="doccomment">/// 4. After `self.__iterator_get_unchecked(idx)` has been called, then only the following methods</span>
+<span class="doccomment">///    will be called on `self` or on any new clones of `self`:</span>
+<span class="doccomment">///     * `std::clone::Clone::clone`</span>
+<span class="doccomment">///     * `std::iter::Iterator::size_hint`</span>
+<span class="doccomment">///     * `std::iter::DoubleEndedIterator::next_back`</span>
+<span class="doccomment">///     * `std::iter::ExactSizeIterator::len`</span>
+<span class="doccomment">///     * `std::iter::Iterator::__iterator_get_unchecked`</span>
+<span class="doccomment">///     * `std::iter::TrustedRandomAccessNoCoerce::size`</span>
+<span class="doccomment">/// 5. If `T` is a subtype of `Self`, then `self` is allowed to be coerced</span>
+<span class="doccomment">///    to `T`. If `self` is coerced to `T` after `self.__iterator_get_unchecked(idx)` has already</span>
+<span class="doccomment">///    been called, then no methods except for the ones listed under 4. are allowed to be called</span>
+<span class="doccomment">///    on the resulting value of type `T`, either. Multiple such coercion steps are allowed.</span>
+<span class="doccomment">///    Regarding 2. and 3., the number of times `__iterator_get_unchecked(idx)` or `next_back()` is</span>
+<span class="doccomment">///    called on `self` and the resulting value of type `T` (and on further coercion results with</span>
+<span class="doccomment">///    sub-subtypes) are added together and their sums must not exceed the specified bounds.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Further, given that these conditions are met, it must guarantee that:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// * It does not change the value returned from `size_hint`</span>
 <span class="doccomment">/// * It must be safe to call the methods listed above on `self` after calling</span>
-<span class="doccomment">///   `get_unchecked`, assuming that the required traits are implemented.</span>
-<span class="doccomment">/// * It must also be safe to drop `self` after calling `get_unchecked`.</span>
+<span class="doccomment">///   `self.__iterator_get_unchecked(idx)`, assuming that the required traits are implemented.</span>
+<span class="doccomment">/// * It must also be safe to drop `self` after calling `self.__iterator_get_unchecked(idx)`.</span>
+<span class="doccomment">/// * If `T` is a subtype of `Self`, then it must be safe to coerce `self` to `T`.</span>
+<span class="comment">//</span>
+<span class="comment">// FIXME: Clarify interaction with SourceIter/InPlaceIterable. Calling `SouceIter::as_inner`</span>
+<span class="comment">// after `__iterator_get_unchecked` is supposed to be allowed.</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;trusted_random_access&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">rustc_specialization_trait</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">TrustedRandomAccess</span>: <span class="ident">Sized</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">TrustedRandomAccess</span>: <span class="ident">TrustedRandomAccessNoCoerce</span> {}
+
+<span class="doccomment">/// Like [`TrustedRandomAccess`] but without any of the requirements / guarantees around</span>
+<span class="doccomment">/// coercions to subtypes after `__iterator_get_unchecked` (they aren’t allowed here!), and</span>
+<span class="doccomment">/// without the requirement that subtypes / supertypes implement `TrustedRandomAccessNoCoerce`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This trait was created in PR #85874 to fix soundness issue #85873 without performance regressions.</span>
+<span class="doccomment">/// It is subject to change as we might want to build a more generally useful (for performance</span>
+<span class="doccomment">/// optimizations) and more sophisticated trait or trait hierarchy that replaces or extends</span>
+<span class="doccomment">/// [`TrustedRandomAccess`] and `TrustedRandomAccessNoCoerce`.</span>
+<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+<span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;trusted_random_access&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">rustc_specialization_trait</span>]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">TrustedRandomAccessNoCoerce</span>: <span class="ident">Sized</span> {
     <span class="comment">// Convenience method.</span>
-    <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span>
+    <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Iterator</span>,
     {
@@ -967,7 +1132,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// Same requirements calling `get_unchecked` directly.</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">in</span> <span class="kw">crate</span><span class="ident">::iter::adapters</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_get_unchecked</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">it</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">I</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">I::Item</span>
+<span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">crate</span>::iter::adapters</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_get_unchecked</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">it</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">I</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident">I::Item</span>
 <span class="kw">where</span>
     <span class="ident">I</span>: <span class="ident">Iterator</span>,
 {
@@ -977,23 +1142,25 @@
 }
 
 <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">SpecTrustedRandomAccess</span>: <span class="ident">Iterator</span> {
-    <span class="doccomment">/// If `Self: TrustedRandomAccess`, it must be safe to call a</span>
+    <span class="doccomment">/// If `Self: TrustedRandomAccess`, it must be safe to call</span>
     <span class="doccomment">/// `Iterator::__iterator_get_unchecked(self, index)`.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Item</span>;
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span>;
 }
 
 <span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&gt;</span> <span class="ident">SpecTrustedRandomAccess</span> <span class="kw">for</span> <span class="ident">I</span> {
-    <span class="ident">default</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw">_</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Item</span> {
+    <span class="ident">default</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw">_</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
         <span class="macro">panic!</span>(<span class="string">&quot;Should only be called on TrustedRandomAccess iterators&quot;</span>);
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span> <span class="op">+</span> <span class="ident">TrustedRandomAccess</span><span class="op">&gt;</span> <span class="ident">SpecTrustedRandomAccess</span> <span class="kw">for</span> <span class="ident">I</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Item</span> {
+<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span> <span class="op">+</span> <span class="ident">TrustedRandomAccessNoCoerce</span><span class="op">&gt;</span> <span class="ident">SpecTrustedRandomAccess</span> <span class="kw">for</span> <span class="ident">I</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
         <span class="comment">// SAFETY: the caller must uphold the contract for</span>
         <span class="comment">// `Iterator::__iterator_get_unchecked`.</span>
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">__iterator_get_unchecked</span>(<span class="ident">index</span>) }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="core" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="core" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

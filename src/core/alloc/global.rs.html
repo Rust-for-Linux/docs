@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/alloc/global.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>global.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;alloc&#x2F;global.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>global.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -232,10 +230,54 @@
 <span id="230">230</span>
 <span id="231">231</span>
 <span id="232">232</span>
-</pre><pre class="rust">
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::alloc::Layout</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cmp</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ptr</span>;
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::alloc::Layout</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cmp</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ptr</span>;
 
 <span class="doccomment">/// A memory allocator that can be registered as the standard library’s default</span>
 <span class="doccomment">/// through the `#[global_allocator]` attribute.</span>
@@ -255,24 +297,69 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Example</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// ```no_run</span>
-<span class="doccomment">/// use std::alloc::{GlobalAlloc, Layout, alloc};</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// use std::alloc::{GlobalAlloc, Layout};</span>
+<span class="doccomment">/// use std::cell::UnsafeCell;</span>
 <span class="doccomment">/// use std::ptr::null_mut;</span>
+<span class="doccomment">/// use std::sync::atomic::{</span>
+<span class="doccomment">///     AtomicUsize,</span>
+<span class="doccomment">///     Ordering::{Acquire, SeqCst},</span>
+<span class="doccomment">/// };</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// struct MyAllocator;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// unsafe impl GlobalAlloc for MyAllocator {</span>
-<span class="doccomment">///     unsafe fn alloc(&amp;self, _layout: Layout) -&gt; *mut u8 { null_mut() }</span>
-<span class="doccomment">///     unsafe fn dealloc(&amp;self, _ptr: *mut u8, _layout: Layout) {}</span>
+<span class="doccomment">/// const ARENA_SIZE: usize = 128 * 1024;</span>
+<span class="doccomment">/// const MAX_SUPPORTED_ALIGN: usize = 4096;</span>
+<span class="doccomment">/// #[repr(C, align(4096))] // 4096 == MAX_SUPPORTED_ALIGN</span>
+<span class="doccomment">/// struct SimpleAllocator {</span>
+<span class="doccomment">///     arena: UnsafeCell&lt;[u8; ARENA_SIZE]&gt;,</span>
+<span class="doccomment">///     remaining: AtomicUsize, // we allocate from the top, counting down</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// #[global_allocator]</span>
-<span class="doccomment">/// static A: MyAllocator = MyAllocator;</span>
+<span class="doccomment">/// static ALLOCATOR: SimpleAllocator = SimpleAllocator {</span>
+<span class="doccomment">///     arena: UnsafeCell::new([0x55; ARENA_SIZE]),</span>
+<span class="doccomment">///     remaining: AtomicUsize::new(ARENA_SIZE),</span>
+<span class="doccomment">/// };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// unsafe impl Sync for SimpleAllocator {}</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// unsafe impl GlobalAlloc for SimpleAllocator {</span>
+<span class="doccomment">///     unsafe fn alloc(&amp;self, layout: Layout) -&gt; *mut u8 {</span>
+<span class="doccomment">///         let size = layout.size();</span>
+<span class="doccomment">///         let align = layout.align();</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///         // `Layout` contract forbids making a `Layout` with align=0, or align not power of 2.</span>
+<span class="doccomment">///         // So we can safely use a mask to ensure alignment without worrying about UB.</span>
+<span class="doccomment">///         let align_mask_to_round_down = !(align - 1);</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///         if align &gt; MAX_SUPPORTED_ALIGN {</span>
+<span class="doccomment">///             return null_mut();</span>
+<span class="doccomment">///         }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///         let mut allocated = 0;</span>
+<span class="doccomment">///         if self</span>
+<span class="doccomment">///             .remaining</span>
+<span class="doccomment">///             .fetch_update(SeqCst, SeqCst, |mut remaining| {</span>
+<span class="doccomment">///                 if size &gt; remaining {</span>
+<span class="doccomment">///                     return None;</span>
+<span class="doccomment">///                 }</span>
+<span class="doccomment">///                 remaining -= size;</span>
+<span class="doccomment">///                 remaining &amp;= align_mask_to_round_down;</span>
+<span class="doccomment">///                 allocated = remaining;</span>
+<span class="doccomment">///                 Some(remaining)</span>
+<span class="doccomment">///             })</span>
+<span class="doccomment">///             .is_err()</span>
+<span class="doccomment">///         {</span>
+<span class="doccomment">///             return null_mut();</span>
+<span class="doccomment">///         };</span>
+<span class="doccomment">///         (self.arena.get() as *mut u8).add(allocated)</span>
+<span class="doccomment">///     }</span>
+<span class="doccomment">///     unsafe fn dealloc(&amp;self, _ptr: *mut u8, _layout: Layout) {}</span>
+<span class="doccomment">/// }</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// fn main() {</span>
-<span class="doccomment">///     unsafe {</span>
-<span class="doccomment">///         assert!(alloc(Layout::new::&lt;u32&gt;()).is_null())</span>
-<span class="doccomment">///     }</span>
+<span class="doccomment">///     let _s = format!(&quot;allocating a string!&quot;);</span>
+<span class="doccomment">///     let currently = ALLOCATOR.remaining.load(Acquire);</span>
+<span class="doccomment">///     println!(&quot;allocated so far: {}&quot;, ARENA_SIZE - currently);</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
@@ -289,7 +376,7 @@
 <span class="doccomment">///   this trait are allowed to rely on the contracts defined on each method,</span>
 <span class="doccomment">///   and implementors must ensure such contracts remain true.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// * You may not rely on allocations actually happening, even if there are explicit</span>
+<span class="doccomment">/// * You must not rely on allocations actually happening, even if there are explicit</span>
 <span class="doccomment">///   heap allocations in the source. The optimizer may detect unused allocations that it can either</span>
 <span class="doccomment">///   eliminate entirely or move to the stack and thus never invoke the allocator. The</span>
 <span class="doccomment">///   optimizer may further assume that allocation is infallible, so code that used to fail due</span>
@@ -344,7 +431,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`handle_alloc_error`]: ../../alloc/alloc/fn.handle_alloc_error.html</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;global_alloc&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>;
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>;
 
     <span class="doccomment">/// Deallocate the block of memory at the given `ptr` pointer with the given `layout`.</span>
     <span class="doccomment">///</span>
@@ -381,7 +468,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`handle_alloc_error`]: ../../alloc/alloc/fn.handle_alloc_error.html</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;global_alloc&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc_zeroed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc_zeroed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">layout</span>.<span class="ident">size</span>();
         <span class="comment">// SAFETY: the safety contract for `alloc` must be upheld by the caller.</span>
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">alloc</span>(<span class="ident">layout</span>) };
@@ -448,7 +535,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`handle_alloc_error`]: ../../alloc/alloc/fn.handle_alloc_error.html</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;global_alloc&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">realloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>, <span class="ident">new_size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">realloc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>, <span class="ident">new_size</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
         <span class="comment">// SAFETY: the caller must ensure that the `new_size` does not overflow.</span>
         <span class="comment">// `layout.align()` comes from a `Layout` and is thus guaranteed to be valid.</span>
         <span class="kw">let</span> <span class="ident">new_layout</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Layout::from_size_align_unchecked</span>(<span class="ident">new_size</span>, <span class="ident">layout</span>.<span class="ident">align</span>()) };
@@ -465,5 +552,7 @@
         <span class="ident">new_ptr</span>
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

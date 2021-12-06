@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/alloc/vec/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../alloc/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;alloc&#x2F;vec&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../alloc/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -3255,14 +3253,85 @@
 <span id="3253">3253</span>
 <span id="3254">3254</span>
 <span id="3255">3255</span>
-</pre><pre class="rust">
-<span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
+<span id="3256">3256</span>
+<span id="3257">3257</span>
+<span id="3258">3258</span>
+<span id="3259">3259</span>
+<span id="3260">3260</span>
+<span id="3261">3261</span>
+<span id="3262">3262</span>
+<span id="3263">3263</span>
+<span id="3264">3264</span>
+<span id="3265">3265</span>
+<span id="3266">3266</span>
+<span id="3267">3267</span>
+<span id="3268">3268</span>
+<span id="3269">3269</span>
+<span id="3270">3270</span>
+<span id="3271">3271</span>
+<span id="3272">3272</span>
+<span id="3273">3273</span>
+<span id="3274">3274</span>
+<span id="3275">3275</span>
+<span id="3276">3276</span>
+<span id="3277">3277</span>
+<span id="3278">3278</span>
+<span id="3279">3279</span>
+<span id="3280">3280</span>
+<span id="3281">3281</span>
+<span id="3282">3282</span>
+<span id="3283">3283</span>
+<span id="3284">3284</span>
+<span id="3285">3285</span>
+<span id="3286">3286</span>
+<span id="3287">3287</span>
+<span id="3288">3288</span>
+<span id="3289">3289</span>
+<span id="3290">3290</span>
+<span id="3291">3291</span>
+<span id="3292">3292</span>
+<span id="3293">3293</span>
+<span id="3294">3294</span>
+<span id="3295">3295</span>
+<span id="3296">3296</span>
+<span id="3297">3297</span>
+<span id="3298">3298</span>
+<span id="3299">3299</span>
+<span id="3300">3300</span>
+<span id="3301">3301</span>
+<span id="3302">3302</span>
+<span id="3303">3303</span>
+<span id="3304">3304</span>
+<span id="3305">3305</span>
+<span id="3306">3306</span>
+<span id="3307">3307</span>
+<span id="3308">3308</span>
+<span id="3309">3309</span>
+<span id="3310">3310</span>
+<span id="3311">3311</span>
+<span id="3312">3312</span>
+<span id="3313">3313</span>
+<span id="3314">3314</span>
+<span id="3315">3315</span>
+<span id="3316">3316</span>
+<span id="3317">3317</span>
+<span id="3318">3318</span>
+<span id="3319">3319</span>
+<span id="3320">3320</span>
+<span id="3321">3321</span>
+<span id="3322">3322</span>
+<span id="3323">3323</span>
+<span id="3324">3324</span>
+<span id="3325">3325</span>
+<span id="3326">3326</span>
+<span id="3327">3327</span>
+</pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
 
 <span class="doccomment">//! A contiguous growable array type with heap-allocated contents, written</span>
 <span class="doccomment">//! `Vec&lt;T&gt;`.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! Vectors have `O(1)` indexing, amortized `O(1)` push (to the end) and</span>
-<span class="doccomment">//! `O(1)` pop (from the end).</span>
+<span class="doccomment">//! Vectors have *O*(1) indexing, amortized *O*(1) push (to the end) and</span>
+<span class="doccomment">//! *O*(1) pop (from the end).</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Vectors ensure they never allocate more than `isize::MAX` bytes.</span>
 <span class="doccomment">//!</span>
@@ -3329,26 +3398,26 @@
 <span class="kw">use</span> <span class="ident">core::ptr</span>::{<span class="self">self</span>, <span class="ident">NonNull</span>};
 <span class="kw">use</span> <span class="ident">core::slice</span>::{<span class="self">self</span>, <span class="ident">SliceIndex</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::alloc</span>::{<span class="ident">Allocator</span>, <span class="ident">Global</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::borrow</span>::{<span class="ident">Cow</span>, <span class="ident">ToOwned</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::boxed::Box</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::collections::TryReserveError</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::raw_vec::RawVec</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::alloc</span>::{<span class="ident">Allocator</span>, <span class="ident">Global</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::borrow</span>::{<span class="ident">Cow</span>, <span class="ident">ToOwned</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::boxed::Box</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::collections::TryReserveError</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::raw_vec::RawVec</span>;
 
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;drain_filter&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;recently added&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;43244&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::drain_filter::DrainFilter</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::drain_filter::DrainFilter</span>;
 
 <span class="kw">mod</span> <span class="ident">drain_filter</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_splice&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.21.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::splice::Splice</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::splice::Splice</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="kw">mod</span> <span class="ident">splice</span>;
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;drain&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.6.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::drain::Drain</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::drain::Drain</span>;
 
 <span class="kw">mod</span> <span class="ident">drain</span>;
 
@@ -3356,14 +3425,14 @@
 <span class="kw">mod</span> <span class="ident">cow</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="self">self</span><span class="ident">::into_iter::AsIntoIter</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident"><span class="self">self</span>::into_iter::AsIntoIter</span>;
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::into_iter::IntoIter</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::into_iter::IntoIter</span>;
 
 <span class="kw">mod</span> <span class="ident">into_iter</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
-<span class="kw">use</span> <span class="self">self</span><span class="ident">::is_zero::IsZero</span>;
+<span class="kw">use</span> <span class="ident"><span class="self">self</span>::is_zero::IsZero</span>;
 
 <span class="kw">mod</span> <span class="ident">is_zero</span>;
 
@@ -3373,37 +3442,37 @@
 <span class="kw">mod</span> <span class="ident">partial_eq</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
-<span class="kw">use</span> <span class="self">self</span><span class="ident">::spec_from_elem::SpecFromElem</span>;
+<span class="kw">use</span> <span class="ident"><span class="self">self</span>::spec_from_elem::SpecFromElem</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="kw">mod</span> <span class="ident">spec_from_elem</span>;
 
-<span class="kw">use</span> <span class="self">self</span><span class="ident">::set_len_on_drop::SetLenOnDrop</span>;
+<span class="kw">use</span> <span class="ident"><span class="self">self</span>::set_len_on_drop::SetLenOnDrop</span>;
 
 <span class="kw">mod</span> <span class="ident">set_len_on_drop</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
-<span class="kw">use</span> <span class="self">self</span><span class="ident">::in_place_drop::InPlaceDrop</span>;
+<span class="kw">use</span> <span class="ident"><span class="self">self</span>::in_place_drop::InPlaceDrop</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="kw">mod</span> <span class="ident">in_place_drop</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
-<span class="kw">use</span> <span class="self">self</span><span class="ident">::spec_from_iter_nested::SpecFromIterNested</span>;
+<span class="kw">use</span> <span class="ident"><span class="self">self</span>::spec_from_iter_nested::SpecFromIterNested</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="kw">mod</span> <span class="ident">spec_from_iter_nested</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
-<span class="kw">use</span> <span class="self">self</span><span class="ident">::spec_from_iter::SpecFromIter</span>;
+<span class="kw">use</span> <span class="ident"><span class="self">self</span>::spec_from_iter::SpecFromIter</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="kw">mod</span> <span class="ident">spec_from_iter</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
-<span class="kw">use</span> <span class="self">self</span><span class="ident">::spec_extend::SpecExtend</span>;
+<span class="kw">use</span> <span class="ident"><span class="self">self</span>::spec_extend::SpecExtend</span>;
 
-<span class="kw">use</span> <span class="self">self</span><span class="ident">::spec_extend::TrySpecExtend</span>;
+<span class="kw">use</span> <span class="ident"><span class="self">self</span>::spec_extend::TrySpecExtend</span>;
 
 <span class="kw">mod</span> <span class="ident">spec_extend</span>;
 
@@ -3433,12 +3502,13 @@
 <span class="doccomment">/// assert_eq!(vec, [7, 1, 2, 3]);</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// The [`vec!`] macro is provided to make initialization more convenient:</span>
+<span class="doccomment">/// The [`vec!`] macro is provided for convenient initialization:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// let mut vec = vec![1, 2, 3];</span>
-<span class="doccomment">/// vec.push(4);</span>
-<span class="doccomment">/// assert_eq!(vec, [1, 2, 3, 4]);</span>
+<span class="doccomment">/// let mut vec1 = vec![1, 2, 3];</span>
+<span class="doccomment">/// vec1.push(4);</span>
+<span class="doccomment">/// let vec2 = Vec::from([1, 2, 3, 4]);</span>
+<span class="doccomment">/// assert_eq!(vec1, vec2);</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// It can also initialize each element of a `Vec&lt;T&gt;` with a given value.</span>
@@ -3554,8 +3624,8 @@
 <span class="doccomment">/// on an empty Vec, it will not allocate memory. Similarly, if you store zero-sized</span>
 <span class="doccomment">/// types inside a `Vec`, it will not allocate space for them. *Note that in this case</span>
 <span class="doccomment">/// the `Vec` might not report a [`capacity`] of 0*. `Vec` will allocate if and only</span>
-<span class="doccomment">/// if [`mem::size_of::&lt;T&gt;`]`() * capacity() &gt; 0`. In general, `Vec`&#39;s allocation</span>
-<span class="doccomment">/// details are very subtle &amp;mdash; if you intend to allocate memory using a `Vec`</span>
+<span class="doccomment">/// if &lt;code&gt;[mem::size_of::\&lt;T&gt;]\() * [capacity]\() &gt; 0&lt;/code&gt;. In general, `Vec`&#39;s allocation</span>
+<span class="doccomment">/// details are very subtle --- if you intend to allocate memory using a `Vec`</span>
 <span class="doccomment">/// and use it for something else (either to pass to unsafe code, or to build your</span>
 <span class="doccomment">/// own memory-backed collection), be sure to deallocate this memory by using</span>
 <span class="doccomment">/// `from_raw_parts` to recover the `Vec` and then dropping it.</span>
@@ -3563,8 +3633,8 @@
 <span class="doccomment">/// If a `Vec` *has* allocated memory, then the memory it points to is on the heap</span>
 <span class="doccomment">/// (as defined by the allocator Rust is configured to use by default), and its</span>
 <span class="doccomment">/// pointer points to [`len`] initialized, contiguous elements in order (what</span>
-<span class="doccomment">/// you would see if you coerced it to a slice), followed by [`capacity`]` -</span>
-<span class="doccomment">/// `[`len`] logically uninitialized, contiguous elements.</span>
+<span class="doccomment">/// you would see if you coerced it to a slice), followed by &lt;code&gt;[capacity] - [len]&lt;/code&gt;</span>
+<span class="doccomment">/// logically uninitialized, contiguous elements.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// A vector containing the elements `&#39;a&#39;` and `&#39;b&#39;` with capacity 4 can be</span>
 <span class="doccomment">/// visualized as below. The top part is the `Vec` struct, it contains a</span>
@@ -3606,7 +3676,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`push`] and [`insert`] will never (re)allocate if the reported capacity is</span>
 <span class="doccomment">/// sufficient. [`push`] and [`insert`] *will* (re)allocate if</span>
-<span class="doccomment">/// [`len`]` == `[`capacity`]. That is, the reported capacity is completely</span>
+<span class="doccomment">/// &lt;code&gt;[len] == [capacity]&lt;/code&gt;. That is, the reported capacity is completely</span>
 <span class="doccomment">/// accurate, and can be relied on. It can even be used to manually free the memory</span>
 <span class="doccomment">/// allocated by a `Vec` if desired. Bulk insertion methods *may* reallocate, even</span>
 <span class="doccomment">/// when not necessary.</span>
@@ -3618,7 +3688,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// `vec![x; n]`, `vec![a, b, c, d]`, and</span>
 <span class="doccomment">/// [`Vec::with_capacity(n)`][`Vec::with_capacity`], will all produce a `Vec`</span>
-<span class="doccomment">/// with exactly the requested capacity. If [`len`]` == `[`capacity`],</span>
+<span class="doccomment">/// with exactly the requested capacity. If &lt;code&gt;[len] == [capacity]&lt;/code&gt;,</span>
 <span class="doccomment">/// (as is the case for the [`vec!`] macro), then a `Vec&lt;T&gt;` can be converted to</span>
 <span class="doccomment">/// and from a [`Box&lt;[T]&gt;`][owned slice] without reallocating or moving the elements.</span>
 <span class="doccomment">///</span>
@@ -3627,7 +3697,7 @@
 <span class="doccomment">/// scratch space that it may use however it wants. It will generally just do</span>
 <span class="doccomment">/// whatever is most efficient or otherwise easy to implement. Do not rely on</span>
 <span class="doccomment">/// removed data to be erased for security purposes. Even if you drop a `Vec`, its</span>
-<span class="doccomment">/// buffer may simply be reused by another `Vec`. Even if you zero a `Vec`&#39;s memory</span>
+<span class="doccomment">/// buffer may simply be reused by another allocation. Even if you zero a `Vec`&#39;s memory</span>
 <span class="doccomment">/// first, that might not actually happen because the optimizer does not consider</span>
 <span class="doccomment">/// this a side-effect that must be preserved. There is one case which we will</span>
 <span class="doccomment">/// not break, however: using `unsafe` code to write to the excess capacity,</span>
@@ -3642,8 +3712,10 @@
 <span class="doccomment">/// [`&amp;str`]: type@str</span>
 <span class="doccomment">/// [`shrink_to_fit`]: Vec::shrink_to_fit</span>
 <span class="doccomment">/// [`shrink_to`]: Vec::shrink_to</span>
+<span class="doccomment">/// [capacity]: Vec::capacity</span>
 <span class="doccomment">/// [`capacity`]: Vec::capacity</span>
-<span class="doccomment">/// [`mem::size_of::&lt;T&gt;`]: core::mem::size_of</span>
+<span class="doccomment">/// [mem::size_of::\&lt;T&gt;]: core::mem::size_of</span>
+<span class="doccomment">/// [len]: Vec::len</span>
 <span class="doccomment">/// [`len`]: Vec::len</span>
 <span class="doccomment">/// [`push`]: Vec::push</span>
 <span class="doccomment">/// [`insert`]: Vec::insert</span>
@@ -3651,7 +3723,8 @@
 <span class="doccomment">/// [`MaybeUninit`]: core::mem::MaybeUninit</span>
 <span class="doccomment">/// [owned slice]: Box</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">test</span>), <span class="ident">rustc_diagnostic_item</span> <span class="op">=</span> <span class="string">&quot;vec_type&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">test</span>), <span class="ident">rustc_diagnostic_item</span> <span class="op">=</span> <span class="string">&quot;Vec&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">rustc_insignificant_dtor</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span> <span class="ident">A</span>: <span class="ident">Allocator</span> <span class="op">=</span> <span class="ident">Global</span><span class="op">&gt;</span> {
     <span class="ident">buf</span>: <span class="ident">RawVec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>,
     <span class="ident">len</span>: <span class="ident">usize</span>,
@@ -3675,7 +3748,8 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_vec_new&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.39.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="ident">Vec</span> { <span class="ident">buf</span>: <span class="ident">RawVec::NEW</span>, <span class="ident">len</span>: <span class="number">0</span> }
     }
 
@@ -3718,10 +3792,10 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;malloc&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_capacity</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span><span class="ident">::with_capacity_in</span>(<span class="ident">capacity</span>, <span class="ident">Global</span>)
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_capacity</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::with_capacity_in</span>(<span class="ident">capacity</span>, <span class="ident">Global</span>)
     }
 
     <span class="doccomment">/// Tries to construct a new, empty `Vec&lt;T&gt;` with the specified capacity.</span>
@@ -3763,8 +3837,8 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;malloc&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kernel&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_with_capacity</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
-        <span class="self">Self</span><span class="ident">::try_with_capacity_in</span>(<span class="ident">capacity</span>, <span class="ident">Global</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_with_capacity</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
+        <span class="ident"><span class="self">Self</span>::try_with_capacity_in</span>(<span class="ident">capacity</span>, <span class="ident">Global</span>)
     }
 
     <span class="doccomment">/// Creates a `Vec&lt;T&gt;` directly from the raw components of another vector.</span>
@@ -3831,8 +3905,8 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_parts</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">length</span>: <span class="ident">usize</span>, <span class="ident">capacity</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::from_raw_parts_in</span>(<span class="ident">ptr</span>, <span class="ident">length</span>, <span class="ident">capacity</span>, <span class="ident">Global</span>) }
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_parts</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">length</span>: <span class="ident">usize</span>, <span class="ident">capacity</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
+        <span class="kw">unsafe</span> { <span class="ident"><span class="self">Self</span>::from_raw_parts_in</span>(<span class="ident">ptr</span>, <span class="ident">length</span>, <span class="ident">capacity</span>, <span class="ident">Global</span>) }
     }
 }
 
@@ -3853,7 +3927,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new_in</span>(<span class="ident">alloc</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new_in</span>(<span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">Vec</span> { <span class="ident">buf</span>: <span class="ident">RawVec::new_in</span>(<span class="ident">alloc</span>), <span class="ident">len</span>: <span class="number">0</span> }
     }
 
@@ -3902,7 +3976,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_capacity_in</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_capacity_in</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">Vec</span> { <span class="ident">buf</span>: <span class="ident">RawVec::with_capacity_in</span>(<span class="ident">capacity</span>, <span class="ident">alloc</span>), <span class="ident">len</span>: <span class="number">0</span> }
     }
 
@@ -3949,7 +4023,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kernel&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_with_capacity_in</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_with_capacity_in</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="ident">Vec</span> { <span class="ident">buf</span>: <span class="ident">RawVec::try_with_capacity_in</span>(<span class="ident">capacity</span>, <span class="ident">alloc</span>)<span class="question-mark">?</span>, <span class="ident">len</span>: <span class="number">0</span> })
     }
 
@@ -4025,7 +4099,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_parts_in</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">length</span>: <span class="ident">usize</span>, <span class="ident">capacity</span>: <span class="ident">usize</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_parts_in</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">length</span>: <span class="ident">usize</span>, <span class="ident">capacity</span>: <span class="ident">usize</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="ident">Vec</span> { <span class="ident">buf</span>: <span class="ident">RawVec::from_raw_parts_in</span>(<span class="ident">ptr</span>, <span class="ident">capacity</span>, <span class="ident">alloc</span>), <span class="ident">len</span>: <span class="ident">length</span> } }
     }
 
@@ -4062,7 +4136,7 @@
     <span class="doccomment">/// assert_eq!(rebuilt, [4294967295, 0, 1]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_into_raw_parts&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;65816&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_raw_parts</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">usize</span>, <span class="ident">usize</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_raw_parts</span>(<span class="self">self</span>) -&gt; (<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">usize</span>, <span class="ident">usize</span>) {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">me</span> <span class="op">=</span> <span class="ident">ManuallyDrop::new</span>(<span class="self">self</span>);
         (<span class="ident">me</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">me</span>.<span class="ident">len</span>(), <span class="ident">me</span>.<span class="ident">capacity</span>())
     }
@@ -4106,7 +4180,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
     <span class="comment">// #[unstable(feature = &quot;vec_into_raw_parts&quot;, reason = &quot;new API&quot;, issue = &quot;65816&quot;)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_raw_parts_with_alloc</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">usize</span>, <span class="ident">usize</span>, <span class="ident">A</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_raw_parts_with_alloc</span>(<span class="self">self</span>) -&gt; (<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">usize</span>, <span class="ident">usize</span>, <span class="ident">A</span>) {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">me</span> <span class="op">=</span> <span class="ident">ManuallyDrop::new</span>(<span class="self">self</span>);
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">me</span>.<span class="ident">len</span>();
         <span class="kw">let</span> <span class="ident">capacity</span> <span class="op">=</span> <span class="ident">me</span>.<span class="ident">capacity</span>();
@@ -4126,7 +4200,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">capacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">capacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">capacity</span>()
     }
 
@@ -4148,7 +4222,6 @@
     <span class="doccomment">/// assert!(vec.capacity() &gt;= 11);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;realloc&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">additional</span>: <span class="ident">usize</span>) {
         <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">reserve</span>(<span class="self">self</span>.<span class="ident">len</span>, <span class="ident">additional</span>);
@@ -4161,7 +4234,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that the allocator may give the collection more space than it</span>
     <span class="doccomment">/// requests. Therefore, capacity can not be relied upon to be precisely</span>
-    <span class="doccomment">/// minimal. Prefer `reserve` if future insertions are expected.</span>
+    <span class="doccomment">/// minimal. Prefer [`reserve`] if future insertions are expected.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`reserve`]: Vec::reserve</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
@@ -4175,7 +4250,6 @@
     <span class="doccomment">/// assert!(vec.capacity() &gt;= 11);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;realloc&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">additional</span>: <span class="ident">usize</span>) {
         <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">reserve_exact</span>(<span class="self">self</span>.<span class="ident">len</span>, <span class="ident">additional</span>);
@@ -4195,7 +4269,6 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(try_reserve)]</span>
     <span class="doccomment">/// use std::collections::TryReserveError;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// fn process_data(data: &amp;[u32]) -&gt; Result&lt;Vec&lt;u32&gt;, TryReserveError&gt; {</span>
@@ -4213,9 +4286,8 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// # process_data(&amp;[1, 2, 3]).expect(&quot;why is the test harness OOMing on 12 bytes?&quot;);</span>
     <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;realloc&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_reserve&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;48043&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_reserve</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">additional</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_reserve&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.57.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_reserve</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">additional</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">try_reserve</span>(<span class="self">self</span>.<span class="ident">len</span>, <span class="ident">additional</span>)
     }
 
@@ -4227,7 +4299,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that the allocator may give the collection more space than it</span>
     <span class="doccomment">/// requests. Therefore, capacity can not be relied upon to be precisely</span>
-    <span class="doccomment">/// minimal. Prefer `reserve` if future insertions are expected.</span>
+    <span class="doccomment">/// minimal. Prefer [`reserve`] if future insertions are expected.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`reserve`]: Vec::reserve</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
@@ -4237,7 +4311,6 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(try_reserve)]</span>
     <span class="doccomment">/// use std::collections::TryReserveError;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// fn process_data(data: &amp;[u32]) -&gt; Result&lt;Vec&lt;u32&gt;, TryReserveError&gt; {</span>
@@ -4255,9 +4328,8 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// # process_data(&amp;[1, 2, 3]).expect(&quot;why is the test harness OOMing on 12 bytes?&quot;);</span>
     <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;realloc&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_reserve&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;48043&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_reserve_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">additional</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_reserve&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.57.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_reserve_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">additional</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">try_reserve_exact</span>(<span class="self">self</span>.<span class="ident">len</span>, <span class="ident">additional</span>)
     }
 
@@ -4276,7 +4348,6 @@
     <span class="doccomment">/// assert!(vec.capacity() &gt;= 3);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;realloc&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shrink_to_fit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="comment">// The capacity is never less than the length, and there&#39;s nothing to do when</span>
@@ -4303,7 +4374,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;realloc&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kernel&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_shrink_to_fit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_shrink_to_fit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
         <span class="comment">// The capacity is never less than the length, and there&#39;s nothing to do when</span>
         <span class="comment">// they are equal, so we can avoid the panic case in `RawVec::try_shrink_to_fit`</span>
         <span class="comment">// by only calling it with a greater capacity.</span>
@@ -4324,7 +4395,6 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(shrink_to)]</span>
     <span class="doccomment">/// let mut vec = Vec::with_capacity(10);</span>
     <span class="doccomment">/// vec.extend([1, 2, 3]);</span>
     <span class="doccomment">/// assert_eq!(vec.capacity(), 10);</span>
@@ -4334,8 +4404,7 @@
     <span class="doccomment">/// assert!(vec.capacity() &gt;= 3);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;realloc&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;shrink_to&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;56431&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;shrink_to&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.56.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shrink_to</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">min_capacity</span>: <span class="ident">usize</span>) {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">capacity</span>() <span class="op">&gt;</span> <span class="ident">min_capacity</span> {
             <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">shrink_to_fit</span>(<span class="ident">cmp::max</span>(<span class="self">self</span>.<span class="ident">len</span>, <span class="ident">min_capacity</span>));
@@ -4368,7 +4437,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_boxed_slice</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">T</span>], <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_boxed_slice</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">T</span>], <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">shrink_to_fit</span>();
             <span class="kw">let</span> <span class="ident">me</span> <span class="op">=</span> <span class="ident">ManuallyDrop::new</span>(<span class="self">self</span>);
@@ -4403,7 +4472,7 @@
     <span class="doccomment">/// assert_eq!(slice.into_vec().capacity(), 3);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kernel&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_into_boxed_slice</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">T</span>], <span class="ident">A</span><span class="op">&gt;</span>, <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_into_boxed_slice</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">T</span>], <span class="ident">A</span><span class="op">&gt;</span>, <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="self">self</span>.<span class="ident">try_shrink_to_fit</span>()<span class="question-mark">?</span>;
             <span class="kw">let</span> <span class="ident">me</span> <span class="op">=</span> <span class="ident">ManuallyDrop::new</span>(<span class="self">self</span>);
@@ -4491,7 +4560,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_as_slice&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.7.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">T</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">T</span>] {
         <span class="self">self</span>
     }
 
@@ -4508,7 +4577,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_as_slice&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.7.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>] {
         <span class="self">self</span>
     }
 
@@ -4539,7 +4608,7 @@
     <span class="doccomment">/// [`as_mut_ptr`]: Vec::as_mut_ptr</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_as_ptr&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.37.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> {
         <span class="comment">// We shadow the slice method of the same name to avoid going through</span>
         <span class="comment">// `deref`, which creates an intermediate reference.</span>
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">ptr</span>();
@@ -4575,7 +4644,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_as_ptr&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.37.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
         <span class="comment">// We shadow the slice method of the same name to avoid going through</span>
         <span class="comment">// `deref_mut`, which creates an intermediate reference.</span>
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">ptr</span>();
@@ -4588,7 +4657,7 @@
     <span class="doccomment">/// Returns a reference to the underlying allocator.</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allocator</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">A</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allocator</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">A</span> {
         <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">allocator</span>()
     }
 
@@ -4682,7 +4751,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// The removed element is replaced by the last element of the vector.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// This does not preserve ordering, but is O(1).</span>
+    <span class="doccomment">/// This does not preserve ordering, but is *O*(1).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
@@ -4701,10 +4770,10 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap_remove</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap_remove</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) -&gt; <span class="ident">T</span> {
         <span class="attribute">#[<span class="ident">cold</span>]</span>
         <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">never</span>)]</span>
-        <span class="kw">fn</span> <span class="ident">assert_failed</span>(<span class="ident">index</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+        <span class="kw">fn</span> <span class="ident">assert_failed</span>(<span class="ident">index</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="op">!</span> {
             <span class="macro">panic!</span>(<span class="string">&quot;swap_remove index (is {}) should be &lt; len (is {})&quot;</span>, <span class="ident">index</span>, <span class="ident">len</span>);
         }
 
@@ -4744,7 +4813,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">insert</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>, <span class="ident">element</span>: <span class="ident">T</span>) {
         <span class="attribute">#[<span class="ident">cold</span>]</span>
         <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">never</span>)]</span>
-        <span class="kw">fn</span> <span class="ident">assert_failed</span>(<span class="ident">index</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+        <span class="kw">fn</span> <span class="ident">assert_failed</span>(<span class="ident">index</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="op">!</span> {
             <span class="macro">panic!</span>(<span class="string">&quot;insertion index (is {}) should be &lt;= len (is {})&quot;</span>, <span class="ident">index</span>, <span class="ident">len</span>);
         }
 
@@ -4754,7 +4823,7 @@
         }
 
         <span class="comment">// space for the new element</span>
-        <span class="kw">if</span> <span class="ident">len</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">capacity</span>() {
+        <span class="kw">if</span> <span class="ident">len</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">capacity</span>() {
             <span class="self">self</span>.<span class="ident">reserve</span>(<span class="number">1</span>);
         }
 
@@ -4777,6 +4846,12 @@
     <span class="doccomment">/// Removes and returns the element at position `index` within the vector,</span>
     <span class="doccomment">/// shifting all elements after it to the left.</span>
     <span class="doccomment">///</span>
+    <span class="doccomment">/// Note: Because this shifts over the remaining elements, it has a</span>
+    <span class="doccomment">/// worst-case performance of O(n). If you don&#39;t need the order of elements</span>
+    <span class="doccomment">/// to be preserved, use [`swap_remove`] instead.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`swap_remove`]: Vec::swap_remove</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Panics if `index` is out of bounds.</span>
@@ -4789,10 +4864,12 @@
     <span class="doccomment">/// assert_eq!(v, [1, 3]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) -&gt; <span class="ident">T</span> {
         <span class="attribute">#[<span class="ident">cold</span>]</span>
         <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">never</span>)]</span>
-        <span class="kw">fn</span> <span class="ident">assert_failed</span>(<span class="ident">index</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+        <span class="attribute">#[<span class="ident">track_caller</span>]</span>
+        <span class="kw">fn</span> <span class="ident">assert_failed</span>(<span class="ident">index</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="op">!</span> {
             <span class="macro">panic!</span>(<span class="string">&quot;removal index (is {}) should be &lt; len (is {})&quot;</span>, <span class="ident">index</span>, <span class="ident">len</span>);
         }
 
@@ -4845,7 +4922,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">retain</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>)
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>,
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
     {
         <span class="kw">let</span> <span class="ident">original_len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         <span class="comment">// Avoid double drop if the drop guard is not executed,</span>
@@ -4891,7 +4968,15 @@
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">g</span> <span class="op">=</span> <span class="ident">BackshiftOnDrop</span> { <span class="ident">v</span>: <span class="self">self</span>, <span class="ident">processed_len</span>: <span class="number">0</span>, <span class="ident">deleted_cnt</span>: <span class="number">0</span>, <span class="ident">original_len</span> };
 
-        <span class="kw">while</span> <span class="ident">g</span>.<span class="ident">processed_len</span> <span class="op">&lt;</span> <span class="ident">original_len</span> {
+        <span class="comment">// process_one return a bool indicates whether the processing element should be retained.</span>
+        <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+        <span class="kw">fn</span> <span class="ident">process_one</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">T</span>, <span class="ident">A</span>: <span class="ident">Allocator</span>, <span class="kw">const</span> <span class="ident">DELETED</span>: <span class="ident">bool</span><span class="op">&gt;</span>(
+            <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">F</span>,
+            <span class="ident">g</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BackshiftOnDrop</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>,
+        ) -&gt; <span class="ident">bool</span>
+        <span class="kw">where</span>
+            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
+        {
             <span class="comment">// SAFETY: Unchecked element must be valid.</span>
             <span class="kw">let</span> <span class="ident">cur</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">g</span>.<span class="ident">v</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">add</span>(<span class="ident">g</span>.<span class="ident">processed_len</span>) };
             <span class="kw">if</span> <span class="op">!</span><span class="ident">f</span>(<span class="ident">cur</span>) {
@@ -4901,9 +4986,9 @@
                 <span class="comment">// SAFETY: We never touch this element again after dropped.</span>
                 <span class="kw">unsafe</span> { <span class="ident">ptr::drop_in_place</span>(<span class="ident">cur</span>) };
                 <span class="comment">// We already advanced the counter.</span>
-                <span class="kw">continue</span>;
+                <span class="kw">return</span> <span class="bool-val">false</span>;
             }
-            <span class="kw">if</span> <span class="ident">g</span>.<span class="ident">deleted_cnt</span> <span class="op">&gt;</span> <span class="number">0</span> {
+            <span class="kw">if</span> <span class="ident">DELETED</span> {
                 <span class="comment">// SAFETY: `deleted_cnt` &gt; 0, so the hole slot must not overlap with current element.</span>
                 <span class="comment">// We use copy for move, and never touch this element again.</span>
                 <span class="kw">unsafe</span> {
@@ -4912,6 +4997,19 @@
                 }
             }
             <span class="ident">g</span>.<span class="ident">processed_len</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+            <span class="kw">return</span> <span class="bool-val">true</span>;
+        }
+
+        <span class="comment">// Stage 1: Nothing was deleted.</span>
+        <span class="kw">while</span> <span class="ident">g</span>.<span class="ident">processed_len</span> <span class="op">!</span><span class="op">=</span> <span class="ident">original_len</span> {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">process_one</span>::<span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">T</span>, <span class="ident">A</span>, <span class="bool-val">false</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">g</span>) {
+                <span class="kw">break</span>;
+            }
+        }
+
+        <span class="comment">// Stage 2: Some elements were deleted.</span>
+        <span class="kw">while</span> <span class="ident">g</span>.<span class="ident">processed_len</span> <span class="op">!</span><span class="op">=</span> <span class="ident">original_len</span> {
+            <span class="ident">process_one</span>::<span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">T</span>, <span class="ident">A</span>, <span class="bool-val">true</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">g</span>);
         }
 
         <span class="comment">// All item are processed. This can be optimized to `set_len` by LLVM.</span>
@@ -4936,10 +5034,10 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dedup_by_key</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">K</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">key</span>: <span class="ident">F</span>)
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">K</span>,
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="ident">K</span>,
         <span class="ident">K</span>: <span class="ident">PartialEq</span>,
     {
-        <span class="self">self</span>.<span class="ident">dedup_by</span>(<span class="op">|</span><span class="ident">a</span>, <span class="ident">b</span><span class="op">|</span> <span class="ident">key</span>(<span class="ident">a</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">key</span>(<span class="ident">b</span>))
+        <span class="self">self</span>.<span class="ident">dedup_by</span>(<span class="op">|</span><span class="ident">a</span>, <span class="ident">b</span><span class="op">|</span> <span class="ident">key</span>(<span class="ident">a</span>) <span class="op">==</span> <span class="ident">key</span>(<span class="ident">b</span>))
     }
 
     <span class="doccomment">/// Removes all but the first of consecutive elements in the vector satisfying a given equality</span>
@@ -4963,7 +5061,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dedup_by&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.16.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dedup_by</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">same_bucket</span>: <span class="ident">F</span>)
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>,
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
     {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         <span class="kw">if</span> <span class="ident">len</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">1</span> {
@@ -5075,7 +5173,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">T</span>) {
         <span class="comment">// This will panic or abort if we would allocate &gt; isize::MAX bytes</span>
         <span class="comment">// or if the length increment would overflow for zero-sized types.</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">len</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">capacity</span>() {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">len</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">capacity</span>() {
             <span class="self">self</span>.<span class="ident">reserve</span>(<span class="number">1</span>);
         }
         <span class="kw">unsafe</span> {
@@ -5096,8 +5194,8 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kernel&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_push</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">len</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">capacity</span>() {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_push</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">len</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">capacity</span>() {
             <span class="self">self</span>.<span class="ident">try_reserve</span>(<span class="number">1</span>)<span class="question-mark">?</span>;
         }
         <span class="kw">unsafe</span> {
@@ -5120,8 +5218,8 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">len</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">len</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
             <span class="kw">unsafe</span> {
@@ -5169,7 +5267,7 @@
 
     <span class="doccomment">/// Tries to append elements to `Self` from other buffer.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_append_elements</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">*</span><span class="kw">const</span> [<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_append_elements</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">*</span><span class="kw">const</span> [<span class="ident">T</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">other</span>).<span class="ident">len</span>() };
         <span class="self">self</span>.<span class="ident">try_reserve</span>(<span class="ident">count</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
@@ -5204,7 +5302,7 @@
     <span class="doccomment">/// assert_eq!(v, &amp;[]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;drain&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.6.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">drain</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">range</span>: <span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Drain</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">drain</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">range</span>: <span class="ident">R</span>) -&gt; <span class="ident">Drain</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">R</span>: <span class="ident">RangeBounds</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
     {
@@ -5265,10 +5363,9 @@
     <span class="doccomment">/// let a = vec![1, 2, 3];</span>
     <span class="doccomment">/// assert_eq!(a.len(), 3);</span>
     <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;length&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">len</span>
     }
 
@@ -5284,8 +5381,8 @@
     <span class="doccomment">/// assert!(!v.is_empty());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">0</span>
     }
 
     <span class="doccomment">/// Splits the collection into two at the given index.</span>
@@ -5310,13 +5407,13 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;use `.truncate()` if you don&#39;t need the other half&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;split_off&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.4.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_off</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">at</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_off</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">at</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">A</span>: <span class="ident">Clone</span>,
     {
         <span class="attribute">#[<span class="ident">cold</span>]</span>
         <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">never</span>)]</span>
-        <span class="kw">fn</span> <span class="ident">assert_failed</span>(<span class="ident">at</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+        <span class="kw">fn</span> <span class="ident">assert_failed</span>(<span class="ident">at</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="op">!</span> {
             <span class="macro">panic!</span>(<span class="string">&quot;`at` split index (is {}) should be &lt;= len (is {})&quot;</span>, <span class="ident">at</span>, <span class="ident">len</span>);
         }
 
@@ -5324,7 +5421,7 @@
             <span class="ident">assert_failed</span>(<span class="ident">at</span>, <span class="self">self</span>.<span class="ident">len</span>());
         }
 
-        <span class="kw">if</span> <span class="ident">at</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="ident">at</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="comment">// the new vector can take over the original buffer and avoid the copy</span>
             <span class="kw">return</span> <span class="ident">mem::replace</span>(
                 <span class="self">self</span>,
@@ -5375,7 +5472,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_resize_with&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resize_with</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">new_len</span>: <span class="ident">usize</span>, <span class="ident">f</span>: <span class="ident">F</span>)
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnMut</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>,
+        <span class="ident">F</span>: <span class="ident">FnMut</span>() -&gt; <span class="ident">T</span>,
     {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         <span class="kw">if</span> <span class="ident">new_len</span> <span class="op">&gt;</span> <span class="ident">len</span> {
@@ -5390,8 +5487,9 @@
     <span class="doccomment">/// `&#39;a`. If the type has only static references, or none at all, then this</span>
     <span class="doccomment">/// may be chosen to be `&#39;static`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// This function is similar to the [`leak`][Box::leak] function on [`Box`]</span>
-    <span class="doccomment">/// except that there is no way to recover the leaked memory.</span>
+    <span class="doccomment">/// As of Rust 1.57, this method does not reallocate or shrink the `Vec`,</span>
+    <span class="doccomment">/// so the leaked allocation may include unused capacity that is not part</span>
+    <span class="doccomment">/// of the returned slice.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function is mainly useful for data that lives for the remainder of</span>
     <span class="doccomment">/// the program&#39;s life. Dropping the returned reference will cause a memory</span>
@@ -5410,11 +5508,12 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_leak&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.47.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">leak</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">leak</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]
     <span class="kw">where</span>
         <span class="ident">A</span>: <span class="lifetime">&#39;a</span>,
     {
-        <span class="ident">Box::leak</span>(<span class="self">self</span>.<span class="ident">into_boxed_slice</span>())
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">me</span> <span class="op">=</span> <span class="ident">ManuallyDrop::new</span>(<span class="self">self</span>);
+        <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts_mut</span>(<span class="ident">me</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">me</span>.<span class="ident">len</span>) }
     }
 
     <span class="doccomment">/// Returns the remaining spare capacity of the vector as a slice of</span>
@@ -5449,7 +5548,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_spare_capacity&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;75017&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spare_capacity_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spare_capacity_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>] {
         <span class="comment">// Note:</span>
         <span class="comment">// This method is not implemented in terms of `split_at_spare_mut`,</span>
         <span class="comment">// to prevent invalidation of pointers to the buffer.</span>
@@ -5514,7 +5613,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_split_at_spare&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;81944&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_at_spare_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>]) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_at_spare_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>]) {
         <span class="comment">// SAFETY:</span>
         <span class="comment">// - len is ignored and so never changed</span>
         <span class="kw">let</span> (<span class="ident">init</span>, <span class="ident">spare</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">split_at_spare_mut_with_len</span>() };
@@ -5526,7 +5625,7 @@
     <span class="doccomment">/// This method provides unique access to all vec parts at once in `extend_from_within`.</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">split_at_spare_mut_with_len</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">usize</span>) {
+    ) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">usize</span>) {
         <span class="kw">let</span> <span class="ident">Range</span> { <span class="ident">start</span>: <span class="ident">ptr</span>, <span class="ident">end</span>: <span class="ident">spare_ptr</span> } <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut_ptr_range</span>();
         <span class="kw">let</span> <span class="ident">spare_ptr</span> <span class="op">=</span> <span class="ident">spare_ptr</span>.<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>();
         <span class="kw">let</span> <span class="ident">spare_len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">capacity</span>() <span class="op">-</span> <span class="self">self</span>.<span class="ident">len</span>;
@@ -5554,6 +5653,7 @@
     <span class="doccomment">/// in order to be able to clone the passed value.</span>
     <span class="doccomment">/// If you need more flexibility (or want to rely on [`Default`] instead of</span>
     <span class="doccomment">/// [`Clone`]), use [`Vec::resize_with`].</span>
+    <span class="doccomment">/// If you only need to resize to a smaller size, use [`Vec::truncate`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -5605,7 +5705,7 @@
     <span class="doccomment">/// assert!(result.is_err());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kernel&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_resize</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">new_len</span>: <span class="ident">usize</span>, <span class="ident">value</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_resize</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">new_len</span>: <span class="ident">usize</span>, <span class="ident">value</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
 
         <span class="kw">if</span> <span class="ident">new_len</span> <span class="op">&gt;</span> <span class="ident">len</span> {
@@ -5661,13 +5761,18 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`extend`]: Vec::extend</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kernel&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_extend_from_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_extend_from_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">try_spec_extend</span>(<span class="ident">other</span>.<span class="ident">iter</span>())
     }
 
     <span class="doccomment">/// Copies elements from `src` range to the end of the vector.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ## Examples</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Panics if the starting point is greater than the end point or if</span>
+    <span class="doccomment">/// the end point is greater than the length of the vector.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// let mut vec = vec![0, 1, 2, 3, 4];</span>
@@ -5700,36 +5805,36 @@
 
 <span class="comment">// This code generalizes `extend_with_{element,default}`.</span>
 <span class="kw">trait</span> <span class="ident">ExtendWith</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>;
-    <span class="kw">fn</span> <span class="ident">last</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>;
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">T</span>;
+    <span class="kw">fn</span> <span class="ident">last</span>(<span class="self">self</span>) -&gt; <span class="ident">T</span>;
 }
 
 <span class="kw">struct</span> <span class="ident">ExtendElement</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">T</span>);
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">ExtendWith</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ExtendElement</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">T</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">clone</span>()
     }
-    <span class="kw">fn</span> <span class="ident">last</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    <span class="kw">fn</span> <span class="ident">last</span>(<span class="self">self</span>) -&gt; <span class="ident">T</span> {
         <span class="self">self</span>.<span class="number">0</span>
     }
 }
 
 <span class="kw">struct</span> <span class="ident">ExtendDefault</span>;
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Default</span><span class="op">&gt;</span> <span class="ident">ExtendWith</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ExtendDefault</span> {
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">T</span> {
         <span class="ident">Default::default</span>()
     }
-    <span class="kw">fn</span> <span class="ident">last</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    <span class="kw">fn</span> <span class="ident">last</span>(<span class="self">self</span>) -&gt; <span class="ident">T</span> {
         <span class="ident">Default::default</span>()
     }
 }
 
 <span class="kw">struct</span> <span class="ident">ExtendFunc</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">F</span>);
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span>: <span class="ident">FnMut</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">ExtendWith</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ExtendFunc</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span>: <span class="ident">FnMut</span>() -&gt; <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">ExtendWith</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ExtendFunc</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">T</span> {
         (<span class="self">self</span>.<span class="number">0</span>)()
     }
-    <span class="kw">fn</span> <span class="ident">last</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    <span class="kw">fn</span> <span class="ident">last</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">T</span> {
         (<span class="self">self</span>.<span class="number">0</span>)()
     }
 }
@@ -5743,7 +5848,7 @@
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">add</span>(<span class="self">self</span>.<span class="ident">len</span>());
             <span class="comment">// Use SetLenOnDrop to work around bug where compiler</span>
-            <span class="comment">// may not realize the store through `ptr` through self.set_len()</span>
+            <span class="comment">// might not realize the store through `ptr` through self.set_len()</span>
             <span class="comment">// don&#39;t alias.</span>
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">local_len</span> <span class="op">=</span> <span class="ident">SetLenOnDrop::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">len</span>);
 
@@ -5766,13 +5871,13 @@
     }
 
     <span class="doccomment">/// Try to extend the vector by `n` values, using the given generator.</span>
-    <span class="kw">fn</span> <span class="ident">try_extend_with</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">ExtendWith</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>, <span class="kw-2">mut</span> <span class="ident">value</span>: <span class="ident">E</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_extend_with</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">ExtendWith</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>, <span class="kw-2">mut</span> <span class="ident">value</span>: <span class="ident">E</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">try_reserve</span>(<span class="ident">n</span>)<span class="question-mark">?</span>;
 
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">add</span>(<span class="self">self</span>.<span class="ident">len</span>());
             <span class="comment">// Use SetLenOnDrop to work around bug where compiler</span>
-            <span class="comment">// may not realize the store through `ptr` through self.set_len()</span>
+            <span class="comment">// might not realize the store through `ptr` through self.set_len()</span>
             <span class="comment">// don&#39;t alias.</span>
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">local_len</span> <span class="op">=</span> <span class="ident">SetLenOnDrop::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">len</span>);
 
@@ -5814,7 +5919,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dedup</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">dedup_by</span>(<span class="op">|</span><span class="ident">a</span>, <span class="ident">b</span><span class="op">|</span> <span class="ident">a</span> <span class="op">=</span><span class="op">=</span> <span class="ident">b</span>)
+        <span class="self">self</span>.<span class="ident">dedup_by</span>(<span class="op">|</span><span class="ident">a</span>, <span class="ident">b</span><span class="op">|</span> <span class="ident">a</span> <span class="op">==</span> <span class="ident">b</span>)
     }
 }
 
@@ -5825,14 +5930,14 @@
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_elem</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="ident">elem</span>: <span class="ident">T</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_elem</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="ident">elem</span>: <span class="ident">T</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">SpecFromElem</span><span class="op">&gt;</span><span class="ident">::from_elem</span>(<span class="ident">elem</span>, <span class="ident">n</span>, <span class="ident">Global</span>)
 }
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_elem_in</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Clone</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span>(<span class="ident">elem</span>: <span class="ident">T</span>, <span class="ident">n</span>: <span class="ident">usize</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_elem_in</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Clone</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span>(<span class="ident">elem</span>: <span class="ident">T</span>, <span class="ident">n</span>: <span class="ident">usize</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
     <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">SpecFromElem</span><span class="op">&gt;</span><span class="ident">::from_elem</span>(<span class="ident">elem</span>, <span class="ident">n</span>, <span class="ident">alloc</span>)
 }
 
@@ -5899,15 +6004,44 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">ops::Deref</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> [<span class="ident">T</span>];
 
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">T</span>] {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">T</span>] {
         <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="self">self</span>.<span class="ident">len</span>) }
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">ops::DerefMut</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>] {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>] {
         <span class="kw">unsafe</span> { <span class="ident">slice::from_raw_parts_mut</span>(<span class="self">self</span>.<span class="ident">as_mut_ptr</span>(), <span class="self">self</span>.<span class="ident">len</span>) }
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
+<span class="kw">trait</span> <span class="ident">SpecCloneFrom</span> {
+    <span class="kw">fn</span> <span class="ident">clone_from</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>);
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Clone</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">SpecCloneFrom</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">clone_from</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) {
+        <span class="comment">// drop anything that will not be overwritten</span>
+        <span class="ident">this</span>.<span class="ident">truncate</span>(<span class="ident">other</span>.<span class="ident">len</span>());
+
+        <span class="comment">// self.len &lt;= other.len due to the truncate above, so the</span>
+        <span class="comment">// slices here are always in-bounds.</span>
+        <span class="kw">let</span> (<span class="ident">init</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">other</span>.<span class="ident">split_at</span>(<span class="ident">this</span>.<span class="ident">len</span>());
+
+        <span class="comment">// reuse the contained values&#39; allocations/resources.</span>
+        <span class="ident">this</span>.<span class="ident">clone_from_slice</span>(<span class="ident">init</span>);
+        <span class="ident">this</span>.<span class="ident">extend_from_slice</span>(<span class="ident">tail</span>);
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">SpecCloneFrom</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">clone_from</span>(<span class="ident">this</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) {
+        <span class="ident">this</span>.<span class="ident">clear</span>();
+        <span class="ident">this</span>.<span class="ident">extend_from_slice</span>(<span class="ident">other</span>);
     }
 }
 
@@ -5915,7 +6049,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Clone</span>, <span class="ident">A</span>: <span class="ident">Allocator</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">alloc</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">allocator</span>().<span class="ident">clone</span>();
         <span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span><span class="ident">::to_vec_in</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">alloc</span>)
     }
@@ -5925,25 +6059,28 @@
     <span class="comment">// `slice::to_vec`  function which is only available with cfg(test)</span>
     <span class="comment">// NB see the slice::hack module in slice.rs for more information</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">alloc</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">allocator</span>().<span class="ident">clone</span>();
-        <span class="kw">crate</span><span class="ident">::slice::to_vec</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">alloc</span>)
+        <span class="ident"><span class="kw">crate</span>::slice::to_vec</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">alloc</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">clone_from</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) {
-        <span class="comment">// drop anything that will not be overwritten</span>
-        <span class="self">self</span>.<span class="ident">truncate</span>(<span class="ident">other</span>.<span class="ident">len</span>());
-
-        <span class="comment">// self.len &lt;= other.len due to the truncate above, so the</span>
-        <span class="comment">// slices here are always in-bounds.</span>
-        <span class="kw">let</span> (<span class="ident">init</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">other</span>.<span class="ident">split_at</span>(<span class="self">self</span>.<span class="ident">len</span>());
-
-        <span class="comment">// reuse the contained values&#39; allocations/resources.</span>
-        <span class="self">self</span>.<span class="ident">clone_from_slice</span>(<span class="ident">init</span>);
-        <span class="self">self</span>.<span class="ident">extend_from_slice</span>(<span class="ident">tail</span>);
+        <span class="ident">SpecCloneFrom::clone_from</span>(<span class="self">self</span>, <span class="ident">other</span>)
     }
 }
 
+<span class="doccomment">/// The hash of a vector is the same as that of the corresponding slice,</span>
+<span class="doccomment">/// as required by the `core::borrow::Borrow` implementation.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// #![feature(build_hasher_simple_hash_one)]</span>
+<span class="doccomment">/// use std::hash::BuildHasher;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// let b = std::collections::hash_map::RandomState::new();</span>
+<span class="doccomment">/// let v: Vec&lt;u8&gt; = vec![0xa8, 0x3c, 0x09];</span>
+<span class="doccomment">/// let s: &amp;[u8] = &amp;[0xa8, 0x3c, 0x09];</span>
+<span class="doccomment">/// assert_eq!(b.hash_one(v), b.hash_one(s));</span>
+<span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Hash</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">Hash</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -5961,7 +6098,7 @@
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">I::Output</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">I</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">Index::index</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">index</span>)
     }
 }
@@ -5973,7 +6110,7 @@
 )]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span>: <span class="ident">SliceIndex</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">IndexMut</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">I</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">IndexMut::index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">index</span>)
     }
 }
@@ -5982,7 +6119,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">SpecFromIter</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I::IntoIter</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::from_iter</span>(<span class="ident">iter</span>.<span class="ident">into_iter</span>())
     }
 }
@@ -6006,12 +6143,12 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">IntoIter</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) -&gt; <span class="ident">IntoIter</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">me</span> <span class="op">=</span> <span class="ident">ManuallyDrop::new</span>(<span class="self">self</span>);
             <span class="kw">let</span> <span class="ident">alloc</span> <span class="op">=</span> <span class="ident">ptr::read</span>(<span class="ident">me</span>.<span class="ident">allocator</span>());
             <span class="kw">let</span> <span class="ident">begin</span> <span class="op">=</span> <span class="ident">me</span>.<span class="ident">as_mut_ptr</span>();
-            <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">==</span> <span class="number">0</span> {
                 <span class="ident">arith_offset</span>(<span class="ident">begin</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i8</span>, <span class="ident">me</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">isize</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>
             } <span class="kw">else</span> {
                 <span class="ident">begin</span>.<span class="ident">add</span>(<span class="ident">me</span>.<span class="ident">len</span>()) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>
@@ -6034,7 +6171,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>;
     <span class="kw">type</span> <span class="ident">IntoIter</span> <span class="op">=</span> <span class="ident">slice::Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">slice::Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) -&gt; <span class="ident">slice::Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>()
     }
 }
@@ -6044,7 +6181,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span>;
     <span class="kw">type</span> <span class="ident">IntoIter</span> <span class="op">=</span> <span class="ident">slice::IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">slice::IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) -&gt; <span class="ident">slice::IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter_mut</span>()
     }
 }
@@ -6082,12 +6219,14 @@
         <span class="comment">//      }</span>
         <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">element</span>) <span class="op">=</span> <span class="ident">iterator</span>.<span class="ident">next</span>() {
             <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
-            <span class="kw">if</span> <span class="ident">len</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">capacity</span>() {
+            <span class="kw">if</span> <span class="ident">len</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">capacity</span>() {
                 <span class="kw">let</span> (<span class="ident">lower</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">iterator</span>.<span class="ident">size_hint</span>();
                 <span class="self">self</span>.<span class="ident">reserve</span>(<span class="ident">lower</span>.<span class="ident">saturating_add</span>(<span class="number">1</span>));
             }
             <span class="kw">unsafe</span> {
                 <span class="ident">ptr::write</span>(<span class="self">self</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">add</span>(<span class="ident">len</span>), <span class="ident">element</span>);
+                <span class="comment">// Since next() executes user code which can panic we have to bump the length</span>
+                <span class="comment">// after each step.</span>
                 <span class="comment">// NB can&#39;t overflow since we would have had to alloc the address space</span>
                 <span class="self">self</span>.<span class="ident">set_len</span>(<span class="ident">len</span> <span class="op">+</span> <span class="number">1</span>);
             }
@@ -6096,7 +6235,7 @@
 
     <span class="comment">// leaf method to which various SpecFrom/SpecExtend implementations delegate when</span>
     <span class="comment">// they have no further optimizations to apply</span>
-    <span class="kw">fn</span> <span class="ident">try_extend_desugared</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">iterator</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_extend_desugared</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">iterator</span>: <span class="ident">I</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
         <span class="comment">// This is the case for a general iterator.</span>
         <span class="comment">//</span>
         <span class="comment">// This function should be the moral equivalent of:</span>
@@ -6106,7 +6245,7 @@
         <span class="comment">//      }</span>
         <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">element</span>) <span class="op">=</span> <span class="ident">iterator</span>.<span class="ident">next</span>() {
             <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
-            <span class="kw">if</span> <span class="ident">len</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">capacity</span>() {
+            <span class="kw">if</span> <span class="ident">len</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">capacity</span>() {
                 <span class="kw">let</span> (<span class="ident">lower</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">iterator</span>.<span class="ident">size_hint</span>();
                 <span class="self">self</span>.<span class="ident">try_reserve</span>(<span class="ident">lower</span>.<span class="ident">saturating_add</span>(<span class="number">1</span>))<span class="question-mark">?</span>;
             }
@@ -6156,7 +6295,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_splice&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.21.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">splice</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">I</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">range</span>: <span class="ident">R</span>, <span class="ident">replace_with</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Splice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">I::IntoIter</span>, <span class="ident">A</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">splice</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">I</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">range</span>: <span class="ident">R</span>, <span class="ident">replace_with</span>: <span class="ident">I</span>) -&gt; <span class="ident">Splice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">I::IntoIter</span>, <span class="ident">A</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">R</span>: <span class="ident">RangeBounds</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
         <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span>,
@@ -6209,9 +6348,9 @@
     <span class="doccomment">/// assert_eq!(odds, vec![1, 3, 5, 9, 11, 13, 15]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;drain_filter&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;recently added&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;43244&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">drain_filter</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">filter</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DrainFilter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">F</span>, <span class="ident">A</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">drain_filter</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">filter</span>: <span class="ident">F</span>) -&gt; <span class="ident">DrainFilter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">F</span>, <span class="ident">A</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>,
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
     {
         <span class="kw">let</span> <span class="ident">old_len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
 
@@ -6252,7 +6391,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">PartialOrd</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">PartialOrd</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
         <span class="ident">PartialOrd::partial_cmp</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">other</span>)
     }
 }
@@ -6264,7 +6403,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Ord</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">Ord</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ordering</span> {
+    <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">Ordering</span> {
         <span class="ident">Ord::cmp</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">other</span>)
     }
 }
@@ -6283,44 +6422,45 @@
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_default_impls&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;87864&quot;</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">const</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Creates an empty `Vec&lt;T&gt;`.</span>
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">Vec::new</span>()
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">fmt::Debug</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Debug::fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">f</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="self">self</span>
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_as_mut&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.5.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">AsMut</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="self">self</span>
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">T</span>] {
+    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">T</span>] {
         <span class="self">self</span>
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_as_mut&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.5.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">AsMut</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>] {
+    <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>] {
         <span class="self">self</span>
     }
 }
@@ -6336,12 +6476,12 @@
     <span class="doccomment">/// assert_eq!(Vec::from(&amp;[1, 2, 3][..]), vec![1, 2, 3]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">s</span>.<span class="ident">to_vec</span>()
     }
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="kw">crate</span><span class="ident">::slice::to_vec</span>(<span class="ident">s</span>, <span class="ident">Global</span>)
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="ident"><span class="kw">crate</span>::slice::to_vec</span>(<span class="ident">s</span>, <span class="ident">Global</span>)
     }
 }
 
@@ -6356,19 +6496,20 @@
     <span class="doccomment">/// assert_eq!(Vec::from(&amp;mut [1, 2, 3][..]), vec![1, 2, 3]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>]) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">s</span>.<span class="ident">to_vec</span>()
     }
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="kw">crate</span><span class="ident">::slice::to_vec</span>(<span class="ident">s</span>, <span class="ident">Global</span>)
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>]) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="ident"><span class="kw">crate</span>::slice::to_vec</span>(<span class="ident">s</span>, <span class="ident">Global</span>)
     }
 }
 
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_from_array&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.44.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: [<span class="ident">T</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: [<span class="ident">T</span>; <span class="ident">N</span>]) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span><span class="ident">::into_vec</span>(<span class="kw">box</span> <span class="ident">s</span>)
     }
     <span class="doccomment">/// Allocate a `Vec&lt;T&gt;` and move `s`&#39;s items into it.</span>
@@ -6379,8 +6520,8 @@
     <span class="doccomment">/// assert_eq!(Vec::from([1, 2, 3]), vec![1, 2, 3]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: [<span class="ident">T</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="kw">crate</span><span class="ident">::slice::into_vec</span>(<span class="kw">box</span> <span class="ident">s</span>)
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: [<span class="ident">T</span>; <span class="ident">N</span>]) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="ident"><span class="kw">crate</span>::slice::into_vec</span>(<span class="kw">box</span> <span class="ident">s</span>)
     }
 }
 
@@ -6403,7 +6544,7 @@
     <span class="doccomment">/// let b: Cow&lt;[i32]&gt; = Cow::Borrowed(&amp;[1, 2, 3]);</span>
     <span class="doccomment">/// assert_eq!(Vec::from(o), Vec::from(b));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, [<span class="ident">T</span>]<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, [<span class="ident">T</span>]<span class="op">&gt;</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">s</span>.<span class="ident">into_owned</span>()
     }
 }
@@ -6421,7 +6562,7 @@
     <span class="doccomment">/// let b: Box&lt;[i32]&gt; = vec![1, 2, 3].into_boxed_slice();</span>
     <span class="doccomment">/// assert_eq!(Vec::from(b), vec![1, 2, 3]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">T</span>], <span class="ident">A</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">T</span>], <span class="ident">A</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">s</span>.<span class="ident">into_vec</span>()
     }
 }
@@ -6441,7 +6582,7 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// assert_eq!(Box::from(vec![1, 2, 3]), vec![1, 2, 3].into_boxed_slice());</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">v</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">v</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">v</span>.<span class="ident">into_boxed_slice</span>()
     }
 }
@@ -6456,7 +6597,7 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// assert_eq!(Vec::from(&quot;123&quot;), vec![b&#39;1&#39;, b&#39;2&#39;, b&#39;3&#39;]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
         <span class="ident">From::from</span>(<span class="ident">s</span>.<span class="ident">as_bytes</span>())
     }
 }
@@ -6494,7 +6635,7 @@
     <span class="doccomment">/// assert_eq!(a, b&#39; &#39;);</span>
     <span class="doccomment">/// assert_eq!(b, b&#39;d&#39;);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="kw-2">mut</span> <span class="ident">vec</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>], <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="kw-2">mut</span> <span class="ident">vec</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>], <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="ident">vec</span>.<span class="ident">len</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">N</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">vec</span>);
         }
@@ -6511,5 +6652,7 @@
         <span class="prelude-val">Ok</span>(<span class="ident">array</span>)
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="alloc" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="alloc" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

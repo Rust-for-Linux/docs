@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/../../stdarch/crates/core_arch/src/x86/avx512vnni.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>avx512vnni.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../../../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../../../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img src="../../../../../../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;..&#x2F;..&#x2F;stdarch&#x2F;crates&#x2F;core_arch&#x2F;src&#x2F;x86&#x2F;avx512vnni.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>avx512vnni.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../../../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -939,8 +937,7 @@
 <span id="937">937</span>
 <span id="938">938</span>
 <span id="939">939</span>
-</pre><pre class="rust">
-<span class="kw">use</span> <span class="kw">crate</span>::{
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">core_arch</span>::{<span class="ident">simd</span>::<span class="kw-2">*</span>, <span class="ident">simd_llvm</span>::<span class="kw-2">*</span>, <span class="ident">x86</span>::<span class="kw-2">*</span>},
     <span class="ident">mem::transmute</span>,
 };
@@ -954,7 +951,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpwssd</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_dpwssd_epi32</span>(<span class="ident">src</span>: <span class="ident">__m512i</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>, <span class="ident">b</span>: <span class="ident">__m512i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m512i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_dpwssd_epi32</span>(<span class="ident">src</span>: <span class="ident">__m512i</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>, <span class="ident">b</span>: <span class="ident">__m512i</span>) -&gt; <span class="ident">__m512i</span> {
     <span class="ident">transmute</span>(<span class="ident">vpdpwssd</span>(<span class="ident">src</span>.<span class="ident">as_i32x16</span>(), <span class="ident">a</span>.<span class="ident">as_i32x16</span>(), <span class="ident">b</span>.<span class="ident">as_i32x16</span>()))
 }
 
@@ -969,7 +966,7 @@
     <span class="ident">k</span>: <span class="ident">__mmask16</span>,
     <span class="ident">a</span>: <span class="ident">__m512i</span>,
     <span class="ident">b</span>: <span class="ident">__m512i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m512i</span> {
+) -&gt; <span class="ident">__m512i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm512_dpwssd_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x16</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">src</span>.<span class="ident">as_i32x16</span>()))
 }
@@ -985,7 +982,7 @@
     <span class="ident">src</span>: <span class="ident">__m512i</span>,
     <span class="ident">a</span>: <span class="ident">__m512i</span>,
     <span class="ident">b</span>: <span class="ident">__m512i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m512i</span> {
+) -&gt; <span class="ident">__m512i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm512_dpwssd_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x16</span>();
     <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="ident">_mm512_setzero_si512</span>().<span class="ident">as_i32x16</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">zero</span>))
@@ -997,7 +994,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpwssd</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_dpwssd_epi32</span>(<span class="ident">src</span>: <span class="ident">__m256i</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>, <span class="ident">b</span>: <span class="ident">__m256i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_dpwssd_epi32</span>(<span class="ident">src</span>: <span class="ident">__m256i</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>, <span class="ident">b</span>: <span class="ident">__m256i</span>) -&gt; <span class="ident">__m256i</span> {
     <span class="ident">transmute</span>(<span class="ident">vpdpwssd256</span>(<span class="ident">src</span>.<span class="ident">as_i32x8</span>(), <span class="ident">a</span>.<span class="ident">as_i32x8</span>(), <span class="ident">b</span>.<span class="ident">as_i32x8</span>()))
 }
 
@@ -1012,7 +1009,7 @@
     <span class="ident">k</span>: <span class="ident">__mmask8</span>,
     <span class="ident">a</span>: <span class="ident">__m256i</span>,
     <span class="ident">b</span>: <span class="ident">__m256i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256i</span> {
+) -&gt; <span class="ident">__m256i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_dpwssd_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x8</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">src</span>.<span class="ident">as_i32x8</span>()))
 }
@@ -1028,7 +1025,7 @@
     <span class="ident">src</span>: <span class="ident">__m256i</span>,
     <span class="ident">a</span>: <span class="ident">__m256i</span>,
     <span class="ident">b</span>: <span class="ident">__m256i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256i</span> {
+) -&gt; <span class="ident">__m256i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_dpwssd_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x8</span>();
     <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="ident">_mm256_setzero_si256</span>().<span class="ident">as_i32x8</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">zero</span>))
@@ -1040,7 +1037,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpwssd</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_dpwssd_epi32</span>(<span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_dpwssd_epi32</span>(<span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) -&gt; <span class="ident">__m128i</span> {
     <span class="ident">transmute</span>(<span class="ident">vpdpwssd128</span>(<span class="ident">src</span>.<span class="ident">as_i32x4</span>(), <span class="ident">a</span>.<span class="ident">as_i32x4</span>(), <span class="ident">b</span>.<span class="ident">as_i32x4</span>()))
 }
 
@@ -1050,7 +1047,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpwssd</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_dpwssd_epi32</span>(<span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_dpwssd_epi32</span>(<span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) -&gt; <span class="ident">__m128i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_dpwssd_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x4</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">src</span>.<span class="ident">as_i32x4</span>()))
 }
@@ -1061,7 +1058,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpwssd</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_maskz_dpwssd_epi32</span>(<span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_maskz_dpwssd_epi32</span>(<span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) -&gt; <span class="ident">__m128i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_dpwssd_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x4</span>();
     <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="ident">_mm_setzero_si128</span>().<span class="ident">as_i32x4</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">zero</span>))
@@ -1073,7 +1070,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpwssds</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_dpwssds_epi32</span>(<span class="ident">src</span>: <span class="ident">__m512i</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>, <span class="ident">b</span>: <span class="ident">__m512i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m512i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_dpwssds_epi32</span>(<span class="ident">src</span>: <span class="ident">__m512i</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>, <span class="ident">b</span>: <span class="ident">__m512i</span>) -&gt; <span class="ident">__m512i</span> {
     <span class="ident">transmute</span>(<span class="ident">vpdpwssds</span>(<span class="ident">src</span>.<span class="ident">as_i32x16</span>(), <span class="ident">a</span>.<span class="ident">as_i32x16</span>(), <span class="ident">b</span>.<span class="ident">as_i32x16</span>()))
 }
 
@@ -1088,7 +1085,7 @@
     <span class="ident">k</span>: <span class="ident">__mmask16</span>,
     <span class="ident">a</span>: <span class="ident">__m512i</span>,
     <span class="ident">b</span>: <span class="ident">__m512i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m512i</span> {
+) -&gt; <span class="ident">__m512i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm512_dpwssds_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x16</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">src</span>.<span class="ident">as_i32x16</span>()))
 }
@@ -1104,7 +1101,7 @@
     <span class="ident">src</span>: <span class="ident">__m512i</span>,
     <span class="ident">a</span>: <span class="ident">__m512i</span>,
     <span class="ident">b</span>: <span class="ident">__m512i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m512i</span> {
+) -&gt; <span class="ident">__m512i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm512_dpwssds_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x16</span>();
     <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="ident">_mm512_setzero_si512</span>().<span class="ident">as_i32x16</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">zero</span>))
@@ -1116,7 +1113,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpwssds</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_dpwssds_epi32</span>(<span class="ident">src</span>: <span class="ident">__m256i</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>, <span class="ident">b</span>: <span class="ident">__m256i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_dpwssds_epi32</span>(<span class="ident">src</span>: <span class="ident">__m256i</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>, <span class="ident">b</span>: <span class="ident">__m256i</span>) -&gt; <span class="ident">__m256i</span> {
     <span class="ident">transmute</span>(<span class="ident">vpdpwssds256</span>(<span class="ident">src</span>.<span class="ident">as_i32x8</span>(), <span class="ident">a</span>.<span class="ident">as_i32x8</span>(), <span class="ident">b</span>.<span class="ident">as_i32x8</span>()))
 }
 
@@ -1131,7 +1128,7 @@
     <span class="ident">k</span>: <span class="ident">__mmask8</span>,
     <span class="ident">a</span>: <span class="ident">__m256i</span>,
     <span class="ident">b</span>: <span class="ident">__m256i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256i</span> {
+) -&gt; <span class="ident">__m256i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_dpwssds_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x8</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">src</span>.<span class="ident">as_i32x8</span>()))
 }
@@ -1147,7 +1144,7 @@
     <span class="ident">src</span>: <span class="ident">__m256i</span>,
     <span class="ident">a</span>: <span class="ident">__m256i</span>,
     <span class="ident">b</span>: <span class="ident">__m256i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256i</span> {
+) -&gt; <span class="ident">__m256i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_dpwssds_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x8</span>();
     <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="ident">_mm256_setzero_si256</span>().<span class="ident">as_i32x8</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">zero</span>))
@@ -1159,7 +1156,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpwssds</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_dpwssds_epi32</span>(<span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_dpwssds_epi32</span>(<span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) -&gt; <span class="ident">__m128i</span> {
     <span class="ident">transmute</span>(<span class="ident">vpdpwssds128</span>(<span class="ident">src</span>.<span class="ident">as_i32x4</span>(), <span class="ident">a</span>.<span class="ident">as_i32x4</span>(), <span class="ident">b</span>.<span class="ident">as_i32x4</span>()))
 }
 
@@ -1169,7 +1166,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpwssds</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_dpwssds_epi32</span>(<span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_dpwssds_epi32</span>(<span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) -&gt; <span class="ident">__m128i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_dpwssds_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x4</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">src</span>.<span class="ident">as_i32x4</span>()))
 }
@@ -1185,7 +1182,7 @@
     <span class="ident">src</span>: <span class="ident">__m128i</span>,
     <span class="ident">a</span>: <span class="ident">__m128i</span>,
     <span class="ident">b</span>: <span class="ident">__m128i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128i</span> {
+) -&gt; <span class="ident">__m128i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_dpwssds_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x4</span>();
     <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="ident">_mm_setzero_si128</span>().<span class="ident">as_i32x4</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">zero</span>))
@@ -1197,7 +1194,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpbusd</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_dpbusd_epi32</span>(<span class="ident">src</span>: <span class="ident">__m512i</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>, <span class="ident">b</span>: <span class="ident">__m512i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m512i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_dpbusd_epi32</span>(<span class="ident">src</span>: <span class="ident">__m512i</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>, <span class="ident">b</span>: <span class="ident">__m512i</span>) -&gt; <span class="ident">__m512i</span> {
     <span class="ident">transmute</span>(<span class="ident">vpdpbusd</span>(<span class="ident">src</span>.<span class="ident">as_i32x16</span>(), <span class="ident">a</span>.<span class="ident">as_i32x16</span>(), <span class="ident">b</span>.<span class="ident">as_i32x16</span>()))
 }
 
@@ -1212,7 +1209,7 @@
     <span class="ident">k</span>: <span class="ident">__mmask16</span>,
     <span class="ident">a</span>: <span class="ident">__m512i</span>,
     <span class="ident">b</span>: <span class="ident">__m512i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m512i</span> {
+) -&gt; <span class="ident">__m512i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm512_dpbusd_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x16</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">src</span>.<span class="ident">as_i32x16</span>()))
 }
@@ -1228,7 +1225,7 @@
     <span class="ident">src</span>: <span class="ident">__m512i</span>,
     <span class="ident">a</span>: <span class="ident">__m512i</span>,
     <span class="ident">b</span>: <span class="ident">__m512i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m512i</span> {
+) -&gt; <span class="ident">__m512i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm512_dpbusd_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x16</span>();
     <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="ident">_mm512_setzero_si512</span>().<span class="ident">as_i32x16</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">zero</span>))
@@ -1240,7 +1237,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpbusd</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_dpbusd_epi32</span>(<span class="ident">src</span>: <span class="ident">__m256i</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>, <span class="ident">b</span>: <span class="ident">__m256i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_dpbusd_epi32</span>(<span class="ident">src</span>: <span class="ident">__m256i</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>, <span class="ident">b</span>: <span class="ident">__m256i</span>) -&gt; <span class="ident">__m256i</span> {
     <span class="ident">transmute</span>(<span class="ident">vpdpbusd256</span>(<span class="ident">src</span>.<span class="ident">as_i32x8</span>(), <span class="ident">a</span>.<span class="ident">as_i32x8</span>(), <span class="ident">b</span>.<span class="ident">as_i32x8</span>()))
 }
 
@@ -1255,7 +1252,7 @@
     <span class="ident">k</span>: <span class="ident">__mmask8</span>,
     <span class="ident">a</span>: <span class="ident">__m256i</span>,
     <span class="ident">b</span>: <span class="ident">__m256i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256i</span> {
+) -&gt; <span class="ident">__m256i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_dpbusd_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x8</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">src</span>.<span class="ident">as_i32x8</span>()))
 }
@@ -1271,7 +1268,7 @@
     <span class="ident">src</span>: <span class="ident">__m256i</span>,
     <span class="ident">a</span>: <span class="ident">__m256i</span>,
     <span class="ident">b</span>: <span class="ident">__m256i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256i</span> {
+) -&gt; <span class="ident">__m256i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_dpbusd_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x8</span>();
     <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="ident">_mm256_setzero_si256</span>().<span class="ident">as_i32x8</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">zero</span>))
@@ -1283,7 +1280,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpbusd</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_dpbusd_epi32</span>(<span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_dpbusd_epi32</span>(<span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) -&gt; <span class="ident">__m128i</span> {
     <span class="ident">transmute</span>(<span class="ident">vpdpbusd128</span>(<span class="ident">src</span>.<span class="ident">as_i32x4</span>(), <span class="ident">a</span>.<span class="ident">as_i32x4</span>(), <span class="ident">b</span>.<span class="ident">as_i32x4</span>()))
 }
 
@@ -1293,7 +1290,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpbusd</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_dpbusd_epi32</span>(<span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_dpbusd_epi32</span>(<span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) -&gt; <span class="ident">__m128i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_dpbusd_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x4</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">src</span>.<span class="ident">as_i32x4</span>()))
 }
@@ -1304,7 +1301,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpbusd</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_maskz_dpbusd_epi32</span>(<span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_maskz_dpbusd_epi32</span>(<span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) -&gt; <span class="ident">__m128i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_dpbusd_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x4</span>();
     <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="ident">_mm_setzero_si128</span>().<span class="ident">as_i32x4</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">zero</span>))
@@ -1316,7 +1313,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpbusds</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_dpbusds_epi32</span>(<span class="ident">src</span>: <span class="ident">__m512i</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>, <span class="ident">b</span>: <span class="ident">__m512i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m512i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_dpbusds_epi32</span>(<span class="ident">src</span>: <span class="ident">__m512i</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>, <span class="ident">b</span>: <span class="ident">__m512i</span>) -&gt; <span class="ident">__m512i</span> {
     <span class="ident">transmute</span>(<span class="ident">vpdpbusds</span>(<span class="ident">src</span>.<span class="ident">as_i32x16</span>(), <span class="ident">a</span>.<span class="ident">as_i32x16</span>(), <span class="ident">b</span>.<span class="ident">as_i32x16</span>()))
 }
 
@@ -1331,7 +1328,7 @@
     <span class="ident">k</span>: <span class="ident">__mmask16</span>,
     <span class="ident">a</span>: <span class="ident">__m512i</span>,
     <span class="ident">b</span>: <span class="ident">__m512i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m512i</span> {
+) -&gt; <span class="ident">__m512i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm512_dpbusds_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x16</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">src</span>.<span class="ident">as_i32x16</span>()))
 }
@@ -1347,7 +1344,7 @@
     <span class="ident">src</span>: <span class="ident">__m512i</span>,
     <span class="ident">a</span>: <span class="ident">__m512i</span>,
     <span class="ident">b</span>: <span class="ident">__m512i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m512i</span> {
+) -&gt; <span class="ident">__m512i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm512_dpbusds_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x16</span>();
     <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="ident">_mm512_setzero_si512</span>().<span class="ident">as_i32x16</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">zero</span>))
@@ -1359,7 +1356,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpbusds</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_dpbusds_epi32</span>(<span class="ident">src</span>: <span class="ident">__m256i</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>, <span class="ident">b</span>: <span class="ident">__m256i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_dpbusds_epi32</span>(<span class="ident">src</span>: <span class="ident">__m256i</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>, <span class="ident">b</span>: <span class="ident">__m256i</span>) -&gt; <span class="ident">__m256i</span> {
     <span class="ident">transmute</span>(<span class="ident">vpdpbusds256</span>(<span class="ident">src</span>.<span class="ident">as_i32x8</span>(), <span class="ident">a</span>.<span class="ident">as_i32x8</span>(), <span class="ident">b</span>.<span class="ident">as_i32x8</span>()))
 }
 
@@ -1374,7 +1371,7 @@
     <span class="ident">k</span>: <span class="ident">__mmask8</span>,
     <span class="ident">a</span>: <span class="ident">__m256i</span>,
     <span class="ident">b</span>: <span class="ident">__m256i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256i</span> {
+) -&gt; <span class="ident">__m256i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_dpbusds_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x8</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">src</span>.<span class="ident">as_i32x8</span>()))
 }
@@ -1390,7 +1387,7 @@
     <span class="ident">src</span>: <span class="ident">__m256i</span>,
     <span class="ident">a</span>: <span class="ident">__m256i</span>,
     <span class="ident">b</span>: <span class="ident">__m256i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256i</span> {
+) -&gt; <span class="ident">__m256i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_dpbusds_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x8</span>();
     <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="ident">_mm256_setzero_si256</span>().<span class="ident">as_i32x8</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">zero</span>))
@@ -1402,7 +1399,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpbusds</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_dpbusds_epi32</span>(<span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_dpbusds_epi32</span>(<span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) -&gt; <span class="ident">__m128i</span> {
     <span class="ident">transmute</span>(<span class="ident">vpdpbusds128</span>(<span class="ident">src</span>.<span class="ident">as_i32x4</span>(), <span class="ident">a</span>.<span class="ident">as_i32x4</span>(), <span class="ident">b</span>.<span class="ident">as_i32x4</span>()))
 }
 
@@ -1412,7 +1409,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpdpbusds</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_dpbusds_epi32</span>(<span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_dpbusds_epi32</span>(<span class="ident">src</span>: <span class="ident">__m128i</span>, <span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>, <span class="ident">b</span>: <span class="ident">__m128i</span>) -&gt; <span class="ident">__m128i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_dpbusds_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x4</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">src</span>.<span class="ident">as_i32x4</span>()))
 }
@@ -1428,7 +1425,7 @@
     <span class="ident">src</span>: <span class="ident">__m128i</span>,
     <span class="ident">a</span>: <span class="ident">__m128i</span>,
     <span class="ident">b</span>: <span class="ident">__m128i</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128i</span> {
+) -&gt; <span class="ident">__m128i</span> {
     <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_dpbusds_epi32</span>(<span class="ident">src</span>, <span class="ident">a</span>, <span class="ident">b</span>).<span class="ident">as_i32x4</span>();
     <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="ident">_mm_setzero_si128</span>().<span class="ident">as_i32x4</span>();
     <span class="ident">transmute</span>(<span class="ident">simd_select_bitmask</span>(<span class="ident">k</span>, <span class="ident">r</span>, <span class="ident">zero</span>))
@@ -1437,38 +1434,38 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">improper_ctypes</span>)]</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.vpdpwssd.512&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpdpwssd</span>(<span class="ident">src</span>: <span class="ident">i32x16</span>, <span class="ident">a</span>: <span class="ident">i32x16</span>, <span class="ident">b</span>: <span class="ident">i32x16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32x16</span>;
+    <span class="kw">fn</span> <span class="ident">vpdpwssd</span>(<span class="ident">src</span>: <span class="ident">i32x16</span>, <span class="ident">a</span>: <span class="ident">i32x16</span>, <span class="ident">b</span>: <span class="ident">i32x16</span>) -&gt; <span class="ident">i32x16</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.vpdpwssd.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpdpwssd256</span>(<span class="ident">src</span>: <span class="ident">i32x8</span>, <span class="ident">a</span>: <span class="ident">i32x8</span>, <span class="ident">b</span>: <span class="ident">i32x8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32x8</span>;
+    <span class="kw">fn</span> <span class="ident">vpdpwssd256</span>(<span class="ident">src</span>: <span class="ident">i32x8</span>, <span class="ident">a</span>: <span class="ident">i32x8</span>, <span class="ident">b</span>: <span class="ident">i32x8</span>) -&gt; <span class="ident">i32x8</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.vpdpwssd.128&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpdpwssd128</span>(<span class="ident">src</span>: <span class="ident">i32x4</span>, <span class="ident">a</span>: <span class="ident">i32x4</span>, <span class="ident">b</span>: <span class="ident">i32x4</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32x4</span>;
+    <span class="kw">fn</span> <span class="ident">vpdpwssd128</span>(<span class="ident">src</span>: <span class="ident">i32x4</span>, <span class="ident">a</span>: <span class="ident">i32x4</span>, <span class="ident">b</span>: <span class="ident">i32x4</span>) -&gt; <span class="ident">i32x4</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.vpdpwssds.512&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpdpwssds</span>(<span class="ident">src</span>: <span class="ident">i32x16</span>, <span class="ident">a</span>: <span class="ident">i32x16</span>, <span class="ident">b</span>: <span class="ident">i32x16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32x16</span>;
+    <span class="kw">fn</span> <span class="ident">vpdpwssds</span>(<span class="ident">src</span>: <span class="ident">i32x16</span>, <span class="ident">a</span>: <span class="ident">i32x16</span>, <span class="ident">b</span>: <span class="ident">i32x16</span>) -&gt; <span class="ident">i32x16</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.vpdpwssds.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpdpwssds256</span>(<span class="ident">src</span>: <span class="ident">i32x8</span>, <span class="ident">a</span>: <span class="ident">i32x8</span>, <span class="ident">b</span>: <span class="ident">i32x8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32x8</span>;
+    <span class="kw">fn</span> <span class="ident">vpdpwssds256</span>(<span class="ident">src</span>: <span class="ident">i32x8</span>, <span class="ident">a</span>: <span class="ident">i32x8</span>, <span class="ident">b</span>: <span class="ident">i32x8</span>) -&gt; <span class="ident">i32x8</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.vpdpwssds.128&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpdpwssds128</span>(<span class="ident">src</span>: <span class="ident">i32x4</span>, <span class="ident">a</span>: <span class="ident">i32x4</span>, <span class="ident">b</span>: <span class="ident">i32x4</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32x4</span>;
+    <span class="kw">fn</span> <span class="ident">vpdpwssds128</span>(<span class="ident">src</span>: <span class="ident">i32x4</span>, <span class="ident">a</span>: <span class="ident">i32x4</span>, <span class="ident">b</span>: <span class="ident">i32x4</span>) -&gt; <span class="ident">i32x4</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.vpdpbusd.512&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpdpbusd</span>(<span class="ident">src</span>: <span class="ident">i32x16</span>, <span class="ident">a</span>: <span class="ident">i32x16</span>, <span class="ident">b</span>: <span class="ident">i32x16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32x16</span>;
+    <span class="kw">fn</span> <span class="ident">vpdpbusd</span>(<span class="ident">src</span>: <span class="ident">i32x16</span>, <span class="ident">a</span>: <span class="ident">i32x16</span>, <span class="ident">b</span>: <span class="ident">i32x16</span>) -&gt; <span class="ident">i32x16</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.vpdpbusd.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpdpbusd256</span>(<span class="ident">src</span>: <span class="ident">i32x8</span>, <span class="ident">a</span>: <span class="ident">i32x8</span>, <span class="ident">b</span>: <span class="ident">i32x8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32x8</span>;
+    <span class="kw">fn</span> <span class="ident">vpdpbusd256</span>(<span class="ident">src</span>: <span class="ident">i32x8</span>, <span class="ident">a</span>: <span class="ident">i32x8</span>, <span class="ident">b</span>: <span class="ident">i32x8</span>) -&gt; <span class="ident">i32x8</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.vpdpbusd.128&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpdpbusd128</span>(<span class="ident">src</span>: <span class="ident">i32x4</span>, <span class="ident">a</span>: <span class="ident">i32x4</span>, <span class="ident">b</span>: <span class="ident">i32x4</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32x4</span>;
+    <span class="kw">fn</span> <span class="ident">vpdpbusd128</span>(<span class="ident">src</span>: <span class="ident">i32x4</span>, <span class="ident">a</span>: <span class="ident">i32x4</span>, <span class="ident">b</span>: <span class="ident">i32x4</span>) -&gt; <span class="ident">i32x4</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.vpdpbusds.512&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpdpbusds</span>(<span class="ident">src</span>: <span class="ident">i32x16</span>, <span class="ident">a</span>: <span class="ident">i32x16</span>, <span class="ident">b</span>: <span class="ident">i32x16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32x16</span>;
+    <span class="kw">fn</span> <span class="ident">vpdpbusds</span>(<span class="ident">src</span>: <span class="ident">i32x16</span>, <span class="ident">a</span>: <span class="ident">i32x16</span>, <span class="ident">b</span>: <span class="ident">i32x16</span>) -&gt; <span class="ident">i32x16</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.vpdpbusds.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpdpbusds256</span>(<span class="ident">src</span>: <span class="ident">i32x8</span>, <span class="ident">a</span>: <span class="ident">i32x8</span>, <span class="ident">b</span>: <span class="ident">i32x8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32x8</span>;
+    <span class="kw">fn</span> <span class="ident">vpdpbusds256</span>(<span class="ident">src</span>: <span class="ident">i32x8</span>, <span class="ident">a</span>: <span class="ident">i32x8</span>, <span class="ident">b</span>: <span class="ident">i32x8</span>) -&gt; <span class="ident">i32x8</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.vpdpbusds.128&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpdpbusds128</span>(<span class="ident">src</span>: <span class="ident">i32x4</span>, <span class="ident">a</span>: <span class="ident">i32x4</span>, <span class="ident">b</span>: <span class="ident">i32x4</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32x4</span>;
+    <span class="kw">fn</span> <span class="ident">vpdpbusds128</span>(<span class="ident">src</span>: <span class="ident">i32x4</span>, <span class="ident">a</span>: <span class="ident">i32x4</span>, <span class="ident">b</span>: <span class="ident">i32x4</span>) -&gt; <span class="ident">i32x4</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
 
-    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::core_arch::x86</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::core_arch::x86</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="ident">stdarch_test::simd_test</span>;
 
     <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vnni&quot;</span>)]</span>
@@ -1879,5 +1876,7 @@
         <span class="ident">assert_eq_m128i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-search-index-js="../../../../../../../../../search-index.js" data-search-js="../../../../../../../../../search.js"></div><script src="../../../../../../../../../main.js"></script><script src="../../../../../../../../../source-script.js"></script><script src="../../../../../../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-search-index-js="../../../../../../../../../search-index.js" data-search-js="../../../../../../../../../search.js"></div>
+    <script src="../../../../../../../../../main.js"></script><script src="../../../../../../../../../source-script.js"></script><script src="../../../../../../../../../source-files.js"></script>
+</body></html>

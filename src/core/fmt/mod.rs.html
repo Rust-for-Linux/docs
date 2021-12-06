@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/fmt/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;fmt&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -2298,23 +2296,85 @@
 <span id="2296">2296</span>
 <span id="2297">2297</span>
 <span id="2298">2298</span>
-</pre><pre class="rust">
-<span class="doccomment">//! Utilities for formatting and printing strings.</span>
+<span id="2299">2299</span>
+<span id="2300">2300</span>
+<span id="2301">2301</span>
+<span id="2302">2302</span>
+<span id="2303">2303</span>
+<span id="2304">2304</span>
+<span id="2305">2305</span>
+<span id="2306">2306</span>
+<span id="2307">2307</span>
+<span id="2308">2308</span>
+<span id="2309">2309</span>
+<span id="2310">2310</span>
+<span id="2311">2311</span>
+<span id="2312">2312</span>
+<span id="2313">2313</span>
+<span id="2314">2314</span>
+<span id="2315">2315</span>
+<span id="2316">2316</span>
+<span id="2317">2317</span>
+<span id="2318">2318</span>
+<span id="2319">2319</span>
+<span id="2320">2320</span>
+<span id="2321">2321</span>
+<span id="2322">2322</span>
+<span id="2323">2323</span>
+<span id="2324">2324</span>
+<span id="2325">2325</span>
+<span id="2326">2326</span>
+<span id="2327">2327</span>
+<span id="2328">2328</span>
+<span id="2329">2329</span>
+<span id="2330">2330</span>
+<span id="2331">2331</span>
+<span id="2332">2332</span>
+<span id="2333">2333</span>
+<span id="2334">2334</span>
+<span id="2335">2335</span>
+<span id="2336">2336</span>
+<span id="2337">2337</span>
+<span id="2338">2338</span>
+<span id="2339">2339</span>
+<span id="2340">2340</span>
+<span id="2341">2341</span>
+<span id="2342">2342</span>
+<span id="2343">2343</span>
+<span id="2344">2344</span>
+<span id="2345">2345</span>
+<span id="2346">2346</span>
+<span id="2347">2347</span>
+<span id="2348">2348</span>
+<span id="2349">2349</span>
+<span id="2350">2350</span>
+<span id="2351">2351</span>
+<span id="2352">2352</span>
+<span id="2353">2353</span>
+<span id="2354">2354</span>
+<span id="2355">2355</span>
+<span id="2356">2356</span>
+<span id="2357">2357</span>
+<span id="2358">2358</span>
+<span id="2359">2359</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Utilities for formatting and printing strings.</span>
 
 <span class="attribute">#![<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cell</span>::{<span class="ident">Cell</span>, <span class="ident">Ref</span>, <span class="ident">RefCell</span>, <span class="ident">RefMut</span>, <span class="ident">UnsafeCell</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::char::EscapeDebugExtArgs</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::iter</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::marker::PhantomData</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::num::flt2dec</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ops::Deref</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::result</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::str</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cell</span>::{<span class="ident">Cell</span>, <span class="ident">Ref</span>, <span class="ident">RefCell</span>, <span class="ident">RefMut</span>, <span class="ident">UnsafeCell</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::char::EscapeDebugExtArgs</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::marker::PhantomData</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::num::fmt</span> <span class="kw">as</span> <span class="ident">numfmt</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ops::Deref</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::result</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::str</span>;
 
 <span class="kw">mod</span> <span class="ident">builders</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_fp_fmt_parse</span>))]</span>
 <span class="kw">mod</span> <span class="ident">float</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">no_fp_fmt_parse</span>)]</span>
+<span class="kw">mod</span> <span class="ident">nofloat</span>;
 <span class="kw">mod</span> <span class="ident">num</span>;
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_flags_align&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
@@ -2333,7 +2393,7 @@
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;debug_builders&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.2.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::builders</span>::{<span class="ident">DebugList</span>, <span class="ident">DebugMap</span>, <span class="ident">DebugSet</span>, <span class="ident">DebugStruct</span>, <span class="ident">DebugTuple</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::builders</span>::{<span class="ident">DebugList</span>, <span class="ident">DebugMap</span>, <span class="ident">DebugSet</span>, <span class="ident">DebugStruct</span>, <span class="ident">DebugTuple</span>};
 
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_internals&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;internal to format_args!&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
@@ -2430,7 +2490,7 @@
     <span class="doccomment">/// assert_eq!(&amp;buf, &quot;hola&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span>;
+    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span>;
 
     <span class="doccomment">/// Writes a [`char`] into this writer, returning whether the write succeeded.</span>
     <span class="doccomment">///</span>
@@ -2458,7 +2518,7 @@
     <span class="doccomment">/// assert_eq!(&amp;buf, &quot;ab&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_write_char&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.1.0&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">write_char</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">write_char</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="self">self</span>.<span class="ident">write_str</span>(<span class="ident">c</span>.<span class="ident">encode_utf8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0</span>; <span class="number">4</span>]))
     }
 
@@ -2481,22 +2541,22 @@
     <span class="doccomment">/// assert_eq!(&amp;buf, &quot;world&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">write_fmt</span>(<span class="kw-2">mut</span> <span class="self">self</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>, <span class="ident">args</span>: <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">write_fmt</span>(<span class="kw-2">mut</span> <span class="self">self</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>, <span class="ident">args</span>: <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">args</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_write_blanket_impl&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.4.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">W</span>: <span class="ident">Write</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">W</span> {
-    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span> {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_str</span>(<span class="ident">s</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">write_char</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">write_char</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) -&gt; <span class="prelude-ty">Result</span> {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_char</span>(<span class="ident">c</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">write_fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">args</span>: <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">write_fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">args</span>: <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_fmt</span>(<span class="ident">args</span>)
     }
 }
@@ -2532,7 +2592,7 @@
     <span class="doccomment">/// Currently not intended for use outside of the standard library.</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_internals&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;internal to standard library&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> (<span class="kw">dyn</span> <span class="ident">Write</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> (<span class="kw">dyn</span> <span class="ident">Write</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>)) -&gt; <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">Formatter</span> {
             <span class="ident">flags</span>: <span class="number">0</span>,
             <span class="ident">fill</span>: <span class="string">&#39; &#39;</span>,
@@ -2561,7 +2621,28 @@
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ArgumentV1</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Opaque</span>,
-    <span class="ident">formatter</span>: <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="ident">Opaque</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span>,
+    <span class="ident">formatter</span>: <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="ident">Opaque</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span>,
+}
+
+<span class="doccomment">/// This struct represents the unsafety of constructing an `Arguments`.</span>
+<span class="doccomment">/// It exists, rather than an unsafe function, in order to simplify the expansion</span>
+<span class="doccomment">/// of `format_args!(..)` and reduce the scope of the `unsafe` block.</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_debug_implementations</span>)]</span>
+<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+<span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_internals&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;internal to format_args!&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UnsafeArg</span> {
+    <span class="ident">_private</span>: (),
+}
+
+<span class="kw">impl</span> <span class="ident">UnsafeArg</span> {
+    <span class="doccomment">/// See documentation where `UnsafeArg` is required to know when it is safe to</span>
+    <span class="doccomment">/// create and use `UnsafeArg`.</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_internals&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;internal to format_args!&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
 }
 
 <span class="comment">// This guarantees a single stable value for the function pointer associated with</span>
@@ -2580,16 +2661,16 @@
 <span class="comment">// usize from the passed reference and that this address does not point at a</span>
 <span class="comment">// non-usize taking function.</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_internals&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;internal to format_args!&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
-<span class="kw">static</span> <span class="ident">USIZE_MARKER</span>: <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="ident">usize</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> <span class="op">=</span> <span class="op">|</span><span class="ident">ptr</span>, <span class="kw">_</span><span class="op">|</span> {
+<span class="kw">static</span> <span class="ident">USIZE_MARKER</span>: <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="ident">usize</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> <span class="op">=</span> <span class="op">|</span><span class="ident">ptr</span>, <span class="kw">_</span><span class="op">|</span> {
     <span class="comment">// SAFETY: ptr is a reference</span>
-    <span class="kw">let</span> <span class="ident">_v</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw">crate</span><span class="ident">::ptr::read_volatile</span>(<span class="ident">ptr</span>) };
+    <span class="kw">let</span> <span class="ident">_v</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident"><span class="kw">crate</span>::ptr::read_volatile</span>(<span class="ident">ptr</span>) };
     <span class="kw">loop</span> {}
 };
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">ArgumentV1</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_internals&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;internal to format_args!&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="ident">T</span>, <span class="ident">f</span>: <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgumentV1</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="ident">T</span>, <span class="ident">f</span>: <span class="kw">fn</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span>) -&gt; <span class="ident">ArgumentV1</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span> {
         <span class="comment">// SAFETY: `mem::transmute(x)` is safe because</span>
         <span class="comment">//     1. `&amp;&#39;b T` keeps the lifetime it originated with `&#39;b`</span>
         <span class="comment">//              (so as to not have an unbounded lifetime)</span>
@@ -2603,12 +2684,12 @@
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_internals&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;internal to format_args!&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_usize</span>(<span class="ident">x</span>: <span class="kw-2">&amp;</span><span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ArgumentV1</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_usize</span>(<span class="ident">x</span>: <span class="kw-2">&amp;</span><span class="ident">usize</span>) -&gt; <span class="ident">ArgumentV1</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
         <span class="ident">ArgumentV1::new</span>(<span class="ident">x</span>, <span class="ident">USIZE_MARKER</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">as_usize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">formatter</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">=</span><span class="op">=</span> <span class="ident">USIZE_MARKER</span> <span class="kw">as</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">as_usize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">formatter</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">==</span> <span class="ident">USIZE_MARKER</span> <span class="kw">as</span> <span class="ident">usize</span> {
             <span class="comment">// SAFETY: The `formatter` field is only set to USIZE_MARKER if</span>
             <span class="comment">// the value is a usize, so this is safe</span>
             <span class="prelude-val">Some</span>(<span class="kw">unsafe</span> { <span class="kw-2">*</span>(<span class="self">self</span>.<span class="ident">value</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">usize</span>) })
@@ -2635,24 +2716,47 @@
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_internals&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;internal to format_args!&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_v1</span>(<span class="ident">pieces</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>], <span class="ident">args</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">ArgumentV1</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_fmt_arguments_new&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new_v1</span>(<span class="ident">pieces</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>], <span class="ident">args</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">ArgumentV1</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>]) -&gt; <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="ident">pieces</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">args</span>.<span class="ident">len</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">pieces</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="ident">args</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="number">1</span> {
+            <span class="macro">panic!</span>(<span class="string">&quot;invalid args&quot;</span>);
+        }
         <span class="ident">Arguments</span> { <span class="ident">pieces</span>, <span class="ident">fmt</span>: <span class="prelude-val">None</span>, <span class="ident">args</span> }
     }
 
     <span class="doccomment">/// This function is used to specify nonstandard formatting parameters.</span>
-    <span class="doccomment">/// The `pieces` array must be at least as long as `fmt` to construct</span>
-    <span class="doccomment">/// a valid Arguments structure. Also, any `Count` within `fmt` that is</span>
-    <span class="doccomment">/// `CountIsParam` or `CountIsNextParam` has to point to an argument</span>
-    <span class="doccomment">/// created with `argumentusize`. However, failing to do so doesn&#39;t cause</span>
-    <span class="doccomment">/// unsafety, but will ignore invalid .</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// An `UnsafeArg` is required because the following invariants must be held</span>
+    <span class="doccomment">/// in order for this function to be safe:</span>
+    <span class="doccomment">/// 1. The `pieces` slice must be at least as long as `fmt`.</span>
+    <span class="doccomment">/// 2. Every [`rt::v1::Argument::position`] value within `fmt` must be a</span>
+    <span class="doccomment">///    valid index of `args`.</span>
+    <span class="doccomment">/// 3. Every [`Count::Param`] within `fmt` must contain a valid index of</span>
+    <span class="doccomment">///    `args`.</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>))]</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_internals&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;internal to format_args!&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_v1_formatted</span>(
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_fmt_arguments_new&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new_v1_formatted</span>(
         <span class="ident">pieces</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>],
         <span class="ident">args</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">ArgumentV1</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>],
         <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">rt::v1::Argument</span>],
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+        <span class="ident">_unsafe_arg</span>: <span class="ident">UnsafeArg</span>,
+    ) -&gt; <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+        <span class="ident">Arguments</span> { <span class="ident">pieces</span>, <span class="ident">fmt</span>: <span class="prelude-val">Some</span>(<span class="ident">fmt</span>), <span class="ident">args</span> }
+    }
+
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">bootstrap</span>)]</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_internals&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;internal to format_args!&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_fmt_arguments_new&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new_v1_formatted</span>(
+        <span class="ident">pieces</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>],
+        <span class="ident">args</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">ArgumentV1</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>],
+        <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">rt::v1::Argument</span>],
+    ) -&gt; <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">Arguments</span> { <span class="ident">pieces</span>, <span class="ident">fmt</span>: <span class="prelude-val">Some</span>(<span class="ident">fmt</span>), <span class="ident">args</span> }
     }
 
@@ -2663,12 +2767,12 @@
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_internals&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;internal to format_args!&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">estimated_capacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">estimated_capacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">let</span> <span class="ident">pieces_length</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pieces</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">len</span>()).<span class="ident">sum</span>();
 
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">args</span>.<span class="ident">is_empty</span>() {
             <span class="ident">pieces_length</span>
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">pieces</span>[<span class="number">0</span>] <span class="op">=</span><span class="op">=</span> <span class="string">&quot;&quot;</span> <span class="op">&amp;&amp;</span> <span class="ident">pieces_length</span> <span class="op">&lt;</span> <span class="number">16</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">pieces</span>.<span class="ident">is_empty</span>() <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">pieces</span>[<span class="number">0</span>].<span class="ident">is_empty</span>() <span class="op">&amp;&amp;</span> <span class="ident">pieces_length</span> <span class="op">&lt;</span> <span class="number">16</span> {
             <span class="comment">// If the format string starts with an argument,</span>
             <span class="comment">// don&#39;t preallocate anything, unless length</span>
             <span class="comment">// of pieces is significant.</span>
@@ -2745,26 +2849,28 @@
     <span class="doccomment">/// assert_eq!(format_args!(&quot;{}&quot;, 1).as_str(), None);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_as_str&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.52.0&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_arguments_as_str&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="kw">match</span> (<span class="self">self</span>.<span class="ident">pieces</span>, <span class="self">self</span>.<span class="ident">args</span>) {
-            ([], []) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="string">&quot;&quot;</span>),
-            ([<span class="ident">s</span>], []) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            ([], []) =&gt; <span class="prelude-val">Some</span>(<span class="string">&quot;&quot;</span>),
+            ([<span class="ident">s</span>], []) =&gt; <span class="prelude-val">Some</span>(<span class="ident">s</span>),
+            <span class="kw">_</span> =&gt; <span class="prelude-val">None</span>,
         }
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">Display::fmt</span>(<span class="self">self</span>, <span class="ident">fmt</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">write</span>(<span class="ident">fmt</span>.<span class="ident">buf</span>, <span class="kw-2">*</span><span class="self">self</span>)
     }
 }
@@ -2865,13 +2971,14 @@
     <span class="ident">on</span>(
         <span class="ident">crate_local</span>,
         <span class="ident">label</span> <span class="op">=</span> <span class="string">&quot;`{Self}` cannot be formatted using `{{:?}}`&quot;</span>,
-        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;add `#[derive(Debug)]` or manually implement `{Debug}`&quot;</span>
+        <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;add `#[derive(Debug)]` to `{Self}` or manually `impl {Debug} for {Self}`&quot;</span>
     ),
     <span class="ident">message</span> <span class="op">=</span> <span class="string">&quot;`{Self}` doesn&#39;t implement `{Debug}`&quot;</span>,
     <span class="ident">label</span> <span class="op">=</span> <span class="string">&quot;`{Self}` cannot be formatted using `{{:?}}` because it doesn&#39;t implement `{Debug}`&quot;</span>
 )]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;{:?}&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">rustc_diagnostic_item</span> <span class="op">=</span> <span class="string">&quot;debug_trait&quot;</span>]</span>
+<span class="attribute">#[<span class="ident">rustc_diagnostic_item</span> <span class="op">=</span> <span class="string">&quot;Debug&quot;</span>]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>), <span class="ident">rustc_trivial_field_reads</span>)]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Debug</span> {
     <span class="doccomment">/// Formats the value using the given formatter.</span>
     <span class="doccomment">///</span>
@@ -2903,7 +3010,7 @@
     <span class="doccomment">/// )&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span>;
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span>;
 }
 
 <span class="comment">// Separate module to reexport the macro `Debug` from prelude without the trait `Debug`.</span>
@@ -2963,6 +3070,7 @@
     <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;in format strings you may be able to use `{{:?}}` (or {{:#?}} for pretty-print) instead&quot;</span>
 )]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;{}&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">rustc_diagnostic_item</span> <span class="op">=</span> <span class="string">&quot;Display&quot;</span>]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Display</span> {
     <span class="doccomment">/// Formats the value using the given formatter.</span>
@@ -2987,7 +3095,7 @@
     <span class="doccomment">///            format!(&quot;{}&quot;, Position { longitude: 1.987, latitude: 2.983, }));</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span>;
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span>;
 }
 
 <span class="doccomment">/// `o` formatting.</span>
@@ -3041,7 +3149,7 @@
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Octal</span> {
     <span class="doccomment">/// Formats the value using the given formatter.</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span>;
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span>;
 }
 
 <span class="doccomment">/// `b` formatting.</span>
@@ -3098,7 +3206,7 @@
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Binary</span> {
     <span class="doccomment">/// Formats the value using the given formatter.</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span>;
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span>;
 }
 
 <span class="doccomment">/// `x` formatting.</span>
@@ -3153,7 +3261,7 @@
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">LowerHex</span> {
     <span class="doccomment">/// Formats the value using the given formatter.</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span>;
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span>;
 }
 
 <span class="doccomment">/// `X` formatting.</span>
@@ -3208,7 +3316,7 @@
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">UpperHex</span> {
     <span class="doccomment">/// Formats the value using the given formatter.</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span>;
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span>;
 }
 
 <span class="doccomment">/// `p` formatting.</span>
@@ -3255,12 +3363,12 @@
 <span class="doccomment">/// assert_eq!(&amp;l_ptr[..2], &quot;0x&quot;);</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">rustc_diagnostic_item</span> <span class="op">=</span> <span class="string">&quot;pointer_trait&quot;</span>]</span>
+<span class="attribute">#[<span class="ident">rustc_diagnostic_item</span> <span class="op">=</span> <span class="string">&quot;Pointer&quot;</span>]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Pointer</span> {
     <span class="doccomment">/// Formats the value using the given formatter.</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_diagnostic_item</span> <span class="op">=</span> <span class="string">&quot;pointer_trait_fmt&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span>;
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span>;
 }
 
 <span class="doccomment">/// `e` formatting.</span>
@@ -3311,7 +3419,7 @@
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">LowerExp</span> {
     <span class="doccomment">/// Formats the value using the given formatter.</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span>;
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span>;
 }
 
 <span class="doccomment">/// `E` formatting.</span>
@@ -3362,7 +3470,7 @@
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">UpperExp</span> {
     <span class="doccomment">/// Formats the value using the given formatter.</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span>;
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span>;
 }
 
 <span class="doccomment">/// The `write` function takes an output stream, and an `Arguments` struct</span>
@@ -3397,14 +3505,17 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`write!`]: crate::write!</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="ident">output</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">args</span>: <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="ident">output</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">args</span>: <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">formatter</span> <span class="op">=</span> <span class="ident">Formatter::new</span>(<span class="ident">output</span>);
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">idx</span> <span class="op">=</span> <span class="number">0</span>;
 
     <span class="kw">match</span> <span class="ident">args</span>.<span class="ident">fmt</span> {
-        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="prelude-val">None</span> =&gt; {
             <span class="comment">// We can use default formatting parameters for all arguments.</span>
-            <span class="kw">for</span> (<span class="ident">arg</span>, <span class="ident">piece</span>) <span class="kw">in</span> <span class="ident">iter::zip</span>(<span class="ident">args</span>.<span class="ident">args</span>, <span class="ident">args</span>.<span class="ident">pieces</span>) {
+            <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">arg</span>) <span class="kw">in</span> <span class="ident">args</span>.<span class="ident">args</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
+                <span class="comment">// SAFETY: args.args and args.pieces come from the same Arguments,</span>
+                <span class="comment">// which guarantees the indexes are always within bounds.</span>
+                <span class="kw">let</span> <span class="ident">piece</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">args</span>.<span class="ident">pieces</span>.<span class="ident">get_unchecked</span>(<span class="ident">i</span>) };
                 <span class="kw">if</span> <span class="op">!</span><span class="ident">piece</span>.<span class="ident">is_empty</span>() {
                     <span class="ident">formatter</span>.<span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="kw-2">*</span><span class="ident">piece</span>)<span class="question-mark">?</span>;
                 }
@@ -3412,16 +3523,19 @@
                 <span class="ident">idx</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             }
         }
-        <span class="prelude-val">Some</span>(<span class="ident">fmt</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Some</span>(<span class="ident">fmt</span>) =&gt; {
             <span class="comment">// Every spec has a corresponding argument that is preceded by</span>
             <span class="comment">// a string piece.</span>
-            <span class="kw">for</span> (<span class="ident">arg</span>, <span class="ident">piece</span>) <span class="kw">in</span> <span class="ident">iter::zip</span>(<span class="ident">fmt</span>, <span class="ident">args</span>.<span class="ident">pieces</span>) {
+            <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">arg</span>) <span class="kw">in</span> <span class="ident">fmt</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
+                <span class="comment">// SAFETY: fmt and args.pieces come from the same Arguments,</span>
+                <span class="comment">// which guarantees the indexes are always within bounds.</span>
+                <span class="kw">let</span> <span class="ident">piece</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">args</span>.<span class="ident">pieces</span>.<span class="ident">get_unchecked</span>(<span class="ident">i</span>) };
                 <span class="kw">if</span> <span class="op">!</span><span class="ident">piece</span>.<span class="ident">is_empty</span>() {
                     <span class="ident">formatter</span>.<span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="kw-2">*</span><span class="ident">piece</span>)<span class="question-mark">?</span>;
                 }
                 <span class="comment">// SAFETY: arg and args.args come from the same Arguments,</span>
                 <span class="comment">// which guarantees the indexes are always within bounds.</span>
-                <span class="kw">unsafe</span> { <span class="ident">run</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">formatter</span>, <span class="ident">arg</span>, <span class="kw-2">&amp;</span><span class="ident">args</span>.<span class="ident">args</span>) }<span class="question-mark">?</span>;
+                <span class="kw">unsafe</span> { <span class="ident">run</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">formatter</span>, <span class="ident">arg</span>, <span class="ident">args</span>.<span class="ident">args</span>) }<span class="question-mark">?</span>;
                 <span class="ident">idx</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             }
         }
@@ -3435,7 +3549,7 @@
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">run</span>(<span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">rt::v1::Argument</span>, <span class="ident">args</span>: <span class="kw-2">&amp;</span>[<span class="ident">ArgumentV1</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">run</span>(<span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">rt::v1::Argument</span>, <span class="ident">args</span>: <span class="kw-2">&amp;</span>[<span class="ident">ArgumentV1</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) -&gt; <span class="prelude-ty">Result</span> {
     <span class="ident">fmt</span>.<span class="ident">fill</span> <span class="op">=</span> <span class="ident">arg</span>.<span class="ident">format</span>.<span class="ident">fill</span>;
     <span class="ident">fmt</span>.<span class="ident">align</span> <span class="op">=</span> <span class="ident">arg</span>.<span class="ident">format</span>.<span class="ident">align</span>;
     <span class="ident">fmt</span>.<span class="ident">flags</span> <span class="op">=</span> <span class="ident">arg</span>.<span class="ident">format</span>.<span class="ident">flags</span>;
@@ -3456,11 +3570,11 @@
     (<span class="ident">value</span>.<span class="ident">formatter</span>)(<span class="ident">value</span>.<span class="ident">value</span>, <span class="ident">fmt</span>)
 }
 
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">getcount</span>(<span class="ident">args</span>: <span class="kw-2">&amp;</span>[<span class="ident">ArgumentV1</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>], <span class="ident">cnt</span>: <span class="kw-2">&amp;</span><span class="ident">rt::v1::Count</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">getcount</span>(<span class="ident">args</span>: <span class="kw-2">&amp;</span>[<span class="ident">ArgumentV1</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>], <span class="ident">cnt</span>: <span class="kw-2">&amp;</span><span class="ident">rt::v1::Count</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">cnt</span> {
-        <span class="ident">rt::v1::Count::Is</span>(<span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">n</span>),
-        <span class="ident">rt::v1::Count::Implied</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-        <span class="ident">rt::v1::Count::Param</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">rt::v1::Count::Is</span>(<span class="ident">n</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">n</span>),
+        <span class="ident">rt::v1::Count::Implied</span> =&gt; <span class="prelude-val">None</span>,
+        <span class="ident">rt::v1::Count::Param</span>(<span class="ident">i</span>) =&gt; {
             <span class="macro">debug_assert!</span>(<span class="ident">i</span> <span class="op">&lt;</span> <span class="ident">args</span>.<span class="ident">len</span>());
             <span class="comment">// SAFETY: cnt and args come from the same Arguments,</span>
             <span class="comment">// which guarantees this index is always within bounds.</span>
@@ -3471,30 +3585,30 @@
 
 <span class="doccomment">/// Padding after the end of something. Returned by `Formatter::padding`.</span>
 <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;don&#39;t forget to write the post padding&quot;</span>]</span>
-<span class="kw">struct</span> <span class="ident">PostPadding</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">PostPadding</span> {
     <span class="ident">fill</span>: <span class="ident">char</span>,
     <span class="ident">padding</span>: <span class="ident">usize</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">PostPadding</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">fill</span>: <span class="ident">char</span>, <span class="ident">padding</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PostPadding</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">fill</span>: <span class="ident">char</span>, <span class="ident">padding</span>: <span class="ident">usize</span>) -&gt; <span class="ident">PostPadding</span> {
         <span class="ident">PostPadding</span> { <span class="ident">fill</span>, <span class="ident">padding</span> }
     }
 
     <span class="doccomment">/// Write this post padding.</span>
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">write</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="self">self</span>.<span class="ident">padding</span> {
-            <span class="ident">buf</span>.<span class="ident">write_char</span>(<span class="self">self</span>.<span class="ident">fill</span>)<span class="question-mark">?</span>;
+            <span class="ident">f</span>.<span class="ident">buf</span>.<span class="ident">write_char</span>(<span class="self">self</span>.<span class="ident">fill</span>)<span class="question-mark">?</span>;
         }
         <span class="prelude-val">Ok</span>(())
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">wrap_buf</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="lifetime">&#39;c</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">wrap</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;c</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">wrap_buf</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="lifetime">&#39;c</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">wrap</span>: <span class="ident">F</span>) -&gt; <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;c</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;c</span>,
-        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> (<span class="kw">dyn</span> <span class="ident">Write</span> <span class="op">+</span> <span class="lifetime">&#39;b</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> (<span class="kw">dyn</span> <span class="ident">Write</span> <span class="op">+</span> <span class="lifetime">&#39;c</span>),
+        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> (<span class="kw">dyn</span> <span class="ident">Write</span> <span class="op">+</span> <span class="lifetime">&#39;b</span>)) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> <span class="kw-2">mut</span> (<span class="kw">dyn</span> <span class="ident">Write</span> <span class="op">+</span> <span class="lifetime">&#39;c</span>),
     {
         <span class="ident">Formatter</span> {
             <span class="comment">// We want to change this</span>
@@ -3557,7 +3671,7 @@
     <span class="doccomment">/// assert_eq!(&amp;format!(&quot;{:0&gt;#8}&quot;, Foo::new(-1)), &quot;00-Foo 1&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pad_integral</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">is_nonnegative</span>: <span class="ident">bool</span>, <span class="ident">prefix</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pad_integral</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">is_nonnegative</span>: <span class="ident">bool</span>, <span class="ident">prefix</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">width</span> <span class="op">=</span> <span class="ident">buf</span>.<span class="ident">len</span>();
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sign</span> <span class="op">=</span> <span class="prelude-val">None</span>;
@@ -3578,7 +3692,7 @@
 
         <span class="comment">// Writes the sign if it exists, and then the prefix if it was requested</span>
         <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">never</span>)]</span>
-        <span class="kw">fn</span> <span class="ident">write_prefix</span>(<span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">sign</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span>, <span class="ident">prefix</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+        <span class="kw">fn</span> <span class="ident">write_prefix</span>(<span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">sign</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span>, <span class="ident">prefix</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">c</span>) <span class="op">=</span> <span class="ident">sign</span> {
                 <span class="ident">f</span>.<span class="ident">buf</span>.<span class="ident">write_char</span>(<span class="ident">c</span>)<span class="question-mark">?</span>;
             }
@@ -3589,35 +3703,35 @@
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">width</span> {
             <span class="comment">// If there&#39;s no minimum length requirements then we can just</span>
             <span class="comment">// write the bytes.</span>
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">None</span> =&gt; {
                 <span class="ident">write_prefix</span>(<span class="self">self</span>, <span class="ident">sign</span>, <span class="ident">prefix</span>)<span class="question-mark">?</span>;
                 <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="ident">buf</span>)
             }
             <span class="comment">// Check if we&#39;re over the minimum width, if so then we can also</span>
             <span class="comment">// just write the bytes.</span>
-            <span class="prelude-val">Some</span>(<span class="ident">min</span>) <span class="kw">if</span> <span class="ident">width</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">min</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">min</span>) <span class="kw">if</span> <span class="ident">width</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">min</span> =&gt; {
                 <span class="ident">write_prefix</span>(<span class="self">self</span>, <span class="ident">sign</span>, <span class="ident">prefix</span>)<span class="question-mark">?</span>;
                 <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="ident">buf</span>)
             }
             <span class="comment">// The sign and prefix goes before the padding if the fill character</span>
             <span class="comment">// is zero</span>
-            <span class="prelude-val">Some</span>(<span class="ident">min</span>) <span class="kw">if</span> <span class="self">self</span>.<span class="ident">sign_aware_zero_pad</span>() <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">old_fill</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">fill</span>, <span class="string">&#39;0&#39;</span>);
-                <span class="kw">let</span> <span class="ident">old_align</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">align</span>, <span class="ident">rt::v1::Alignment::Right</span>);
+            <span class="prelude-val">Some</span>(<span class="ident">min</span>) <span class="kw">if</span> <span class="self">self</span>.<span class="ident">sign_aware_zero_pad</span>() =&gt; {
+                <span class="kw">let</span> <span class="ident">old_fill</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">fill</span>, <span class="string">&#39;0&#39;</span>);
+                <span class="kw">let</span> <span class="ident">old_align</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">align</span>, <span class="ident">rt::v1::Alignment::Right</span>);
                 <span class="ident">write_prefix</span>(<span class="self">self</span>, <span class="ident">sign</span>, <span class="ident">prefix</span>)<span class="question-mark">?</span>;
                 <span class="kw">let</span> <span class="ident">post_padding</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">padding</span>(<span class="ident">min</span> <span class="op">-</span> <span class="ident">width</span>, <span class="ident">rt::v1::Alignment::Right</span>)<span class="question-mark">?</span>;
                 <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="ident">buf</span>)<span class="question-mark">?</span>;
-                <span class="ident">post_padding</span>.<span class="ident">write</span>(<span class="self">self</span>.<span class="ident">buf</span>)<span class="question-mark">?</span>;
+                <span class="ident">post_padding</span>.<span class="ident">write</span>(<span class="self">self</span>)<span class="question-mark">?</span>;
                 <span class="self">self</span>.<span class="ident">fill</span> <span class="op">=</span> <span class="ident">old_fill</span>;
                 <span class="self">self</span>.<span class="ident">align</span> <span class="op">=</span> <span class="ident">old_align</span>;
                 <span class="prelude-val">Ok</span>(())
             }
             <span class="comment">// Otherwise, the sign and prefix goes after the padding</span>
-            <span class="prelude-val">Some</span>(<span class="ident">min</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">min</span>) =&gt; {
                 <span class="kw">let</span> <span class="ident">post_padding</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">padding</span>(<span class="ident">min</span> <span class="op">-</span> <span class="ident">width</span>, <span class="ident">rt::v1::Alignment::Right</span>)<span class="question-mark">?</span>;
                 <span class="ident">write_prefix</span>(<span class="self">self</span>, <span class="ident">sign</span>, <span class="ident">prefix</span>)<span class="question-mark">?</span>;
                 <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="ident">buf</span>)<span class="question-mark">?</span>;
-                <span class="ident">post_padding</span>.<span class="ident">write</span>(<span class="self">self</span>.<span class="ident">buf</span>)
+                <span class="ident">post_padding</span>.<span class="ident">write</span>(<span class="self">self</span>)
             }
         }
     }
@@ -3651,7 +3765,7 @@
     <span class="doccomment">/// assert_eq!(&amp;format!(&quot;{:0&gt;4}&quot;, Foo), &quot;0Foo&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pad</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pad</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="comment">// Make sure there&#39;s a fast path up front</span>
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">width</span>.<span class="ident">is_none</span>() <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">precision</span>.<span class="ident">is_none</span>() {
             <span class="kw">return</span> <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="ident">s</span>);
@@ -3667,7 +3781,7 @@
                 <span class="comment">// we know that it can&#39;t panic. Use `get` + `unwrap_or` to avoid</span>
                 <span class="comment">// `unsafe` and otherwise don&#39;t emit any panic-related code</span>
                 <span class="comment">// here.</span>
-                <span class="ident">s</span>.<span class="ident">get</span>(..<span class="ident">i</span>).<span class="ident">unwrap_or</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>)
+                <span class="ident">s</span>.<span class="ident">get</span>(..<span class="ident">i</span>).<span class="ident">unwrap_or</span>(<span class="ident">s</span>)
             } <span class="kw">else</span> {
                 <span class="kw-2">&amp;</span><span class="ident">s</span>
             }
@@ -3678,17 +3792,22 @@
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">width</span> {
             <span class="comment">// If we&#39;re under the maximum length, and there&#39;s no minimum length</span>
             <span class="comment">// requirements, then we can just emit the string</span>
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="ident">s</span>),
-            <span class="comment">// If we&#39;re under the maximum width, check if we&#39;re over the minimum</span>
-            <span class="comment">// width, if so it&#39;s as easy as just emitting the string.</span>
-            <span class="prelude-val">Some</span>(<span class="ident">width</span>) <span class="kw">if</span> <span class="ident">s</span>.<span class="ident">chars</span>().<span class="ident">count</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="ident">width</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="ident">s</span>),
-            <span class="comment">// If we&#39;re under both the maximum and the minimum width, then fill</span>
-            <span class="comment">// up the minimum width with the specified string + some alignment.</span>
-            <span class="prelude-val">Some</span>(<span class="ident">width</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">align</span> <span class="op">=</span> <span class="ident">rt::v1::Alignment::Left</span>;
-                <span class="kw">let</span> <span class="ident">post_padding</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">padding</span>(<span class="ident">width</span> <span class="op">-</span> <span class="ident">s</span>.<span class="ident">chars</span>().<span class="ident">count</span>(), <span class="ident">align</span>)<span class="question-mark">?</span>;
-                <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="ident">s</span>)<span class="question-mark">?</span>;
-                <span class="ident">post_padding</span>.<span class="ident">write</span>(<span class="self">self</span>.<span class="ident">buf</span>)
+            <span class="prelude-val">None</span> =&gt; <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="ident">s</span>),
+            <span class="prelude-val">Some</span>(<span class="ident">width</span>) =&gt; {
+                <span class="kw">let</span> <span class="ident">chars_count</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">chars</span>().<span class="ident">count</span>();
+                <span class="comment">// If we&#39;re under the maximum width, check if we&#39;re over the minimum</span>
+                <span class="comment">// width, if so it&#39;s as easy as just emitting the string.</span>
+                <span class="kw">if</span> <span class="ident">chars_count</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">width</span> {
+                    <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="ident">s</span>)
+                }
+                <span class="comment">// If we&#39;re under both the maximum and the minimum width, then fill</span>
+                <span class="comment">// up the minimum width with the specified string + some alignment.</span>
+                <span class="kw">else</span> {
+                    <span class="kw">let</span> <span class="ident">align</span> <span class="op">=</span> <span class="ident">rt::v1::Alignment::Left</span>;
+                    <span class="kw">let</span> <span class="ident">post_padding</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">padding</span>(<span class="ident">width</span> <span class="op">-</span> <span class="ident">chars_count</span>, <span class="ident">align</span>)<span class="question-mark">?</span>;
+                    <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="ident">s</span>)<span class="question-mark">?</span>;
+                    <span class="ident">post_padding</span>.<span class="ident">write</span>(<span class="self">self</span>)
+                }
             }
         }
     }
@@ -3696,20 +3815,20 @@
     <span class="doccomment">/// Write the pre-padding and return the unwritten post-padding. Callers are</span>
     <span class="doccomment">/// responsible for ensuring post-padding is written after the thing that is</span>
     <span class="doccomment">/// being padded.</span>
-    <span class="kw">fn</span> <span class="ident">padding</span>(
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">padding</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">padding</span>: <span class="ident">usize</span>,
         <span class="ident">default</span>: <span class="ident">rt::v1::Alignment</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">result::Result</span><span class="op">&lt;</span><span class="ident">PostPadding</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">result::Result</span><span class="op">&lt;</span><span class="ident">PostPadding</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">align</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">align</span> {
-            <span class="ident">rt::v1::Alignment::Unknown</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">default</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">align</span>,
+            <span class="ident">rt::v1::Alignment::Unknown</span> =&gt; <span class="ident">default</span>,
+            <span class="kw">_</span> =&gt; <span class="self">self</span>.<span class="ident">align</span>,
         };
 
         <span class="kw">let</span> (<span class="ident">pre_pad</span>, <span class="ident">post_pad</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">align</span> {
-            <span class="ident">rt::v1::Alignment::Left</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="number">0</span>, <span class="ident">padding</span>),
-            <span class="ident">rt::v1::Alignment::Right</span> <span class="op">|</span> <span class="ident">rt::v1::Alignment::Unknown</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">padding</span>, <span class="number">0</span>),
-            <span class="ident">rt::v1::Alignment::Center</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">padding</span> <span class="op">/</span> <span class="number">2</span>, (<span class="ident">padding</span> <span class="op">+</span> <span class="number">1</span>) <span class="op">/</span> <span class="number">2</span>),
+            <span class="ident">rt::v1::Alignment::Left</span> =&gt; (<span class="number">0</span>, <span class="ident">padding</span>),
+            <span class="ident">rt::v1::Alignment::Right</span> <span class="op">|</span> <span class="ident">rt::v1::Alignment::Unknown</span> =&gt; (<span class="ident">padding</span>, <span class="number">0</span>),
+            <span class="ident">rt::v1::Alignment::Center</span> =&gt; (<span class="ident">padding</span> <span class="op">/</span> <span class="number">2</span>, (<span class="ident">padding</span> <span class="op">+</span> <span class="number">1</span>) <span class="op">/</span> <span class="number">2</span>),
         };
 
         <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">pre_pad</span> {
@@ -3722,7 +3841,7 @@
     <span class="doccomment">/// Takes the formatted parts and applies the padding.</span>
     <span class="doccomment">/// Assumes that the caller already has rendered the parts with required precision,</span>
     <span class="doccomment">/// so that `self.precision` can be ignored.</span>
-    <span class="kw">fn</span> <span class="ident">pad_formatted_parts</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">formatted</span>: <span class="kw-2">&amp;</span><span class="ident">flt2dec::Formatted</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">pad_formatted_parts</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">formatted</span>: <span class="kw-2">&amp;</span><span class="ident">numfmt::Formatted</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">mut</span> <span class="ident">width</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">width</span> {
             <span class="comment">// for the sign-aware zero padding, we render the sign first and</span>
             <span class="comment">// behave as if we had no sign from the beginning.</span>
@@ -3751,7 +3870,7 @@
             } <span class="kw">else</span> {
                 <span class="kw">let</span> <span class="ident">post_padding</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">padding</span>(<span class="ident">width</span> <span class="op">-</span> <span class="ident">len</span>, <span class="ident">align</span>)<span class="question-mark">?</span>;
                 <span class="self">self</span>.<span class="ident">write_formatted_parts</span>(<span class="kw-2">&amp;</span><span class="ident">formatted</span>)<span class="question-mark">?</span>;
-                <span class="ident">post_padding</span>.<span class="ident">write</span>(<span class="self">self</span>.<span class="ident">buf</span>)
+                <span class="ident">post_padding</span>.<span class="ident">write</span>(<span class="self">self</span>)
             };
             <span class="self">self</span>.<span class="ident">fill</span> <span class="op">=</span> <span class="ident">old_fill</span>;
             <span class="self">self</span>.<span class="ident">align</span> <span class="op">=</span> <span class="ident">old_align</span>;
@@ -3762,14 +3881,14 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">write_formatted_parts</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">formatted</span>: <span class="kw-2">&amp;</span><span class="ident">flt2dec::Formatted</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
-        <span class="kw">fn</span> <span class="ident">write_bytes</span>(<span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
-            <span class="comment">// SAFETY: This is used for `flt2dec::Part::Num` and `flt2dec::Part::Copy`.</span>
-            <span class="comment">// It&#39;s safe to use for `flt2dec::Part::Num` since every char `c` is between</span>
+    <span class="kw">fn</span> <span class="ident">write_formatted_parts</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">formatted</span>: <span class="kw-2">&amp;</span><span class="ident">numfmt::Formatted</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
+        <span class="kw">fn</span> <span class="ident">write_bytes</span>(<span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span> {
+            <span class="comment">// SAFETY: This is used for `numfmt::Part::Num` and `numfmt::Part::Copy`.</span>
+            <span class="comment">// It&#39;s safe to use for `numfmt::Part::Num` since every char `c` is between</span>
             <span class="comment">// `b&#39;0&#39;` and `b&#39;9&#39;`, which means `s` is valid UTF-8.</span>
-            <span class="comment">// It&#39;s also probably safe in practice to use for `flt2dec::Part::Copy(buf)`</span>
+            <span class="comment">// It&#39;s also probably safe in practice to use for `numfmt::Part::Copy(buf)`</span>
             <span class="comment">// since `buf` should be plain ASCII, but it&#39;s possible for someone to pass</span>
-            <span class="comment">// in a bad value for `buf` into `flt2dec::to_shortest_str` since it is a</span>
+            <span class="comment">// in a bad value for `buf` into `numfmt::to_shortest_str` since it is a</span>
             <span class="comment">// public function.</span>
             <span class="comment">// FIXME: Determine whether this could result in UB.</span>
             <span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="kw">unsafe</span> { <span class="ident">str::from_utf8_unchecked</span>(<span class="ident">s</span>) })
@@ -3780,7 +3899,7 @@
         }
         <span class="kw">for</span> <span class="ident">part</span> <span class="kw">in</span> <span class="ident">formatted</span>.<span class="ident">parts</span> {
             <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">part</span> {
-                <span class="ident">flt2dec::Part::Zero</span>(<span class="kw-2">mut</span> <span class="ident">nzeroes</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">numfmt::Part::Zero</span>(<span class="kw-2">mut</span> <span class="ident">nzeroes</span>) =&gt; {
                     <span class="kw">const</span> <span class="ident">ZEROES</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="comment">// 64 zeroes</span>
                         <span class="string">&quot;0000000000000000000000000000000000000000000000000000000000000000&quot;</span>;
                     <span class="kw">while</span> <span class="ident">nzeroes</span> <span class="op">&gt;</span> <span class="ident">ZEROES</span>.<span class="ident">len</span>() {
@@ -3791,7 +3910,7 @@
                         <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="ident">ZEROES</span>[..<span class="ident">nzeroes</span>])<span class="question-mark">?</span>;
                     }
                 }
-                <span class="ident">flt2dec::Part::Num</span>(<span class="kw-2">mut</span> <span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">numfmt::Part::Num</span>(<span class="kw-2">mut</span> <span class="ident">v</span>) =&gt; {
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">5</span>];
                     <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">part</span>.<span class="ident">len</span>();
                     <span class="kw">for</span> <span class="ident">c</span> <span class="kw">in</span> <span class="ident">s</span>[..<span class="ident">len</span>].<span class="ident">iter_mut</span>().<span class="ident">rev</span>() {
@@ -3800,7 +3919,7 @@
                     }
                     <span class="ident">write_bytes</span>(<span class="self">self</span>.<span class="ident">buf</span>, <span class="kw-2">&amp;</span><span class="ident">s</span>[..<span class="ident">len</span>])<span class="question-mark">?</span>;
                 }
-                <span class="ident">flt2dec::Part::Copy</span>(<span class="ident">buf</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">numfmt::Part::Copy</span>(<span class="ident">buf</span>) =&gt; {
                     <span class="ident">write_bytes</span>(<span class="self">self</span>.<span class="ident">buf</span>, <span class="ident">buf</span>)<span class="question-mark">?</span>;
                 }
             }
@@ -3830,7 +3949,7 @@
     <span class="doccomment">/// assert_eq!(&amp;format!(&quot;{:0&gt;8}&quot;, Foo), &quot;Foo&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="ident">data</span>)
     }
 
@@ -3853,7 +3972,7 @@
     <span class="doccomment">/// assert_eq!(&amp;format!(&quot;{:0&gt;8}&quot;, Foo(2)), &quot;Foo 2&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">fmt</span>: <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">fmt</span>: <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">write</span>(<span class="self">self</span>.<span class="ident">buf</span>, <span class="ident">fmt</span>)
     }
 
@@ -3864,7 +3983,7 @@
         <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;use the `sign_plus`, `sign_minus`, `alternate`, \
                   or `sign_aware_zero_pad` methods instead&quot;</span>
     )]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flags</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flags</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">flags</span>
     }
 
@@ -3896,7 +4015,7 @@
     <span class="doccomment">/// assert_eq!(&amp;format!(&quot;{:t&gt;6}&quot;, Foo), &quot;tttttt&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_flags&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.5.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fill</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">char</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fill</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">char</span> {
         <span class="self">self</span>.<span class="ident">fill</span>
     }
 
@@ -3932,12 +4051,12 @@
     <span class="doccomment">/// assert_eq!(&amp;format!(&quot;{}&quot;, Foo), &quot;into the void&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_flags_align&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">align</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Alignment</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">align</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Alignment</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">align</span> {
-            <span class="ident">rt::v1::Alignment::Left</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Alignment::Left</span>),
-            <span class="ident">rt::v1::Alignment::Right</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Alignment::Right</span>),
-            <span class="ident">rt::v1::Alignment::Center</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Alignment::Center</span>),
-            <span class="ident">rt::v1::Alignment::Unknown</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">rt::v1::Alignment::Left</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident">Alignment::Left</span>),
+            <span class="ident">rt::v1::Alignment::Right</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident">Alignment::Right</span>),
+            <span class="ident">rt::v1::Alignment::Center</span> =&gt; <span class="prelude-val">Some</span>(<span class="ident">Alignment::Center</span>),
+            <span class="ident">rt::v1::Alignment::Unknown</span> =&gt; <span class="prelude-val">None</span>,
         }
     }
 
@@ -3966,7 +4085,7 @@
     <span class="doccomment">/// assert_eq!(&amp;format!(&quot;{}&quot;, Foo(23)), &quot;Foo(23)&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_flags&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.5.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">width</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">width</span>
     }
 
@@ -3996,7 +4115,7 @@
     <span class="doccomment">/// assert_eq!(&amp;format!(&quot;{}&quot;, Foo(23.2)), &quot;Foo(23.20)&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_flags&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.5.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">precision</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">precision</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">precision</span>
     }
 
@@ -4026,7 +4145,7 @@
     <span class="doccomment">/// assert_eq!(&amp;format!(&quot;{}&quot;, Foo(23)), &quot;Foo(23)&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_flags&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.5.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sign_plus</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sign_plus</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">flags</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">FlagV1::SignPlus</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
@@ -4054,7 +4173,7 @@
     <span class="doccomment">/// assert_eq!(&amp;format!(&quot;{}&quot;, Foo(23)), &quot;Foo(23)&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_flags&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.5.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sign_minus</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sign_minus</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">flags</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">FlagV1::SignMinus</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
@@ -4081,7 +4200,7 @@
     <span class="doccomment">/// assert_eq!(&amp;format!(&quot;{}&quot;, Foo(23)), &quot;23&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_flags&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.5.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alternate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">alternate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">flags</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">FlagV1::Alternate</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
@@ -4106,17 +4225,17 @@
     <span class="doccomment">/// assert_eq!(&amp;format!(&quot;{:04}&quot;, Foo(23)), &quot;23&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fmt_flags&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.5.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sign_aware_zero_pad</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sign_aware_zero_pad</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">flags</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">FlagV1::SignAwareZeroPad</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
     <span class="comment">// FIXME: Decide what public API we want for these two flags.</span>
     <span class="comment">// https://github.com/rust-lang/rust/issues/48584</span>
-    <span class="kw">fn</span> <span class="ident">debug_lower_hex</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">debug_lower_hex</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">flags</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">FlagV1::DebugLowerHex</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">debug_upper_hex</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">debug_upper_hex</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">flags</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">FlagV1::DebugUpperHex</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
@@ -4157,7 +4276,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;debug_builders&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.2.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">debug_struct</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DebugStruct</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">debug_struct</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DebugStruct</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">builders::debug_struct_new</span>(<span class="self">self</span>, <span class="ident">name</span>)
     }
 
@@ -4188,7 +4307,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;debug_builders&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.2.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">debug_tuple</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DebugTuple</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">debug_tuple</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">DebugTuple</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">builders::debug_tuple_new</span>(<span class="self">self</span>, <span class="ident">name</span>)
     }
 
@@ -4211,7 +4330,7 @@
     <span class="doccomment">/// assert_eq!(format!(&quot;{:?}&quot;, Foo(vec![10, 11])), &quot;[10, 11]&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;debug_builders&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.2.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">debug_list</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DebugList</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">debug_list</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">DebugList</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">builders::debug_list_new</span>(<span class="self">self</span>)
     }
 
@@ -4269,7 +4388,7 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;debug_builders&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.2.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">debug_set</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DebugSet</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">debug_set</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">DebugSet</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">builders::debug_set_new</span>(<span class="self">self</span>)
     }
 
@@ -4295,29 +4414,29 @@
     <span class="doccomment">///  );</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;debug_builders&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.2.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">debug_map</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DebugMap</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">debug_map</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">DebugMap</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">builders::debug_map_new</span>(<span class="self">self</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.2.0&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;formatter_write&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">write_str</span>(<span class="ident">s</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">write_char</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">write_char</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">write_char</span>(<span class="ident">c</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">write_fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">args</span>: <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">write_fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">args</span>: <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">write</span>(<span class="self">self</span>.<span class="ident">buf</span>, <span class="ident">args</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">Display::fmt</span>(<span class="string">&quot;an error occurred when formatting an argument&quot;</span>, <span class="ident">f</span>)
     }
 }
@@ -4325,15 +4444,15 @@
 <span class="comment">// Implementations of the core formatting traits</span>
 
 <span class="macro">macro_rules!</span> <span class="ident">fmt_refs</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tr</span>:<span class="ident">ident</span>),<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tr</span>:<span class="ident">ident</span>),<span class="kw-2">*</span>) =&gt; {
         $(
         <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tr</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tr</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">T</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tr::fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">f</span>) }
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tr::fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">f</span>) }
         }
         <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tr</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tr</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tr::fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">f</span>) }
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tr::fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">f</span>) }
         }
         )<span class="op">*</span>
     }
@@ -4343,14 +4462,14 @@
 
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;never_type&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;35121&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="op">!</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="kw-2">*</span><span class="self">self</span>
     }
 }
 
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;never_type&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;35121&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="op">!</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="kw-2">*</span><span class="self">self</span>
     }
 }
@@ -4358,21 +4477,21 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">bool</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">Display::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">bool</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">Display::fmt</span>(<span class="kw">if</span> <span class="kw-2">*</span><span class="self">self</span> { <span class="string">&quot;true&quot;</span> } <span class="kw">else</span> { <span class="string">&quot;false&quot;</span> }, <span class="ident">f</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">str</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">f</span>.<span class="ident">write_char</span>(<span class="string">&#39;&quot;&#39;</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">from</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">c</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">char_indices</span>() {
@@ -4397,14 +4516,14 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">str</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">f</span>.<span class="ident">pad</span>(<span class="self">self</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">char</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">f</span>.<span class="ident">write_char</span>(<span class="string">&#39;\&#39;&#39;</span>)<span class="question-mark">?</span>;
         <span class="kw">for</span> <span class="ident">c</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">escape_debug_ext</span>(<span class="ident">EscapeDebugExtArgs</span> {
             <span class="ident">escape_grapheme_extended</span>: <span class="bool-val">true</span>,
@@ -4419,7 +4538,7 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">char</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="kw">if</span> <span class="ident">f</span>.<span class="ident">width</span>.<span class="ident">is_none</span>() <span class="op">&amp;&amp;</span> <span class="ident">f</span>.<span class="ident">precision</span>.<span class="ident">is_none</span>() {
             <span class="ident">f</span>.<span class="ident">write_char</span>(<span class="kw-2">*</span><span class="self">self</span>)
         } <span class="kw">else</span> {
@@ -4430,7 +4549,7 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Pointer</span> <span class="kw">for</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="kw">let</span> <span class="ident">old_width</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">width</span>;
         <span class="kw">let</span> <span class="ident">old_flags</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">flags</span>;
 
@@ -4458,21 +4577,21 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Pointer</span> <span class="kw">for</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">Pointer::fmt</span>(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>), <span class="ident">f</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Pointer</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">T</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">Pointer::fmt</span>(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>), <span class="ident">f</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Pointer</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">Pointer::fmt</span>(<span class="kw-2">&amp;</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>), <span class="ident">f</span>)
     }
 }
@@ -4481,28 +4600,28 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">Pointer::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
     }
 }
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">Pointer::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
     }
 }
 
 <span class="macro">macro_rules!</span> <span class="ident">peel</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">other</span>:<span class="ident">ident</span>,)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="macro">tuple!</span> { $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">other</span>,)<span class="op">*</span> })
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">other</span>:<span class="ident">ident</span>,)<span class="kw-2">*</span>) =&gt; (<span class="macro">tuple!</span> { $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">other</span>,)<span class="op">*</span> })
 }
 
 <span class="macro">macro_rules!</span> <span class="ident">tuple</span> {
-    () <span class="op">=</span><span class="op">&gt;</span> ();
-    ( $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>,)<span class="op">+</span> ) <span class="op">=</span><span class="op">&gt;</span> (
+    () =&gt; ();
+    ( $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>,)<span class="op">+</span> ) =&gt; (
         <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
         <span class="kw">impl</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">Debug</span>),<span class="op">+</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>,)<span class="op">+</span>) <span class="kw">where</span> <span class="macro">last_type!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>,)<span class="op">+</span>): <span class="question-mark">?</span><span class="ident">Sized</span> {
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>, <span class="ident">unused_assignments</span>)]</span>
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_tuple</span>(<span class="string">&quot;&quot;</span>);
                 <span class="kw">let</span> ($(<span class="kw-2">ref</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>,)<span class="op">+</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>;
                 $(
@@ -4517,15 +4636,15 @@
 }
 
 <span class="macro">macro_rules!</span> <span class="ident">last_type</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>:<span class="ident">ident</span>,) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span> };
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>:<span class="ident">ident</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest_a</span>:<span class="ident">ident</span>,)<span class="op">+</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">last_type!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest_a</span>,)<span class="op">+</span>) };
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>:<span class="ident">ident</span>,) =&gt; { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span> };
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>:<span class="ident">ident</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest_a</span>:<span class="ident">ident</span>,)<span class="op">+</span>) =&gt; { <span class="macro">last_type!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest_a</span>,)<span class="op">+</span>) };
 }
 
 <span class="macro">tuple!</span> { <span class="ident">T0</span>, <span class="ident">T1</span>, <span class="ident">T2</span>, <span class="ident">T3</span>, <span class="ident">T4</span>, <span class="ident">T5</span>, <span class="ident">T6</span>, <span class="ident">T7</span>, <span class="ident">T8</span>, <span class="ident">T9</span>, <span class="ident">T10</span>, <span class="ident">T11</span>, }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Debug</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> [<span class="ident">T</span>] {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_list</span>().<span class="ident">entries</span>(<span class="self">self</span>.<span class="ident">iter</span>()).<span class="ident">finish</span>()
     }
 }
@@ -4533,36 +4652,36 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> () {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">f</span>.<span class="ident">pad</span>(<span class="string">&quot;()&quot;</span>)
     }
 }
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;PhantomData&quot;</span>).<span class="ident">finish</span>()
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">Debug</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Cell&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;value&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">get</span>()).<span class="ident">finish</span>()
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Debug</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">RefCell</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">try_borrow</span>() {
-            <span class="prelude-val">Ok</span>(<span class="ident">borrow</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;RefCell&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;value&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">borrow</span>).<span class="ident">finish</span>(),
-            <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">borrow</span>) =&gt; <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;RefCell&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;value&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">borrow</span>).<span class="ident">finish</span>(),
+            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
                 <span class="comment">// The RefCell is mutably borrowed so we can&#39;t look at its value</span>
                 <span class="comment">// here. Show a placeholder instead.</span>
                 <span class="kw">struct</span> <span class="ident">BorrowedPlaceholder</span>;
 
                 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">BorrowedPlaceholder</span> {
-                    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+                    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
                         <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;&lt;borrowed&gt;&quot;</span>)
                     }
                 }
@@ -4575,21 +4694,21 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Debug</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Ref</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">Debug::fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">f</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Debug</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">RefMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">Debug::fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="self">self</span>.<span class="ident">deref</span>()), <span class="ident">f</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;core_impl_debug&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.9.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">UnsafeCell</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;UnsafeCell&quot;</span>).<span class="ident">finish_non_exhaustive</span>()
     }
 }
@@ -4597,5 +4716,7 @@
 <span class="comment">// If you expected tests to be here, look instead at the core/tests/fmt.rs file,</span>
 <span class="comment">// it&#39;s a lot easier than creating all of the rt::Piece structures here.</span>
 <span class="comment">// There are also tests in the alloc crate, for those that need allocations.</span>
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

@@ -1,1 +1,0 @@
-initSidebarItems({"trait":[["TryPin","Trait which provides a fallible version of `pin()` for pointer types."]]});

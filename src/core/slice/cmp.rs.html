@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/cmp.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>cmp.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;slice&#x2F;cmp.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>cmp.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -261,15 +259,14 @@
 <span id="259">259</span>
 <span id="260">260</span>
 <span id="261">261</span>
-</pre><pre class="rust">
-<span class="doccomment">//! Comparison traits for `[T]`.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Comparison traits for `[T]`.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cmp</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cmp::Ordering</span>::{<span class="self">self</span>, <span class="ident">Greater</span>, <span class="ident">Less</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cmp</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cmp::Ordering</span>::{<span class="self">self</span>, <span class="ident">Greater</span>, <span class="ident">Less</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem</span>;
 
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::from_raw_parts</span>;
-<span class="kw">use</span> <span class="kw">super</span><span class="ident">::memchr</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::from_raw_parts</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::memchr</span>;
 
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
     <span class="doccomment">/// Calls implementation provided memcmp.</span>
@@ -279,7 +276,7 @@
     <span class="doccomment">/// Returns 0 for equal, &lt; 0 for less than and &gt; 0 for greater</span>
     <span class="doccomment">/// than.</span>
     <span class="comment">// FIXME(#32610): Return type should be c_int</span>
-    <span class="kw">fn</span> <span class="ident">memcmp</span>(<span class="ident">s1</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">s2</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">memcmp</span>(<span class="ident">s1</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">s2</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="ident">i32</span>;
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
@@ -287,11 +284,11 @@
 <span class="kw">where</span>
     <span class="ident">A</span>: <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">B</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">B</span>]) -&gt; <span class="ident">bool</span> {
         <span class="ident">SlicePartialEq::equal</span>(<span class="self">self</span>, <span class="ident">other</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">B</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">B</span>]) -&gt; <span class="ident">bool</span> {
         <span class="ident">SlicePartialEq::not_equal</span>(<span class="self">self</span>, <span class="ident">other</span>)
     }
 }
@@ -302,7 +299,7 @@
 <span class="doccomment">/// Implements comparison of vectors [lexicographically](Ord#lexicographical-comparison).</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Ord</span><span class="op">&gt;</span> <span class="ident">Ord</span> <span class="kw">for</span> [<span class="ident">T</span>] {
-    <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ordering</span> {
+    <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) -&gt; <span class="ident">Ordering</span> {
         <span class="ident">SliceOrd::compare</span>(<span class="self">self</span>, <span class="ident">other</span>)
     }
 }
@@ -310,7 +307,7 @@
 <span class="doccomment">/// Implements comparison of vectors [lexicographically](Ord#lexicographical-comparison).</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">PartialOrd</span><span class="op">&gt;</span> <span class="ident">PartialOrd</span> <span class="kw">for</span> [<span class="ident">T</span>] {
-    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
         <span class="ident">SlicePartialOrd::partial_compare</span>(<span class="self">self</span>, <span class="ident">other</span>)
     }
 }
@@ -318,9 +315,9 @@
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="comment">// intermediate trait for specialization of slice&#39;s PartialEq</span>
 <span class="kw">trait</span> <span class="ident">SlicePartialEq</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">equal</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">B</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
+    <span class="kw">fn</span> <span class="ident">equal</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">B</span>]) -&gt; <span class="ident">bool</span>;
 
-    <span class="kw">fn</span> <span class="ident">not_equal</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">B</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">not_equal</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">B</span>]) -&gt; <span class="ident">bool</span> {
         <span class="op">!</span><span class="self">self</span>.<span class="ident">equal</span>(<span class="ident">other</span>)
     }
 }
@@ -330,12 +327,12 @@
 <span class="kw">where</span>
     <span class="ident">A</span>: <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
 {
-    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">equal</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">B</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">equal</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">B</span>]) -&gt; <span class="ident">bool</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">len</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">len</span>() {
             <span class="kw">return</span> <span class="bool-val">false</span>;
         }
 
-        <span class="self">self</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">other</span>.<span class="ident">iter</span>()).<span class="ident">all</span>(<span class="op">|</span>(<span class="ident">x</span>, <span class="ident">y</span>)<span class="op">|</span> <span class="ident">x</span> <span class="op">=</span><span class="op">=</span> <span class="ident">y</span>)
+        <span class="self">self</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">other</span>.<span class="ident">iter</span>()).<span class="ident">all</span>(<span class="op">|</span>(<span class="ident">x</span>, <span class="ident">y</span>)<span class="op">|</span> <span class="ident">x</span> <span class="op">==</span> <span class="ident">y</span>)
     }
 }
 
@@ -344,7 +341,7 @@
 <span class="kw">where</span>
     <span class="ident">A</span>: <span class="ident">BytewiseEquality</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">equal</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">B</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">equal</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">B</span>]) -&gt; <span class="ident">bool</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">len</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">len</span>() {
             <span class="kw">return</span> <span class="bool-val">false</span>;
         }
@@ -353,7 +350,7 @@
         <span class="comment">// The two slices have been checked to have the same size above.</span>
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">mem::size_of_val</span>(<span class="self">self</span>);
-            <span class="ident">memcmp</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">other</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">size</span>) <span class="op">=</span><span class="op">=</span> <span class="number">0</span>
+            <span class="ident">memcmp</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">other</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">size</span>) <span class="op">==</span> <span class="number">0</span>
         }
     }
 }
@@ -361,11 +358,11 @@
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="comment">// intermediate trait for specialization of slice&#39;s PartialOrd</span>
 <span class="kw">trait</span> <span class="ident">SlicePartialOrd</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">partial_compare</span>(<span class="ident">left</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>], <span class="ident">right</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">partial_compare</span>(<span class="ident">left</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>], <span class="ident">right</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">PartialOrd</span><span class="op">&gt;</span> <span class="ident">SlicePartialOrd</span> <span class="kw">for</span> <span class="ident">A</span> {
-    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">partial_compare</span>(<span class="ident">left</span>: <span class="kw-2">&amp;</span>[<span class="ident">A</span>], <span class="ident">right</span>: <span class="kw-2">&amp;</span>[<span class="ident">A</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
+    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">partial_compare</span>(<span class="ident">left</span>: <span class="kw-2">&amp;</span>[<span class="ident">A</span>], <span class="ident">right</span>: <span class="kw-2">&amp;</span>[<span class="ident">A</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">l</span> <span class="op">=</span> <span class="ident">cmp::min</span>(<span class="ident">left</span>.<span class="ident">len</span>(), <span class="ident">right</span>.<span class="ident">len</span>());
 
         <span class="comment">// Slice to the loop iteration range to enable bound check</span>
@@ -375,8 +372,8 @@
 
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">l</span> {
             <span class="kw">match</span> <span class="ident">lhs</span>[<span class="ident">i</span>].<span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="ident">rhs</span>[<span class="ident">i</span>]) {
-                <span class="prelude-val">Some</span>(<span class="ident">Ordering::Equal</span>) <span class="op">=</span><span class="op">&gt;</span> (),
-                <span class="ident">non_eq</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">non_eq</span>,
+                <span class="prelude-val">Some</span>(<span class="ident">Ordering::Equal</span>) =&gt; (),
+                <span class="ident">non_eq</span> =&gt; <span class="kw">return</span> <span class="ident">non_eq</span>,
             }
         }
 
@@ -398,7 +395,7 @@ where
 */</span>
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">AlwaysApplicableOrd</span><span class="op">&gt;</span> <span class="ident">SlicePartialOrd</span> <span class="kw">for</span> <span class="ident">A</span> {
-    <span class="kw">fn</span> <span class="ident">partial_compare</span>(<span class="ident">left</span>: <span class="kw-2">&amp;</span>[<span class="ident">A</span>], <span class="ident">right</span>: <span class="kw-2">&amp;</span>[<span class="ident">A</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">partial_compare</span>(<span class="ident">left</span>: <span class="kw-2">&amp;</span>[<span class="ident">A</span>], <span class="ident">right</span>: <span class="kw-2">&amp;</span>[<span class="ident">A</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
         <span class="prelude-val">Some</span>(<span class="ident">SliceOrd::compare</span>(<span class="ident">left</span>, <span class="ident">right</span>))
     }
 }
@@ -407,7 +404,7 @@ where
 <span class="kw">trait</span> <span class="ident">AlwaysApplicableOrd</span>: <span class="ident">SliceOrd</span> <span class="op">+</span> <span class="ident">Ord</span> {}
 
 <span class="macro">macro_rules!</span> <span class="ident">always_applicable_ord</span> {
-    ($([$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>] <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ty</span>,)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    ($([$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>] <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ty</span>,)<span class="kw-2">*</span>) =&gt; {
         $(<span class="kw">impl</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">p</span>)<span class="kw-2">*</span><span class="op">&gt;</span> <span class="ident">AlwaysApplicableOrd</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> {})<span class="op">*</span>
     }
 }
@@ -425,11 +422,11 @@ where
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="comment">// intermediate trait for specialization of slice&#39;s Ord</span>
 <span class="kw">trait</span> <span class="ident">SliceOrd</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">compare</span>(<span class="ident">left</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>], <span class="ident">right</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ordering</span>;
+    <span class="kw">fn</span> <span class="ident">compare</span>(<span class="ident">left</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>], <span class="ident">right</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) -&gt; <span class="ident">Ordering</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Ord</span><span class="op">&gt;</span> <span class="ident">SliceOrd</span> <span class="kw">for</span> <span class="ident">A</span> {
-    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">compare</span>(<span class="ident">left</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>], <span class="ident">right</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ordering</span> {
+    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">compare</span>(<span class="ident">left</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>], <span class="ident">right</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) -&gt; <span class="ident">Ordering</span> {
         <span class="kw">let</span> <span class="ident">l</span> <span class="op">=</span> <span class="ident">cmp::min</span>(<span class="ident">left</span>.<span class="ident">len</span>(), <span class="ident">right</span>.<span class="ident">len</span>());
 
         <span class="comment">// Slice to the loop iteration range to enable bound check</span>
@@ -439,8 +436,8 @@ where
 
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">l</span> {
             <span class="kw">match</span> <span class="ident">lhs</span>[<span class="ident">i</span>].<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">rhs</span>[<span class="ident">i</span>]) {
-                <span class="ident">Ordering::Equal</span> <span class="op">=</span><span class="op">&gt;</span> (),
-                <span class="ident">non_eq</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">non_eq</span>,
+                <span class="ident">Ordering::Equal</span> =&gt; (),
+                <span class="ident">non_eq</span> =&gt; <span class="kw">return</span> <span class="ident">non_eq</span>,
             }
         }
 
@@ -452,13 +449,13 @@ where
 <span class="comment">// this matches the order we want for [u8], but no others (not even [i8]).</span>
 <span class="kw">impl</span> <span class="ident">SliceOrd</span> <span class="kw">for</span> <span class="ident">u8</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">compare</span>(<span class="ident">left</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>], <span class="ident">right</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ordering</span> {
+    <span class="kw">fn</span> <span class="ident">compare</span>(<span class="ident">left</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>], <span class="ident">right</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) -&gt; <span class="ident">Ordering</span> {
         <span class="kw">let</span> <span class="ident">order</span> <span class="op">=</span>
             <span class="comment">// SAFETY: `left` and `right` are references and are thus guaranteed to be valid.</span>
             <span class="comment">// We use the minimum of both lengths which guarantees that both regions are</span>
             <span class="comment">// valid for reads in that interval.</span>
             <span class="kw">unsafe</span> { <span class="ident">memcmp</span>(<span class="ident">left</span>.<span class="ident">as_ptr</span>(), <span class="ident">right</span>.<span class="ident">as_ptr</span>(), <span class="ident">cmp::min</span>(<span class="ident">left</span>.<span class="ident">len</span>(), <span class="ident">right</span>.<span class="ident">len</span>())) };
-        <span class="kw">if</span> <span class="ident">order</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="ident">order</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="ident">left</span>.<span class="ident">len</span>().<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">right</span>.<span class="ident">len</span>())
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">order</span> <span class="op">&lt;</span> <span class="number">0</span> {
             <span class="ident">Less</span>
@@ -481,7 +478,7 @@ where
 <span class="kw">trait</span> <span class="ident">BytewiseEquality</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>: <span class="ident">MarkerEq</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Copy</span> {}
 
 <span class="macro">macro_rules!</span> <span class="ident">impl_marker_for</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">traitname</span>:<span class="ident">ident</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">traitname</span>:<span class="ident">ident</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>)<span class="kw-2">*</span>) =&gt; {
         $(
             <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">traitname</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span> { }
         )<span class="op">*</span>
@@ -492,28 +489,28 @@ where
                  <span class="ident">u8</span> <span class="ident">i8</span> <span class="ident">u16</span> <span class="ident">i16</span> <span class="ident">u32</span> <span class="ident">i32</span> <span class="ident">u64</span> <span class="ident">i64</span> <span class="ident">u128</span> <span class="ident">i128</span> <span class="ident">usize</span> <span class="ident">isize</span> <span class="ident">char</span> <span class="ident">bool</span>);
 
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">trait</span> <span class="ident">SliceContains</span>: <span class="ident">Sized</span> {
-    <span class="kw">fn</span> <span class="ident">slice_contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">x</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
+    <span class="kw">fn</span> <span class="ident">slice_contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">x</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) -&gt; <span class="ident">bool</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">SliceContains</span> <span class="kw">for</span> <span class="ident">T</span>
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">PartialEq</span>,
 {
-    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">slice_contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">x</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="ident">x</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">y</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">y</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>)
+    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">slice_contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">x</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) -&gt; <span class="ident">bool</span> {
+        <span class="ident">x</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">y</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">y</span> <span class="op">==</span> <span class="kw-2">*</span><span class="self">self</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">SliceContains</span> <span class="kw">for</span> <span class="ident">u8</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">slice_contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">x</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">slice_contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">x</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) -&gt; <span class="ident">bool</span> {
         <span class="ident">memchr::memchr</span>(<span class="kw-2">*</span><span class="self">self</span>, <span class="ident">x</span>).<span class="ident">is_some</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">SliceContains</span> <span class="kw">for</span> <span class="ident">i8</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">slice_contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">x</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">slice_contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">x</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>]) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">byte</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span> <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="comment">// SAFETY: `i8` and `u8` have the same memory layout, thus casting `x.as_ptr()`</span>
         <span class="comment">// as `*const u8` is safe. The `x.as_ptr()` comes from a reference and is thus guaranteed</span>
@@ -523,5 +520,7 @@ where
         <span class="ident">memchr::memchr</span>(<span class="ident">byte</span>, <span class="ident">bytes</span>).<span class="ident">is_some</span>()
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

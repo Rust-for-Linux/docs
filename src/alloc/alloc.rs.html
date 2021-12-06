@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/alloc/alloc.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>alloc.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../alloc/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;alloc&#x2F;alloc.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>alloc.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../alloc/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -424,9 +422,7 @@
 <span id="422">422</span>
 <span id="423">423</span>
 <span id="424">424</span>
-<span id="425">425</span>
-</pre><pre class="rust">
-<span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
+</pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
 
 <span class="doccomment">//! Memory allocation APIs</span>
 
@@ -457,13 +453,13 @@
     <span class="comment">// like `malloc`, `realloc`, and `free`, respectively.</span>
     <span class="attribute">#[<span class="ident">rustc_allocator</span>]</span>
     <span class="attribute">#[<span class="ident">rustc_allocator_nounwind</span>]</span>
-    <span class="kw">fn</span> <span class="ident">__rust_alloc</span>(<span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>;
+    <span class="kw">fn</span> <span class="ident">__rust_alloc</span>(<span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>;
     <span class="attribute">#[<span class="ident">rustc_allocator_nounwind</span>]</span>
     <span class="kw">fn</span> <span class="ident">__rust_dealloc</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>);
     <span class="attribute">#[<span class="ident">rustc_allocator_nounwind</span>]</span>
-    <span class="kw">fn</span> <span class="ident">__rust_realloc</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">old_size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>, <span class="ident">new_size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>;
+    <span class="kw">fn</span> <span class="ident">__rust_realloc</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">old_size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>, <span class="ident">new_size</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>;
     <span class="attribute">#[<span class="ident">rustc_allocator_nounwind</span>]</span>
-    <span class="kw">fn</span> <span class="ident">__rust_alloc_zeroed</span>(<span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>;
+    <span class="kw">fn</span> <span class="ident">__rust_alloc_zeroed</span>(<span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>;
 }
 
 <span class="doccomment">/// The global memory allocator.</span>
@@ -512,7 +508,7 @@
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;global_alloc&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="ident">layout</span>: <span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc</span>(<span class="ident">layout</span>: <span class="ident">Layout</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
     <span class="kw">unsafe</span> { <span class="ident">__rust_alloc</span>(<span class="ident">layout</span>.<span class="ident">size</span>(), <span class="ident">layout</span>.<span class="ident">align</span>()) }
 }
 
@@ -548,7 +544,7 @@
 <span class="doccomment">/// See [`GlobalAlloc::realloc`].</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;global_alloc&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">realloc</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>, <span class="ident">new_size</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">realloc</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>, <span class="ident">new_size</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
     <span class="kw">unsafe</span> { <span class="ident">__rust_realloc</span>(<span class="ident">ptr</span>, <span class="ident">layout</span>.<span class="ident">size</span>(), <span class="ident">layout</span>.<span class="ident">align</span>(), <span class="ident">new_size</span>) }
 }
 
@@ -581,18 +577,18 @@
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;global_alloc&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc_zeroed</span>(<span class="ident">layout</span>: <span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">alloc_zeroed</span>(<span class="ident">layout</span>: <span class="ident">Layout</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
     <span class="kw">unsafe</span> { <span class="ident">__rust_alloc_zeroed</span>(<span class="ident">layout</span>.<span class="ident">size</span>(), <span class="ident">layout</span>.<span class="ident">align</span>()) }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
 <span class="kw">impl</span> <span class="ident">Global</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">alloc_impl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>, <span class="ident">zeroed</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">alloc_impl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>, <span class="ident">zeroed</span>: <span class="ident">bool</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">layout</span>.<span class="ident">size</span>() {
-            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">NonNull::slice_from_raw_parts</span>(<span class="ident">layout</span>.<span class="ident">dangling</span>(), <span class="number">0</span>)),
+            <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">NonNull::slice_from_raw_parts</span>(<span class="ident">layout</span>.<span class="ident">dangling</span>(), <span class="number">0</span>)),
             <span class="comment">// SAFETY: `layout` is non-zero in size,</span>
-            <span class="ident">size</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> {
+            <span class="ident">size</span> =&gt; <span class="kw">unsafe</span> {
                 <span class="kw">let</span> <span class="ident">raw_ptr</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">zeroed</span> { <span class="ident">alloc_zeroed</span>(<span class="ident">layout</span>) } <span class="kw">else</span> { <span class="ident">alloc</span>(<span class="ident">layout</span>) };
                 <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">NonNull::new</span>(<span class="ident">raw_ptr</span>).<span class="ident">ok_or</span>(<span class="ident">AllocError</span>)<span class="question-mark">?</span>;
                 <span class="prelude-val">Ok</span>(<span class="ident">NonNull::slice_from_raw_parts</span>(<span class="ident">ptr</span>, <span class="ident">size</span>))
@@ -608,18 +604,18 @@
         <span class="ident">old_layout</span>: <span class="ident">Layout</span>,
         <span class="ident">new_layout</span>: <span class="ident">Layout</span>,
         <span class="ident">zeroed</span>: <span class="ident">bool</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
         <span class="macro">debug_assert!</span>(
             <span class="ident">new_layout</span>.<span class="ident">size</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="ident">old_layout</span>.<span class="ident">size</span>(),
             <span class="string">&quot;`new_layout.size()` must be greater than or equal to `old_layout.size()`&quot;</span>
         );
 
         <span class="kw">match</span> <span class="ident">old_layout</span>.<span class="ident">size</span>() {
-            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">alloc_impl</span>(<span class="ident">new_layout</span>, <span class="ident">zeroed</span>),
+            <span class="number">0</span> =&gt; <span class="self">self</span>.<span class="ident">alloc_impl</span>(<span class="ident">new_layout</span>, <span class="ident">zeroed</span>),
 
             <span class="comment">// SAFETY: `new_size` is non-zero as `old_size` is greater than or equal to `new_size`</span>
             <span class="comment">// as required by safety conditions. Other conditions must be upheld by the caller</span>
-            <span class="ident">old_size</span> <span class="kw">if</span> <span class="ident">old_layout</span>.<span class="ident">align</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">new_layout</span>.<span class="ident">align</span>() <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> {
+            <span class="ident">old_size</span> <span class="kw">if</span> <span class="ident">old_layout</span>.<span class="ident">align</span>() <span class="op">==</span> <span class="ident">new_layout</span>.<span class="ident">align</span>() =&gt; <span class="kw">unsafe</span> {
                 <span class="kw">let</span> <span class="ident">new_size</span> <span class="op">=</span> <span class="ident">new_layout</span>.<span class="ident">size</span>();
 
                 <span class="comment">// `realloc` probably checks for `new_size &gt;= old_layout.size()` or something similar.</span>
@@ -638,7 +634,7 @@
             <span class="comment">// bytes. Also, because the old allocation wasn&#39;t yet deallocated, it cannot overlap</span>
             <span class="comment">// `new_ptr`. Thus, the call to `copy_nonoverlapping` is safe. The safety contract</span>
             <span class="comment">// for `dealloc` must be upheld by the caller.</span>
-            <span class="ident">old_size</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> {
+            <span class="ident">old_size</span> =&gt; <span class="kw">unsafe</span> {
                 <span class="kw">let</span> <span class="ident">new_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">alloc_impl</span>(<span class="ident">new_layout</span>, <span class="ident">zeroed</span>)<span class="question-mark">?</span>;
                 <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="ident">new_ptr</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">old_size</span>);
                 <span class="self">self</span>.<span class="ident">deallocate</span>(<span class="ident">ptr</span>, <span class="ident">old_layout</span>);
@@ -652,12 +648,12 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Allocator</span> <span class="kw">for</span> <span class="ident">Global</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">allocate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">allocate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">alloc_impl</span>(<span class="ident">layout</span>, <span class="bool-val">false</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">allocate_zeroed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">allocate_zeroed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">layout</span>: <span class="ident">Layout</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">alloc_impl</span>(<span class="ident">layout</span>, <span class="bool-val">true</span>)
     }
 
@@ -676,7 +672,7 @@
         <span class="ident">ptr</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
         <span class="ident">old_layout</span>: <span class="ident">Layout</span>,
         <span class="ident">new_layout</span>: <span class="ident">Layout</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
         <span class="comment">// SAFETY: all conditions must be upheld by the caller</span>
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">grow_impl</span>(<span class="ident">ptr</span>, <span class="ident">old_layout</span>, <span class="ident">new_layout</span>, <span class="bool-val">false</span>) }
     }
@@ -687,7 +683,7 @@
         <span class="ident">ptr</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
         <span class="ident">old_layout</span>: <span class="ident">Layout</span>,
         <span class="ident">new_layout</span>: <span class="ident">Layout</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
         <span class="comment">// SAFETY: all conditions must be upheld by the caller</span>
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">grow_impl</span>(<span class="ident">ptr</span>, <span class="ident">old_layout</span>, <span class="ident">new_layout</span>, <span class="bool-val">true</span>) }
     }
@@ -698,7 +694,7 @@
         <span class="ident">ptr</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
         <span class="ident">old_layout</span>: <span class="ident">Layout</span>,
         <span class="ident">new_layout</span>: <span class="ident">Layout</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
         <span class="macro">debug_assert!</span>(
             <span class="ident">new_layout</span>.<span class="ident">size</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="ident">old_layout</span>.<span class="ident">size</span>(),
             <span class="string">&quot;`new_layout.size()` must be smaller than or equal to `old_layout.size()`&quot;</span>
@@ -706,13 +702,13 @@
 
         <span class="kw">match</span> <span class="ident">new_layout</span>.<span class="ident">size</span>() {
             <span class="comment">// SAFETY: conditions must be upheld by the caller</span>
-            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> {
+            <span class="number">0</span> =&gt; <span class="kw">unsafe</span> {
                 <span class="self">self</span>.<span class="ident">deallocate</span>(<span class="ident">ptr</span>, <span class="ident">old_layout</span>);
                 <span class="prelude-val">Ok</span>(<span class="ident">NonNull::slice_from_raw_parts</span>(<span class="ident">new_layout</span>.<span class="ident">dangling</span>(), <span class="number">0</span>))
             },
 
             <span class="comment">// SAFETY: `new_size` is non-zero. Other conditions must be upheld by the caller</span>
-            <span class="ident">new_size</span> <span class="kw">if</span> <span class="ident">old_layout</span>.<span class="ident">align</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">new_layout</span>.<span class="ident">align</span>() <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> {
+            <span class="ident">new_size</span> <span class="kw">if</span> <span class="ident">old_layout</span>.<span class="ident">align</span>() <span class="op">==</span> <span class="ident">new_layout</span>.<span class="ident">align</span>() =&gt; <span class="kw">unsafe</span> {
                 <span class="comment">// `realloc` probably checks for `new_size &lt;= old_layout.size()` or something similar.</span>
                 <span class="ident">intrinsics::assume</span>(<span class="ident">new_size</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">old_layout</span>.<span class="ident">size</span>());
 
@@ -726,7 +722,7 @@
             <span class="comment">// bytes. Also, because the old allocation wasn&#39;t yet deallocated, it cannot overlap</span>
             <span class="comment">// `new_ptr`. Thus, the call to `copy_nonoverlapping` is safe. The safety contract</span>
             <span class="comment">// for `dealloc` must be upheld by the caller.</span>
-            <span class="ident">new_size</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> {
+            <span class="ident">new_size</span> =&gt; <span class="kw">unsafe</span> {
                 <span class="kw">let</span> <span class="ident">new_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">allocate</span>(<span class="ident">new_layout</span>)<span class="question-mark">?</span>;
                 <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="ident">new_ptr</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">new_size</span>);
                 <span class="self">self</span>.<span class="ident">deallocate</span>(<span class="ident">ptr</span>, <span class="ident">old_layout</span>);
@@ -737,15 +733,14 @@
 }
 
 <span class="doccomment">/// The allocator for unique pointers.</span>
-<span class="comment">// This function must not unwind. If it does, MIR codegen will fail.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>), <span class="ident">not</span>(<span class="ident">test</span>)))]</span>
 <span class="attribute">#[<span class="ident">lang</span> <span class="op">=</span> <span class="string">&quot;exchange_malloc&quot;</span>]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">exchange_malloc</span>(<span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">exchange_malloc</span>(<span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> {
     <span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Layout::from_size_align_unchecked</span>(<span class="ident">size</span>, <span class="ident">align</span>) };
     <span class="kw">match</span> <span class="ident">Global</span>.<span class="ident">allocate</span>(<span class="ident">layout</span>) {
-        <span class="prelude-val">Ok</span>(<span class="ident">ptr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ptr</span>.<span class="ident">as_mut_ptr</span>(),
-        <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">handle_alloc_error</span>(<span class="ident">layout</span>),
+        <span class="prelude-val">Ok</span>(<span class="ident">ptr</span>) =&gt; <span class="ident">ptr</span>.<span class="ident">as_mut_ptr</span>(),
+        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="ident">handle_alloc_error</span>(<span class="ident">layout</span>),
     }
 }
 
@@ -773,7 +768,7 @@
     <span class="comment">// it to call `__rg_oom` if there is a `#[alloc_error_handler]`, or to call the</span>
     <span class="comment">// default implementations below (`__rdl_oom`) otherwise.</span>
     <span class="attribute">#[<span class="ident">rustc_allocator_nounwind</span>]</span>
-    <span class="kw">fn</span> <span class="ident">__rust_alloc_error_handler</span>(<span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span>;
+    <span class="kw">fn</span> <span class="ident">__rust_alloc_error_handler</span>(<span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) -&gt; <span class="op">!</span>;
 }
 
 <span class="doccomment">/// Abort on memory allocation error or failure.</span>
@@ -792,7 +787,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>), <span class="ident">not</span>(<span class="ident">test</span>)))]</span>
 <span class="attribute">#[<span class="ident">rustc_allocator_nounwind</span>]</span>
 <span class="attribute">#[<span class="ident">cold</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_alloc_error</span>(<span class="ident">layout</span>: <span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_alloc_error</span>(<span class="ident">layout</span>: <span class="ident">Layout</span>) -&gt; <span class="op">!</span> {
     <span class="kw">unsafe</span> {
         <span class="ident">__rust_alloc_error_handler</span>(<span class="ident">layout</span>.<span class="ident">size</span>(), <span class="ident">layout</span>.<span class="ident">align</span>());
     }
@@ -807,23 +802,23 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_attributes</span>)]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_internals&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">__alloc_error_handler</span> {
-    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::alloc::Layout</span>;
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::alloc::Layout</span>;
 
     <span class="comment">// called via generated `__rust_alloc_error_handler`</span>
 
     <span class="comment">// if there is no `#[alloc_error_handler]`</span>
     <span class="attribute">#[<span class="ident">rustc_std_internal_symbol</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__rdl_oom</span>(<span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">_align</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__rdl_oom</span>(<span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">_align</span>: <span class="ident">usize</span>) -&gt; <span class="op">!</span> {
         <span class="macro">panic!</span>(<span class="string">&quot;memory allocation of {} bytes failed&quot;</span>, <span class="ident">size</span>)
     }
 
-    <span class="comment">// if there is a `#[alloc_error_handler]`</span>
+    <span class="comment">// if there is an `#[alloc_error_handler]`</span>
     <span class="attribute">#[<span class="ident">rustc_std_internal_symbol</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__rg_oom</span>(<span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__rg_oom</span>(<span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) -&gt; <span class="op">!</span> {
         <span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Layout::from_size_align_unchecked</span>(<span class="ident">size</span>, <span class="ident">align</span>) };
         <span class="kw">extern</span> <span class="string">&quot;Rust&quot;</span> {
             <span class="attribute">#[<span class="ident">lang</span> <span class="op">=</span> <span class="string">&quot;oom&quot;</span>]</span>
-            <span class="kw">fn</span> <span class="ident">oom_impl</span>(<span class="ident">layout</span>: <span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span>;
+            <span class="kw">fn</span> <span class="ident">oom_impl</span>(<span class="ident">layout</span>: <span class="ident">Layout</span>) -&gt; <span class="op">!</span>;
         }
         <span class="kw">unsafe</span> { <span class="ident">oom_impl</span>(<span class="ident">layout</span>) }
     }
@@ -851,5 +846,7 @@
         <span class="kw">unsafe</span> { <span class="ident">target</span>.<span class="ident">copy_from_nonoverlapping</span>(<span class="self">self</span>, <span class="number">1</span>) };
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="alloc" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="alloc" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
+</body></html>

@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/sync/atomic.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>atomic.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;sync&#x2F;atomic.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>atomic.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -2791,8 +2789,20 @@
 <span id="2789">2789</span>
 <span id="2790">2790</span>
 <span id="2791">2791</span>
-</pre><pre class="rust">
-<span class="doccomment">//! Atomic types</span>
+<span id="2792">2792</span>
+<span id="2793">2793</span>
+<span id="2794">2794</span>
+<span id="2795">2795</span>
+<span id="2796">2796</span>
+<span id="2797">2797</span>
+<span id="2798">2798</span>
+<span id="2799">2799</span>
+<span id="2800">2800</span>
+<span id="2801">2801</span>
+<span id="2802">2802</span>
+<span id="2803">2803</span>
+<span id="2804">2804</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Atomic types</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Atomic types provide primitive shared-memory communication between</span>
 <span class="doccomment">//! threads, and are the building blocks of other concurrent</span>
@@ -2835,7 +2845,7 @@
 <span class="doccomment">//! instructions to implement `AtomicI8`. Note that this emulation should not</span>
 <span class="doccomment">//! have an impact on correctness of code, it&#39;s just something to be aware of.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! The atomic types in this module may not be available on all platforms. The</span>
+<span class="doccomment">//! The atomic types in this module might not be available on all platforms. The</span>
 <span class="doccomment">//! atomic types here are all widely available, however, and can generally be</span>
 <span class="doccomment">//! relied upon existing. Some notable exceptions are:</span>
 <span class="doccomment">//!</span>
@@ -2856,7 +2866,7 @@
 <span class="doccomment">//! some atomic operations. Maximally portable code will want to be careful</span>
 <span class="doccomment">//! about which atomic types are used. `AtomicUsize` and `AtomicIsize` are</span>
 <span class="doccomment">//! generally the most portable, but even then they&#39;re not available everywhere.</span>
-<span class="doccomment">//! For reference, the `std` library requires pointer-sized atomics, although</span>
+<span class="doccomment">//! For reference, the `std` library requires `AtomicBool`s and pointer-sized atomics, although</span>
 <span class="doccomment">//! `core` does not.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Currently you&#39;ll need to use `#[cfg(target_arch)]` primarily to</span>
@@ -2907,14 +2917,15 @@
 <span class="attribute">#![<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">target_has_atomic_load_store</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>), <span class="ident">allow</span>(<span class="ident">dead_code</span>))]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">target_has_atomic_load_store</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>), <span class="ident">allow</span>(<span class="ident">unused_imports</span>))]</span>
+<span class="attribute">#![<span class="ident">rustc_diagnostic_item</span> <span class="op">=</span> <span class="string">&quot;atomic_mod&quot;</span>]</span>
 
-<span class="kw">use</span> <span class="self">self</span><span class="ident">::Ordering</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="self">self</span>::Ordering</span>::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cell::UnsafeCell</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::fmt</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::intrinsics</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cell::UnsafeCell</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fmt</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::intrinsics</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::hint::spin_loop</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::hint::spin_loop</span>;
 
 <span class="doccomment">/// A boolean type which can be safely shared between threads.</span>
 <span class="doccomment">///</span>
@@ -2931,11 +2942,12 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic_load_store</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">AtomicBool</span> {
+<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_default_impls&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;87864&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="kw">const</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">AtomicBool</span> {
     <span class="doccomment">/// Creates an `AtomicBool` initialized to `false`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span><span class="ident">::new</span>(<span class="bool-val">false</span>)
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::new</span>(<span class="bool-val">false</span>)
     }
 }
 
@@ -2961,10 +2973,11 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic_load_store</span> <span class="op">=</span> <span class="string">&quot;ptr&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">AtomicPtr</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_default_impls&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;87864&quot;</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">const</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">AtomicPtr</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Creates a null `AtomicPtr&lt;T&gt;`.</span>
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AtomicPtr</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="ident">AtomicPtr::new</span>(<span class="kw">crate</span><span class="ident">::ptr::null_mut</span>())
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="ident">AtomicPtr</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="ident">AtomicPtr::new</span>(<span class="ident"><span class="kw">crate</span>::ptr::null_mut</span>())
     }
 }
 
@@ -2992,6 +3005,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Hash</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
+<span class="attribute">#[<span class="ident">rustc_diagnostic_item</span> <span class="op">=</span> <span class="string">&quot;Ordering&quot;</span>]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Ordering</span> {
     <span class="doccomment">/// No ordering constraints, only atomic operations.</span>
     <span class="doccomment">///</span>
@@ -3080,7 +3094,8 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_atomic_new&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.24.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">v</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AtomicBool</span> {
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">v</span>: <span class="ident">bool</span>) -&gt; <span class="ident">AtomicBool</span> {
         <span class="ident">AtomicBool</span> { <span class="ident">v</span>: <span class="ident">UnsafeCell::new</span>(<span class="ident">v</span> <span class="kw">as</span> <span class="ident">u8</span>) }
     }
 
@@ -3101,7 +3116,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;atomic_access&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.15.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">bool</span> {
         <span class="comment">// SAFETY: the mutable reference guarantees unique ownership.</span>
         <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bool</span>) }
     }
@@ -3122,7 +3137,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic_equal_alignment</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;atomic_from_mut&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76314&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_mut</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_mut</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span> {
         <span class="comment">// SAFETY: the mutable reference guarantees unique ownership, and</span>
         <span class="comment">// alignment of both `bool` and `Self` is 1.</span>
         <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">v</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bool</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>) }
@@ -3144,7 +3159,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;atomic_access&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.15.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_cell_into_inner&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;78729&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">into_inner</span>() <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
@@ -3168,7 +3183,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">bool</span> {
         <span class="comment">// SAFETY: any data races are prevented by atomic intrinsics and the raw</span>
         <span class="comment">// pointer passed in is valid because we got it from a reference.</span>
         <span class="kw">unsafe</span> { <span class="ident">atomic_load</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">order</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> }
@@ -3226,7 +3241,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">bool</span> {
         <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
         <span class="kw">unsafe</span> { <span class="ident">atomic_swap</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">val</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">order</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> }
     }
@@ -3282,10 +3297,10 @@
         <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;Use `compare_exchange` or `compare_exchange_weak` instead&quot;</span>
     )]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compare_and_swap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">current</span>: <span class="ident">bool</span>, <span class="ident">new</span>: <span class="ident">bool</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compare_and_swap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">current</span>: <span class="ident">bool</span>, <span class="ident">new</span>: <span class="ident">bool</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">compare_exchange</span>(<span class="ident">current</span>, <span class="ident">new</span>, <span class="ident">order</span>, <span class="ident">strongest_failure_ordering</span>(<span class="ident">order</span>)) {
-            <span class="prelude-val">Ok</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>,
-            <span class="prelude-val">Err</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>,
+            <span class="prelude-val">Ok</span>(<span class="ident">x</span>) =&gt; <span class="ident">x</span>,
+            <span class="prelude-val">Err</span>(<span class="ident">x</span>) =&gt; <span class="ident">x</span>,
         }
     }
 
@@ -3336,13 +3351,13 @@
         <span class="ident">new</span>: <span class="ident">bool</span>,
         <span class="ident">success</span>: <span class="ident">Ordering</span>,
         <span class="ident">failure</span>: <span class="ident">Ordering</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">bool</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">bool</span><span class="op">&gt;</span> {
         <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
         <span class="kw">match</span> <span class="kw">unsafe</span> {
             <span class="ident">atomic_compare_exchange</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">current</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">new</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">success</span>, <span class="ident">failure</span>)
         } {
-            <span class="prelude-val">Ok</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">x</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">x</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>),
+            <span class="prelude-val">Ok</span>(<span class="ident">x</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">x</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>),
+            <span class="prelude-val">Err</span>(<span class="ident">x</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">x</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>),
         }
     }
 
@@ -3391,13 +3406,13 @@
         <span class="ident">new</span>: <span class="ident">bool</span>,
         <span class="ident">success</span>: <span class="ident">Ordering</span>,
         <span class="ident">failure</span>: <span class="ident">Ordering</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">bool</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">bool</span><span class="op">&gt;</span> {
         <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
         <span class="kw">match</span> <span class="kw">unsafe</span> {
             <span class="ident">atomic_compare_exchange_weak</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">current</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">new</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">success</span>, <span class="ident">failure</span>)
         } {
-            <span class="prelude-val">Ok</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">x</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">x</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>),
+            <span class="prelude-val">Ok</span>(<span class="ident">x</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">x</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>),
+            <span class="prelude-val">Err</span>(<span class="ident">x</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">x</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>),
         }
     }
 
@@ -3436,7 +3451,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_and</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_and</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">bool</span> {
         <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
         <span class="kw">unsafe</span> { <span class="ident">atomic_and</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">val</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">order</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> }
     }
@@ -3477,7 +3492,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_nand</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_nand</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">bool</span> {
         <span class="comment">// We can&#39;t use atomic_nand here because it can result in a bool with</span>
         <span class="comment">// an invalid value. This happens because the atomic operation is done</span>
         <span class="comment">// with an 8-bit integer internally, which would set the upper 7 bits.</span>
@@ -3528,7 +3543,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_or</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_or</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">bool</span> {
         <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
         <span class="kw">unsafe</span> { <span class="ident">atomic_or</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">val</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">order</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> }
     }
@@ -3568,7 +3583,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_xor</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_xor</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">bool</span> {
         <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
         <span class="kw">unsafe</span> { <span class="ident">atomic_xor</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">val</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">order</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> }
     }
@@ -3602,7 +3617,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;atomic_mut_ptr&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;recently added&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;66893&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bool</span>
     }
 
@@ -3649,15 +3664,15 @@
         <span class="ident">set_order</span>: <span class="ident">Ordering</span>,
         <span class="ident">fetch_order</span>: <span class="ident">Ordering</span>,
         <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">bool</span><span class="op">&gt;</span>
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">bool</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">bool</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prev</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">load</span>(<span class="ident">fetch_order</span>);
         <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">next</span>) <span class="op">=</span> <span class="ident">f</span>(<span class="ident">prev</span>) {
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">compare_exchange_weak</span>(<span class="ident">prev</span>, <span class="ident">next</span>, <span class="ident">set_order</span>, <span class="ident">fetch_order</span>) {
-                <span class="ident">x</span> @ <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">x</span>,
-                <span class="prelude-val">Err</span>(<span class="ident">next_prev</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">prev</span> <span class="op">=</span> <span class="ident">next_prev</span>,
+                <span class="ident">x</span> @ <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="kw">return</span> <span class="ident">x</span>,
+                <span class="prelude-val">Err</span>(<span class="ident">next_prev</span>) =&gt; <span class="ident">prev</span> <span class="op">=</span> <span class="ident">next_prev</span>,
             }
         }
         <span class="prelude-val">Err</span>(<span class="ident">prev</span>)
@@ -3679,7 +3694,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_atomic_new&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.24.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AtomicPtr</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="ident">AtomicPtr</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">AtomicPtr</span> { <span class="ident">p</span>: <span class="ident">UnsafeCell::new</span>(<span class="ident">p</span>) }
     }
 
@@ -3701,7 +3716,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;atomic_access&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.15.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
         <span class="self">self</span>.<span class="ident">p</span>.<span class="ident">get_mut</span>()
     }
 
@@ -3723,8 +3738,8 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic_equal_alignment</span> <span class="op">=</span> <span class="string">&quot;ptr&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;atomic_from_mut&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76314&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_mut</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span> {
-        <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::align_of</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_mut</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span> {
+        <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::align_of</span>;
         <span class="kw">let</span> [] <span class="op">=</span> [(); <span class="ident">align_of</span>::<span class="op">&lt;</span><span class="ident">AtomicPtr</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span>() <span class="op">-</span> <span class="ident">align_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> ()<span class="op">&gt;</span>()];
         <span class="comment">// SAFETY:</span>
         <span class="comment">//  - the mutable reference guarantees unique ownership.</span>
@@ -3750,7 +3765,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;atomic_access&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.15.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_cell_into_inner&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;78729&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
         <span class="self">self</span>.<span class="ident">p</span>.<span class="ident">into_inner</span>()
     }
 
@@ -3775,7 +3790,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
         <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
         <span class="kw">unsafe</span> { <span class="ident">atomic_load</span>(<span class="self">self</span>.<span class="ident">p</span>.<span class="ident">get</span>(), <span class="ident">order</span>) }
     }
@@ -3835,7 +3850,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;ptr&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
         <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
         <span class="kw">unsafe</span> { <span class="ident">atomic_swap</span>(<span class="self">self</span>.<span class="ident">p</span>.<span class="ident">get</span>(), <span class="ident">ptr</span>, <span class="ident">order</span>) }
     }
@@ -3890,10 +3905,10 @@
         <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;Use `compare_exchange` or `compare_exchange_weak` instead&quot;</span>
     )]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;ptr&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compare_and_swap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">current</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">new</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compare_and_swap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">current</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">new</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">compare_exchange</span>(<span class="ident">current</span>, <span class="ident">new</span>, <span class="ident">order</span>, <span class="ident">strongest_failure_ordering</span>(<span class="ident">order</span>)) {
-            <span class="prelude-val">Ok</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>,
-            <span class="prelude-val">Err</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>,
+            <span class="prelude-val">Ok</span>(<span class="ident">x</span>) =&gt; <span class="ident">x</span>,
+            <span class="prelude-val">Err</span>(<span class="ident">x</span>) =&gt; <span class="ident">x</span>,
         }
     }
 
@@ -3936,7 +3951,7 @@
         <span class="ident">new</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>,
         <span class="ident">success</span>: <span class="ident">Ordering</span>,
         <span class="ident">failure</span>: <span class="ident">Ordering</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
         <span class="kw">unsafe</span> { <span class="ident">atomic_compare_exchange</span>(<span class="self">self</span>.<span class="ident">p</span>.<span class="ident">get</span>(), <span class="ident">current</span>, <span class="ident">new</span>, <span class="ident">success</span>, <span class="ident">failure</span>) }
     }
@@ -3985,7 +4000,7 @@
         <span class="ident">new</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>,
         <span class="ident">success</span>: <span class="ident">Ordering</span>,
         <span class="ident">failure</span>: <span class="ident">Ordering</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="comment">// SAFETY: This intrinsic is unsafe because it operates on a raw pointer</span>
         <span class="comment">// but we know for sure that the pointer is valid (we just got it from</span>
         <span class="comment">// an `UnsafeCell` that we have by reference) and the atomic operation</span>
@@ -4045,15 +4060,15 @@
         <span class="ident">set_order</span>: <span class="ident">Ordering</span>,
         <span class="ident">fetch_order</span>: <span class="ident">Ordering</span>,
         <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span>
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span>,
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span>,
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prev</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">load</span>(<span class="ident">fetch_order</span>);
         <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">next</span>) <span class="op">=</span> <span class="ident">f</span>(<span class="ident">prev</span>) {
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">compare_exchange_weak</span>(<span class="ident">prev</span>, <span class="ident">next</span>, <span class="ident">set_order</span>, <span class="ident">fetch_order</span>) {
-                <span class="ident">x</span> @ <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">x</span>,
-                <span class="prelude-val">Err</span>(<span class="ident">next_prev</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">prev</span> <span class="op">=</span> <span class="ident">next_prev</span>,
+                <span class="ident">x</span> @ <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="kw">return</span> <span class="ident">x</span>,
+                <span class="prelude-val">Err</span>(<span class="ident">next_prev</span>) =&gt; <span class="ident">prev</span> <span class="op">=</span> <span class="ident">next_prev</span>,
             }
         }
         <span class="prelude-val">Err</span>(<span class="ident">prev</span>)
@@ -4073,8 +4088,8 @@
     <span class="doccomment">/// assert_eq!(format!(&quot;{:?}&quot;, atomic_bool), &quot;true&quot;)</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">b</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span><span class="ident">::new</span>(<span class="ident">b</span>)
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">b</span>: <span class="ident">bool</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">b</span>)
     }
 }
 
@@ -4082,16 +4097,16 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;atomic_from&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.23.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AtomicPtr</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span><span class="ident">::new</span>(<span class="ident">p</span>)
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">p</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_macros</span>)]</span> <span class="comment">// This macro ends up being unused on some architectures.</span>
 <span class="macro">macro_rules!</span> <span class="ident">if_not_8_bit</span> {
-    (<span class="ident">u8</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="string">&quot;&quot;</span> };
-    (<span class="ident">i8</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="string">&quot;&quot;</span> };
-    (<span class="macro-nonterminal">$</span><span class="kw">_</span>:<span class="macro-nonterminal">ident</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> { $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>)<span class="op">*</span> };
+    (<span class="ident">u8</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; { <span class="string">&quot;&quot;</span> };
+    (<span class="ident">i8</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; { <span class="string">&quot;&quot;</span> };
+    (<span class="macro-nonterminal">$</span><span class="kw">_</span>:<span class="macro-nonterminal">ident</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; { $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>)<span class="op">*</span> };
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic_load_store</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
@@ -4111,7 +4126,7 @@
      <span class="macro-nonterminal">$</span><span class="macro-nonterminal">min_fn</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">max_fn</span>:<span class="ident">ident</span>,
      <span class="macro-nonterminal">$</span><span class="macro-nonterminal">align</span>:<span class="ident">expr</span>,
      <span class="macro-nonterminal">$</span><span class="macro-nonterminal">atomic_new</span>:<span class="ident">expr</span>,
-     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>:<span class="ident">ident</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">atomic_type</span>:<span class="ident">ident</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">atomic_init</span>:<span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
+     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>:<span class="ident">ident</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">atomic_type</span>:<span class="ident">ident</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">atomic_init</span>:<span class="ident">ident</span>) =&gt; {
         <span class="doccomment">/// An integer type which can be safely shared between threads.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// This type has the same in-memory representation as the underlying</span>
@@ -4143,10 +4158,11 @@
         <span class="kw">pub</span> <span class="kw">const</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">atomic_init</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">atomic_type</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">atomic_type::new</span>(<span class="number">0</span>);
 
         <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stable</span>]</span>
-        <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">atomic_type</span> {
+        <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_default_impls&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;87864&quot;</span>)]</span>
+        <span class="kw">impl</span> <span class="kw">const</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">atomic_type</span> {
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="self">Self</span><span class="ident">::new</span>(<span class="ident">Default::default</span>())
+            <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
+                <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">Default::default</span>())
             }
         }
 
@@ -4154,12 +4170,12 @@
         <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">atomic_type</span> {
             <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;Converts an `&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>), <span class="string">&quot;` into an `&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">atomic_type</span>), <span class="string">&quot;`.&quot;</span>)]</span>
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">v</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="self">Self</span><span class="ident">::new</span>(<span class="ident">v</span>) }
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">v</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>) -&gt; <span class="self">Self</span> { <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">v</span>) }
         }
 
         <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stable_debug</span>]</span>
         <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">atomic_type</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
                 <span class="ident">fmt::Debug::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">load</span>(<span class="ident">Ordering::SeqCst</span>), <span class="ident">f</span>)
             }
         }
@@ -4181,7 +4197,8 @@
             <span class="attribute">#[<span class="ident">inline</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stable</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">const_stable</span>]</span>
-            <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">v</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="attribute">#[<span class="ident">must_use</span>]</span>
+            <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">v</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>) -&gt; <span class="self">Self</span> {
                 <span class="self">Self</span> {<span class="ident">v</span>: <span class="ident">UnsafeCell::new</span>(<span class="ident">v</span>)}
             }
 
@@ -4202,7 +4219,7 @@
             <span class="doccomment">/// ```</span>
             <span class="attribute">#[<span class="ident">inline</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stable_access</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
                 <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get_mut</span>()
             }
 
@@ -4231,8 +4248,8 @@
             <span class="attribute">#[<span class="ident">inline</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">cfg_align</span>]</span>
             <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;atomic_from_mut&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76314&quot;</span>)]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_mut</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span> {
-                <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::align_of</span>;
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_mut</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span> {
+                <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::align_of</span>;
                 <span class="kw">let</span> [] <span class="op">=</span> [(); <span class="ident">align_of</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>() <span class="op">-</span> <span class="ident">align_of</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span><span class="op">&gt;</span>()];
                 <span class="comment">// SAFETY:</span>
                 <span class="comment">//  - the mutable reference guarantees unique ownership.</span>
@@ -4257,7 +4274,7 @@
             <span class="attribute">#[<span class="ident">inline</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stable_access</span>]</span>
             <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_cell_into_inner&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;78729&quot;</span>)]</span>
-            <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
+            <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="self">self</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
                 <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">into_inner</span>()
             }
 
@@ -4281,7 +4298,7 @@
             <span class="doccomment">/// ```</span>
             <span class="attribute">#[<span class="ident">inline</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stable</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
                 <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
                 <span class="kw">unsafe</span> { <span class="ident">atomic_load</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">order</span>) }
             }
@@ -4334,7 +4351,7 @@
             <span class="attribute">#[<span class="ident">inline</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stable</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">cfg_cas</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
                 <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
                 <span class="kw">unsafe</span> { <span class="ident">atomic_swap</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">val</span>, <span class="ident">order</span>) }
             }
@@ -4394,13 +4411,13 @@
             <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compare_and_swap</span>(<span class="kw-2">&amp;</span><span class="self">self</span>,
                                     <span class="ident">current</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>,
                                     <span class="ident">new</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>,
-                                    <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
+                                    <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
                 <span class="kw">match</span> <span class="self">self</span>.<span class="ident">compare_exchange</span>(<span class="ident">current</span>,
                                             <span class="ident">new</span>,
                                             <span class="ident">order</span>,
                                             <span class="ident">strongest_failure_ordering</span>(<span class="ident">order</span>)) {
-                    <span class="prelude-val">Ok</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>,
-                    <span class="prelude-val">Err</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>,
+                    <span class="prelude-val">Ok</span>(<span class="ident">x</span>) =&gt; <span class="ident">x</span>,
+                    <span class="prelude-val">Err</span>(<span class="ident">x</span>) =&gt; <span class="ident">x</span>,
                 }
             }
 
@@ -4449,7 +4466,7 @@
                                     <span class="ident">current</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>,
                                     <span class="ident">new</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>,
                                     <span class="ident">success</span>: <span class="ident">Ordering</span>,
-                                    <span class="ident">failure</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span><span class="op">&gt;</span> {
+                                    <span class="ident">failure</span>: <span class="ident">Ordering</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span><span class="op">&gt;</span> {
                 <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
                 <span class="kw">unsafe</span> { <span class="ident">atomic_compare_exchange</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">current</span>, <span class="ident">new</span>, <span class="ident">success</span>, <span class="ident">failure</span>) }
             }
@@ -4498,7 +4515,7 @@
                                          <span class="ident">current</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>,
                                          <span class="ident">new</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>,
                                          <span class="ident">success</span>: <span class="ident">Ordering</span>,
-                                         <span class="ident">failure</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span><span class="op">&gt;</span> {
+                                         <span class="ident">failure</span>: <span class="ident">Ordering</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span><span class="op">&gt;</span> {
                 <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
                 <span class="kw">unsafe</span> {
                     <span class="ident">atomic_compare_exchange_weak</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">current</span>, <span class="ident">new</span>, <span class="ident">success</span>, <span class="ident">failure</span>)
@@ -4529,7 +4546,7 @@
             <span class="attribute">#[<span class="ident">inline</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stable</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">cfg_cas</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_add</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_add</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
                 <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
                 <span class="kw">unsafe</span> { <span class="ident">atomic_add</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">val</span>, <span class="ident">order</span>) }
             }
@@ -4558,7 +4575,7 @@
             <span class="attribute">#[<span class="ident">inline</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stable</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">cfg_cas</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_sub</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_sub</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
                 <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
                 <span class="kw">unsafe</span> { <span class="ident">atomic_sub</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">val</span>, <span class="ident">order</span>) }
             }
@@ -4590,7 +4607,7 @@
             <span class="attribute">#[<span class="ident">inline</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stable</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">cfg_cas</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_and</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_and</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
                 <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
                 <span class="kw">unsafe</span> { <span class="ident">atomic_and</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">val</span>, <span class="ident">order</span>) }
             }
@@ -4622,7 +4639,7 @@
             <span class="attribute">#[<span class="ident">inline</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stable_nand</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">cfg_cas</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_nand</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_nand</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
                 <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
                 <span class="kw">unsafe</span> { <span class="ident">atomic_nand</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">val</span>, <span class="ident">order</span>) }
             }
@@ -4654,7 +4671,7 @@
             <span class="attribute">#[<span class="ident">inline</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stable</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">cfg_cas</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_or</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_or</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
                 <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
                 <span class="kw">unsafe</span> { <span class="ident">atomic_or</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">val</span>, <span class="ident">order</span>) }
             }
@@ -4686,7 +4703,7 @@
             <span class="attribute">#[<span class="ident">inline</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stable</span>]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">cfg_cas</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_xor</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_xor</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
                 <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
                 <span class="kw">unsafe</span> { <span class="ident">atomic_xor</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">val</span>, <span class="ident">order</span>) }
             }
@@ -4730,13 +4747,13 @@
             <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_update</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>,
                                    <span class="ident">set_order</span>: <span class="ident">Ordering</span>,
                                    <span class="ident">fetch_order</span>: <span class="ident">Ordering</span>,
-                                   <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span><span class="op">&gt;</span>
-            <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span><span class="op">&gt;</span> {
+                                   <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span><span class="op">&gt;</span>
+            <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prev</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">load</span>(<span class="ident">fetch_order</span>);
                 <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">next</span>) <span class="op">=</span> <span class="ident">f</span>(<span class="ident">prev</span>) {
                     <span class="kw">match</span> <span class="self">self</span>.<span class="ident">compare_exchange_weak</span>(<span class="ident">prev</span>, <span class="ident">next</span>, <span class="ident">set_order</span>, <span class="ident">fetch_order</span>) {
-                        <span class="ident">x</span> @ <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">x</span>,
-                        <span class="prelude-val">Err</span>(<span class="ident">next_prev</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">prev</span> <span class="op">=</span> <span class="ident">next_prev</span>
+                        <span class="ident">x</span> @ <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="kw">return</span> <span class="ident">x</span>,
+                        <span class="prelude-val">Err</span>(<span class="ident">next_prev</span>) =&gt; <span class="ident">prev</span> <span class="op">=</span> <span class="ident">next_prev</span>
                     }
                 }
                 <span class="prelude-val">Err</span>(<span class="ident">prev</span>)
@@ -4780,7 +4797,7 @@
             <span class="attribute">#[<span class="ident">inline</span>]</span>
             <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;atomic_min_max&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.45.0&quot;</span>)]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">cfg_cas</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_max</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_max</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
                 <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
                 <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">max_fn</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">val</span>, <span class="ident">order</span>) }
             }
@@ -4825,7 +4842,7 @@
             <span class="attribute">#[<span class="ident">inline</span>]</span>
             <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;atomic_min_max&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.45.0&quot;</span>)]</span>
             <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">cfg_cas</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_min</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fetch_min</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">val</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
                 <span class="comment">// SAFETY: data races are prevented by atomic intrinsics.</span>
                 <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">min_fn</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(), <span class="ident">val</span>, <span class="ident">order</span>) }
             }
@@ -4864,7 +4881,7 @@
             <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;atomic_mut_ptr&quot;</span>,
                    <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;recently added&quot;</span>,
                    <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;66893&quot;</span>)]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">int_type</span> {
                 <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>()
             }
         }
@@ -5063,7 +5080,7 @@
 }
 
 <span class="macro">macro_rules!</span> <span class="ident">atomic_int_ptr_sized</span> {
-    ( $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">target_pointer_width</span>:<span class="ident">literal</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">align</span>:<span class="ident">literal</span>)<span class="op">*</span> ) <span class="op">=</span><span class="op">&gt;</span> { $(
+    ( $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">target_pointer_width</span>:<span class="ident">literal</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">align</span>:<span class="ident">literal</span>)<span class="op">*</span> ) =&gt; { $(
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic_load_store</span> <span class="op">=</span> <span class="string">&quot;ptr&quot;</span>)]</span>
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">target_pointer_width</span>)]</span>
         <span class="macro">atomic_int!</span> {
@@ -5115,13 +5132,13 @@
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">strongest_failure_ordering</span>(<span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ordering</span> {
+<span class="kw">fn</span> <span class="ident">strongest_failure_ordering</span>(<span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">Ordering</span> {
     <span class="kw">match</span> <span class="ident">order</span> {
-        <span class="ident">Release</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Relaxed</span>,
-        <span class="ident">Relaxed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Relaxed</span>,
-        <span class="ident">SeqCst</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SeqCst</span>,
-        <span class="ident">Acquire</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Acquire</span>,
-        <span class="ident">AcqRel</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Acquire</span>,
+        <span class="ident">Release</span> =&gt; <span class="ident">Relaxed</span>,
+        <span class="ident">Relaxed</span> =&gt; <span class="ident">Relaxed</span>,
+        <span class="ident">SeqCst</span> =&gt; <span class="ident">SeqCst</span>,
+        <span class="ident">Acquire</span> =&gt; <span class="ident">Acquire</span>,
+        <span class="ident">AcqRel</span> =&gt; <span class="ident">Acquire</span>,
     }
 }
 
@@ -5130,40 +5147,40 @@
     <span class="comment">// SAFETY: the caller must uphold the safety contract for `atomic_store`.</span>
     <span class="kw">unsafe</span> {
         <span class="kw">match</span> <span class="ident">order</span> {
-            <span class="ident">Release</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_store_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Relaxed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_store_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">SeqCst</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_store</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Acquire</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as an acquire store&quot;</span>),
-            <span class="ident">AcqRel</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as an acquire/release store&quot;</span>),
+            <span class="ident">Release</span> =&gt; <span class="ident">intrinsics::atomic_store_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Relaxed</span> =&gt; <span class="ident">intrinsics::atomic_store_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">SeqCst</span> =&gt; <span class="ident">intrinsics::atomic_store</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Acquire</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as an acquire store&quot;</span>),
+            <span class="ident">AcqRel</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as an acquire/release store&quot;</span>),
         }
     }
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_load</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_load</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">T</span> {
     <span class="comment">// SAFETY: the caller must uphold the safety contract for `atomic_load`.</span>
     <span class="kw">unsafe</span> {
         <span class="kw">match</span> <span class="ident">order</span> {
-            <span class="ident">Acquire</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_load_acq</span>(<span class="ident">dst</span>),
-            <span class="ident">Relaxed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_load_relaxed</span>(<span class="ident">dst</span>),
-            <span class="ident">SeqCst</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_load</span>(<span class="ident">dst</span>),
-            <span class="ident">Release</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as a release load&quot;</span>),
-            <span class="ident">AcqRel</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as an acquire/release load&quot;</span>),
+            <span class="ident">Acquire</span> =&gt; <span class="ident">intrinsics::atomic_load_acq</span>(<span class="ident">dst</span>),
+            <span class="ident">Relaxed</span> =&gt; <span class="ident">intrinsics::atomic_load_relaxed</span>(<span class="ident">dst</span>),
+            <span class="ident">SeqCst</span> =&gt; <span class="ident">intrinsics::atomic_load</span>(<span class="ident">dst</span>),
+            <span class="ident">Release</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as a release load&quot;</span>),
+            <span class="ident">AcqRel</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as an acquire/release load&quot;</span>),
         }
     }
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_swap</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_swap</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">T</span> {
     <span class="comment">// SAFETY: the caller must uphold the safety contract for `atomic_swap`.</span>
     <span class="kw">unsafe</span> {
         <span class="kw">match</span> <span class="ident">order</span> {
-            <span class="ident">Acquire</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xchg_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Release</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xchg_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">AcqRel</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xchg_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Relaxed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xchg_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">SeqCst</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xchg</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Acquire</span> =&gt; <span class="ident">intrinsics::atomic_xchg_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Release</span> =&gt; <span class="ident">intrinsics::atomic_xchg_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">AcqRel</span> =&gt; <span class="ident">intrinsics::atomic_xchg_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Relaxed</span> =&gt; <span class="ident">intrinsics::atomic_xchg_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">SeqCst</span> =&gt; <span class="ident">intrinsics::atomic_xchg</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
         }
     }
 }
@@ -5171,15 +5188,15 @@
 <span class="doccomment">/// Returns the previous value (like __sync_fetch_and_add).</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_add</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_add</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">T</span> {
     <span class="comment">// SAFETY: the caller must uphold the safety contract for `atomic_add`.</span>
     <span class="kw">unsafe</span> {
         <span class="kw">match</span> <span class="ident">order</span> {
-            <span class="ident">Acquire</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xadd_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Release</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xadd_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">AcqRel</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xadd_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Relaxed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xadd_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">SeqCst</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xadd</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Acquire</span> =&gt; <span class="ident">intrinsics::atomic_xadd_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Release</span> =&gt; <span class="ident">intrinsics::atomic_xadd_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">AcqRel</span> =&gt; <span class="ident">intrinsics::atomic_xadd_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Relaxed</span> =&gt; <span class="ident">intrinsics::atomic_xadd_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">SeqCst</span> =&gt; <span class="ident">intrinsics::atomic_xadd</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
         }
     }
 }
@@ -5187,15 +5204,15 @@
 <span class="doccomment">/// Returns the previous value (like __sync_fetch_and_sub).</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_sub</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_sub</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">T</span> {
     <span class="comment">// SAFETY: the caller must uphold the safety contract for `atomic_sub`.</span>
     <span class="kw">unsafe</span> {
         <span class="kw">match</span> <span class="ident">order</span> {
-            <span class="ident">Acquire</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xsub_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Release</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xsub_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">AcqRel</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xsub_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Relaxed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xsub_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">SeqCst</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xsub</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Acquire</span> =&gt; <span class="ident">intrinsics::atomic_xsub_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Release</span> =&gt; <span class="ident">intrinsics::atomic_xsub_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">AcqRel</span> =&gt; <span class="ident">intrinsics::atomic_xsub_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Relaxed</span> =&gt; <span class="ident">intrinsics::atomic_xsub_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">SeqCst</span> =&gt; <span class="ident">intrinsics::atomic_xsub</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
         }
     }
 }
@@ -5208,22 +5225,22 @@
     <span class="ident">new</span>: <span class="ident">T</span>,
     <span class="ident">success</span>: <span class="ident">Ordering</span>,
     <span class="ident">failure</span>: <span class="ident">Ordering</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="comment">// SAFETY: the caller must uphold the safety contract for `atomic_compare_exchange`.</span>
     <span class="kw">let</span> (<span class="ident">val</span>, <span class="ident">ok</span>) <span class="op">=</span> <span class="kw">unsafe</span> {
         <span class="kw">match</span> (<span class="ident">success</span>, <span class="ident">failure</span>) {
-            (<span class="ident">Acquire</span>, <span class="ident">Acquire</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchg_acq</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="ident">Release</span>, <span class="ident">Relaxed</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchg_rel</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="ident">AcqRel</span>, <span class="ident">Acquire</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchg_acqrel</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="ident">Relaxed</span>, <span class="ident">Relaxed</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchg_relaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="ident">SeqCst</span>, <span class="ident">SeqCst</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchg</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="ident">Acquire</span>, <span class="ident">Relaxed</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchg_acq_failrelaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="ident">AcqRel</span>, <span class="ident">Relaxed</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchg_acqrel_failrelaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="ident">SeqCst</span>, <span class="ident">Relaxed</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchg_failrelaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="ident">SeqCst</span>, <span class="ident">Acquire</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchg_failacq</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="kw">_</span>, <span class="ident">AcqRel</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as an acquire/release failure ordering&quot;</span>),
-            (<span class="kw">_</span>, <span class="ident">Release</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as a release failure ordering&quot;</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;a failure ordering can&#39;t be stronger than a success ordering&quot;</span>),
+            (<span class="ident">Acquire</span>, <span class="ident">Acquire</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg_acq</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="ident">Release</span>, <span class="ident">Relaxed</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg_rel</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="ident">AcqRel</span>, <span class="ident">Acquire</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg_acqrel</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="ident">Relaxed</span>, <span class="ident">Relaxed</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg_relaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="ident">SeqCst</span>, <span class="ident">SeqCst</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="ident">Acquire</span>, <span class="ident">Relaxed</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg_acq_failrelaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="ident">AcqRel</span>, <span class="ident">Relaxed</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg_acqrel_failrelaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="ident">SeqCst</span>, <span class="ident">Relaxed</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg_failrelaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="ident">SeqCst</span>, <span class="ident">Acquire</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg_failacq</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="kw">_</span>, <span class="ident">AcqRel</span>) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as an acquire/release failure ordering&quot;</span>),
+            (<span class="kw">_</span>, <span class="ident">Release</span>) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as a release failure ordering&quot;</span>),
+            <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;a failure ordering can&#39;t be stronger than a success ordering&quot;</span>),
         }
     };
     <span class="kw">if</span> <span class="ident">ok</span> { <span class="prelude-val">Ok</span>(<span class="ident">val</span>) } <span class="kw">else</span> { <span class="prelude-val">Err</span>(<span class="ident">val</span>) }
@@ -5237,22 +5254,22 @@
     <span class="ident">new</span>: <span class="ident">T</span>,
     <span class="ident">success</span>: <span class="ident">Ordering</span>,
     <span class="ident">failure</span>: <span class="ident">Ordering</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="comment">// SAFETY: the caller must uphold the safety contract for `atomic_compare_exchange_weak`.</span>
     <span class="kw">let</span> (<span class="ident">val</span>, <span class="ident">ok</span>) <span class="op">=</span> <span class="kw">unsafe</span> {
         <span class="kw">match</span> (<span class="ident">success</span>, <span class="ident">failure</span>) {
-            (<span class="ident">Acquire</span>, <span class="ident">Acquire</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchgweak_acq</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="ident">Release</span>, <span class="ident">Relaxed</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchgweak_rel</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="ident">AcqRel</span>, <span class="ident">Acquire</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchgweak_acqrel</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="ident">Relaxed</span>, <span class="ident">Relaxed</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchgweak_relaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="ident">SeqCst</span>, <span class="ident">SeqCst</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchgweak</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="ident">Acquire</span>, <span class="ident">Relaxed</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchgweak_acq_failrelaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="ident">AcqRel</span>, <span class="ident">Relaxed</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchgweak_acqrel_failrelaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="ident">SeqCst</span>, <span class="ident">Relaxed</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchgweak_failrelaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="ident">SeqCst</span>, <span class="ident">Acquire</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_cxchgweak_failacq</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
-            (<span class="kw">_</span>, <span class="ident">AcqRel</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as an acquire/release failure ordering&quot;</span>),
-            (<span class="kw">_</span>, <span class="ident">Release</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as a release failure ordering&quot;</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;a failure ordering can&#39;t be stronger than a success ordering&quot;</span>),
+            (<span class="ident">Acquire</span>, <span class="ident">Acquire</span>) =&gt; <span class="ident">intrinsics::atomic_cxchgweak_acq</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="ident">Release</span>, <span class="ident">Relaxed</span>) =&gt; <span class="ident">intrinsics::atomic_cxchgweak_rel</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="ident">AcqRel</span>, <span class="ident">Acquire</span>) =&gt; <span class="ident">intrinsics::atomic_cxchgweak_acqrel</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="ident">Relaxed</span>, <span class="ident">Relaxed</span>) =&gt; <span class="ident">intrinsics::atomic_cxchgweak_relaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="ident">SeqCst</span>, <span class="ident">SeqCst</span>) =&gt; <span class="ident">intrinsics::atomic_cxchgweak</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="ident">Acquire</span>, <span class="ident">Relaxed</span>) =&gt; <span class="ident">intrinsics::atomic_cxchgweak_acq_failrelaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="ident">AcqRel</span>, <span class="ident">Relaxed</span>) =&gt; <span class="ident">intrinsics::atomic_cxchgweak_acqrel_failrelaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="ident">SeqCst</span>, <span class="ident">Relaxed</span>) =&gt; <span class="ident">intrinsics::atomic_cxchgweak_failrelaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="ident">SeqCst</span>, <span class="ident">Acquire</span>) =&gt; <span class="ident">intrinsics::atomic_cxchgweak_failacq</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+            (<span class="kw">_</span>, <span class="ident">AcqRel</span>) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as an acquire/release failure ordering&quot;</span>),
+            (<span class="kw">_</span>, <span class="ident">Release</span>) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as a release failure ordering&quot;</span>),
+            <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;a failure ordering can&#39;t be stronger than a success ordering&quot;</span>),
         }
     };
     <span class="kw">if</span> <span class="ident">ok</span> { <span class="prelude-val">Ok</span>(<span class="ident">val</span>) } <span class="kw">else</span> { <span class="prelude-val">Err</span>(<span class="ident">val</span>) }
@@ -5260,60 +5277,60 @@
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_and</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_and</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">T</span> {
     <span class="comment">// SAFETY: the caller must uphold the safety contract for `atomic_and`</span>
     <span class="kw">unsafe</span> {
         <span class="kw">match</span> <span class="ident">order</span> {
-            <span class="ident">Acquire</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_and_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Release</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_and_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">AcqRel</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_and_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Relaxed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_and_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">SeqCst</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_and</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Acquire</span> =&gt; <span class="ident">intrinsics::atomic_and_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Release</span> =&gt; <span class="ident">intrinsics::atomic_and_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">AcqRel</span> =&gt; <span class="ident">intrinsics::atomic_and_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Relaxed</span> =&gt; <span class="ident">intrinsics::atomic_and_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">SeqCst</span> =&gt; <span class="ident">intrinsics::atomic_and</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
         }
     }
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_nand</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_nand</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">T</span> {
     <span class="comment">// SAFETY: the caller must uphold the safety contract for `atomic_nand`</span>
     <span class="kw">unsafe</span> {
         <span class="kw">match</span> <span class="ident">order</span> {
-            <span class="ident">Acquire</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_nand_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Release</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_nand_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">AcqRel</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_nand_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Relaxed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_nand_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">SeqCst</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_nand</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Acquire</span> =&gt; <span class="ident">intrinsics::atomic_nand_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Release</span> =&gt; <span class="ident">intrinsics::atomic_nand_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">AcqRel</span> =&gt; <span class="ident">intrinsics::atomic_nand_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Relaxed</span> =&gt; <span class="ident">intrinsics::atomic_nand_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">SeqCst</span> =&gt; <span class="ident">intrinsics::atomic_nand</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
         }
     }
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_or</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_or</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">T</span> {
     <span class="comment">// SAFETY: the caller must uphold the safety contract for `atomic_or`</span>
     <span class="kw">unsafe</span> {
         <span class="kw">match</span> <span class="ident">order</span> {
-            <span class="ident">Acquire</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_or_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Release</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_or_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">AcqRel</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_or_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Relaxed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_or_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">SeqCst</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_or</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Acquire</span> =&gt; <span class="ident">intrinsics::atomic_or_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Release</span> =&gt; <span class="ident">intrinsics::atomic_or_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">AcqRel</span> =&gt; <span class="ident">intrinsics::atomic_or_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Relaxed</span> =&gt; <span class="ident">intrinsics::atomic_or_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">SeqCst</span> =&gt; <span class="ident">intrinsics::atomic_or</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
         }
     }
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_xor</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_xor</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">T</span> {
     <span class="comment">// SAFETY: the caller must uphold the safety contract for `atomic_xor`</span>
     <span class="kw">unsafe</span> {
         <span class="kw">match</span> <span class="ident">order</span> {
-            <span class="ident">Acquire</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xor_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Release</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xor_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">AcqRel</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xor_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Relaxed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xor_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">SeqCst</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_xor</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Acquire</span> =&gt; <span class="ident">intrinsics::atomic_xor_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Release</span> =&gt; <span class="ident">intrinsics::atomic_xor_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">AcqRel</span> =&gt; <span class="ident">intrinsics::atomic_xor_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Relaxed</span> =&gt; <span class="ident">intrinsics::atomic_xor_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">SeqCst</span> =&gt; <span class="ident">intrinsics::atomic_xor</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
         }
     }
 }
@@ -5321,15 +5338,15 @@
 <span class="doccomment">/// returns the max value (signed comparison)</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_max</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_max</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">T</span> {
     <span class="comment">// SAFETY: the caller must uphold the safety contract for `atomic_max`</span>
     <span class="kw">unsafe</span> {
         <span class="kw">match</span> <span class="ident">order</span> {
-            <span class="ident">Acquire</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_max_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Release</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_max_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">AcqRel</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_max_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Relaxed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_max_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">SeqCst</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_max</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Acquire</span> =&gt; <span class="ident">intrinsics::atomic_max_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Release</span> =&gt; <span class="ident">intrinsics::atomic_max_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">AcqRel</span> =&gt; <span class="ident">intrinsics::atomic_max_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Relaxed</span> =&gt; <span class="ident">intrinsics::atomic_max_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">SeqCst</span> =&gt; <span class="ident">intrinsics::atomic_max</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
         }
     }
 }
@@ -5337,15 +5354,15 @@
 <span class="doccomment">/// returns the min value (signed comparison)</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_min</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_min</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">T</span> {
     <span class="comment">// SAFETY: the caller must uphold the safety contract for `atomic_min`</span>
     <span class="kw">unsafe</span> {
         <span class="kw">match</span> <span class="ident">order</span> {
-            <span class="ident">Acquire</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_min_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Release</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_min_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">AcqRel</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_min_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Relaxed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_min_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">SeqCst</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_min</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Acquire</span> =&gt; <span class="ident">intrinsics::atomic_min_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Release</span> =&gt; <span class="ident">intrinsics::atomic_min_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">AcqRel</span> =&gt; <span class="ident">intrinsics::atomic_min_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Relaxed</span> =&gt; <span class="ident">intrinsics::atomic_min_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">SeqCst</span> =&gt; <span class="ident">intrinsics::atomic_min</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
         }
     }
 }
@@ -5353,15 +5370,15 @@
 <span class="doccomment">/// returns the max value (unsigned comparison)</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_umax</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_umax</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">T</span> {
     <span class="comment">// SAFETY: the caller must uphold the safety contract for `atomic_umax`</span>
     <span class="kw">unsafe</span> {
         <span class="kw">match</span> <span class="ident">order</span> {
-            <span class="ident">Acquire</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_umax_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Release</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_umax_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">AcqRel</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_umax_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Relaxed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_umax_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">SeqCst</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_umax</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Acquire</span> =&gt; <span class="ident">intrinsics::atomic_umax_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Release</span> =&gt; <span class="ident">intrinsics::atomic_umax_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">AcqRel</span> =&gt; <span class="ident">intrinsics::atomic_umax_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Relaxed</span> =&gt; <span class="ident">intrinsics::atomic_umax_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">SeqCst</span> =&gt; <span class="ident">intrinsics::atomic_umax</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
         }
     }
 }
@@ -5369,15 +5386,15 @@
 <span class="doccomment">/// returns the min value (unsigned comparison)</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_umin</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">atomic_umin</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">T</span>, <span class="ident">order</span>: <span class="ident">Ordering</span>) -&gt; <span class="ident">T</span> {
     <span class="comment">// SAFETY: the caller must uphold the safety contract for `atomic_umin`</span>
     <span class="kw">unsafe</span> {
         <span class="kw">match</span> <span class="ident">order</span> {
-            <span class="ident">Acquire</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_umin_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Release</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_umin_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">AcqRel</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_umin_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">Relaxed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_umin_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
-            <span class="ident">SeqCst</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_umin</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Acquire</span> =&gt; <span class="ident">intrinsics::atomic_umin_acq</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Release</span> =&gt; <span class="ident">intrinsics::atomic_umin_rel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">AcqRel</span> =&gt; <span class="ident">intrinsics::atomic_umin_acqrel</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">Relaxed</span> =&gt; <span class="ident">intrinsics::atomic_umin_relaxed</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
+            <span class="ident">SeqCst</span> =&gt; <span class="ident">intrinsics::atomic_umin</span>(<span class="ident">dst</span>, <span class="ident">val</span>),
         }
     }
 }
@@ -5442,7 +5459,11 @@
 <span class="doccomment">///</span>
 <span class="doccomment">///     pub fn lock(&amp;self) {</span>
 <span class="doccomment">///         // Wait until the old value is `false`.</span>
-<span class="doccomment">///         while self.flag.compare_and_swap(false, true, Ordering::Relaxed) != false {}</span>
+<span class="doccomment">///         while self</span>
+<span class="doccomment">///             .flag</span>
+<span class="doccomment">///             .compare_exchange_weak(false, true, Ordering::Relaxed, Ordering::Relaxed)</span>
+<span class="doccomment">///             .is_err()</span>
+<span class="doccomment">///         {}</span>
 <span class="doccomment">///         // This fence synchronizes-with store in `unlock`.</span>
 <span class="doccomment">///         fence(Ordering::Acquire);</span>
 <span class="doccomment">///     }</span>
@@ -5454,15 +5475,16 @@
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">rustc_diagnostic_item</span> <span class="op">=</span> <span class="string">&quot;fence&quot;</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fence</span>(<span class="ident">order</span>: <span class="ident">Ordering</span>) {
     <span class="comment">// SAFETY: using an atomic fence is safe.</span>
     <span class="kw">unsafe</span> {
         <span class="kw">match</span> <span class="ident">order</span> {
-            <span class="ident">Acquire</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_fence_acq</span>(),
-            <span class="ident">Release</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_fence_rel</span>(),
-            <span class="ident">AcqRel</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_fence_acqrel</span>(),
-            <span class="ident">SeqCst</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_fence</span>(),
-            <span class="ident">Relaxed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as a relaxed fence&quot;</span>),
+            <span class="ident">Acquire</span> =&gt; <span class="ident">intrinsics::atomic_fence_acq</span>(),
+            <span class="ident">Release</span> =&gt; <span class="ident">intrinsics::atomic_fence_rel</span>(),
+            <span class="ident">AcqRel</span> =&gt; <span class="ident">intrinsics::atomic_fence_acqrel</span>(),
+            <span class="ident">SeqCst</span> =&gt; <span class="ident">intrinsics::atomic_fence</span>(),
+            <span class="ident">Relaxed</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as a relaxed fence&quot;</span>),
         }
     }
 }
@@ -5504,7 +5526,7 @@
 <span class="doccomment">/// Without `compiler_fence`, the `assert_eq!` in following code</span>
 <span class="doccomment">/// is *not* guaranteed to succeed, despite everything happening in a single thread.</span>
 <span class="doccomment">/// To see why, remember that the compiler is free to swap the stores to</span>
-<span class="doccomment">/// `IMPORTANT_VARIABLE` and `IS_READ` since they are both</span>
+<span class="doccomment">/// `IMPORTANT_VARIABLE` and `IS_READY` since they are both</span>
 <span class="doccomment">/// `Ordering::Relaxed`. If it does, and the signal handler is invoked right</span>
 <span class="doccomment">/// after `IS_READY` is updated, then the signal handler will see</span>
 <span class="doccomment">/// `IS_READY=1`, but `IMPORTANT_VARIABLE=0`.</span>
@@ -5535,15 +5557,16 @@
 <span class="doccomment">/// [memory barriers]: https://www.kernel.org/doc/Documentation/memory-barriers.txt</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;compiler_fences&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.21.0&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">rustc_diagnostic_item</span> <span class="op">=</span> <span class="string">&quot;compiler_fence&quot;</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compiler_fence</span>(<span class="ident">order</span>: <span class="ident">Ordering</span>) {
     <span class="comment">// SAFETY: using an atomic fence is safe.</span>
     <span class="kw">unsafe</span> {
         <span class="kw">match</span> <span class="ident">order</span> {
-            <span class="ident">Acquire</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_singlethreadfence_acq</span>(),
-            <span class="ident">Release</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_singlethreadfence_rel</span>(),
-            <span class="ident">AcqRel</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_singlethreadfence_acqrel</span>(),
-            <span class="ident">SeqCst</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">intrinsics::atomic_singlethreadfence</span>(),
-            <span class="ident">Relaxed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as a relaxed compiler fence&quot;</span>),
+            <span class="ident">Acquire</span> =&gt; <span class="ident">intrinsics::atomic_singlethreadfence_acq</span>(),
+            <span class="ident">Release</span> =&gt; <span class="ident">intrinsics::atomic_singlethreadfence_rel</span>(),
+            <span class="ident">AcqRel</span> =&gt; <span class="ident">intrinsics::atomic_singlethreadfence_acqrel</span>(),
+            <span class="ident">SeqCst</span> =&gt; <span class="ident">intrinsics::atomic_singlethreadfence</span>(),
+            <span class="ident">Relaxed</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;there is no such thing as a relaxed compiler fence&quot;</span>),
         }
     }
 }
@@ -5551,7 +5574,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic_load_store</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;atomic_debug&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.3.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">AtomicBool</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Debug::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">load</span>(<span class="ident">Ordering::SeqCst</span>), <span class="ident">f</span>)
     }
 }
@@ -5559,7 +5582,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic_load_store</span> <span class="op">=</span> <span class="string">&quot;ptr&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;atomic_debug&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.3.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">AtomicPtr</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Debug::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">load</span>(<span class="ident">Ordering::SeqCst</span>), <span class="ident">f</span>)
     }
 }
@@ -5567,7 +5590,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_has_atomic_load_store</span> <span class="op">=</span> <span class="string">&quot;ptr&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;atomic_pointer&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.24.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">fmt::Pointer</span> <span class="kw">for</span> <span class="ident">AtomicPtr</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Pointer::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">load</span>(<span class="ident">Ordering::SeqCst</span>), <span class="ident">f</span>)
     }
 }
@@ -5583,5 +5606,7 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spin_loop_hint</span>() {
     <span class="ident">spin_loop</span>()
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

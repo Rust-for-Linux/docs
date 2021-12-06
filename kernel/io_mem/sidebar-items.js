@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["IoMem","Represents a memory block of at least `SIZE` bytes."],["Resource","Represents a memory resource."]]});

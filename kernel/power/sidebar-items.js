@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["NoOperations","Implements the [`Operations`] trait as no-ops."]],"trait":[["Operations","Corresponds to the kernel’s `struct dev_pm_ops`."]]});

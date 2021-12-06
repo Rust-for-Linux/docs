@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/task/poll.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>poll.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;task&#x2F;poll.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>poll.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -245,12 +243,86 @@
 <span id="243">243</span>
 <span id="244">244</span>
 <span id="245">245</span>
-</pre><pre class="rust">
-<span class="attribute">#![<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::convert</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ops</span>::{<span class="self">self</span>, <span class="ident">ControlFlow</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::result::Result</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::convert</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ops</span>::{<span class="self">self</span>, <span class="ident">ControlFlow</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::result::Result</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::task::Ready</span>;
 
 <span class="doccomment">/// Indicates whether a value is available or if the current task has been</span>
 <span class="doccomment">/// scheduled to receive a wakeup instead.</span>
@@ -274,89 +346,215 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Changes the ready value of this `Poll` with the closure provided.</span>
+    <span class="doccomment">/// Maps a `Poll&lt;T&gt;` to `Poll&lt;U&gt;` by applying a function to a contained value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Converts a &lt;code&gt;Poll&lt;[String]&gt;&lt;/code&gt; into a &lt;code&gt;Poll&lt;[usize]&gt;&lt;/code&gt;, consuming</span>
+    <span class="doccomment">/// the original:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [String]: ../../std/string/struct.String.html &quot;String&quot;</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// # use core::task::Poll;</span>
+    <span class="doccomment">/// let poll_some_string = Poll::Ready(String::from(&quot;Hello, World!&quot;));</span>
+    <span class="doccomment">/// // `Poll::map` takes self *by value*, consuming `poll_some_string`</span>
+    <span class="doccomment">/// let poll_some_len = poll_some_string.map(|s| s.len());</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(poll_some_len, Poll::Ready(13));</span>
+    <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">U</span>,
+        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">T</span>) -&gt; <span class="ident">U</span>,
     {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Poll::Ready</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Ready</span>(<span class="ident">f</span>(<span class="ident">t</span>)),
-            <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Pending</span>,
+            <span class="ident">Poll::Ready</span>(<span class="ident">t</span>) =&gt; <span class="ident">Poll::Ready</span>(<span class="ident">f</span>(<span class="ident">t</span>)),
+            <span class="ident">Poll::Pending</span> =&gt; <span class="ident">Poll::Pending</span>,
         }
     }
 
-    <span class="doccomment">/// Returns `true` if this is `Poll::Ready`</span>
+    <span class="doccomment">/// Returns `true` if the poll is a [`Poll::Ready`] value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// # use core::task::Poll;</span>
+    <span class="doccomment">/// let x: Poll&lt;u32&gt; = Poll::Ready(2);</span>
+    <span class="doccomment">/// assert_eq!(x.is_ready(), true);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let x: Poll&lt;u32&gt; = Poll::Pending;</span>
+    <span class="doccomment">/// assert_eq!(x.is_ready(), false);</span>
+    <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_poll&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.49.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ready</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ready</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="kw-2">*</span><span class="self">self</span>, <span class="ident">Poll::Ready</span>(<span class="kw">_</span>))
     }
 
-    <span class="doccomment">/// Returns `true` if this is `Poll::Pending`</span>
+    <span class="doccomment">/// Returns `true` if the poll is a [`Pending`] value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`Pending`]: Poll::Pending</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// # use core::task::Poll;</span>
+    <span class="doccomment">/// let x: Poll&lt;u32&gt; = Poll::Ready(2);</span>
+    <span class="doccomment">/// assert_eq!(x.is_pending(), false);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let x: Poll&lt;u32&gt; = Poll::Pending;</span>
+    <span class="doccomment">/// assert_eq!(x.is_pending(), true);</span>
+    <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_poll&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.49.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_pending</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_pending</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="op">!</span><span class="self">self</span>.<span class="ident">is_ready</span>()
+    }
+
+    <span class="doccomment">/// Extracts the successful type of a [`Poll&lt;T&gt;`].</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// When combined with the `?` operator, this function will</span>
+    <span class="doccomment">/// propagate any [`Poll::Pending`] values to the caller, and</span>
+    <span class="doccomment">/// extract the `T` from [`Poll::Ready`].</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// #![feature(poll_ready)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// use std::task::{Context, Poll};</span>
+    <span class="doccomment">/// use std::future::{self, Future};</span>
+    <span class="doccomment">/// use std::pin::Pin;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// pub fn do_poll(cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;()&gt; {</span>
+    <span class="doccomment">///     let mut fut = future::ready(42);</span>
+    <span class="doccomment">///     let fut = Pin::new(&amp;mut fut);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///     let num = fut.poll(cx).ready()?;</span>
+    <span class="doccomment">///     # drop(num);</span>
+    <span class="doccomment">///     // ... use num</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///     Poll::Ready(())</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;poll_ready&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;89780&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ready</span>(<span class="self">self</span>) -&gt; <span class="ident">Ready</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="ident">Ready</span>(<span class="self">self</span>)
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Changes the success value of this `Poll` with the closure provided.</span>
+    <span class="doccomment">/// Maps a `Poll&lt;Result&lt;T, E&gt;&gt;` to `Poll&lt;Result&lt;U, E&gt;&gt;` by applying a</span>
+    <span class="doccomment">/// function to a contained `Poll::Ready(Ok)` value, leaving all other</span>
+    <span class="doccomment">/// variants untouched.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This function can be used to compose the results of two functions.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// # use core::task::Poll;</span>
+    <span class="doccomment">/// let res: Poll&lt;Result&lt;u8, _&gt;&gt; = Poll::Ready(&quot;12&quot;.parse());</span>
+    <span class="doccomment">/// let squared = res.map_ok(|n| n * n);</span>
+    <span class="doccomment">/// assert_eq!(squared, Poll::Ready(Ok(144)));</span>
+    <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_ok</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_ok</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">U</span>,
+        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">T</span>) -&gt; <span class="ident">U</span>,
     {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">t</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">f</span>(<span class="ident">t</span>))),
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)),
-            <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Pending</span>,
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">t</span>)) =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">f</span>(<span class="ident">t</span>))),
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)) =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)),
+            <span class="ident">Poll::Pending</span> =&gt; <span class="ident">Poll::Pending</span>,
         }
     }
 
-    <span class="doccomment">/// Changes the error value of this `Poll` with the closure provided.</span>
+    <span class="doccomment">/// Maps a `Poll::Ready&lt;Result&lt;T, E&gt;&gt;` to `Poll::Ready&lt;Result&lt;T, F&gt;&gt;` by</span>
+    <span class="doccomment">/// applying a function to a contained `Poll::Ready(Err)` value, leaving all other</span>
+    <span class="doccomment">/// variants untouched.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This function can be used to pass through a successful result while handling</span>
+    <span class="doccomment">/// an error.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// # use core::task::Poll;</span>
+    <span class="doccomment">/// let res: Poll&lt;Result&lt;u8, _&gt;&gt; = Poll::Ready(&quot;oops&quot;.parse());</span>
+    <span class="doccomment">/// let res = res.map_err(|_| 0_u8);</span>
+    <span class="doccomment">/// assert_eq!(res, Poll::Ready(Err(0)));</span>
+    <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_err</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_err</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">E</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">U</span>,
+        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">E</span>) -&gt; <span class="ident">U</span>,
     {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">t</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">t</span>)),
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">f</span>(<span class="ident">e</span>))),
-            <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Pending</span>,
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">t</span>)) =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">t</span>)),
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)) =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">f</span>(<span class="ident">e</span>))),
+            <span class="ident">Poll::Pending</span> =&gt; <span class="ident">Poll::Pending</span>,
         }
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Changes the success value of this `Poll` with the closure provided.</span>
+    <span class="doccomment">/// Maps a `Poll&lt;Option&lt;Result&lt;T, E&gt;&gt;&gt;` to `Poll&lt;Option&lt;Result&lt;U, E&gt;&gt;&gt;` by</span>
+    <span class="doccomment">/// applying a function to a contained `Poll::Ready(Some(Ok))` value,</span>
+    <span class="doccomment">/// leaving all other variants untouched.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This function can be used to compose the results of two functions.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// # use core::task::Poll;</span>
+    <span class="doccomment">/// let res: Poll&lt;Option&lt;Result&lt;u8, _&gt;&gt;&gt; = Poll::Ready(Some(&quot;12&quot;.parse()));</span>
+    <span class="doccomment">/// let squared = res.map_ok(|n| n * n);</span>
+    <span class="doccomment">/// assert_eq!(squared, Poll::Ready(Some(Ok(144))));</span>
+    <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;poll_map&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.51.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_ok</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_ok</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">U</span>,
+        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">T</span>) -&gt; <span class="ident">U</span>,
     {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">t</span>))) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">f</span>(<span class="ident">t</span>)))),
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>))) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>))),
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>),
-            <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Pending</span>,
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">t</span>))) =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">f</span>(<span class="ident">t</span>)))),
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>))) =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>))),
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>) =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>),
+            <span class="ident">Poll::Pending</span> =&gt; <span class="ident">Poll::Pending</span>,
         }
     }
 
-    <span class="doccomment">/// Changes the error value of this `Poll` with the closure provided.</span>
+    <span class="doccomment">/// Maps a `Poll::Ready&lt;Option&lt;Result&lt;T, E&gt;&gt;&gt;` to</span>
+    <span class="doccomment">/// `Poll::Ready&lt;Option&lt;Result&lt;T, F&gt;&gt;&gt;` by applying a function to a</span>
+    <span class="doccomment">/// contained `Poll::Ready(Some(Err))` value, leaving all other variants</span>
+    <span class="doccomment">/// untouched.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This function can be used to pass through a successful result while handling</span>
+    <span class="doccomment">/// an error.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// # use core::task::Poll;</span>
+    <span class="doccomment">/// let res: Poll&lt;Option&lt;Result&lt;u8, _&gt;&gt;&gt; = Poll::Ready(Some(&quot;oops&quot;.parse()));</span>
+    <span class="doccomment">/// let res = res.map_err(|_| 0_u8);</span>
+    <span class="doccomment">/// assert_eq!(res, Poll::Ready(Some(Err(0))));</span>
+    <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;poll_map&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.51.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_err</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_err</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">E</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">U</span>,
+        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">E</span>) -&gt; <span class="ident">U</span>,
     {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">t</span>))) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">t</span>))),
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>))) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">f</span>(<span class="ident">e</span>)))),
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>),
-            <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Pending</span>,
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">t</span>))) =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">t</span>))),
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>))) =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">f</span>(<span class="ident">e</span>)))),
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>) =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>),
+            <span class="ident">Poll::Pending</span> =&gt; <span class="ident">Poll::Pending</span>,
         }
     }
 }
@@ -371,53 +569,27 @@
     <span class="doccomment">/// # use core::task::Poll;</span>
     <span class="doccomment">/// assert_eq!(Poll::from(true), Poll::Ready(true));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="ident">T</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">Poll::Ready</span>(<span class="ident">t</span>)
     }
 }
 
-<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">bootstrap</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">ops::TryV1</span> <span class="kw">for</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">E</span>;
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_result</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Output</span>, <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">x</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Poll::Ready</span>(<span class="ident">x</span>)),
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>),
-            <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Poll::Pending</span>),
-        }
-    }
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_error</span>(<span class="ident">e</span>: <span class="self">Self</span><span class="ident">::Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>))
-    }
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_ok</span>(<span class="ident">x</span>: <span class="self">Self</span><span class="ident">::Output</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">x</span>.<span class="ident">map</span>(<span class="prelude-val">Ok</span>)
-    }
-}
-
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_trait_v2&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;84277&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">ops::TryV2</span> <span class="kw">for</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">ops::Try</span> <span class="kw">for</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">Residual</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">convert::Infallible</span>, <span class="ident">E</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_output</span>(<span class="ident">c</span>: <span class="self">Self</span><span class="ident">::Output</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_output</span>(<span class="ident">c</span>: <span class="ident"><span class="self">Self</span>::Output</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">c</span>.<span class="ident">map</span>(<span class="prelude-val">Ok</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">branch</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Residual</span>, <span class="self">Self</span><span class="ident">::Output</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">branch</span>(<span class="self">self</span>) -&gt; <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Residual</span>, <span class="ident"><span class="self">Self</span>::Output</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">x</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ControlFlow::Continue</span>(<span class="ident">Poll::Ready</span>(<span class="ident">x</span>)),
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ControlFlow::Break</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)),
-            <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ControlFlow::Continue</span>(<span class="ident">Poll::Pending</span>),
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Ok</span>(<span class="ident">x</span>)) =&gt; <span class="ident">ControlFlow::Continue</span>(<span class="ident">Poll::Ready</span>(<span class="ident">x</span>)),
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)) =&gt; <span class="ident">ControlFlow::Break</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)),
+            <span class="ident">Poll::Pending</span> =&gt; <span class="ident">ControlFlow::Continue</span>(<span class="ident">Poll::Pending</span>),
         }
     }
 }
@@ -425,57 +597,30 @@
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_trait_v2&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;84277&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span>, <span class="ident">F</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">ops::FromResidual</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">convert::Infallible</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_residual</span>(<span class="ident">x</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">convert::Infallible</span>, <span class="ident">E</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_residual</span>(<span class="ident">x</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">convert::Infallible</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">x</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">From::from</span>(<span class="ident">e</span>))),
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">Err</span>(<span class="ident">From::from</span>(<span class="ident">e</span>))),
         }
-    }
-}
-
-<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">bootstrap</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">ops::TryV1</span> <span class="kw">for</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>;
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">E</span>;
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_result</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Output</span>, <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">x</span>))) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="ident">x</span>))),
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>))) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>),
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>)),
-            <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Poll::Pending</span>),
-        }
-    }
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_error</span>(<span class="ident">e</span>: <span class="self">Self</span><span class="ident">::Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)))
-    }
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_ok</span>(<span class="ident">x</span>: <span class="self">Self</span><span class="ident">::Output</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">x</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">map</span>(<span class="prelude-val">Ok</span>))
     }
 }
 
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_trait_v2&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;84277&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">ops::TryV2</span> <span class="kw">for</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">ops::Try</span> <span class="kw">for</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">Residual</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">convert::Infallible</span>, <span class="ident">E</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_output</span>(<span class="ident">c</span>: <span class="self">Self</span><span class="ident">::Output</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_output</span>(<span class="ident">c</span>: <span class="ident"><span class="self">Self</span>::Output</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">c</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">map</span>(<span class="prelude-val">Ok</span>))
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">branch</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Residual</span>, <span class="self">Self</span><span class="ident">::Output</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">branch</span>(<span class="self">self</span>) -&gt; <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Residual</span>, <span class="ident"><span class="self">Self</span>::Output</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">x</span>))) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ControlFlow::Continue</span>(<span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="ident">x</span>))),
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>))) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ControlFlow::Break</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)),
-            <span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ControlFlow::Continue</span>(<span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>)),
-            <span class="ident">Poll::Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ControlFlow::Continue</span>(<span class="ident">Poll::Pending</span>),
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">x</span>))) =&gt; <span class="ident">ControlFlow::Continue</span>(<span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="ident">x</span>))),
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>))) =&gt; <span class="ident">ControlFlow::Break</span>(<span class="prelude-val">Err</span>(<span class="ident">e</span>)),
+            <span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>) =&gt; <span class="ident">ControlFlow::Continue</span>(<span class="ident">Poll::Ready</span>(<span class="prelude-val">None</span>)),
+            <span class="ident">Poll::Pending</span> =&gt; <span class="ident">ControlFlow::Continue</span>(<span class="ident">Poll::Pending</span>),
         }
     }
 }
@@ -485,11 +630,13 @@
     <span class="kw">for</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_residual</span>(<span class="ident">x</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">convert::Infallible</span>, <span class="ident">E</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_residual</span>(<span class="ident">x</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">convert::Infallible</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">x</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">From::from</span>(<span class="ident">e</span>)))),
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">Poll::Ready</span>(<span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">From::from</span>(<span class="ident">e</span>)))),
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

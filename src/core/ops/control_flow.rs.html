@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ops/control_flow.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>control_flow.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;ops&#x2F;control_flow.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>control_flow.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -229,52 +227,7 @@
 <span id="227">227</span>
 <span id="228">228</span>
 <span id="229">229</span>
-<span id="230">230</span>
-<span id="231">231</span>
-<span id="232">232</span>
-<span id="233">233</span>
-<span id="234">234</span>
-<span id="235">235</span>
-<span id="236">236</span>
-<span id="237">237</span>
-<span id="238">238</span>
-<span id="239">239</span>
-<span id="240">240</span>
-<span id="241">241</span>
-<span id="242">242</span>
-<span id="243">243</span>
-<span id="244">244</span>
-<span id="245">245</span>
-<span id="246">246</span>
-<span id="247">247</span>
-<span id="248">248</span>
-<span id="249">249</span>
-<span id="250">250</span>
-<span id="251">251</span>
-<span id="252">252</span>
-<span id="253">253</span>
-<span id="254">254</span>
-<span id="255">255</span>
-<span id="256">256</span>
-<span id="257">257</span>
-<span id="258">258</span>
-<span id="259">259</span>
-<span id="260">260</span>
-<span id="261">261</span>
-<span id="262">262</span>
-<span id="263">263</span>
-<span id="264">264</span>
-<span id="265">265</span>
-<span id="266">266</span>
-<span id="267">267</span>
-<span id="268">268</span>
-<span id="269">269</span>
-<span id="270">270</span>
-<span id="271">271</span>
-<span id="272">272</span>
-<span id="273">273</span>
-</pre><pre class="rust">
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">convert</span>, <span class="ident">ops</span>};
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">convert</span>, <span class="ident">ops</span>};
 
 <span class="doccomment">/// Used to tell an operation whether it should exit early or go on as usual.</span>
 <span class="doccomment">///</span>
@@ -287,7 +240,6 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// Early-exiting from [`Iterator::try_for_each`]:</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// #![feature(control_flow_enum)]</span>
 <span class="doccomment">/// use std::ops::ControlFlow;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// let r = (2..100).try_for_each(|x| {</span>
@@ -302,7 +254,6 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// A basic tree traversal:</span>
 <span class="doccomment">/// ```no_run</span>
-<span class="doccomment">/// #![feature(control_flow_enum)]</span>
 <span class="doccomment">/// use std::ops::ControlFlow;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// pub struct TreeNode&lt;T&gt; {</span>
@@ -324,57 +275,37 @@
 <span class="doccomment">///     }</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;control_flow_enum&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;75744&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;control_flow_enum_type&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.55.0&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">C</span> <span class="op">=</span> ()<span class="op">&gt;</span> {
     <span class="doccomment">/// Move on to the next phase of the operation as normal.</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>), <span class="ident">lang</span> <span class="op">=</span> <span class="string">&quot;Continue&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;control_flow_enum_type&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.55.0&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">lang</span> <span class="op">=</span> <span class="string">&quot;Continue&quot;</span>]</span>
     <span class="ident">Continue</span>(<span class="ident">C</span>),
     <span class="doccomment">/// Exit the operation without running subsequent phases.</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>), <span class="ident">lang</span> <span class="op">=</span> <span class="string">&quot;Break&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;control_flow_enum_type&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.55.0&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">lang</span> <span class="op">=</span> <span class="string">&quot;Break&quot;</span>]</span>
     <span class="ident">Break</span>(<span class="ident">B</span>),
     <span class="comment">// Yes, the order of the variants doesn&#39;t match the type parameters.</span>
     <span class="comment">// They&#39;re in this order so that `ControlFlow&lt;A, B&gt;` &lt;-&gt; `Result&lt;B, A&gt;`</span>
     <span class="comment">// is a no-op conversion in the `Try` implementation.</span>
 }
 
-<span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;control_flow_enum&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;75744&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">bootstrap</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">C</span><span class="op">&gt;</span> <span class="ident">ops::TryV1</span> <span class="kw">for</span> <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">C</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">C</span>;
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">B</span>;
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_result</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Output</span>, <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">ControlFlow::Continue</span>(<span class="ident">y</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">y</span>),
-            <span class="ident">ControlFlow::Break</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">x</span>),
-        }
-    }
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_error</span>(<span class="ident">v</span>: <span class="self">Self</span><span class="ident">::Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">ControlFlow::Break</span>(<span class="ident">v</span>)
-    }
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_ok</span>(<span class="ident">v</span>: <span class="self">Self</span><span class="ident">::Output</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">ControlFlow::Continue</span>(<span class="ident">v</span>)
-    }
-}
-
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_trait_v2&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;84277&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">C</span><span class="op">&gt;</span> <span class="ident">ops::TryV2</span> <span class="kw">for</span> <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">C</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">C</span><span class="op">&gt;</span> <span class="ident">ops::Try</span> <span class="kw">for</span> <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">C</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">C</span>;
     <span class="kw">type</span> <span class="ident">Residual</span> <span class="op">=</span> <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">convert::Infallible</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_output</span>(<span class="ident">output</span>: <span class="self">Self</span><span class="ident">::Output</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_output</span>(<span class="ident">output</span>: <span class="ident"><span class="self">Self</span>::Output</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">ControlFlow::Continue</span>(<span class="ident">output</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">branch</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Residual</span>, <span class="self">Self</span><span class="ident">::Output</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">branch</span>(<span class="self">self</span>) -&gt; <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Residual</span>, <span class="ident"><span class="self">Self</span>::Output</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">ControlFlow::Continue</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ControlFlow::Continue</span>(<span class="ident">c</span>),
-            <span class="ident">ControlFlow::Break</span>(<span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ControlFlow::Break</span>(<span class="ident">ControlFlow::Break</span>(<span class="ident">b</span>)),
+            <span class="ident">ControlFlow::Continue</span>(<span class="ident">c</span>) =&gt; <span class="ident">ControlFlow::Continue</span>(<span class="ident">c</span>),
+            <span class="ident">ControlFlow::Break</span>(<span class="ident">b</span>) =&gt; <span class="ident">ControlFlow::Break</span>(<span class="ident">ControlFlow::Break</span>(<span class="ident">b</span>)),
         }
     }
 }
@@ -382,9 +313,9 @@
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_trait_v2&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;84277&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">C</span><span class="op">&gt;</span> <span class="ident">ops::FromResidual</span> <span class="kw">for</span> <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">C</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_residual</span>(<span class="ident">residual</span>: <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">convert::Infallible</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_residual</span>(<span class="ident">residual</span>: <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">convert::Infallible</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">residual</span> {
-            <span class="ident">ControlFlow::Break</span>(<span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ControlFlow::Break</span>(<span class="ident">b</span>),
+            <span class="ident">ControlFlow::Break</span>(<span class="ident">b</span>) =&gt; <span class="ident">ControlFlow::Break</span>(<span class="ident">b</span>),
         }
     }
 }
@@ -403,7 +334,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;control_flow_enum&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;75744&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_break</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_break</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="kw-2">*</span><span class="self">self</span>, <span class="ident">ControlFlow::Break</span>(<span class="kw">_</span>))
     }
 
@@ -420,7 +351,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;control_flow_enum&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;75744&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_continue</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_continue</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="kw-2">*</span><span class="self">self</span>, <span class="ident">ControlFlow::Continue</span>(<span class="kw">_</span>))
     }
 
@@ -438,10 +369,10 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;control_flow_enum&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;75744&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">break_value</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">break_value</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">ControlFlow::Continue</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">ControlFlow::Break</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>),
+            <span class="ident">ControlFlow::Continue</span>(..) =&gt; <span class="prelude-val">None</span>,
+            <span class="ident">ControlFlow::Break</span>(<span class="ident">x</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">x</span>),
         }
     }
 
@@ -449,34 +380,13 @@
     <span class="doccomment">/// to the break value in case it exists.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;control_flow_enum&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;75744&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_break</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">C</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map_break</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">C</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>,
+        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">B</span>) -&gt; <span class="ident">T</span>,
     {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">ControlFlow::Continue</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ControlFlow::Continue</span>(<span class="ident">x</span>),
-            <span class="ident">ControlFlow::Break</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ControlFlow::Break</span>(<span class="ident">f</span>(<span class="ident">x</span>)),
-        }
-    }
-}
-
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">bootstrap</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">ops::TryV1</span><span class="op">&gt;</span> <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">R::Output</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Create a `ControlFlow` from any type implementing `Try`.</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_try</span>(<span class="ident">r</span>: <span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">match</span> <span class="ident">R::into_result</span>(<span class="ident">r</span>) {
-            <span class="prelude-val">Ok</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ControlFlow::Continue</span>(<span class="ident">v</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ControlFlow::Break</span>(<span class="ident">R::from_error</span>(<span class="ident">v</span>)),
-        }
-    }
-
-    <span class="doccomment">/// Convert a `ControlFlow` into any type implementing `Try`;</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">into_try</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">ControlFlow::Continue</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">R::from_ok</span>(<span class="ident">v</span>),
-            <span class="ident">ControlFlow::Break</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">v</span>,
+            <span class="ident">ControlFlow::Continue</span>(<span class="ident">x</span>) =&gt; <span class="ident">ControlFlow::Continue</span>(<span class="ident">x</span>),
+            <span class="ident">ControlFlow::Break</span>(<span class="ident">x</span>) =&gt; <span class="ident">ControlFlow::Break</span>(<span class="ident">f</span>(<span class="ident">x</span>)),
         }
     }
 }
@@ -484,23 +394,22 @@
 <span class="doccomment">/// These are used only as part of implementing the iterator adapters.</span>
 <span class="doccomment">/// They have mediocre names and non-obvious semantics, so aren&#39;t</span>
 <span class="doccomment">/// currently on a path to potential stabilization.</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>))]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">ops::TryV2</span><span class="op">&gt;</span> <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">R::Output</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">ops::Try</span><span class="op">&gt;</span> <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">R::Output</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Create a `ControlFlow` from any type implementing `Try`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_try</span>(<span class="ident">r</span>: <span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_try</span>(<span class="ident">r</span>: <span class="ident">R</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">R::branch</span>(<span class="ident">r</span>) {
-            <span class="ident">ControlFlow::Continue</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ControlFlow::Continue</span>(<span class="ident">v</span>),
-            <span class="ident">ControlFlow::Break</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ControlFlow::Break</span>(<span class="ident">R::from_residual</span>(<span class="ident">v</span>)),
+            <span class="ident">ControlFlow::Continue</span>(<span class="ident">v</span>) =&gt; <span class="ident">ControlFlow::Continue</span>(<span class="ident">v</span>),
+            <span class="ident">ControlFlow::Break</span>(<span class="ident">v</span>) =&gt; <span class="ident">ControlFlow::Break</span>(<span class="ident">R::from_residual</span>(<span class="ident">v</span>)),
         }
     }
 
     <span class="doccomment">/// Convert a `ControlFlow` into any type implementing `Try`;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">into_try</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">into_try</span>(<span class="self">self</span>) -&gt; <span class="ident">R</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">ControlFlow::Continue</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">R::from_output</span>(<span class="ident">v</span>),
-            <span class="ident">ControlFlow::Break</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">v</span>,
+            <span class="ident">ControlFlow::Continue</span>(<span class="ident">v</span>) =&gt; <span class="ident">R::from_output</span>(<span class="ident">v</span>),
+            <span class="ident">ControlFlow::Break</span>(<span class="ident">v</span>) =&gt; <span class="ident">v</span>,
         }
     }
 }
@@ -547,5 +456,7 @@
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;control_flow_enum&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;75744&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BREAK</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">ControlFlow::Break</span>(());
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

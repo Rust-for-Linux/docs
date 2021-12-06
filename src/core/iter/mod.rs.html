@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/iter/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;iter&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -423,8 +421,9 @@
 <span id="421">421</span>
 <span id="422">422</span>
 <span id="423">423</span>
-</pre><pre class="rust">
-<span class="doccomment">//! Composable external iteration.</span>
+<span id="424">424</span>
+<span id="425">425</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Composable external iteration.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! If you&#39;ve found yourself with a collection of some kind, and needed to</span>
 <span class="doccomment">//! perform an operation on the elements of said collection, you&#39;ll quickly run</span>
@@ -465,7 +464,7 @@
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! An iterator has a method, [`next`], which when called, returns an</span>
-<span class="doccomment">//! [`Option`]`&lt;Item&gt;`. [`next`] will return [`Some(Item)`] as long as there</span>
+<span class="doccomment">//! &lt;code&gt;[Option]\&lt;Item&gt;&lt;/code&gt;. Calling [`next`] will return [`Some(Item)`] as long as there</span>
 <span class="doccomment">//! are elements, and once they&#39;ve all been exhausted, will return `None` to</span>
 <span class="doccomment">//! indicate that iteration is finished. Individual iterators may choose to</span>
 <span class="doccomment">//! resume iteration, and so calling [`next`] again may or may not eventually</span>
@@ -762,7 +761,7 @@
 <span class="doccomment">//! This will print the numbers `0` through `4`, each on their own line.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Bear in mind that methods on infinite iterators, even those for which a</span>
-<span class="doccomment">//! result can be determined mathematically in finite time, may not terminate.</span>
+<span class="doccomment">//! result can be determined mathematically in finite time, might not terminate.</span>
 <span class="doccomment">//! Specifically, methods such as [`min`], which in the general case require</span>
 <span class="doccomment">//! traversing every element in the iterator, are likely not to return</span>
 <span class="doccomment">//! successfully for any infinite iterators.</span>
@@ -780,72 +779,76 @@
 <span class="attribute">#![<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::traits::Iterator</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::traits::Iterator</span>;
 
 <span class="attribute">#[<span class="ident">unstable</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;step_trait&quot;</span>,
     <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;likely to be replaced by finer-grained traits&quot;</span>,
     <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;42168&quot;</span>
 )]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::range::Step</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::range::Step</span>;
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iter_empty&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.2.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::sources</span>::{<span class="ident">empty</span>, <span class="ident">Empty</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sources</span>::{<span class="ident">empty</span>, <span class="ident">Empty</span>};
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iter_from_fn&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.34.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::sources</span>::{<span class="ident">from_fn</span>, <span class="ident">FromFn</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sources</span>::{<span class="ident">from_fn</span>, <span class="ident">FromFn</span>};
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iter_once&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.2.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::sources</span>::{<span class="ident">once</span>, <span class="ident">Once</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sources</span>::{<span class="ident">once</span>, <span class="ident">Once</span>};
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iter_once_with&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.43.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::sources</span>::{<span class="ident">once_with</span>, <span class="ident">OnceWith</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sources</span>::{<span class="ident">once_with</span>, <span class="ident">OnceWith</span>};
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::sources</span>::{<span class="ident">repeat</span>, <span class="ident">Repeat</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sources</span>::{<span class="ident">repeat</span>, <span class="ident">Repeat</span>};
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iterator_repeat_with&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::sources</span>::{<span class="ident">repeat_with</span>, <span class="ident">RepeatWith</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sources</span>::{<span class="ident">repeat_with</span>, <span class="ident">RepeatWith</span>};
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iter_successors&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.34.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::sources</span>::{<span class="ident">successors</span>, <span class="ident">Successors</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::sources</span>::{<span class="ident">successors</span>, <span class="ident">Successors</span>};
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fused&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.26.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::traits::FusedIterator</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::traits::FusedIterator</span>;
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inplace_iteration&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::traits::InPlaceIterable</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::traits::InPlaceIterable</span>;
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;trusted_len&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;37572&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::traits::TrustedLen</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::traits::TrustedLen</span>;
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;trusted_step&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;85731&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::traits::TrustedStep</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::traits::TrustedStep</span>;
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::traits</span>::{
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::traits</span>::{
     <span class="ident">DoubleEndedIterator</span>, <span class="ident">ExactSizeIterator</span>, <span class="ident">Extend</span>, <span class="ident">FromIterator</span>, <span class="ident">IntoIterator</span>, <span class="ident">Product</span>, <span class="ident">Sum</span>,
 };
 
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iter_zip&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;83574&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::adapters::zip</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::adapters::zip</span>;
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iter_cloned&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.1.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::adapters::Cloned</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::adapters::Cloned</span>;
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iter_copied&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::adapters::Copied</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::adapters::Copied</span>;
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iterator_flatten&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.29.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::adapters::Flatten</span>;
-<span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iter_map_while&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;recently added&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;68537&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::adapters::MapWhile</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::adapters::Flatten</span>;
+<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iter_map_while&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.57.0&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::adapters::MapWhile</span>;
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inplace_iteration&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::adapters::SourceIter</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::adapters::SourceIter</span>;
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iterator_step_by&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::adapters::StepBy</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::adapters::StepBy</span>;
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;trusted_random_access&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::adapters::TrustedRandomAccess</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::adapters::TrustedRandomAccess</span>;
+<span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;trusted_random_access&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::adapters::TrustedRandomAccessNoCoerce</span>;
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::adapters</span>::{
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::adapters</span>::{
     <span class="ident">Chain</span>, <span class="ident">Cycle</span>, <span class="ident">Enumerate</span>, <span class="ident">Filter</span>, <span class="ident">FilterMap</span>, <span class="ident">FlatMap</span>, <span class="ident">Fuse</span>, <span class="ident">Inspect</span>, <span class="ident">Map</span>, <span class="ident">Peekable</span>, <span class="ident">Rev</span>, <span class="ident">Scan</span>,
     <span class="ident">Skip</span>, <span class="ident">SkipWhile</span>, <span class="ident">Take</span>, <span class="ident">TakeWhile</span>, <span class="ident">Zip</span>,
 };
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iter_intersperse&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;recently added&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;79524&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::adapters</span>::{<span class="ident">Intersperse</span>, <span class="ident">IntersperseWith</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::adapters</span>::{<span class="ident">Intersperse</span>, <span class="ident">IntersperseWith</span>};
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="self">self</span><span class="ident">::adapters::process_results</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident"><span class="self">self</span>::adapters::process_results</span>;
 
 <span class="kw">mod</span> <span class="ident">adapters</span>;
 <span class="kw">mod</span> <span class="ident">range</span>;
 <span class="kw">mod</span> <span class="ident">sources</span>;
 <span class="kw">mod</span> <span class="ident">traits</span>;
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

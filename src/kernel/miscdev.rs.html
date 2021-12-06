@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/kernel/miscdev.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>miscdev.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;miscdev.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>miscdev.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -113,8 +111,60 @@
 <span id="111">111</span>
 <span id="112">112</span>
 <span id="113">113</span>
-</pre><pre class="rust">
-<span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+</pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! Miscellaneous devices.</span>
 <span class="doccomment">//!</span>
@@ -122,12 +172,12 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Reference: &lt;https://www.kernel.org/doc/html/latest/driver-api/misc_devices.html&gt;</span>
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindings</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error</span>::{<span class="ident">Error</span>, <span class="prelude-ty">Result</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::file_operations</span>::{<span class="ident">FileOpenAdapter</span>, <span class="ident">FileOpener</span>, <span class="ident">FileOperationsVtable</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::str::CStr</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bindings</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error</span>::{<span class="ident">Error</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::file_operations</span>::{<span class="ident">FileOpenAdapter</span>, <span class="ident">FileOpener</span>, <span class="ident">FileOperationsVtable</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">str::CStr</span>, <span class="ident">KernelModule</span>, <span class="ident">ThisModule</span>};
 <span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
-<span class="kw">use</span> <span class="ident">core::marker::PhantomPinned</span>;
+<span class="kw">use</span> <span class="ident">core::marker</span>::{<span class="ident">PhantomData</span>, <span class="ident">PhantomPinned</span>};
 <span class="kw">use</span> <span class="ident">core::pin::Pin</span>;
 
 <span class="doccomment">/// A registration of a miscellaneous device.</span>
@@ -145,7 +195,7 @@
     <span class="doccomment">/// Creates a new [`Registration`] but does not register it yet.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// It is allowed to move.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">context</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">context</span>: <span class="ident">T</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">registered</span>: <span class="bool-val">false</span>,
             <span class="ident">mdev</span>: <span class="ident">bindings::miscdevice::default</span>(),
@@ -161,8 +211,8 @@
         <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">CStr</span>,
         <span class="ident">minor</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
         <span class="ident">context</span>: <span class="ident">T</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Pin::from</span>(<span class="ident">Box::try_new</span>(<span class="self">Self</span><span class="ident">::new</span>(<span class="ident">context</span>))<span class="question-mark">?</span>);
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Pin::from</span>(<span class="ident">Box::try_new</span>(<span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">context</span>))<span class="question-mark">?</span>);
         <span class="ident">r</span>.<span class="ident">as_mut</span>().<span class="ident">register</span>::<span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">name</span>, <span class="ident">minor</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">r</span>)
     }
@@ -175,7 +225,7 @@
         <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>,
         <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">CStr</span>,
         <span class="ident">minor</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    ) -&gt; <span class="prelude-ty">Result</span> {
         <span class="comment">// SAFETY: We must ensure that we never move out of `this`.</span>
         <span class="kw">let</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">get_unchecked_mut</span>() };
         <span class="kw">if</span> <span class="ident">this</span>.<span class="ident">registered</span> {
@@ -200,11 +250,9 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Sync</span><span class="op">&gt;</span> <span class="ident">FileOpenAdapter</span> <span class="kw">for</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Arg</span> <span class="op">=</span> <span class="ident">T</span>;
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">convert</span>(<span class="ident">_inode</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::inode</span>, <span class="ident">file</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::file</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Arg</span> {
-        <span class="comment">// TODO: `SAFETY` comment required here even if `unsafe` is not present,</span>
-        <span class="comment">// because `container_of!` hides it. Ideally we would not allow</span>
-        <span class="comment">// `unsafe` code as parameters to macros.</span>
-        <span class="kw">let</span> <span class="ident">reg</span> <span class="op">=</span> <span class="kw">crate</span><span class="macro">::container_of!</span>((<span class="kw-2">*</span><span class="ident">file</span>).<span class="ident">private_data</span>, <span class="self">Self</span>, <span class="ident">mdev</span>);
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">convert</span>(<span class="ident">_inode</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::inode</span>, <span class="ident">file</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::file</span>) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident"><span class="self">Self</span>::Arg</span> {
+        <span class="comment">// SAFETY: the caller must guarantee that `file` is valid.</span>
+        <span class="kw">let</span> <span class="ident">reg</span> <span class="op">=</span> <span class="macro">crate::container_of!</span>(<span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">file</span>).<span class="ident">private_data</span> }, <span class="self">Self</span>, <span class="ident">mdev</span>);
         <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span>(<span class="kw-2">*</span><span class="ident">reg</span>).<span class="ident">context</span> }
     }
 }
@@ -227,5 +275,62 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>
+
+<span class="doccomment">/// Kernel module that exposes a single miscdev device implemented by `F`.</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Module</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">FileOpener</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="ident">_dev</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Registration</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">_p</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>,
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">FileOpener</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">KernelModule</span> <span class="kw">for</span> <span class="ident">Module</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">init</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">CStr</span>, <span class="ident">_module</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">ThisModule</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
+            <span class="ident">_p</span>: <span class="ident">PhantomData</span>,
+            <span class="ident">_dev</span>: <span class="ident">Registration::new_pinned</span>::<span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">name</span>, <span class="prelude-val">None</span>, ())<span class="question-mark">?</span>,
+        })
+    }
+}
+
+<span class="doccomment">/// Declares a kernel module that exposes a single misc device.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `type` argument should be a type which implements the [`FileOpener`] trait. Also accepts</span>
+<span class="doccomment">/// various forms of kernel metadata.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// C header: [`include/linux/moduleparam.h`](../../../include/linux/moduleparam.h)</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`FileOpener`]: ../kernel/file_operations/trait.FileOpener.html</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```ignore</span>
+<span class="doccomment">/// use kernel::prelude::*;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// module_misc_device! {</span>
+<span class="doccomment">///     type: MyFile,</span>
+<span class="doccomment">///     name: b&quot;my_miscdev_kernel_module&quot;,</span>
+<span class="doccomment">///     author: b&quot;Rust for Linux Contributors&quot;,</span>
+<span class="doccomment">///     description: b&quot;My very own misc device kernel module!&quot;,</span>
+<span class="doccomment">///     license: b&quot;GPL v2&quot;,</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// #[derive(Default)]</span>
+<span class="doccomment">/// struct MyFile;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// impl kernel::file_operations::FileOperations for MyFile {</span>
+<span class="doccomment">///     kernel::declare_file_operations!();</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">module_misc_device</span> {
+    (<span class="kw">type</span>: <span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ty</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {
+        <span class="kw">type</span> <span class="ident">ModuleType</span> <span class="op">=</span> <span class="ident">kernel::miscdev::Module</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="kw">type</span><span class="op">&gt;</span>;
+        <span class="macro">module!</span> {
+            <span class="kw">type</span>: <span class="macro-nonterminal">ModuleType</span>,
+            $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="op">*</span>
+        }
+    }
+}
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
+</body></html>

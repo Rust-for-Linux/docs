@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/alloc/layout.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>layout.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;alloc&#x2F;layout.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>layout.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -423,12 +421,18 @@
 <span id="421">421</span>
 <span id="422">422</span>
 <span id="423">423</span>
-</pre><pre class="rust">
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cmp</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::fmt</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::num::NonZeroUsize</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ptr::NonNull</span>;
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cmp</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fmt</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::num::NonZeroUsize</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ptr::NonNull</span>;
 
 <span class="comment">// While this function is used in one place and its implementation</span>
 <span class="comment">// could be inlined, the previous attempts to do so made rustc</span>
@@ -436,7 +440,7 @@
 <span class="comment">//</span>
 <span class="comment">// * https://github.com/rust-lang/rust/pull/72189</span>
 <span class="comment">// * https://github.com/rust-lang/rust/pull/79827</span>
-<span class="kw">const</span> <span class="kw">fn</span> <span class="ident">size_align</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="ident">usize</span>) {
+<span class="kw">const</span> <span class="kw">fn</span> <span class="ident">size_align</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() -&gt; (<span class="ident">usize</span>, <span class="ident">usize</span>) {
     (<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(), <span class="ident">mem::align_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>())
 }
 
@@ -484,9 +488,9 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_alloc_layout&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.50.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_size_align</span>(<span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">LayoutError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_size_align</span>(<span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">LayoutError</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="ident">align</span>.<span class="ident">is_power_of_two</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">LayoutError</span> { <span class="ident">private</span>: () });
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">LayoutError</span>);
         }
 
         <span class="comment">// (power-of-two implies align != 0.)</span>
@@ -504,7 +508,7 @@
         <span class="comment">// Above implies that checking for summation overflow is both</span>
         <span class="comment">// necessary and sufficient.</span>
         <span class="kw">if</span> <span class="ident">size</span> <span class="op">&gt;</span> <span class="ident">usize::MAX</span> <span class="op">-</span> (<span class="ident">align</span> <span class="op">-</span> <span class="number">1</span>) {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">LayoutError</span> { <span class="ident">private</span>: () });
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">LayoutError</span>);
         }
 
         <span class="comment">// SAFETY: the conditions for `from_size_align_unchecked` have been</span>
@@ -520,8 +524,9 @@
     <span class="doccomment">/// [`Layout::from_size_align`].</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_size_align_unchecked</span>(<span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_size_align_unchecked</span>(<span class="ident">size</span>: <span class="ident">usize</span>, <span class="ident">align</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
         <span class="comment">// SAFETY: the caller must ensure that `align` is greater than zero.</span>
         <span class="ident">Layout</span> { <span class="ident">size_</span>: <span class="ident">size</span>, <span class="ident">align_</span>: <span class="kw">unsafe</span> { <span class="ident">NonZeroUsize::new_unchecked</span>(<span class="ident">align</span>) } }
     }
@@ -530,23 +535,26 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_alloc_layout&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.50.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">size_</span>
     }
 
     <span class="doccomment">/// The minimum byte alignment for a memory block of this layout.</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_alloc_layout&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.50.0&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;this returns the minimum alignment, \
+                  without modifying the layout&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">align</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">align</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">align_</span>.<span class="ident">get</span>()
     }
 
     <span class="doccomment">/// Constructs a `Layout` suitable for holding a value of type `T`.</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout_const_new&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.42.0&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> (<span class="ident">size</span>, <span class="ident">align</span>) <span class="op">=</span> <span class="ident">size_align</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
         <span class="comment">// SAFETY: the align is guaranteed by Rust to be a power of two and</span>
         <span class="comment">// the size+align combo is guaranteed to fit in our address space. As a</span>
@@ -560,7 +568,7 @@
     <span class="doccomment">/// or other unsized type like a slice).</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">for_value</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">t</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">for_value</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">t</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> (<span class="ident">size</span>, <span class="ident">align</span>) <span class="op">=</span> (<span class="ident">mem::size_of_val</span>(<span class="ident">t</span>), <span class="ident">mem::align_of_val</span>(<span class="ident">t</span>));
         <span class="macro">debug_assert!</span>(<span class="ident">Layout::from_size_align</span>(<span class="ident">size</span>, <span class="ident">align</span>).<span class="ident">is_ok</span>());
         <span class="comment">// SAFETY: see rationale in `new` for why this is using the unsafe variant</span>
@@ -593,7 +601,7 @@
     <span class="doccomment">/// [trait object]: ../../book/ch17-02-trait-objects.html</span>
     <span class="doccomment">/// [extern type]: ../../unstable-book/language-features/extern-types.html</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;layout_for_ptr&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;69835&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">for_value_raw</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">t</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">for_value_raw</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">t</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) -&gt; <span class="self">Self</span> {
         <span class="comment">// SAFETY: we pass along the prerequisites of these functions to the caller</span>
         <span class="kw">let</span> (<span class="ident">size</span>, <span class="ident">align</span>) <span class="op">=</span> <span class="kw">unsafe</span> { (<span class="ident">mem::size_of_val_raw</span>(<span class="ident">t</span>), <span class="ident">mem::align_of_val_raw</span>(<span class="ident">t</span>)) };
         <span class="macro">debug_assert!</span>(<span class="ident">Layout::from_size_align</span>(<span class="ident">size</span>, <span class="ident">align</span>).<span class="ident">is_ok</span>());
@@ -610,7 +618,7 @@
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout_extra&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;55724&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout_extra&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;55724&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">dangling</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">dangling</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
         <span class="comment">// SAFETY: align is guaranteed to be non-zero</span>
         <span class="kw">unsafe</span> { <span class="ident">NonNull::new_unchecked</span>(<span class="self">self</span>.<span class="ident">align</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>) }
     }
@@ -631,7 +639,7 @@
     <span class="doccomment">/// `align` violates the conditions listed in [`Layout::from_size_align`].</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout_manipulation&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.44.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">align_to</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">align</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">LayoutError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">align_to</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">align</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">LayoutError</span><span class="op">&gt;</span> {
         <span class="ident">Layout::from_size_align</span>(<span class="self">self</span>.<span class="ident">size</span>(), <span class="ident">cmp::max</span>(<span class="self">self</span>.<span class="ident">align</span>(), <span class="ident">align</span>))
     }
 
@@ -653,8 +661,10 @@
     <span class="doccomment">/// satisfy this constraint is to ensure `align &lt;= self.align()`.</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout_extra&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;55724&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_alloc_layout&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;67521&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;this returns the padding needed, \
+                  without modifying the `Layout`&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">padding_needed_for</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">align</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">padding_needed_for</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">align</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">size</span>();
 
         <span class="comment">// Rounded up value is:</span>
@@ -686,8 +696,10 @@
     <span class="doccomment">/// This is equivalent to adding the result of `padding_needed_for`</span>
     <span class="doccomment">/// to the layout&#39;s current size.</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout_manipulation&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.44.0&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;this returns a new `Layout`, \
+                  without modifying the original&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pad_to_align</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Layout</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pad_to_align</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Layout</span> {
         <span class="kw">let</span> <span class="ident">pad</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">padding_needed_for</span>(<span class="self">self</span>.<span class="ident">align</span>());
         <span class="comment">// This cannot overflow. Quoting from the invariant of Layout:</span>
         <span class="comment">// &gt; `size`, when rounded up to the nearest multiple of `align`,</span>
@@ -708,13 +720,13 @@
     <span class="doccomment">/// On arithmetic overflow, returns `LayoutError`.</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout_extra&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;55724&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">repeat</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="self">Self</span>, <span class="ident">usize</span>), <span class="ident">LayoutError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">repeat</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="self">Self</span>, <span class="ident">usize</span>), <span class="ident">LayoutError</span><span class="op">&gt;</span> {
         <span class="comment">// This cannot overflow. Quoting from the invariant of Layout:</span>
         <span class="comment">// &gt; `size`, when rounded up to the nearest multiple of `align`,</span>
         <span class="comment">// &gt; must not overflow (i.e., the rounded value must be less than</span>
         <span class="comment">// &gt; `usize::MAX`)</span>
         <span class="kw">let</span> <span class="ident">padded_size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">size</span>() <span class="op">+</span> <span class="self">self</span>.<span class="ident">padding_needed_for</span>(<span class="self">self</span>.<span class="ident">align</span>());
-        <span class="kw">let</span> <span class="ident">alloc_size</span> <span class="op">=</span> <span class="ident">padded_size</span>.<span class="ident">checked_mul</span>(<span class="ident">n</span>).<span class="ident">ok_or</span>(<span class="ident">LayoutError</span> { <span class="ident">private</span>: () })<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">alloc_size</span> <span class="op">=</span> <span class="ident">padded_size</span>.<span class="ident">checked_mul</span>(<span class="ident">n</span>).<span class="ident">ok_or</span>(<span class="ident">LayoutError</span>)<span class="question-mark">?</span>;
 
         <span class="comment">// SAFETY: self.align is already known to be valid and alloc_size has been</span>
         <span class="comment">// padded already.</span>
@@ -768,12 +780,12 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout_manipulation&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.44.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extend</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">next</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="self">Self</span>, <span class="ident">usize</span>), <span class="ident">LayoutError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extend</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">next</span>: <span class="self">Self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="self">Self</span>, <span class="ident">usize</span>), <span class="ident">LayoutError</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">new_align</span> <span class="op">=</span> <span class="ident">cmp::max</span>(<span class="self">self</span>.<span class="ident">align</span>(), <span class="ident">next</span>.<span class="ident">align</span>());
         <span class="kw">let</span> <span class="ident">pad</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">padding_needed_for</span>(<span class="ident">next</span>.<span class="ident">align</span>());
 
-        <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">size</span>().<span class="ident">checked_add</span>(<span class="ident">pad</span>).<span class="ident">ok_or</span>(<span class="ident">LayoutError</span> { <span class="ident">private</span>: () })<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">new_size</span> <span class="op">=</span> <span class="ident">offset</span>.<span class="ident">checked_add</span>(<span class="ident">next</span>.<span class="ident">size</span>()).<span class="ident">ok_or</span>(<span class="ident">LayoutError</span> { <span class="ident">private</span>: () })<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">size</span>().<span class="ident">checked_add</span>(<span class="ident">pad</span>).<span class="ident">ok_or</span>(<span class="ident">LayoutError</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">new_size</span> <span class="op">=</span> <span class="ident">offset</span>.<span class="ident">checked_add</span>(<span class="ident">next</span>.<span class="ident">size</span>()).<span class="ident">ok_or</span>(<span class="ident">LayoutError</span>)<span class="question-mark">?</span>;
 
         <span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="ident">Layout::from_size_align</span>(<span class="ident">new_size</span>, <span class="ident">new_align</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>((<span class="ident">layout</span>, <span class="ident">offset</span>))
@@ -793,8 +805,8 @@
     <span class="doccomment">/// On arithmetic overflow, returns `LayoutError`.</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout_extra&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;55724&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">repeat_packed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">LayoutError</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">size</span>().<span class="ident">checked_mul</span>(<span class="ident">n</span>).<span class="ident">ok_or</span>(<span class="ident">LayoutError</span> { <span class="ident">private</span>: () })<span class="question-mark">?</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">repeat_packed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">LayoutError</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">size</span>().<span class="ident">checked_mul</span>(<span class="ident">n</span>).<span class="ident">ok_or</span>(<span class="ident">LayoutError</span>)<span class="question-mark">?</span>;
         <span class="ident">Layout::from_size_align</span>(<span class="ident">size</span>, <span class="self">self</span>.<span class="ident">align</span>())
     }
 
@@ -806,8 +818,8 @@
     <span class="doccomment">/// On arithmetic overflow, returns `LayoutError`.</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout_extra&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;55724&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extend_packed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">next</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">LayoutError</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">new_size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">size</span>().<span class="ident">checked_add</span>(<span class="ident">next</span>.<span class="ident">size</span>()).<span class="ident">ok_or</span>(<span class="ident">LayoutError</span> { <span class="ident">private</span>: () })<span class="question-mark">?</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extend_packed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">next</span>: <span class="self">Self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">LayoutError</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">new_size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">size</span>().<span class="ident">checked_add</span>(<span class="ident">next</span>.<span class="ident">size</span>()).<span class="ident">ok_or</span>(<span class="ident">LayoutError</span>)<span class="question-mark">?</span>;
         <span class="ident">Layout::from_size_align</span>(<span class="ident">new_size</span>, <span class="self">self</span>.<span class="ident">align</span>())
     }
 
@@ -816,7 +828,7 @@
     <span class="doccomment">/// On arithmetic overflow, returns `LayoutError`.</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout_manipulation&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.44.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">array</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">LayoutError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">array</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">LayoutError</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">layout</span>, <span class="ident">offset</span>) <span class="op">=</span> <span class="ident">Layout::new</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>().<span class="ident">repeat</span>(<span class="ident">n</span>)<span class="question-mark">?</span>;
         <span class="macro">debug_assert_eq!</span>(<span class="ident">offset</span>, <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>());
         <span class="prelude-val">Ok</span>(<span class="ident">layout</span>.<span class="ident">pad_to_align</span>())
@@ -835,17 +847,18 @@
 <span class="doccomment">/// or some other `Layout` constructor</span>
 <span class="doccomment">/// do not satisfy its documented constraints.</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout_error&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.50.0&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LayoutError</span> {
-    <span class="ident">private</span>: (),
-}
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LayoutError</span>;
 
 <span class="comment">// (we need this for downstream impl of trait Error)</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc_layout&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">LayoutError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;invalid parameters to Layout::from_size_align&quot;</span>)
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

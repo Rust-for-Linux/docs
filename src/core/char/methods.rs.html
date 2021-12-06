@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/char/methods.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>methods.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;char&#x2F;methods.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>methods.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1680,13 +1678,50 @@
 <span id="1678">1678</span>
 <span id="1679">1679</span>
 <span id="1680">1680</span>
-</pre><pre class="rust">
-<span class="doccomment">//! impl char {}</span>
+<span id="1681">1681</span>
+<span id="1682">1682</span>
+<span id="1683">1683</span>
+<span id="1684">1684</span>
+<span id="1685">1685</span>
+<span id="1686">1686</span>
+<span id="1687">1687</span>
+<span id="1688">1688</span>
+<span id="1689">1689</span>
+<span id="1690">1690</span>
+<span id="1691">1691</span>
+<span id="1692">1692</span>
+<span id="1693">1693</span>
+<span id="1694">1694</span>
+<span id="1695">1695</span>
+<span id="1696">1696</span>
+<span id="1697">1697</span>
+<span id="1698">1698</span>
+<span id="1699">1699</span>
+<span id="1700">1700</span>
+<span id="1701">1701</span>
+<span id="1702">1702</span>
+<span id="1703">1703</span>
+<span id="1704">1704</span>
+<span id="1705">1705</span>
+<span id="1706">1706</span>
+<span id="1707">1707</span>
+<span id="1708">1708</span>
+<span id="1709">1709</span>
+<span id="1710">1710</span>
+<span id="1711">1711</span>
+<span id="1712">1712</span>
+<span id="1713">1713</span>
+<span id="1714">1714</span>
+<span id="1715">1715</span>
+<span id="1716">1716</span>
+<span id="1717">1717</span>
+<span id="1718">1718</span>
+</pre><pre class="rust"><code><span class="doccomment">//! impl char {}</span>
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::slice</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::str::from_utf8_unchecked_mut</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::unicode::printable::is_printable</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::unicode</span>::{<span class="self">self</span>, <span class="ident">conversions</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::slice</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::str::from_utf8_unchecked_mut</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::unicode::printable::is_printable</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::unicode</span>::{<span class="self">self</span>, <span class="ident">conversions</span>};
 
 <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
@@ -1698,8 +1733,8 @@
     <span class="doccomment">/// Point], but only ones within a certain range. `MAX` is the highest valid</span>
     <span class="doccomment">/// code point that&#39;s a valid [Unicode Scalar Value].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [Unicode Scalar Value]: http://www.unicode.org/glossary/#unicode_scalar_value</span>
-    <span class="doccomment">/// [Code Point]: http://www.unicode.org/glossary/#code_point</span>
+    <span class="doccomment">/// [Unicode Scalar Value]: https://www.unicode.org/glossary/#unicode_scalar_value</span>
+    <span class="doccomment">/// [Code Point]: https://www.unicode.org/glossary/#code_point</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;assoc_char_consts&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.52.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX</span>: <span class="ident">char</span> <span class="op">=</span> <span class="string">&#39;\u{10ffff}&#39;</span>;
 
@@ -1707,11 +1742,11 @@
     <span class="doccomment">/// decoding error.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// It can occur, for example, when giving ill-formed UTF-8 bytes to</span>
-    <span class="doccomment">/// [`String::from_utf8_lossy`](string/struct.String.html#method.from_utf8_lossy).</span>
+    <span class="doccomment">/// [`String::from_utf8_lossy`](../std/string/struct.String.html#method.from_utf8_lossy).</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;assoc_char_consts&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.52.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">REPLACEMENT_CHARACTER</span>: <span class="ident">char</span> <span class="op">=</span> <span class="string">&#39;\u{FFFD}&#39;</span>;
 
-    <span class="doccomment">/// The version of [Unicode](http://www.unicode.org/) that the Unicode parts of</span>
+    <span class="doccomment">/// The version of [Unicode](https://www.unicode.org/) that the Unicode parts of</span>
     <span class="doccomment">/// `char` and `str` methods are based on.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// New versions of Unicode are released regularly and subsequently all methods</span>
@@ -1722,7 +1757,7 @@
     <span class="doccomment">/// The version numbering scheme is explained in</span>
     <span class="doccomment">/// [Unicode 11.0 or later, Section 3.1 Versions of the Unicode Standard](https://www.unicode.org/versions/Unicode11.0.0/ch03.pdf#page=4).</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;assoc_char_consts&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.52.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">UNICODE_VERSION</span>: (<span class="ident">u8</span>, <span class="ident">u8</span>, <span class="ident">u8</span>) <span class="op">=</span> <span class="kw">crate</span><span class="ident">::unicode::UNICODE_VERSION</span>;
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">UNICODE_VERSION</span>: (<span class="ident">u8</span>, <span class="ident">u8</span>, <span class="ident">u8</span>) <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::unicode::UNICODE_VERSION</span>;
 
     <span class="doccomment">/// Creates an iterator over the UTF-16 encoded code points in `iter`,</span>
     <span class="doccomment">/// returning unpaired surrogates as `Err`s.</span>
@@ -1772,14 +1807,14 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;assoc_char_funcs&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.52.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">decode_utf16</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u16</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DecodeUtf16</span><span class="op">&lt;</span><span class="ident">I::IntoIter</span><span class="op">&gt;</span> {
-        <span class="kw">super</span><span class="ident">::decode::decode_utf16</span>(<span class="ident">iter</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">decode_utf16</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u16</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) -&gt; <span class="ident">DecodeUtf16</span><span class="op">&lt;</span><span class="ident">I::IntoIter</span><span class="op">&gt;</span> {
+        <span class="ident"><span class="kw">super</span>::decode::decode_utf16</span>(<span class="ident">iter</span>)
     }
 
     <span class="doccomment">/// Converts a `u32` to a `char`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that all `char`s are valid [`u32`]s, and can be cast to one with</span>
-    <span class="doccomment">/// `as`:</span>
+    <span class="doccomment">/// [`as`](../std/keyword.as.html):</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// let c = &#39;💯&#39;;</span>
@@ -1819,9 +1854,10 @@
     <span class="doccomment">/// assert_eq!(None, c);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;assoc_char_funcs&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.52.0&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_u32</span>(<span class="ident">i</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
-        <span class="kw">super</span><span class="ident">::convert::from_u32</span>(<span class="ident">i</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_u32</span>(<span class="ident">i</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+        <span class="ident"><span class="kw">super</span>::convert::from_u32</span>(<span class="ident">i</span>)
     }
 
     <span class="doccomment">/// Converts a `u32` to a `char`, ignoring validity.</span>
@@ -1860,10 +1896,11 @@
     <span class="doccomment">/// assert_eq!(&#39;❤&#39;, c);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;assoc_char_funcs&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.52.0&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_u32_unchecked</span>(<span class="ident">i</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">char</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_u32_unchecked</span>(<span class="ident">i</span>: <span class="ident">u32</span>) -&gt; <span class="ident">char</span> {
         <span class="comment">// SAFETY: the safety contract must be upheld by the caller.</span>
-        <span class="kw">unsafe</span> { <span class="kw">super</span><span class="ident">::convert::from_u32_unchecked</span>(<span class="ident">i</span>) }
+        <span class="kw">unsafe</span> { <span class="ident"><span class="kw">super</span>::convert::from_u32_unchecked</span>(<span class="ident">i</span>) }
     }
 
     <span class="doccomment">/// Converts a digit in the given radix to a `char`.</span>
@@ -1913,12 +1950,13 @@
     <span class="doccomment">/// use std::char;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// // this panics</span>
-    <span class="doccomment">/// char::from_digit(1, 37);</span>
+    <span class="doccomment">/// let _c = char::from_digit(1, 37);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;assoc_char_funcs&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.52.0&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_digit</span>(<span class="ident">num</span>: <span class="ident">u32</span>, <span class="ident">radix</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
-        <span class="kw">super</span><span class="ident">::convert::from_digit</span>(<span class="ident">num</span>, <span class="ident">radix</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_digit</span>(<span class="ident">num</span>: <span class="ident">u32</span>, <span class="ident">radix</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+        <span class="ident"><span class="kw">super</span>::convert::from_digit</span>(<span class="ident">num</span>, <span class="ident">radix</span>)
     }
 
     <span class="doccomment">/// Checks if a `char` is a digit in the given radix.</span>
@@ -1963,7 +2001,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_digit</span>(<span class="self">self</span>, <span class="ident">radix</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_digit</span>(<span class="self">self</span>, <span class="ident">radix</span>: <span class="ident">u32</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">to_digit</span>(<span class="ident">radix</span>).<span class="ident">is_some</span>()
     }
 
@@ -2008,11 +2046,13 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```should_panic</span>
     <span class="doccomment">/// // this panics</span>
-    <span class="doccomment">/// &#39;1&#39;.to_digit(37);</span>
+    <span class="doccomment">/// let _ = &#39;1&#39;.to_digit(37);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;this returns the result of the operation, \
+                  without modifying the original&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_digit</span>(<span class="self">self</span>, <span class="ident">radix</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_digit</span>(<span class="self">self</span>, <span class="ident">radix</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
         <span class="macro">assert!</span>(<span class="ident">radix</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">36</span>, <span class="string">&quot;to_digit: radix is too high (maximum 36)&quot;</span>);
         <span class="comment">// If not a digit, a number greater than radix will be created.</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">digit</span> <span class="op">=</span> (<span class="self">self</span> <span class="kw">as</span> <span class="ident">u32</span>).<span class="ident">wrapping_sub</span>(<span class="string">&#39;0&#39;</span> <span class="kw">as</span> <span class="ident">u32</span>);
@@ -2055,14 +2095,16 @@
     <span class="doccomment">/// println!(&quot;\\u{{2764}}&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Using `to_string`:</span>
+    <span class="doccomment">/// Using [`to_string`](../std/string/trait.ToString.html#tymethod.to_string):</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// assert_eq!(&#39;❤&#39;.escape_unicode().to_string(), &quot;\\u{2764}&quot;);</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;this returns the escaped char as an iterator, \
+                  without modifying the original&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">escape_unicode</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">EscapeUnicode</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">escape_unicode</span>(<span class="self">self</span>) -&gt; <span class="ident">EscapeUnicode</span> {
         <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="self">self</span> <span class="kw">as</span> <span class="ident">u32</span>;
 
         <span class="comment">// or-ing 1 ensures that for c==0 the code computes that one</span>
@@ -2085,19 +2127,19 @@
     <span class="doccomment">/// at the start of a string, and allows escaping single quotes in</span>
     <span class="doccomment">/// characters, and double quotes in strings.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">escape_debug_ext</span>(<span class="self">self</span>, <span class="ident">args</span>: <span class="ident">EscapeDebugExtArgs</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">EscapeDebug</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">escape_debug_ext</span>(<span class="self">self</span>, <span class="ident">args</span>: <span class="ident">EscapeDebugExtArgs</span>) -&gt; <span class="ident">EscapeDebug</span> {
         <span class="kw">let</span> <span class="ident">init_state</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span> {
-            <span class="string">&#39;\t&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EscapeDefaultState::Backslash</span>(<span class="string">&#39;t&#39;</span>),
-            <span class="string">&#39;\r&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EscapeDefaultState::Backslash</span>(<span class="string">&#39;r&#39;</span>),
-            <span class="string">&#39;\n&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EscapeDefaultState::Backslash</span>(<span class="string">&#39;n&#39;</span>),
-            <span class="string">&#39;\\&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EscapeDefaultState::Backslash</span>(<span class="self">self</span>),
-            <span class="string">&#39;&quot;&#39;</span> <span class="kw">if</span> <span class="ident">args</span>.<span class="ident">escape_double_quote</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EscapeDefaultState::Backslash</span>(<span class="self">self</span>),
-            <span class="string">&#39;\&#39;&#39;</span> <span class="kw">if</span> <span class="ident">args</span>.<span class="ident">escape_single_quote</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EscapeDefaultState::Backslash</span>(<span class="self">self</span>),
-            <span class="kw">_</span> <span class="kw">if</span> <span class="ident">args</span>.<span class="ident">escape_grapheme_extended</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">is_grapheme_extended</span>() <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="string">&#39;\t&#39;</span> =&gt; <span class="ident">EscapeDefaultState::Backslash</span>(<span class="string">&#39;t&#39;</span>),
+            <span class="string">&#39;\r&#39;</span> =&gt; <span class="ident">EscapeDefaultState::Backslash</span>(<span class="string">&#39;r&#39;</span>),
+            <span class="string">&#39;\n&#39;</span> =&gt; <span class="ident">EscapeDefaultState::Backslash</span>(<span class="string">&#39;n&#39;</span>),
+            <span class="string">&#39;\\&#39;</span> =&gt; <span class="ident">EscapeDefaultState::Backslash</span>(<span class="self">self</span>),
+            <span class="string">&#39;&quot;&#39;</span> <span class="kw">if</span> <span class="ident">args</span>.<span class="ident">escape_double_quote</span> =&gt; <span class="ident">EscapeDefaultState::Backslash</span>(<span class="self">self</span>),
+            <span class="string">&#39;\&#39;&#39;</span> <span class="kw">if</span> <span class="ident">args</span>.<span class="ident">escape_single_quote</span> =&gt; <span class="ident">EscapeDefaultState::Backslash</span>(<span class="self">self</span>),
+            <span class="kw">_</span> <span class="kw">if</span> <span class="ident">args</span>.<span class="ident">escape_grapheme_extended</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">is_grapheme_extended</span>() =&gt; {
                 <span class="ident">EscapeDefaultState::Unicode</span>(<span class="self">self</span>.<span class="ident">escape_unicode</span>())
             }
-            <span class="kw">_</span> <span class="kw">if</span> <span class="ident">is_printable</span>(<span class="self">self</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EscapeDefaultState::Char</span>(<span class="self">self</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EscapeDefaultState::Unicode</span>(<span class="self">self</span>.<span class="ident">escape_unicode</span>()),
+            <span class="kw">_</span> <span class="kw">if</span> <span class="ident">is_printable</span>(<span class="self">self</span>) =&gt; <span class="ident">EscapeDefaultState::Char</span>(<span class="self">self</span>),
+            <span class="kw">_</span> =&gt; <span class="ident">EscapeDefaultState::Unicode</span>(<span class="self">self</span>.<span class="ident">escape_unicode</span>()),
         };
         <span class="ident">EscapeDebug</span>(<span class="ident">EscapeDefault</span> { <span class="ident">state</span>: <span class="ident">init_state</span> })
     }
@@ -2105,7 +2147,7 @@
     <span class="doccomment">/// Returns an iterator that yields the literal escape code of a character</span>
     <span class="doccomment">/// as `char`s.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// This will escape the characters similar to the `Debug` implementations</span>
+    <span class="doccomment">/// This will escape the characters similar to the [`Debug`](core::fmt::Debug) implementations</span>
     <span class="doccomment">/// of `str` or `char`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
@@ -2131,14 +2173,16 @@
     <span class="doccomment">/// println!(&quot;\\n&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Using `to_string`:</span>
+    <span class="doccomment">/// Using [`to_string`](../std/string/trait.ToString.html#tymethod.to_string):</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// assert_eq!(&#39;\n&#39;.escape_debug().to_string(), &quot;\\n&quot;);</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;this returns the escaped char as an iterator, \
+                  without modifying the original&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;char_escape_debug&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.20.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">escape_debug</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">EscapeDebug</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">escape_debug</span>(<span class="self">self</span>) -&gt; <span class="ident">EscapeDebug</span> {
         <span class="self">self</span>.<span class="ident">escape_debug_ext</span>(<span class="ident">EscapeDebugExtArgs::ESCAPE_ALL</span>)
     }
 
@@ -2185,21 +2229,23 @@
     <span class="doccomment">/// println!(&quot;\\\&quot;&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Using `to_string`:</span>
+    <span class="doccomment">/// Using [`to_string`](../std/string/trait.ToString.html#tymethod.to_string):</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// assert_eq!(&#39;&quot;&#39;.escape_default().to_string(), &quot;\\\&quot;&quot;);</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;this returns the escaped char as an iterator, \
+                  without modifying the original&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">escape_default</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">EscapeDefault</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">escape_default</span>(<span class="self">self</span>) -&gt; <span class="ident">EscapeDefault</span> {
         <span class="kw">let</span> <span class="ident">init_state</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span> {
-            <span class="string">&#39;\t&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EscapeDefaultState::Backslash</span>(<span class="string">&#39;t&#39;</span>),
-            <span class="string">&#39;\r&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EscapeDefaultState::Backslash</span>(<span class="string">&#39;r&#39;</span>),
-            <span class="string">&#39;\n&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EscapeDefaultState::Backslash</span>(<span class="string">&#39;n&#39;</span>),
-            <span class="string">&#39;\\&#39;</span> <span class="op">|</span> <span class="string">&#39;\&#39;&#39;</span> <span class="op">|</span> <span class="string">&#39;&quot;&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EscapeDefaultState::Backslash</span>(<span class="self">self</span>),
-            <span class="string">&#39;\x20&#39;</span>..<span class="op">=</span><span class="string">&#39;\x7e&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EscapeDefaultState::Char</span>(<span class="self">self</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">EscapeDefaultState::Unicode</span>(<span class="self">self</span>.<span class="ident">escape_unicode</span>()),
+            <span class="string">&#39;\t&#39;</span> =&gt; <span class="ident">EscapeDefaultState::Backslash</span>(<span class="string">&#39;t&#39;</span>),
+            <span class="string">&#39;\r&#39;</span> =&gt; <span class="ident">EscapeDefaultState::Backslash</span>(<span class="string">&#39;r&#39;</span>),
+            <span class="string">&#39;\n&#39;</span> =&gt; <span class="ident">EscapeDefaultState::Backslash</span>(<span class="string">&#39;n&#39;</span>),
+            <span class="string">&#39;\\&#39;</span> <span class="op">|</span> <span class="string">&#39;\&#39;&#39;</span> <span class="op">|</span> <span class="string">&#39;&quot;&#39;</span> =&gt; <span class="ident">EscapeDefaultState::Backslash</span>(<span class="self">self</span>),
+            <span class="string">&#39;\x20&#39;</span>..<span class="op">=</span><span class="string">&#39;\x7e&#39;</span> =&gt; <span class="ident">EscapeDefaultState::Char</span>(<span class="self">self</span>),
+            <span class="kw">_</span> =&gt; <span class="ident">EscapeDefaultState::Unicode</span>(<span class="self">self</span>.<span class="ident">escape_unicode</span>()),
         };
         <span class="ident">EscapeDefault</span> { <span class="ident">state</span>: <span class="ident">init_state</span> }
     }
@@ -2252,7 +2298,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_char_len_utf&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.52.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">len_utf8</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">len_utf8</span>(<span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="ident">len_utf8</span>(<span class="self">self</span> <span class="kw">as</span> <span class="ident">u32</span>)
     }
 
@@ -2278,9 +2324,9 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_char_len_utf&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.52.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">len_utf16</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">len_utf16</span>(<span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">let</span> <span class="ident">ch</span> <span class="op">=</span> <span class="self">self</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="kw">if</span> (<span class="ident">ch</span> <span class="op">&amp;</span> <span class="number">0xFFFF</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">ch</span> { <span class="number">1</span> } <span class="kw">else</span> { <span class="number">2</span> }
+        <span class="kw">if</span> (<span class="ident">ch</span> <span class="op">&amp;</span> <span class="number">0xFFFF</span>) <span class="op">==</span> <span class="ident">ch</span> { <span class="number">1</span> } <span class="kw">else</span> { <span class="number">2</span> }
     }
 
     <span class="doccomment">/// Encodes this character as UTF-8 into the provided byte buffer,</span>
@@ -2315,7 +2361,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unicode_encode_char&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.15.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_utf8</span>(<span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_utf8</span>(<span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="comment">// SAFETY: `char` is not a surrogate, so this is valid UTF-8.</span>
         <span class="kw">unsafe</span> { <span class="ident">from_utf8_unchecked_mut</span>(<span class="ident">encode_utf8_raw</span>(<span class="self">self</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="ident">dst</span>)) }
     }
@@ -2350,7 +2396,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unicode_encode_char&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.15.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_utf16</span>(<span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u16</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u16</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_utf16</span>(<span class="self">self</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u16</span>]) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u16</span>] {
         <span class="ident">encode_utf16_raw</span>(<span class="self">self</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="ident">dst</span>)
     }
 
@@ -2375,12 +2421,13 @@
     <span class="doccomment">/// // love is many things, but it is not alphabetic</span>
     <span class="doccomment">/// assert!(!c.is_alphabetic());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_alphabetic</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_alphabetic</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="string">&#39;a&#39;</span>..<span class="op">=</span><span class="string">&#39;z&#39;</span> <span class="op">|</span> <span class="string">&#39;A&#39;</span>..<span class="op">=</span><span class="string">&#39;Z&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="ident">c</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span> <span class="op">&gt;</span> <span class="string">&#39;\x7f&#39;</span> <span class="op">&amp;&amp;</span> <span class="ident">unicode::Alphabetic</span>(<span class="ident">c</span>),
+            <span class="string">&#39;a&#39;</span>..<span class="op">=</span><span class="string">&#39;z&#39;</span> <span class="op">|</span> <span class="string">&#39;A&#39;</span>..<span class="op">=</span><span class="string">&#39;Z&#39;</span> =&gt; <span class="bool-val">true</span>,
+            <span class="ident">c</span> =&gt; <span class="ident">c</span> <span class="op">&gt;</span> <span class="string">&#39;\x7f&#39;</span> <span class="op">&amp;&amp;</span> <span class="ident">unicode::Alphabetic</span>(<span class="ident">c</span>),
         }
     }
 
@@ -2407,12 +2454,13 @@
     <span class="doccomment">/// assert!(!&#39;中&#39;.is_lowercase());</span>
     <span class="doccomment">/// assert!(!&#39; &#39;.is_lowercase());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_lowercase</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_lowercase</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="string">&#39;a&#39;</span>..<span class="op">=</span><span class="string">&#39;z&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="ident">c</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span> <span class="op">&gt;</span> <span class="string">&#39;\x7f&#39;</span> <span class="op">&amp;&amp;</span> <span class="ident">unicode::Lowercase</span>(<span class="ident">c</span>),
+            <span class="string">&#39;a&#39;</span>..<span class="op">=</span><span class="string">&#39;z&#39;</span> =&gt; <span class="bool-val">true</span>,
+            <span class="ident">c</span> =&gt; <span class="ident">c</span> <span class="op">&gt;</span> <span class="string">&#39;\x7f&#39;</span> <span class="op">&amp;&amp;</span> <span class="ident">unicode::Lowercase</span>(<span class="ident">c</span>),
         }
     }
 
@@ -2439,12 +2487,13 @@
     <span class="doccomment">/// assert!(!&#39;中&#39;.is_uppercase());</span>
     <span class="doccomment">/// assert!(!&#39; &#39;.is_uppercase());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_uppercase</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_uppercase</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="string">&#39;A&#39;</span>..<span class="op">=</span><span class="string">&#39;Z&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="ident">c</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span> <span class="op">&gt;</span> <span class="string">&#39;\x7f&#39;</span> <span class="op">&amp;&amp;</span> <span class="ident">unicode::Uppercase</span>(<span class="ident">c</span>),
+            <span class="string">&#39;A&#39;</span>..<span class="op">=</span><span class="string">&#39;Z&#39;</span> =&gt; <span class="bool-val">true</span>,
+            <span class="ident">c</span> =&gt; <span class="ident">c</span> <span class="op">&gt;</span> <span class="string">&#39;\x7f&#39;</span> <span class="op">&amp;&amp;</span> <span class="ident">unicode::Uppercase</span>(<span class="ident">c</span>),
         }
     }
 
@@ -2467,12 +2516,13 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert!(!&#39;越&#39;.is_whitespace());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_whitespace</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_whitespace</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="string">&#39; &#39;</span> <span class="op">|</span> <span class="string">&#39;\x09&#39;</span>..<span class="op">=</span><span class="string">&#39;\x0d&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="ident">c</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span> <span class="op">&gt;</span> <span class="string">&#39;\x7f&#39;</span> <span class="op">&amp;&amp;</span> <span class="ident">unicode::White_Space</span>(<span class="ident">c</span>),
+            <span class="string">&#39; &#39;</span> <span class="op">|</span> <span class="string">&#39;\x09&#39;</span>..<span class="op">=</span><span class="string">&#39;\x0d&#39;</span> =&gt; <span class="bool-val">true</span>,
+            <span class="ident">c</span> =&gt; <span class="ident">c</span> <span class="op">&gt;</span> <span class="string">&#39;\x7f&#39;</span> <span class="op">&amp;&amp;</span> <span class="ident">unicode::White_Space</span>(<span class="ident">c</span>),
         }
     }
 
@@ -2495,9 +2545,10 @@
     <span class="doccomment">/// assert!(&#39;و&#39;.is_alphanumeric());</span>
     <span class="doccomment">/// assert!(&#39;藏&#39;.is_alphanumeric());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_alphanumeric</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_alphanumeric</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">is_alphabetic</span>() <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">is_numeric</span>()
     }
 
@@ -2520,9 +2571,10 @@
     <span class="doccomment">/// assert!(&#39;&#39;.is_control());</span>
     <span class="doccomment">/// assert!(!&#39;q&#39;.is_control());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_control</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_control</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">unicode::Cc</span>(<span class="self">self</span>)
     }
 
@@ -2535,8 +2587,9 @@
     <span class="doccomment">/// [uax29]: https://www.unicode.org/reports/tr29/</span>
     <span class="doccomment">/// [ucd]: https://www.unicode.org/reports/tr44/</span>
     <span class="doccomment">/// [`DerivedCoreProperties.txt`]: https://www.unicode.org/Public/UCD/latest/ucd/DerivedCoreProperties.txt</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">is_grapheme_extended</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">is_grapheme_extended</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">unicode::Grapheme_Extend</span>(<span class="self">self</span>)
     }
 
@@ -2564,12 +2617,13 @@
     <span class="doccomment">/// assert!(!&#39;و&#39;.is_numeric());</span>
     <span class="doccomment">/// assert!(!&#39;藏&#39;.is_numeric());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_numeric</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_numeric</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="string">&#39;0&#39;</span>..<span class="op">=</span><span class="string">&#39;9&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="ident">c</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span> <span class="op">&gt;</span> <span class="string">&#39;\x7f&#39;</span> <span class="op">&amp;&amp;</span> <span class="ident">unicode::N</span>(<span class="ident">c</span>),
+            <span class="string">&#39;0&#39;</span>..<span class="op">=</span><span class="string">&#39;9&#39;</span> =&gt; <span class="bool-val">true</span>,
+            <span class="ident">c</span> =&gt; <span class="ident">c</span> <span class="op">&gt;</span> <span class="string">&#39;\x7f&#39;</span> <span class="op">&amp;&amp;</span> <span class="ident">unicode::N</span>(<span class="ident">c</span>),
         }
     }
 
@@ -2620,7 +2674,7 @@
     <span class="doccomment">/// println!(&quot;i\u{307}&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Using `to_string`:</span>
+    <span class="doccomment">/// Using [`to_string`](../std/string/trait.ToString.html#tymethod.to_string):</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// assert_eq!(&#39;C&#39;.to_lowercase().to_string(), &quot;c&quot;);</span>
@@ -2632,16 +2686,18 @@
     <span class="doccomment">/// // convert into themselves.</span>
     <span class="doccomment">/// assert_eq!(&#39;山&#39;.to_lowercase().to_string(), &quot;山&quot;);</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;this returns the lowercase character as a new iterator, \
+                  without modifying the original&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_lowercase</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ToLowercase</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_lowercase</span>(<span class="self">self</span>) -&gt; <span class="ident">ToLowercase</span> {
         <span class="ident">ToLowercase</span>(<span class="ident">CaseMappingIter::new</span>(<span class="ident">conversions::to_lower</span>(<span class="self">self</span>)))
     }
 
     <span class="doccomment">/// Returns an iterator that yields the uppercase mapping of this `char` as one or more</span>
     <span class="doccomment">/// `char`s.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If this `char` does not have a uppercase mapping, the iterator yields the same `char`.</span>
+    <span class="doccomment">/// If this `char` does not have an uppercase mapping, the iterator yields the same `char`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If this `char` has a one-to-one uppercase mapping given by the [Unicode Character</span>
     <span class="doccomment">/// Database][ucd] [`UnicodeData.txt`], the iterator yields that `char`.</span>
@@ -2685,7 +2741,7 @@
     <span class="doccomment">/// println!(&quot;SS&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Using `to_string`:</span>
+    <span class="doccomment">/// Using [`to_string`](../std/string/trait.ToString.html#tymethod.to_string):</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// assert_eq!(&#39;c&#39;.to_uppercase().to_string(), &quot;C&quot;);</span>
@@ -2722,9 +2778,11 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// holds across languages.</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;this returns the uppercase character as a new iterator, \
+                  without modifying the original&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_uppercase</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ToUppercase</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_uppercase</span>(<span class="self">self</span>) -&gt; <span class="ident">ToUppercase</span> {
         <span class="ident">ToUppercase</span>(<span class="ident">CaseMappingIter::new</span>(<span class="ident">conversions::to_upper</span>(<span class="self">self</span>)))
     }
 
@@ -2739,10 +2797,11 @@
     <span class="doccomment">/// assert!(ascii.is_ascii());</span>
     <span class="doccomment">/// assert!(!non_ascii.is_ascii());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ascii_methods_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.23.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ascii_methods_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.32.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw-2">*</span><span class="self">self</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0x7F</span>
     }
 
@@ -2768,10 +2827,11 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`make_ascii_uppercase()`]: #method.make_ascii_uppercase</span>
     <span class="doccomment">/// [`to_uppercase()`]: #method.to_uppercase</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;to uppercase the value in-place, use `make_ascii_uppercase()`&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ascii_methods_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.23.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ascii_methods_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.52.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_ascii_uppercase</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">char</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_ascii_uppercase</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">char</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_ascii_lowercase</span>() {
             (<span class="kw-2">*</span><span class="self">self</span> <span class="kw">as</span> <span class="ident">u8</span>).<span class="ident">ascii_change_case_unchecked</span>() <span class="kw">as</span> <span class="ident">char</span>
         } <span class="kw">else</span> {
@@ -2801,10 +2861,11 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`make_ascii_lowercase()`]: #method.make_ascii_lowercase</span>
     <span class="doccomment">/// [`to_lowercase()`]: #method.to_lowercase</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;to lowercase the value in-place, use `make_ascii_lowercase()`&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ascii_methods_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.23.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ascii_methods_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.52.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_ascii_lowercase</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">char</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_ascii_lowercase</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">char</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_ascii_uppercase</span>() {
             (<span class="kw-2">*</span><span class="self">self</span> <span class="kw">as</span> <span class="ident">u8</span>).<span class="ident">ascii_change_case_unchecked</span>() <span class="kw">as</span> <span class="ident">char</span>
         } <span class="kw">else</span> {
@@ -2814,7 +2875,7 @@
 
     <span class="doccomment">/// Checks that two values are an ASCII case-insensitive match.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Equivalent to `to_ascii_lowercase(a) == to_ascii_lowercase(b)`.</span>
+    <span class="doccomment">/// Equivalent to &lt;code&gt;[to_ascii_lowercase]\(a) == [to_ascii_lowercase]\(b)&lt;/code&gt;.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -2827,11 +2888,13 @@
     <span class="doccomment">/// assert!(upper_a.eq_ignore_ascii_case(&amp;upper_a));</span>
     <span class="doccomment">/// assert!(!upper_a.eq_ignore_ascii_case(&amp;lower_z));</span>
     <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [to_ascii_lowercase]: #method.to_ascii_lowercase</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ascii_methods_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.23.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ascii_methods_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.52.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">eq_ignore_ascii_case</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">to_ascii_lowercase</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">to_ascii_lowercase</span>()
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">eq_ignore_ascii_case</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">char</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">to_ascii_lowercase</span>() <span class="op">==</span> <span class="ident">other</span>.<span class="ident">to_ascii_lowercase</span>()
     }
 
     <span class="doccomment">/// Converts this type to its ASCII upper case equivalent in-place.</span>
@@ -2912,10 +2975,11 @@
     <span class="doccomment">/// assert!(!lf.is_ascii_alphabetic());</span>
     <span class="doccomment">/// assert!(!esc.is_ascii_alphabetic());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.24.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.47.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_alphabetic</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_alphabetic</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="kw-2">*</span><span class="self">self</span>, <span class="string">&#39;A&#39;</span>..<span class="op">=</span><span class="string">&#39;Z&#39;</span> <span class="op">|</span> <span class="string">&#39;a&#39;</span>..<span class="op">=</span><span class="string">&#39;z&#39;</span>)
     }
 
@@ -2945,10 +3009,11 @@
     <span class="doccomment">/// assert!(!lf.is_ascii_uppercase());</span>
     <span class="doccomment">/// assert!(!esc.is_ascii_uppercase());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.24.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.47.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_uppercase</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_uppercase</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="kw-2">*</span><span class="self">self</span>, <span class="string">&#39;A&#39;</span>..<span class="op">=</span><span class="string">&#39;Z&#39;</span>)
     }
 
@@ -2978,10 +3043,11 @@
     <span class="doccomment">/// assert!(!lf.is_ascii_lowercase());</span>
     <span class="doccomment">/// assert!(!esc.is_ascii_lowercase());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.24.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.47.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_lowercase</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_lowercase</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="kw-2">*</span><span class="self">self</span>, <span class="string">&#39;a&#39;</span>..<span class="op">=</span><span class="string">&#39;z&#39;</span>)
     }
 
@@ -3014,10 +3080,11 @@
     <span class="doccomment">/// assert!(!lf.is_ascii_alphanumeric());</span>
     <span class="doccomment">/// assert!(!esc.is_ascii_alphanumeric());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.24.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.47.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_alphanumeric</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_alphanumeric</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="kw-2">*</span><span class="self">self</span>, <span class="string">&#39;0&#39;</span>..<span class="op">=</span><span class="string">&#39;9&#39;</span> <span class="op">|</span> <span class="string">&#39;A&#39;</span>..<span class="op">=</span><span class="string">&#39;Z&#39;</span> <span class="op">|</span> <span class="string">&#39;a&#39;</span>..<span class="op">=</span><span class="string">&#39;z&#39;</span>)
     }
 
@@ -3047,10 +3114,11 @@
     <span class="doccomment">/// assert!(!lf.is_ascii_digit());</span>
     <span class="doccomment">/// assert!(!esc.is_ascii_digit());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.24.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.47.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_digit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_digit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="kw-2">*</span><span class="self">self</span>, <span class="string">&#39;0&#39;</span>..<span class="op">=</span><span class="string">&#39;9&#39;</span>)
     }
 
@@ -3083,10 +3151,11 @@
     <span class="doccomment">/// assert!(!lf.is_ascii_hexdigit());</span>
     <span class="doccomment">/// assert!(!esc.is_ascii_hexdigit());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.24.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.47.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_hexdigit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_hexdigit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="kw-2">*</span><span class="self">self</span>, <span class="string">&#39;0&#39;</span>..<span class="op">=</span><span class="string">&#39;9&#39;</span> <span class="op">|</span> <span class="string">&#39;A&#39;</span>..<span class="op">=</span><span class="string">&#39;F&#39;</span> <span class="op">|</span> <span class="string">&#39;a&#39;</span>..<span class="op">=</span><span class="string">&#39;f&#39;</span>)
     }
 
@@ -3120,10 +3189,11 @@
     <span class="doccomment">/// assert!(!lf.is_ascii_punctuation());</span>
     <span class="doccomment">/// assert!(!esc.is_ascii_punctuation());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.24.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.47.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_punctuation</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_punctuation</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="kw-2">*</span><span class="self">self</span>, <span class="string">&#39;!&#39;</span>..<span class="op">=</span><span class="string">&#39;/&#39;</span> <span class="op">|</span> <span class="string">&#39;:&#39;</span>..<span class="op">=</span><span class="string">&#39;@&#39;</span> <span class="op">|</span> <span class="string">&#39;[&#39;</span>..<span class="op">=</span><span class="string">&#39;`&#39;</span> <span class="op">|</span> <span class="string">&#39;{&#39;</span>..<span class="op">=</span><span class="string">&#39;~&#39;</span>)
     }
 
@@ -3153,10 +3223,11 @@
     <span class="doccomment">/// assert!(!lf.is_ascii_graphic());</span>
     <span class="doccomment">/// assert!(!esc.is_ascii_graphic());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.24.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.47.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_graphic</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_graphic</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="kw-2">*</span><span class="self">self</span>, <span class="string">&#39;!&#39;</span>..<span class="op">=</span><span class="string">&#39;~&#39;</span>)
     }
 
@@ -3177,8 +3248,8 @@
     <span class="doccomment">/// before using this function.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [infra-aw]: https://infra.spec.whatwg.org/#ascii-whitespace</span>
-    <span class="doccomment">/// [pct]: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap07.html#tag_07_03_01</span>
-    <span class="doccomment">/// [bfs]: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_06_05</span>
+    <span class="doccomment">/// [pct]: https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap07.html#tag_07_03_01</span>
+    <span class="doccomment">/// [bfs]: https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_06_05</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -3203,10 +3274,11 @@
     <span class="doccomment">/// assert!(lf.is_ascii_whitespace());</span>
     <span class="doccomment">/// assert!(!esc.is_ascii_whitespace());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.24.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.47.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_whitespace</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_whitespace</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="kw-2">*</span><span class="self">self</span>, <span class="string">&#39;\t&#39;</span> <span class="op">|</span> <span class="string">&#39;\n&#39;</span> <span class="op">|</span> <span class="string">&#39;\x0C&#39;</span> <span class="op">|</span> <span class="string">&#39;\r&#39;</span> <span class="op">|</span> <span class="string">&#39; &#39;</span>)
     }
 
@@ -3238,10 +3310,11 @@
     <span class="doccomment">/// assert!(lf.is_ascii_control());</span>
     <span class="doccomment">/// assert!(esc.is_ascii_control());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.24.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ascii_ctype_on_intrinsics&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.47.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_control</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ascii_control</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="kw-2">*</span><span class="self">self</span>, <span class="string">&#39;\0&#39;</span>..<span class="op">=</span><span class="string">&#39;\x1F&#39;</span> <span class="op">|</span> <span class="string">&#39;\x7F&#39;</span>)
     }
 }
@@ -3266,7 +3339,7 @@
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">const</span> <span class="kw">fn</span> <span class="ident">len_utf8</span>(<span class="ident">code</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">const</span> <span class="kw">fn</span> <span class="ident">len_utf8</span>(<span class="ident">code</span>: <span class="ident">u32</span>) -&gt; <span class="ident">usize</span> {
     <span class="kw">if</span> <span class="ident">code</span> <span class="op">&lt;</span> <span class="ident">MAX_ONE_B</span> {
         <span class="number">1</span>
     } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">code</span> <span class="op">&lt;</span> <span class="ident">MAX_TWO_B</span> {
@@ -3294,28 +3367,28 @@
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;char_internals&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;exposed only for libstd&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_utf8_raw</span>(<span class="ident">code</span>: <span class="ident">u32</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_utf8_raw</span>(<span class="ident">code</span>: <span class="ident">u32</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] {
     <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">len_utf8</span>(<span class="ident">code</span>);
     <span class="kw">match</span> (<span class="ident">len</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">dst</span>[..]) {
-        (<span class="number">1</span>, [<span class="ident">a</span>, ..]) <span class="op">=</span><span class="op">&gt;</span> {
+        (<span class="number">1</span>, [<span class="ident">a</span>, ..]) =&gt; {
             <span class="kw-2">*</span><span class="ident">a</span> <span class="op">=</span> <span class="ident">code</span> <span class="kw">as</span> <span class="ident">u8</span>;
         }
-        (<span class="number">2</span>, [<span class="ident">a</span>, <span class="ident">b</span>, ..]) <span class="op">=</span><span class="op">&gt;</span> {
+        (<span class="number">2</span>, [<span class="ident">a</span>, <span class="ident">b</span>, ..]) =&gt; {
             <span class="kw-2">*</span><span class="ident">a</span> <span class="op">=</span> (<span class="ident">code</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">6</span> <span class="op">&amp;</span> <span class="number">0x1F</span>) <span class="kw">as</span> <span class="ident">u8</span> <span class="op">|</span> <span class="ident">TAG_TWO_B</span>;
             <span class="kw-2">*</span><span class="ident">b</span> <span class="op">=</span> (<span class="ident">code</span> <span class="op">&amp;</span> <span class="number">0x3F</span>) <span class="kw">as</span> <span class="ident">u8</span> <span class="op">|</span> <span class="ident">TAG_CONT</span>;
         }
-        (<span class="number">3</span>, [<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>, ..]) <span class="op">=</span><span class="op">&gt;</span> {
+        (<span class="number">3</span>, [<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>, ..]) =&gt; {
             <span class="kw-2">*</span><span class="ident">a</span> <span class="op">=</span> (<span class="ident">code</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">12</span> <span class="op">&amp;</span> <span class="number">0x0F</span>) <span class="kw">as</span> <span class="ident">u8</span> <span class="op">|</span> <span class="ident">TAG_THREE_B</span>;
             <span class="kw-2">*</span><span class="ident">b</span> <span class="op">=</span> (<span class="ident">code</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">6</span> <span class="op">&amp;</span> <span class="number">0x3F</span>) <span class="kw">as</span> <span class="ident">u8</span> <span class="op">|</span> <span class="ident">TAG_CONT</span>;
             <span class="kw-2">*</span><span class="ident">c</span> <span class="op">=</span> (<span class="ident">code</span> <span class="op">&amp;</span> <span class="number">0x3F</span>) <span class="kw">as</span> <span class="ident">u8</span> <span class="op">|</span> <span class="ident">TAG_CONT</span>;
         }
-        (<span class="number">4</span>, [<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, ..]) <span class="op">=</span><span class="op">&gt;</span> {
+        (<span class="number">4</span>, [<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>, ..]) =&gt; {
             <span class="kw-2">*</span><span class="ident">a</span> <span class="op">=</span> (<span class="ident">code</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">18</span> <span class="op">&amp;</span> <span class="number">0x07</span>) <span class="kw">as</span> <span class="ident">u8</span> <span class="op">|</span> <span class="ident">TAG_FOUR_B</span>;
             <span class="kw-2">*</span><span class="ident">b</span> <span class="op">=</span> (<span class="ident">code</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">12</span> <span class="op">&amp;</span> <span class="number">0x3F</span>) <span class="kw">as</span> <span class="ident">u8</span> <span class="op">|</span> <span class="ident">TAG_CONT</span>;
             <span class="kw-2">*</span><span class="ident">c</span> <span class="op">=</span> (<span class="ident">code</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">6</span> <span class="op">&amp;</span> <span class="number">0x3F</span>) <span class="kw">as</span> <span class="ident">u8</span> <span class="op">|</span> <span class="ident">TAG_CONT</span>;
             <span class="kw-2">*</span><span class="ident">d</span> <span class="op">=</span> (<span class="ident">code</span> <span class="op">&amp;</span> <span class="number">0x3F</span>) <span class="kw">as</span> <span class="ident">u8</span> <span class="op">|</span> <span class="ident">TAG_CONT</span>;
         }
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(
+        <span class="kw">_</span> =&gt; <span class="macro">panic!</span>(
             <span class="string">&quot;encode_utf8: need {} bytes to encode U+{:X}, but the buffer has {}&quot;</span>,
             <span class="ident">len</span>,
             <span class="ident">code</span>,
@@ -3338,10 +3411,10 @@
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;char_internals&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;exposed only for libstd&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_utf16_raw</span>(<span class="kw-2">mut</span> <span class="ident">code</span>: <span class="ident">u32</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u16</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u16</span>] {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_utf16_raw</span>(<span class="kw-2">mut</span> <span class="ident">code</span>: <span class="ident">u32</span>, <span class="ident">dst</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u16</span>]) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u16</span>] {
     <span class="comment">// SAFETY: each arm checks whether there are enough bits to write into</span>
     <span class="kw">unsafe</span> {
-        <span class="kw">if</span> (<span class="ident">code</span> <span class="op">&amp;</span> <span class="number">0xFFFF</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">code</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">dst</span>.<span class="ident">is_empty</span>() {
+        <span class="kw">if</span> (<span class="ident">code</span> <span class="op">&amp;</span> <span class="number">0xFFFF</span>) <span class="op">==</span> <span class="ident">code</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">dst</span>.<span class="ident">is_empty</span>() {
             <span class="comment">// The BMP falls through</span>
             <span class="kw-2">*</span><span class="ident">dst</span>.<span class="ident">get_unchecked_mut</span>(<span class="number">0</span>) <span class="op">=</span> <span class="ident">code</span> <span class="kw">as</span> <span class="ident">u16</span>;
             <span class="ident">slice::from_raw_parts_mut</span>(<span class="ident">dst</span>.<span class="ident">as_mut_ptr</span>(), <span class="number">1</span>)
@@ -3361,5 +3434,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

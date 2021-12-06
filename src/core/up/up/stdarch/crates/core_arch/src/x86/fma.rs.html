@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/../../stdarch/crates/core_arch/src/x86/fma.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>fma.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../../../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../../../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img src="../../../../../../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;..&#x2F;..&#x2F;stdarch&#x2F;crates&#x2F;core_arch&#x2F;src&#x2F;x86&#x2F;fma.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>fma.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../../../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -795,8 +793,7 @@
 <span id="793">793</span>
 <span id="794">794</span>
 <span id="795">795</span>
-</pre><pre class="rust">
-<span class="doccomment">//! Fused Multiply-Add instruction set (FMA)</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Fused Multiply-Add instruction set (FMA)</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! The FMA instruction set is an extension to the 128 and 256-bit SSE</span>
 <span class="doccomment">//! instructions in the x86 microprocessor instruction set to perform fused</span>
@@ -816,8 +813,8 @@
 <span class="doccomment">//! [amd64_ref]: http://support.amd.com/TechDocs/24594.pdf</span>
 <span class="doccomment">//! [wiki_fma]: https://en.wikipedia.org/wiki/Fused_multiply-accumulate</span>
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::core_arch::simd_llvm::simd_fma</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::core_arch::x86</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::core_arch::simd_llvm::simd_fma</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::core_arch::x86</span>::<span class="kw-2">*</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">use</span> <span class="ident">stdarch_test::assert_instr</span>;
@@ -830,7 +827,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmadd</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmadd_pd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmadd_pd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span> {
     <span class="ident">simd_fma</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -842,7 +839,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmadd</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fmadd_pd</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256d</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fmadd_pd</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) -&gt; <span class="ident">__m256d</span> {
     <span class="ident">simd_fma</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -854,7 +851,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmadd</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmadd_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmadd_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">simd_fma</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -866,7 +863,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmadd</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fmadd_ps</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fmadd_ps</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) -&gt; <span class="ident">__m256</span> {
     <span class="ident">simd_fma</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -880,7 +877,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmadd</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmadd_sd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmadd_sd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span> {
     <span class="ident">vfmaddsd</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -894,7 +891,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmadd</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmadd_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmadd_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">vfmaddss</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -907,7 +904,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmaddsub</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmaddsub_pd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmaddsub_pd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span> {
     <span class="ident">vfmaddsubpd</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -920,7 +917,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmaddsub</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fmaddsub_pd</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256d</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fmaddsub_pd</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) -&gt; <span class="ident">__m256d</span> {
     <span class="ident">vfmaddsubpd256</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -933,7 +930,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmaddsub</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmaddsub_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmaddsub_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">vfmaddsubps</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -946,7 +943,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmaddsub</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fmaddsub_ps</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fmaddsub_ps</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) -&gt; <span class="ident">__m256</span> {
     <span class="ident">vfmaddsubps256</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -958,7 +955,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmsub</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmsub_pd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmsub_pd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span> {
     <span class="ident">vfmsubpd</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -970,7 +967,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmsub</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fmsub_pd</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256d</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fmsub_pd</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) -&gt; <span class="ident">__m256d</span> {
     <span class="ident">vfmsubpd256</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -982,7 +979,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmsub213ps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmsub_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmsub_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">vfmsubps</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -994,7 +991,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmsub213ps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fmsub_ps</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fmsub_ps</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) -&gt; <span class="ident">__m256</span> {
     <span class="ident">vfmsubps256</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1008,7 +1005,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmsub</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmsub_sd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmsub_sd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span> {
     <span class="ident">vfmsubsd</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1022,7 +1019,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmsub</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmsub_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmsub_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">vfmsubss</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1035,7 +1032,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmsubadd</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmsubadd_pd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmsubadd_pd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span> {
     <span class="ident">vfmsubaddpd</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1048,7 +1045,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmsubadd</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fmsubadd_pd</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256d</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fmsubadd_pd</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) -&gt; <span class="ident">__m256d</span> {
     <span class="ident">vfmsubaddpd256</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1061,7 +1058,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmsubadd</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmsubadd_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fmsubadd_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">vfmsubaddps</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1074,7 +1071,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfmsubadd</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fmsubadd_ps</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fmsubadd_ps</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) -&gt; <span class="ident">__m256</span> {
     <span class="ident">vfmsubaddps256</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1086,7 +1083,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfnmadd</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fnmadd_pd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fnmadd_pd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span> {
     <span class="ident">vfnmaddpd</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1098,7 +1095,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfnmadd</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fnmadd_pd</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256d</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fnmadd_pd</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) -&gt; <span class="ident">__m256d</span> {
     <span class="ident">vfnmaddpd256</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1110,7 +1107,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfnmadd</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fnmadd_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fnmadd_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">vfnmaddps</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1122,7 +1119,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfnmadd</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fnmadd_ps</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fnmadd_ps</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) -&gt; <span class="ident">__m256</span> {
     <span class="ident">vfnmaddps256</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1136,7 +1133,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfnmadd</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fnmadd_sd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fnmadd_sd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span> {
     <span class="ident">vfnmaddsd</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1150,7 +1147,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfnmadd</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fnmadd_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fnmadd_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">vfnmaddss</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1163,7 +1160,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfnmsub</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fnmsub_pd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fnmsub_pd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span> {
     <span class="ident">vfnmsubpd</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1176,7 +1173,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfnmsub</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fnmsub_pd</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256d</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fnmsub_pd</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) -&gt; <span class="ident">__m256d</span> {
     <span class="ident">vfnmsubpd256</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1189,7 +1186,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfnmsub</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fnmsub_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fnmsub_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">vfnmsubps</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1202,7 +1199,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfnmsub</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fnmsub_ps</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_fnmsub_ps</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) -&gt; <span class="ident">__m256</span> {
     <span class="ident">vfnmsubps256</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1217,7 +1214,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfnmsub</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fnmsub_sd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fnmsub_sd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span> {
     <span class="ident">vfnmsubsd</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
@@ -1232,68 +1229,68 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vfnmsub</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fnmsub_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_fnmsub_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">vfnmsubss</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">improper_ctypes</span>)]</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfmadd.sd&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfmaddsd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span>;
+    <span class="kw">fn</span> <span class="ident">vfmaddsd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfmadd.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfmaddss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">vfmaddss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfmaddsub.pd&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfmaddsubpd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span>;
+    <span class="kw">fn</span> <span class="ident">vfmaddsubpd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfmaddsub.pd.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfmaddsubpd256</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256d</span>;
+    <span class="kw">fn</span> <span class="ident">vfmaddsubpd256</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) -&gt; <span class="ident">__m256d</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfmaddsub.ps&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfmaddsubps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">vfmaddsubps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfmaddsub.ps.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfmaddsubps256</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256</span>;
+    <span class="kw">fn</span> <span class="ident">vfmaddsubps256</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) -&gt; <span class="ident">__m256</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfmsub.pd&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfmsubpd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span>;
+    <span class="kw">fn</span> <span class="ident">vfmsubpd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfmsub.pd.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfmsubpd256</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256d</span>;
+    <span class="kw">fn</span> <span class="ident">vfmsubpd256</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) -&gt; <span class="ident">__m256d</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfmsub.ps&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfmsubps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">vfmsubps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfmsub.ps.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfmsubps256</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256</span>;
+    <span class="kw">fn</span> <span class="ident">vfmsubps256</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) -&gt; <span class="ident">__m256</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfmsub.sd&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfmsubsd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span>;
+    <span class="kw">fn</span> <span class="ident">vfmsubsd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfmsub.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfmsubss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">vfmsubss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfmsubadd.pd&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfmsubaddpd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span>;
+    <span class="kw">fn</span> <span class="ident">vfmsubaddpd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfmsubadd.pd.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfmsubaddpd256</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256d</span>;
+    <span class="kw">fn</span> <span class="ident">vfmsubaddpd256</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) -&gt; <span class="ident">__m256d</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfmsubadd.ps&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfmsubaddps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">vfmsubaddps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfmsubadd.ps.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfmsubaddps256</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256</span>;
+    <span class="kw">fn</span> <span class="ident">vfmsubaddps256</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) -&gt; <span class="ident">__m256</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfnmadd.pd&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfnmaddpd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span>;
+    <span class="kw">fn</span> <span class="ident">vfnmaddpd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfnmadd.pd.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfnmaddpd256</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256d</span>;
+    <span class="kw">fn</span> <span class="ident">vfnmaddpd256</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) -&gt; <span class="ident">__m256d</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfnmadd.ps&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfnmaddps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">vfnmaddps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfnmadd.ps.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfnmaddps256</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256</span>;
+    <span class="kw">fn</span> <span class="ident">vfnmaddps256</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) -&gt; <span class="ident">__m256</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfnmadd.sd&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfnmaddsd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span>;
+    <span class="kw">fn</span> <span class="ident">vfnmaddsd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfnmadd.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfnmaddss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">vfnmaddss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfnmsub.pd&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfnmsubpd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span>;
+    <span class="kw">fn</span> <span class="ident">vfnmsubpd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfnmsub.pd.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfnmsubpd256</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256d</span>;
+    <span class="kw">fn</span> <span class="ident">vfnmsubpd256</span>(<span class="ident">a</span>: <span class="ident">__m256d</span>, <span class="ident">b</span>: <span class="ident">__m256d</span>, <span class="ident">c</span>: <span class="ident">__m256d</span>) -&gt; <span class="ident">__m256d</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfnmsub.ps&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfnmsubps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">vfnmsubps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfnmsub.ps.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfnmsubps256</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m256</span>;
+    <span class="kw">fn</span> <span class="ident">vfnmsubps256</span>(<span class="ident">a</span>: <span class="ident">__m256</span>, <span class="ident">b</span>: <span class="ident">__m256</span>, <span class="ident">c</span>: <span class="ident">__m256</span>) -&gt; <span class="ident">__m256</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfnmsub.sd&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfnmsubsd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128d</span>;
+    <span class="kw">fn</span> <span class="ident">vfnmsubsd</span>(<span class="ident">a</span>: <span class="ident">__m128d</span>, <span class="ident">b</span>: <span class="ident">__m128d</span>, <span class="ident">c</span>: <span class="ident">__m128d</span>) -&gt; <span class="ident">__m128d</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.fma.vfnmsub.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vfnmsubss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">vfnmsubss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">c</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
@@ -1301,7 +1298,7 @@
 
     <span class="kw">use</span> <span class="ident">stdarch_test::simd_test</span>;
 
-    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::core_arch::x86</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::core_arch::x86</span>::<span class="kw-2">*</span>;
 
     <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;fma&quot;</span>)]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm_fmadd_pd</span>() {
@@ -1591,5 +1588,7 @@
         <span class="ident">assert_eq_m128</span>(<span class="ident">_mm_fnmsub_ss</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>), <span class="ident">r</span>);
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-search-index-js="../../../../../../../../../search-index.js" data-search-js="../../../../../../../../../search.js"></div><script src="../../../../../../../../../main.js"></script><script src="../../../../../../../../../source-script.js"></script><script src="../../../../../../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-search-index-js="../../../../../../../../../search-index.js" data-search-js="../../../../../../../../../search.js"></div>
+    <script src="../../../../../../../../../main.js"></script><script src="../../../../../../../../../source-script.js"></script><script src="../../../../../../../../../source-files.js"></script>
+</body></html>

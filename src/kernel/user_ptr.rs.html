@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/kernel/user_ptr.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>user_ptr.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;user_ptr.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>user_ptr.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -175,52 +173,19 @@
 <span id="173">173</span>
 <span id="174">174</span>
 <span id="175">175</span>
-<span id="176">176</span>
-<span id="177">177</span>
-<span id="178">178</span>
-<span id="179">179</span>
-<span id="180">180</span>
-<span id="181">181</span>
-<span id="182">182</span>
-<span id="183">183</span>
-<span id="184">184</span>
-<span id="185">185</span>
-<span id="186">186</span>
-<span id="187">187</span>
-<span id="188">188</span>
-<span id="189">189</span>
-<span id="190">190</span>
-<span id="191">191</span>
-</pre><pre class="rust">
-<span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
+</pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! User pointers.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! C header: [`include/linux/uaccess.h`](../../../../include/linux/uaccess.h)</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">c_types</span>,
+    <span class="ident">bindings</span>, <span class="ident">c_types</span>,
     <span class="ident">error::Error</span>,
     <span class="ident">io_buffer</span>::{<span class="ident">IoBufferReader</span>, <span class="ident">IoBufferWriter</span>},
     <span class="prelude-ty">Result</span>,
 };
 <span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
-
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-    <span class="kw">fn</span> <span class="ident">rust_helper_copy_from_user</span>(
-        <span class="ident">to</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_types::c_void</span>,
-        <span class="ident">from</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_types::c_void</span>,
-        <span class="ident">n</span>: <span class="ident">c_types::c_ulong</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_types::c_ulong</span>;
-
-    <span class="kw">fn</span> <span class="ident">rust_helper_copy_to_user</span>(
-        <span class="ident">to</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_types::c_void</span>,
-        <span class="ident">from</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_types::c_void</span>,
-        <span class="ident">n</span>: <span class="ident">c_types::c_ulong</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_types::c_ulong</span>;
-
-    <span class="kw">fn</span> <span class="ident">rust_helper_clear_user</span>(<span class="ident">to</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_types::c_void</span>, <span class="ident">n</span>: <span class="ident">c_types::c_ulong</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_types::c_ulong</span>;
-}
 
 <span class="doccomment">/// A reference to an area in userspace memory, which can be either</span>
 <span class="doccomment">/// read-only or read-write.</span>
@@ -261,7 +226,7 @@
     <span class="doccomment">/// (TOCTOU) issues. The simplest way is to create a single instance of</span>
     <span class="doccomment">/// [`UserSlicePtr`] per user memory block as it reads each byte at</span>
     <span class="doccomment">/// most once.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_types::c_void</span>, <span class="ident">length</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_types::c_void</span>, <span class="ident">length</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">UserSlicePtr</span>(<span class="ident">ptr</span>, <span class="ident">length</span>)
     }
 
@@ -269,12 +234,12 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns `EFAULT` if the address does not currently point to</span>
     <span class="doccomment">/// mapped, readable memory.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_all</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_all</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">reader</span>().<span class="ident">read_all</span>()
     }
 
     <span class="doccomment">/// Constructs a [`UserSlicePtrReader`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reader</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UserSlicePtrReader</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reader</span>(<span class="self">self</span>) -&gt; <span class="ident">UserSlicePtrReader</span> {
         <span class="ident">UserSlicePtrReader</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="self">self</span>.<span class="number">1</span>)
     }
 
@@ -284,17 +249,17 @@
     <span class="doccomment">/// mapped, writable memory (in which case some data from before the</span>
     <span class="doccomment">/// fault may be written), or `data` is larger than the user slice</span>
     <span class="doccomment">/// (in which case no data is written).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_all</span>(<span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_all</span>(<span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span> {
         <span class="self">self</span>.<span class="ident">writer</span>().<span class="ident">write_slice</span>(<span class="ident">data</span>)
     }
 
     <span class="doccomment">/// Constructs a [`UserSlicePtrWriter`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">writer</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UserSlicePtrWriter</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">writer</span>(<span class="self">self</span>) -&gt; <span class="ident">UserSlicePtrWriter</span> {
         <span class="ident">UserSlicePtrWriter</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="self">self</span>.<span class="number">1</span>)
     }
 
     <span class="doccomment">/// Constructs both a [`UserSlicePtrReader`] and a [`UserSlicePtrWriter`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reader_writer</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">UserSlicePtrReader</span>, <span class="ident">UserSlicePtrWriter</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reader_writer</span>(<span class="self">self</span>) -&gt; (<span class="ident">UserSlicePtrReader</span>, <span class="ident">UserSlicePtrWriter</span>) {
         (
             <span class="ident">UserSlicePtrReader</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="self">self</span>.<span class="number">1</span>),
             <span class="ident">UserSlicePtrWriter</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="self">self</span>.<span class="number">1</span>),
@@ -311,7 +276,7 @@
     <span class="doccomment">/// Returns the number of bytes left to be read from this.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that even reading less than this number of bytes may fail.</span>
-    <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="number">1</span>
     }
 
@@ -320,11 +285,11 @@
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The output buffer must be valid.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read_raw</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read_raw</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">out</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="kw">if</span> <span class="ident">len</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="number">1</span> <span class="op">|</span><span class="op">|</span> <span class="ident">len</span> <span class="op">&gt;</span> <span class="ident">u32::MAX</span> <span class="kw">as</span> <span class="ident">usize</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::EFAULT</span>);
         }
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">rust_helper_copy_from_user</span>(<span class="ident">out</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="self">self</span>.<span class="number">0</span>, <span class="ident">len</span> <span class="kw">as</span> <span class="kw">_</span>) };
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bindings::copy_from_user</span>(<span class="ident">out</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="self">self</span>.<span class="number">0</span>, <span class="ident">len</span> <span class="kw">as</span> <span class="kw">_</span>) };
         <span class="kw">if</span> <span class="ident">res</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::EFAULT</span>);
         }
@@ -343,11 +308,11 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UserSlicePtrWriter</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_types::c_void</span>, <span class="ident">usize</span>);
 
 <span class="kw">impl</span> <span class="ident">IoBufferWriter</span> <span class="kw">for</span> <span class="ident">UserSlicePtrWriter</span> {
-    <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="number">1</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">clear</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">clear</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="prelude-val">Ok</span>(());
         <span class="kw">if</span> <span class="ident">len</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="number">1</span> {
             <span class="ident">ret</span> <span class="op">=</span> <span class="prelude-val">Err</span>(<span class="ident">Error::EFAULT</span>);
@@ -356,7 +321,7 @@
 
         <span class="comment">// SAFETY: The buffer will be validated by `clear_user`. We ensure that `len` is within</span>
         <span class="comment">// bounds in the check above.</span>
-        <span class="kw">let</span> <span class="ident">left</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">rust_helper_clear_user</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="ident">len</span> <span class="kw">as</span> <span class="kw">_</span>) } <span class="kw">as</span> <span class="ident">usize</span>;
+        <span class="kw">let</span> <span class="ident">left</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bindings::clear_user</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="ident">len</span> <span class="kw">as</span> <span class="kw">_</span>) } <span class="kw">as</span> <span class="ident">usize</span>;
         <span class="kw">if</span> <span class="ident">left</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
             <span class="ident">ret</span> <span class="op">=</span> <span class="prelude-val">Err</span>(<span class="ident">Error::EFAULT</span>);
             <span class="ident">len</span> <span class="op">-</span><span class="op">=</span> <span class="ident">left</span>;
@@ -367,11 +332,11 @@
         <span class="ident">ret</span>
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write_raw</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">len</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write_raw</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span> {
         <span class="kw">if</span> <span class="ident">len</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="number">1</span> <span class="op">|</span><span class="op">|</span> <span class="ident">len</span> <span class="op">&gt;</span> <span class="ident">u32::MAX</span> <span class="kw">as</span> <span class="ident">usize</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::EFAULT</span>);
         }
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">rust_helper_copy_to_user</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="ident">data</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">len</span> <span class="kw">as</span> <span class="kw">_</span>) };
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bindings::copy_to_user</span>(<span class="self">self</span>.<span class="number">0</span>, <span class="ident">data</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">len</span> <span class="kw">as</span> <span class="kw">_</span>) };
         <span class="kw">if</span> <span class="ident">res</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::EFAULT</span>);
         }
@@ -383,5 +348,7 @@
         <span class="prelude-val">Ok</span>(())
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
+</body></html>

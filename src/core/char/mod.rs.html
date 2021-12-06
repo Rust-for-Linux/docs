@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/char/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;char&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -512,16 +510,15 @@
 <span id="510">510</span>
 <span id="511">511</span>
 <span id="512">512</span>
-</pre><pre class="rust">
-<span class="doccomment">//! A character type.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! A character type.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! The `char` type represents a single character. More specifically, since</span>
 <span class="doccomment">//! &#39;character&#39; isn&#39;t a well-defined concept in Unicode, `char` is a &#39;[Unicode</span>
 <span class="doccomment">//! scalar value]&#39;, which is similar to, but not the same as, a &#39;[Unicode code</span>
 <span class="doccomment">//! point]&#39;.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! [Unicode scalar value]: http://www.unicode.org/glossary/#unicode_scalar_value</span>
-<span class="doccomment">//! [Unicode code point]: http://www.unicode.org/glossary/#code_point</span>
+<span class="doccomment">//! [Unicode scalar value]: https://www.unicode.org/glossary/#unicode_scalar_value</span>
+<span class="doccomment">//! [Unicode code point]: https://www.unicode.org/glossary/#code_point</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! This module exists for technical reasons, the primary documentation for</span>
 <span class="doccomment">//! `char` is directly on [the `char` primitive type][char] itself.</span>
@@ -539,28 +536,28 @@
 
 <span class="comment">// stable re-exports</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;char_from_unchecked&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.5.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::convert::from_u32_unchecked</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::convert::from_u32_unchecked</span>;
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_from&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.34.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::convert::CharTryFromError</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::convert::CharTryFromError</span>;
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;char_from_str&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.20.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::convert::ParseCharError</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::convert::ParseCharError</span>;
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::convert</span>::{<span class="ident">from_digit</span>, <span class="ident">from_u32</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::convert</span>::{<span class="ident">from_digit</span>, <span class="ident">from_u32</span>};
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;decode_utf16&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.9.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::decode</span>::{<span class="ident">decode_utf16</span>, <span class="ident">DecodeUtf16</span>, <span class="ident">DecodeUtf16Error</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::decode</span>::{<span class="ident">decode_utf16</span>, <span class="ident">DecodeUtf16</span>, <span class="ident">DecodeUtf16Error</span>};
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unicode_version&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.45.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::unicode::UNICODE_VERSION</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::unicode::UNICODE_VERSION</span>;
 
 <span class="comment">// perma-unstable re-exports</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;char_internals&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;exposed only for libstd&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::methods::encode_utf16_raw</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::methods::encode_utf16_raw</span>;
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;char_internals&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;exposed only for libstd&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::methods::encode_utf8_raw</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident"><span class="self">self</span>::methods::encode_utf8_raw</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::fmt</span>::{<span class="self">self</span>, <span class="ident">Write</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::iter::FusedIterator</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fmt</span>::{<span class="self">self</span>, <span class="ident">Write</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::iter::FusedIterator</span>;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="self">self</span><span class="ident">::methods::EscapeDebugExtArgs</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident"><span class="self">self</span>::methods::EscapeDebugExtArgs</span>;
 
 <span class="comment">// UTF-8 ranges and tags for encoding characters</span>
 <span class="kw">const</span> <span class="ident">TAG_CONT</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">0b1000_0000</span>;
@@ -610,8 +607,8 @@
 <span class="doccomment">/// Point], but only ones within a certain range. `MAX` is the highest valid</span>
 <span class="doccomment">/// code point that&#39;s a valid [Unicode Scalar Value].</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [Unicode Scalar Value]: http://www.unicode.org/glossary/#unicode_scalar_value</span>
-<span class="doccomment">/// [Code Point]: http://www.unicode.org/glossary/#code_point</span>
+<span class="doccomment">/// [Unicode Scalar Value]: https://www.unicode.org/glossary/#unicode_scalar_value</span>
+<span class="doccomment">/// [Code Point]: https://www.unicode.org/glossary/#code_point</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX</span>: <span class="ident">char</span> <span class="op">=</span> <span class="ident">char::MAX</span>;
 
@@ -659,58 +656,58 @@
 <span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">EscapeUnicode</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">char</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">state</span> {
-            <span class="ident">EscapeUnicodeState::Backslash</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">EscapeUnicodeState::Backslash</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">EscapeUnicodeState::Type</span>;
                 <span class="prelude-val">Some</span>(<span class="string">&#39;\\&#39;</span>)
             }
-            <span class="ident">EscapeUnicodeState::Type</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">EscapeUnicodeState::Type</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">EscapeUnicodeState::LeftBrace</span>;
                 <span class="prelude-val">Some</span>(<span class="string">&#39;u&#39;</span>)
             }
-            <span class="ident">EscapeUnicodeState::LeftBrace</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">EscapeUnicodeState::LeftBrace</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">EscapeUnicodeState::Value</span>;
                 <span class="prelude-val">Some</span>(<span class="string">&#39;{&#39;</span>)
             }
-            <span class="ident">EscapeUnicodeState::Value</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">EscapeUnicodeState::Value</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">hex_digit</span> <span class="op">=</span> ((<span class="self">self</span>.<span class="ident">c</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">&gt;</span><span class="op">&gt;</span> (<span class="self">self</span>.<span class="ident">hex_digit_idx</span> <span class="op">*</span> <span class="number">4</span>)) <span class="op">&amp;</span> <span class="number">0xf</span>;
                 <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">from_digit</span>(<span class="ident">hex_digit</span>, <span class="number">16</span>).<span class="ident">unwrap</span>();
-                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">hex_digit_idx</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">hex_digit_idx</span> <span class="op">==</span> <span class="number">0</span> {
                     <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">EscapeUnicodeState::RightBrace</span>;
                 } <span class="kw">else</span> {
                     <span class="self">self</span>.<span class="ident">hex_digit_idx</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
                 }
                 <span class="prelude-val">Some</span>(<span class="ident">c</span>)
             }
-            <span class="ident">EscapeUnicodeState::RightBrace</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">EscapeUnicodeState::RightBrace</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">EscapeUnicodeState::Done</span>;
                 <span class="prelude-val">Some</span>(<span class="string">&#39;}&#39;</span>)
             }
-            <span class="ident">EscapeUnicodeState::Done</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">EscapeUnicodeState::Done</span> =&gt; <span class="prelude-val">None</span>,
         }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         (<span class="ident">n</span>, <span class="prelude-val">Some</span>(<span class="ident">n</span>))
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">count</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">count</span>(<span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">len</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">last</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">last</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">state</span> {
-            <span class="ident">EscapeUnicodeState::Done</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">EscapeUnicodeState::Done</span> =&gt; <span class="prelude-val">None</span>,
 
             <span class="ident">EscapeUnicodeState::RightBrace</span>
             <span class="op">|</span> <span class="ident">EscapeUnicodeState::Value</span>
             <span class="op">|</span> <span class="ident">EscapeUnicodeState::LeftBrace</span>
             <span class="op">|</span> <span class="ident">EscapeUnicodeState::Type</span>
-            <span class="op">|</span> <span class="ident">EscapeUnicodeState::Backslash</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="string">&#39;}&#39;</span>),
+            <span class="op">|</span> <span class="ident">EscapeUnicodeState::Backslash</span> =&gt; <span class="prelude-val">Some</span>(<span class="string">&#39;}&#39;</span>),
         }
     }
 }
@@ -718,16 +715,16 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;exact_size_escape&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.11.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ExactSizeIterator</span> <span class="kw">for</span> <span class="ident">EscapeUnicode</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="comment">// The match is a single memory access with no branching</span>
         <span class="self">self</span>.<span class="ident">hex_digit_idx</span>
             <span class="op">+</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">state</span> {
-                <span class="ident">EscapeUnicodeState::Done</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">0</span>,
-                <span class="ident">EscapeUnicodeState::RightBrace</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">1</span>,
-                <span class="ident">EscapeUnicodeState::Value</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">2</span>,
-                <span class="ident">EscapeUnicodeState::LeftBrace</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">3</span>,
-                <span class="ident">EscapeUnicodeState::Type</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">4</span>,
-                <span class="ident">EscapeUnicodeState::Backslash</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">5</span>,
+                <span class="ident">EscapeUnicodeState::Done</span> =&gt; <span class="number">0</span>,
+                <span class="ident">EscapeUnicodeState::RightBrace</span> =&gt; <span class="number">1</span>,
+                <span class="ident">EscapeUnicodeState::Value</span> =&gt; <span class="number">2</span>,
+                <span class="ident">EscapeUnicodeState::LeftBrace</span> =&gt; <span class="number">3</span>,
+                <span class="ident">EscapeUnicodeState::Type</span> =&gt; <span class="number">4</span>,
+                <span class="ident">EscapeUnicodeState::Backslash</span> =&gt; <span class="number">5</span>,
             }
     }
 }
@@ -737,7 +734,7 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;char_struct_display&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.16.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">EscapeUnicode</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">for</span> <span class="ident">c</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">clone</span>() {
             <span class="ident">f</span>.<span class="ident">write_char</span>(<span class="ident">c</span>)<span class="question-mark">?</span>;
         }
@@ -769,73 +766,73 @@
 <span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">EscapeDefault</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">char</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">state</span> {
-            <span class="ident">EscapeDefaultState::Backslash</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">EscapeDefaultState::Backslash</span>(<span class="ident">c</span>) =&gt; {
                 <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">EscapeDefaultState::Char</span>(<span class="ident">c</span>);
                 <span class="prelude-val">Some</span>(<span class="string">&#39;\\&#39;</span>)
             }
-            <span class="ident">EscapeDefaultState::Char</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">EscapeDefaultState::Char</span>(<span class="ident">c</span>) =&gt; {
                 <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">EscapeDefaultState::Done</span>;
                 <span class="prelude-val">Some</span>(<span class="ident">c</span>)
             }
-            <span class="ident">EscapeDefaultState::Done</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">EscapeDefaultState::Unicode</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">iter</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">iter</span>.<span class="ident">next</span>(),
+            <span class="ident">EscapeDefaultState::Done</span> =&gt; <span class="prelude-val">None</span>,
+            <span class="ident">EscapeDefaultState::Unicode</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">iter</span>) =&gt; <span class="ident">iter</span>.<span class="ident">next</span>(),
         }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         (<span class="ident">n</span>, <span class="prelude-val">Some</span>(<span class="ident">n</span>))
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">count</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">count</span>(<span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">len</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">state</span> {
-            <span class="ident">EscapeDefaultState::Backslash</span>(<span class="ident">c</span>) <span class="kw">if</span> <span class="ident">n</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">EscapeDefaultState::Backslash</span>(<span class="ident">c</span>) <span class="kw">if</span> <span class="ident">n</span> <span class="op">==</span> <span class="number">0</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">EscapeDefaultState::Char</span>(<span class="ident">c</span>);
                 <span class="prelude-val">Some</span>(<span class="string">&#39;\\&#39;</span>)
             }
-            <span class="ident">EscapeDefaultState::Backslash</span>(<span class="ident">c</span>) <span class="kw">if</span> <span class="ident">n</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">EscapeDefaultState::Backslash</span>(<span class="ident">c</span>) <span class="kw">if</span> <span class="ident">n</span> <span class="op">==</span> <span class="number">1</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">EscapeDefaultState::Done</span>;
                 <span class="prelude-val">Some</span>(<span class="ident">c</span>)
             }
-            <span class="ident">EscapeDefaultState::Backslash</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">EscapeDefaultState::Backslash</span>(<span class="kw">_</span>) =&gt; {
                 <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">EscapeDefaultState::Done</span>;
                 <span class="prelude-val">None</span>
             }
-            <span class="ident">EscapeDefaultState::Char</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">EscapeDefaultState::Char</span>(<span class="ident">c</span>) =&gt; {
                 <span class="self">self</span>.<span class="ident">state</span> <span class="op">=</span> <span class="ident">EscapeDefaultState::Done</span>;
 
-                <span class="kw">if</span> <span class="ident">n</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> { <span class="prelude-val">Some</span>(<span class="ident">c</span>) } <span class="kw">else</span> { <span class="prelude-val">None</span> }
+                <span class="kw">if</span> <span class="ident">n</span> <span class="op">==</span> <span class="number">0</span> { <span class="prelude-val">Some</span>(<span class="ident">c</span>) } <span class="kw">else</span> { <span class="prelude-val">None</span> }
             }
-            <span class="ident">EscapeDefaultState::Done</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">EscapeDefaultState::Unicode</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">i</span>.<span class="ident">nth</span>(<span class="ident">n</span>),
+            <span class="ident">EscapeDefaultState::Done</span> =&gt; <span class="prelude-val">None</span>,
+            <span class="ident">EscapeDefaultState::Unicode</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">i</span>) =&gt; <span class="ident">i</span>.<span class="ident">nth</span>(<span class="ident">n</span>),
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">last</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">last</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">state</span> {
-            <span class="ident">EscapeDefaultState::Unicode</span>(<span class="ident">iter</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">iter</span>.<span class="ident">last</span>(),
-            <span class="ident">EscapeDefaultState::Done</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">EscapeDefaultState::Backslash</span>(<span class="ident">c</span>) <span class="op">|</span> <span class="ident">EscapeDefaultState::Char</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">c</span>),
+            <span class="ident">EscapeDefaultState::Unicode</span>(<span class="ident">iter</span>) =&gt; <span class="ident">iter</span>.<span class="ident">last</span>(),
+            <span class="ident">EscapeDefaultState::Done</span> =&gt; <span class="prelude-val">None</span>,
+            <span class="ident">EscapeDefaultState::Backslash</span>(<span class="ident">c</span>) <span class="op">|</span> <span class="ident">EscapeDefaultState::Char</span>(<span class="ident">c</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">c</span>),
         }
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;exact_size_escape&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.11.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ExactSizeIterator</span> <span class="kw">for</span> <span class="ident">EscapeDefault</span> {
-    <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">state</span> {
-            <span class="ident">EscapeDefaultState::Done</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">0</span>,
-            <span class="ident">EscapeDefaultState::Char</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">1</span>,
-            <span class="ident">EscapeDefaultState::Backslash</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">2</span>,
-            <span class="ident">EscapeDefaultState::Unicode</span>(<span class="kw-2">ref</span> <span class="ident">iter</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">iter</span>.<span class="ident">len</span>(),
+            <span class="ident">EscapeDefaultState::Done</span> =&gt; <span class="number">0</span>,
+            <span class="ident">EscapeDefaultState::Char</span>(<span class="kw">_</span>) =&gt; <span class="number">1</span>,
+            <span class="ident">EscapeDefaultState::Backslash</span>(<span class="kw">_</span>) =&gt; <span class="number">2</span>,
+            <span class="ident">EscapeDefaultState::Unicode</span>(<span class="kw-2">ref</span> <span class="ident">iter</span>) =&gt; <span class="ident">iter</span>.<span class="ident">len</span>(),
         }
     }
 }
@@ -845,7 +842,7 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;char_struct_display&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.16.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">EscapeDefault</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">for</span> <span class="ident">c</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">clone</span>() {
             <span class="ident">f</span>.<span class="ident">write_char</span>(<span class="ident">c</span>)<span class="question-mark">?</span>;
         }
@@ -866,10 +863,10 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;char_escape_debug&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.20.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">EscapeDebug</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">char</span>;
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">next</span>()
     }
-    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">size_hint</span>()
     }
 }
@@ -882,7 +879,7 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;char_escape_debug&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.20.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">EscapeDebug</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Display::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="ident">f</span>)
     }
 }
@@ -900,10 +897,10 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">ToLowercase</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">char</span>;
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">next</span>()
     }
-    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">size_hint</span>()
     }
 }
@@ -927,10 +924,10 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">ToUppercase</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">char</span>;
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">next</span>()
     }
-    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">size_hint</span>()
     }
 }
@@ -950,9 +947,9 @@
 }
 
 <span class="kw">impl</span> <span class="ident">CaseMappingIter</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">chars</span>: [<span class="ident">char</span>; <span class="number">3</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CaseMappingIter</span> {
-        <span class="kw">if</span> <span class="ident">chars</span>[<span class="number">2</span>] <span class="op">=</span><span class="op">=</span> <span class="string">&#39;\0&#39;</span> {
-            <span class="kw">if</span> <span class="ident">chars</span>[<span class="number">1</span>] <span class="op">=</span><span class="op">=</span> <span class="string">&#39;\0&#39;</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">chars</span>: [<span class="ident">char</span>; <span class="number">3</span>]) -&gt; <span class="ident">CaseMappingIter</span> {
+        <span class="kw">if</span> <span class="ident">chars</span>[<span class="number">2</span>] <span class="op">==</span> <span class="string">&#39;\0&#39;</span> {
+            <span class="kw">if</span> <span class="ident">chars</span>[<span class="number">1</span>] <span class="op">==</span> <span class="string">&#39;\0&#39;</span> {
                 <span class="ident">CaseMappingIter::One</span>(<span class="ident">chars</span>[<span class="number">0</span>]) <span class="comment">// Including if chars[0] == &#39;\0&#39;</span>
             } <span class="kw">else</span> {
                 <span class="ident">CaseMappingIter::Two</span>(<span class="ident">chars</span>[<span class="number">0</span>], <span class="ident">chars</span>[<span class="number">1</span>])
@@ -965,65 +962,67 @@
 
 <span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">CaseMappingIter</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">char</span>;
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">CaseMappingIter::Three</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">CaseMappingIter::Three</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>) =&gt; {
                 <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">CaseMappingIter::Two</span>(<span class="ident">b</span>, <span class="ident">c</span>);
                 <span class="prelude-val">Some</span>(<span class="ident">a</span>)
             }
-            <span class="ident">CaseMappingIter::Two</span>(<span class="ident">b</span>, <span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">CaseMappingIter::Two</span>(<span class="ident">b</span>, <span class="ident">c</span>) =&gt; {
                 <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">CaseMappingIter::One</span>(<span class="ident">c</span>);
                 <span class="prelude-val">Some</span>(<span class="ident">b</span>)
             }
-            <span class="ident">CaseMappingIter::One</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">CaseMappingIter::One</span>(<span class="ident">c</span>) =&gt; {
                 <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">CaseMappingIter::Zero</span>;
                 <span class="prelude-val">Some</span>(<span class="ident">c</span>)
             }
-            <span class="ident">CaseMappingIter::Zero</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">CaseMappingIter::Zero</span> =&gt; <span class="prelude-val">None</span>,
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">CaseMappingIter::Three</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="number">3</span>,
-            <span class="ident">CaseMappingIter::Two</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="number">2</span>,
-            <span class="ident">CaseMappingIter::One</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">1</span>,
-            <span class="ident">CaseMappingIter::Zero</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">0</span>,
+            <span class="ident">CaseMappingIter::Three</span>(..) =&gt; <span class="number">3</span>,
+            <span class="ident">CaseMappingIter::Two</span>(..) =&gt; <span class="number">2</span>,
+            <span class="ident">CaseMappingIter::One</span>(<span class="kw">_</span>) =&gt; <span class="number">1</span>,
+            <span class="ident">CaseMappingIter::Zero</span> =&gt; <span class="number">0</span>,
         };
         (<span class="ident">size</span>, <span class="prelude-val">Some</span>(<span class="ident">size</span>))
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">CaseMappingIter</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">CaseMappingIter::Three</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">CaseMappingIter::Three</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>) =&gt; {
                 <span class="ident">f</span>.<span class="ident">write_char</span>(<span class="ident">a</span>)<span class="question-mark">?</span>;
                 <span class="ident">f</span>.<span class="ident">write_char</span>(<span class="ident">b</span>)<span class="question-mark">?</span>;
                 <span class="ident">f</span>.<span class="ident">write_char</span>(<span class="ident">c</span>)
             }
-            <span class="ident">CaseMappingIter::Two</span>(<span class="ident">b</span>, <span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">CaseMappingIter::Two</span>(<span class="ident">b</span>, <span class="ident">c</span>) =&gt; {
                 <span class="ident">f</span>.<span class="ident">write_char</span>(<span class="ident">b</span>)<span class="question-mark">?</span>;
                 <span class="ident">f</span>.<span class="ident">write_char</span>(<span class="ident">c</span>)
             }
-            <span class="ident">CaseMappingIter::One</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">write_char</span>(<span class="ident">c</span>),
-            <span class="ident">CaseMappingIter::Zero</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),
+            <span class="ident">CaseMappingIter::One</span>(<span class="ident">c</span>) =&gt; <span class="ident">f</span>.<span class="ident">write_char</span>(<span class="ident">c</span>),
+            <span class="ident">CaseMappingIter::Zero</span> =&gt; <span class="prelude-val">Ok</span>(()),
         }
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;char_struct_display&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.16.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">ToLowercase</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Display::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="ident">f</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;char_struct_display&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.16.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">ToUppercase</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Display::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="ident">f</span>)
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

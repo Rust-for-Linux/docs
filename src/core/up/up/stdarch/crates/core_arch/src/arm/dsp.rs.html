@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/../../stdarch/crates/core_arch/src/arm/dsp.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>dsp.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../../../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../../../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img src="../../../../../../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;..&#x2F;..&#x2F;stdarch&#x2F;crates&#x2F;core_arch&#x2F;src&#x2F;arm&#x2F;dsp.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>dsp.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../../../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -384,8 +382,7 @@
 <span id="382">382</span>
 <span id="383">383</span>
 <span id="384">384</span>
-</pre><pre class="rust">
-<span class="doccomment">//! # References:</span>
+</pre><pre class="rust"><code><span class="doccomment">//! # References:</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! - Section 8.3 &quot;16-bit multiplications&quot;</span>
 <span class="doccomment">//!</span>
@@ -410,7 +407,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">use</span> <span class="ident">stdarch_test::assert_instr</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem::transmute</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::transmute</span>;
 
 <span class="macro">types!</span> {
     <span class="doccomment">/// ARM-specific 32-bit wide vector of two packed `i16`.</span>
@@ -419,48 +416,48 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint16x2_t</span>(<span class="ident">u16</span>, <span class="ident">u16</span>);
 }
 
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
+<span class="kw">extern</span> <span class="string">&quot;unadjusted&quot;</span> {
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.smulbb&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arm_smulbb</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">arm_smulbb</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.smulbt&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arm_smulbt</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">arm_smulbt</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.smultb&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arm_smultb</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">arm_smultb</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.smultt&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arm_smultt</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">arm_smultt</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.smulwb&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arm_smulwb</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">arm_smulwb</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.smulwt&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arm_smulwt</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">arm_smulwt</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.qadd&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arm_qadd</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">arm_qadd</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.qsub&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arm_qsub</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">arm_qsub</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.smlabb&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arm_smlabb</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>, <span class="ident">c</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">arm_smlabb</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>, <span class="ident">c</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.smlabt&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arm_smlabt</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>, <span class="ident">c</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">arm_smlabt</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>, <span class="ident">c</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.smlatb&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arm_smlatb</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>, <span class="ident">c</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">arm_smlatb</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>, <span class="ident">c</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.smlatt&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arm_smlatt</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>, <span class="ident">c</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">arm_smlatt</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>, <span class="ident">c</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.smlawb&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arm_smlawb</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>, <span class="ident">c</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">arm_smlawb</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>, <span class="ident">c</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.smlawt&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arm_smlawt</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>, <span class="ident">c</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">arm_smlawt</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>, <span class="ident">c</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span>;
 }
 
 <span class="doccomment">/// Insert a SMULBB instruction</span>
@@ -469,7 +466,7 @@
 <span class="doccomment">/// where \[0\] is the lower 16 bits and \[1\] is the upper 16 bits.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">smulbb</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smulbb</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smulbb</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">arm_smulbb</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>))
 }
 
@@ -479,7 +476,7 @@
 <span class="doccomment">/// where \[0\] is the lower 16 bits and \[1\] is the upper 16 bits.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">smultb</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smultb</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smultb</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">arm_smultb</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>))
 }
 
@@ -489,7 +486,7 @@
 <span class="doccomment">/// where \[0\] is the lower 16 bits and \[1\] is the upper 16 bits.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">smulbt</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smulbt</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smulbt</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">arm_smulbt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>))
 }
 
@@ -499,7 +496,7 @@
 <span class="doccomment">/// where \[0\] is the lower 16 bits and \[1\] is the upper 16 bits.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">smultt</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smultt</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smultt</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">arm_smultt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>))
 }
 
@@ -510,7 +507,7 @@
 <span class="doccomment">/// Return the top 32 bits of the 48-bit product</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">smulwb</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smulwb</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smulwb</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">arm_smulwb</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">b</span>)
 }
 
@@ -521,7 +518,7 @@
 <span class="doccomment">/// Return the top 32 bits of the 48-bit product</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">smulwt</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smulwt</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smulwt</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">arm_smulwt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">b</span>)
 }
 
@@ -531,7 +528,7 @@
 <span class="doccomment">/// Sets the Q flag if saturation occurs.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">qadd</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__qadd</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__qadd</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">arm_qadd</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -541,7 +538,7 @@
 <span class="doccomment">/// Sets the Q flag if saturation occurs.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">qsub</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__qsub</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__qsub</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">arm_qsub</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -551,7 +548,7 @@
 <span class="doccomment">/// Sets the Q flag if saturation occurs.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">qadd</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__qdbl</span>(<span class="ident">a</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__qdbl</span>(<span class="ident">a</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">arm_qadd</span>(<span class="ident">a</span>, <span class="ident">a</span>)
 }
 
@@ -562,7 +559,7 @@
 <span class="doccomment">/// Sets the Q flag if overflow occurs on the addition.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">smlabb</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smlabb</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>, <span class="ident">c</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smlabb</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>, <span class="ident">c</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">arm_smlabb</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>)
 }
 
@@ -573,7 +570,7 @@
 <span class="doccomment">/// Sets the Q flag if overflow occurs on the addition.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">smlabt</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smlabt</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>, <span class="ident">c</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smlabt</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>, <span class="ident">c</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">arm_smlabt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>)
 }
 
@@ -584,7 +581,7 @@
 <span class="doccomment">/// Sets the Q flag if overflow occurs on the addition.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">smlatb</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smlatb</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>, <span class="ident">c</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smlatb</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>, <span class="ident">c</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">arm_smlatb</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>)
 }
 
@@ -595,7 +592,7 @@
 <span class="doccomment">/// Sets the Q flag if overflow occurs on the addition.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">smlatt</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smlatt</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>, <span class="ident">c</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smlatt</span>(<span class="ident">a</span>: <span class="ident">int16x2_t</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>, <span class="ident">c</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">arm_smlatt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>)
 }
 
@@ -606,7 +603,7 @@
 <span class="doccomment">/// Sets the Q flag if overflow occurs on the addition.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">smlawb</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smlawb</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>, <span class="ident">c</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smlawb</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>, <span class="ident">c</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">arm_smlawb</span>(<span class="ident">a</span>, <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>)
 }
 
@@ -617,13 +614,13 @@
 <span class="doccomment">/// Sets the Q flag if overflow occurs on the addition.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">smlawt</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smlawt</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>, <span class="ident">c</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__smlawt</span>(<span class="ident">a</span>: <span class="ident">i32</span>, <span class="ident">b</span>: <span class="ident">int16x2_t</span>, <span class="ident">c</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">arm_smlawt</span>(<span class="ident">a</span>, <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>)
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::core_arch</span>::{
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::core_arch</span>::{
         <span class="ident">arm</span>::<span class="kw-2">*</span>,
         <span class="ident">simd</span>::{<span class="ident">i16x2</span>, <span class="ident">i8x4</span>, <span class="ident">u8x4</span>},
     };
@@ -635,7 +632,7 @@
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">i16x2::new</span>(<span class="number">10</span>, <span class="number">20</span>);
             <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">i16x2::new</span>(<span class="number">30</span>, <span class="number">40</span>);
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__smulbb</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>)), <span class="number">10</span> <span class="op">*</span> <span class="number">30</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__smulbb</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>)), <span class="number">10</span> <span class="op">*</span> <span class="number">30</span>);
         }
     }
 
@@ -644,7 +641,7 @@
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">i16x2::new</span>(<span class="number">10</span>, <span class="number">20</span>);
             <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">i16x2::new</span>(<span class="number">30</span>, <span class="number">40</span>);
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__smulbt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>)), <span class="number">10</span> <span class="op">*</span> <span class="number">40</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__smulbt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>)), <span class="number">10</span> <span class="op">*</span> <span class="number">40</span>);
         }
     }
 
@@ -653,7 +650,7 @@
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">i16x2::new</span>(<span class="number">10</span>, <span class="number">20</span>);
             <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">i16x2::new</span>(<span class="number">30</span>, <span class="number">40</span>);
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__smultb</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>)), <span class="number">20</span> <span class="op">*</span> <span class="number">30</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__smultb</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>)), <span class="number">20</span> <span class="op">*</span> <span class="number">30</span>);
         }
     }
 
@@ -662,7 +659,7 @@
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">i16x2::new</span>(<span class="number">10</span>, <span class="number">20</span>);
             <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">i16x2::new</span>(<span class="number">30</span>, <span class="number">40</span>);
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__smultt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>)), <span class="number">20</span> <span class="op">*</span> <span class="number">40</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__smultt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>)), <span class="number">20</span> <span class="op">*</span> <span class="number">40</span>);
         }
     }
 
@@ -671,7 +668,7 @@
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">i16x2::new</span>(<span class="number">10</span>, <span class="number">20</span>);
             <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="number">30</span>;
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__smulwb</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">b</span>), <span class="number">20</span> <span class="op">*</span> <span class="ident">b</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__smulwb</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">b</span>), <span class="number">20</span> <span class="op">*</span> <span class="ident">b</span>);
         }
     }
 
@@ -680,32 +677,32 @@
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">i16x2::new</span>(<span class="number">10</span>, <span class="number">20</span>);
             <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="number">30</span>;
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__smulwt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">b</span>), (<span class="number">10</span> <span class="op">*</span> <span class="ident">b</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__smulwt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">b</span>), (<span class="number">10</span> <span class="op">*</span> <span class="ident">b</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>);
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">qadd</span>() {
         <span class="kw">unsafe</span> {
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__qadd</span>(<span class="op">-</span><span class="number">10</span>, <span class="number">60</span>), <span class="number">50</span>);
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__qadd</span>(<span class="ident">i32::MAX</span>, <span class="number">10</span>), <span class="ident">i32::MAX</span>);
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__qadd</span>(<span class="ident">i32::MIN</span>, <span class="op">-</span><span class="number">10</span>), <span class="ident">i32::MIN</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__qadd</span>(<span class="op">-</span><span class="number">10</span>, <span class="number">60</span>), <span class="number">50</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__qadd</span>(<span class="ident">i32::MAX</span>, <span class="number">10</span>), <span class="ident">i32::MAX</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__qadd</span>(<span class="ident">i32::MIN</span>, <span class="op">-</span><span class="number">10</span>), <span class="ident">i32::MIN</span>);
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">qsub</span>() {
         <span class="kw">unsafe</span> {
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__qsub</span>(<span class="number">10</span>, <span class="number">60</span>), <span class="op">-</span><span class="number">50</span>);
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__qsub</span>(<span class="ident">i32::MAX</span>, <span class="op">-</span><span class="number">10</span>), <span class="ident">i32::MAX</span>);
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__qsub</span>(<span class="ident">i32::MIN</span>, <span class="number">10</span>), <span class="ident">i32::MIN</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__qsub</span>(<span class="number">10</span>, <span class="number">60</span>), <span class="op">-</span><span class="number">50</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__qsub</span>(<span class="ident">i32::MAX</span>, <span class="op">-</span><span class="number">10</span>), <span class="ident">i32::MAX</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__qsub</span>(<span class="ident">i32::MIN</span>, <span class="number">10</span>), <span class="ident">i32::MIN</span>);
         }
     }
 
     <span class="kw">fn</span> <span class="ident">qdbl</span>() {
         <span class="kw">unsafe</span> {
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__qdbl</span>(<span class="number">10</span>), <span class="number">20</span>);
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__qdbl</span>(<span class="ident">i32::MAX</span>), <span class="ident">i32::MAX</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__qdbl</span>(<span class="number">10</span>), <span class="number">20</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__qdbl</span>(<span class="ident">i32::MAX</span>), <span class="ident">i32::MAX</span>);
         }
     }
 
@@ -715,7 +712,7 @@
             <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">i16x2::new</span>(<span class="number">30</span>, <span class="number">40</span>);
             <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="number">50</span>;
             <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> (<span class="number">10</span> <span class="op">*</span> <span class="number">30</span>) <span class="op">+</span> <span class="ident">c</span>;
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__smlabb</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>), <span class="ident">r</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__smlabb</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>), <span class="ident">r</span>);
         }
     }
 
@@ -725,7 +722,7 @@
             <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">i16x2::new</span>(<span class="number">30</span>, <span class="number">40</span>);
             <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="number">50</span>;
             <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> (<span class="number">10</span> <span class="op">*</span> <span class="number">40</span>) <span class="op">+</span> <span class="ident">c</span>;
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__smlabt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>), <span class="ident">r</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__smlabt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>), <span class="ident">r</span>);
         }
     }
 
@@ -735,7 +732,7 @@
             <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">i16x2::new</span>(<span class="number">30</span>, <span class="number">40</span>);
             <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="number">50</span>;
             <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> (<span class="number">20</span> <span class="op">*</span> <span class="number">30</span>) <span class="op">+</span> <span class="ident">c</span>;
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__smlabt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>), <span class="ident">r</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__smlabt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>), <span class="ident">r</span>);
         }
     }
 
@@ -745,7 +742,7 @@
             <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">i16x2::new</span>(<span class="number">30</span>, <span class="number">40</span>);
             <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="number">50</span>;
             <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> (<span class="number">20</span> <span class="op">*</span> <span class="number">40</span>) <span class="op">+</span> <span class="ident">c</span>;
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__smlatt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>), <span class="ident">r</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__smlatt</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>), <span class="ident">r</span>);
         }
     }
 
@@ -755,7 +752,7 @@
             <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">i16x2::new</span>(<span class="number">30</span>, <span class="number">40</span>);
             <span class="kw">let</span> <span class="ident">c</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">50</span>;
             <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">i32</span> <span class="op">=</span> ((<span class="ident">a</span> <span class="op">*</span> <span class="number">30</span>) <span class="op">+</span> (<span class="ident">c</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span>)) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>;
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__smlawb</span>(<span class="ident">a</span>, <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>), <span class="ident">r</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__smlawb</span>(<span class="ident">a</span>, <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>), <span class="ident">r</span>);
         }
     }
 
@@ -765,9 +762,11 @@
             <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">i16x2::new</span>(<span class="number">30</span>, <span class="number">40</span>);
             <span class="kw">let</span> <span class="ident">c</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">50</span>;
             <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">i32</span> <span class="op">=</span> ((<span class="ident">a</span> <span class="op">*</span> <span class="number">40</span>) <span class="op">+</span> (<span class="ident">c</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">16</span>)) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>;
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::__smlawt</span>(<span class="ident">a</span>, <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>), <span class="ident">r</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident"><span class="kw">super</span>::__smlawt</span>(<span class="ident">a</span>, <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">c</span>), <span class="ident">r</span>);
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-search-index-js="../../../../../../../../../search-index.js" data-search-js="../../../../../../../../../search.js"></div><script src="../../../../../../../../../main.js"></script><script src="../../../../../../../../../source-script.js"></script><script src="../../../../../../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-search-index-js="../../../../../../../../../search-index.js" data-search-js="../../../../../../../../../search.js"></div>
+    <script src="../../../../../../../../../main.js"></script><script src="../../../../../../../../../source-script.js"></script><script src="../../../../../../../../../source-files.js"></script>
+</body></html>

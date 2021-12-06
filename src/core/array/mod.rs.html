@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/array/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;array&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -611,38 +609,107 @@
 <span id="609">609</span>
 <span id="610">610</span>
 <span id="611">611</span>
-</pre><pre class="rust">
-<span class="doccomment">//! Helper functions and types for fixed-length arrays.</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Helper functions and types for fixed-length arrays.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! *[See also the array primitive type](array).*</span>
 
 <span class="attribute">#![<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;core_array&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::borrow</span>::{<span class="ident">Borrow</span>, <span class="ident">BorrowMut</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cmp::Ordering</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::convert</span>::{<span class="ident">Infallible</span>, <span class="ident">TryFrom</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::fmt</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::hash</span>::{<span class="self">self</span>, <span class="ident">Hash</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::iter::TrustedLen</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem</span>::{<span class="self">self</span>, <span class="ident">MaybeUninit</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ops</span>::{<span class="ident">Index</span>, <span class="ident">IndexMut</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::slice</span>::{<span class="ident">Iter</span>, <span class="ident">IterMut</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::borrow</span>::{<span class="ident">Borrow</span>, <span class="ident">BorrowMut</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cmp::Ordering</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::convert</span>::{<span class="ident">Infallible</span>, <span class="ident">TryFrom</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fmt</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::hash</span>::{<span class="self">self</span>, <span class="ident">Hash</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::iter::TrustedLen</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem</span>::{<span class="self">self</span>, <span class="ident">MaybeUninit</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ops</span>::{<span class="ident">Index</span>, <span class="ident">IndexMut</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::slice</span>::{<span class="ident">Iter</span>, <span class="ident">IterMut</span>};
 
+<span class="kw">mod</span> <span class="ident">equality</span>;
 <span class="kw">mod</span> <span class="ident">iter</span>;
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_value_iter&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.51.0&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">iter::IntoIter</span>;
 
+<span class="doccomment">/// Creates an array `[T; N]` where each array element `T` is returned by the `cb` call.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Arguments</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * `cb`: Callback where the passed argument is the current array index.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Example</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust</span>
+<span class="doccomment">/// #![feature(array_from_fn)]</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// let array = core::array::from_fn(|i| i);</span>
+<span class="doccomment">/// assert_eq!(array, [0, 1, 2, 3, 4]);</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_from_fn&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;89379&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_fn</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="ident">cb</span>: <span class="ident">F</span>) -&gt; [<span class="ident">T</span>; <span class="ident">N</span>]
+<span class="kw">where</span>
+    <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">usize</span>) -&gt; <span class="ident">T</span>,
+{
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">idx</span> <span class="op">=</span> <span class="number">0</span>;
+    [(); <span class="ident">N</span>].<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">cb</span>(<span class="ident">idx</span>);
+        <span class="ident">idx</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+        <span class="ident">res</span>
+    })
+}
+
+<span class="doccomment">/// Creates an array `[T; N]` where each fallible array element `T` is returned by the `cb` call.</span>
+<span class="doccomment">/// Unlike `core::array::from_fn`, where the element creation can&#39;t fail, this version will return an error</span>
+<span class="doccomment">/// if any element creation was unsuccessful.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Arguments</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// * `cb`: Callback where the passed argument is the current array index.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Example</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust</span>
+<span class="doccomment">/// #![feature(array_from_fn)]</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// #[derive(Debug, PartialEq)]</span>
+<span class="doccomment">/// enum SomeError {</span>
+<span class="doccomment">///     Foo,</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// let array = core::array::try_from_fn(|i| Ok::&lt;_, SomeError&gt;(i));</span>
+<span class="doccomment">/// assert_eq!(array, Ok([0, 1, 2, 3, 4]));</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// let another_array = core::array::try_from_fn::&lt;SomeError, _, (), 2&gt;(|_| Err(SomeError::Foo));</span>
+<span class="doccomment">/// assert_eq!(another_array, Err(SomeError::Foo));</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_from_fn&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;89379&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_from_fn</span><span class="op">&lt;</span><span class="ident">E</span>, <span class="ident">F</span>, <span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="ident">cb</span>: <span class="ident">F</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>], <span class="ident">E</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>,
+{
+    <span class="comment">// SAFETY: we know for certain that this iterator will yield exactly `N`</span>
+    <span class="comment">// items.</span>
+    <span class="kw">unsafe</span> { <span class="ident">collect_into_array_rslt_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> (<span class="number">0</span>..<span class="ident">N</span>).<span class="ident">map</span>(<span class="ident">cb</span>)) }
+}
+
 <span class="doccomment">/// Converts a reference to `T` into a reference to an array of length 1 (without copying).</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_from_ref&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.53.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_ref</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="number">1</span>] {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_ref</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="number">1</span>] {
     <span class="comment">// SAFETY: Converting `&amp;T` to `&amp;[T; 1]` is sound.</span>
     <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">s</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>).<span class="ident">cast</span>::<span class="op">&lt;</span>[<span class="ident">T</span>; <span class="number">1</span>]<span class="op">&gt;</span>() }
 }
 
 <span class="doccomment">/// Converts a mutable reference to `T` into a mutable reference to an array of length 1 (without copying).</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_from_ref&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.53.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_mut</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>; <span class="number">1</span>] {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_mut</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>; <span class="number">1</span>] {
     <span class="comment">// SAFETY: Converting `&amp;mut T` to `&amp;mut [T; 1]` is sound.</span>
     <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span>(<span class="ident">s</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>).<span class="ident">cast</span>::<span class="op">&lt;</span>[<span class="ident">T</span>; <span class="number">1</span>]<span class="op">&gt;</span>() }
 }
@@ -655,7 +722,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;core_array&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">TryFromSliceError</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Display::fmt</span>(<span class="self">self</span>.<span class="ident">__description</span>(), <span class="ident">f</span>)
     }
 }
@@ -669,14 +736,14 @@
     )]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">__description</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">__description</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="string">&quot;could not convert slice to array&quot;</span>
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_from_slice_error&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Infallible</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TryFromSliceError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">x</span>: <span class="ident">Infallible</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TryFromSliceError</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">x</span>: <span class="ident">Infallible</span>) -&gt; <span class="ident">TryFromSliceError</span> {
         <span class="kw">match</span> <span class="ident">x</span> {}
     }
 }
@@ -684,7 +751,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">T</span>] {
+    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">T</span>] {
         <span class="kw-2">&amp;</span><span class="self">self</span>[..]
     }
 }
@@ -692,21 +759,21 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">AsMut</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>] {
+    <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>] {
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>[..]
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_borrow&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.4.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Borrow</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
-    <span class="kw">fn</span> <span class="ident">borrow</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">T</span>] {
+    <span class="kw">fn</span> <span class="ident">borrow</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">T</span>] {
         <span class="self">self</span>
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_borrow&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.4.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">BorrowMut</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
-    <span class="kw">fn</span> <span class="ident">borrow_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>] {
+    <span class="kw">fn</span> <span class="ident">borrow_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>] {
         <span class="self">self</span>
     }
 }
@@ -718,7 +785,7 @@
 {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">TryFromSliceError</span>;
 
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>], <span class="ident">TryFromSliceError</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>], <span class="ident">TryFromSliceError</span><span class="op">&gt;</span> {
         <span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="self">Self</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">slice</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">r</span>)
     }
 }
@@ -727,8 +794,8 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">TryFromSliceError</span>;
 
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>], <span class="ident">TryFromSliceError</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">slice</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">N</span> {
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>], <span class="ident">TryFromSliceError</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="ident">slice</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">N</span> {
             <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">slice</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> [<span class="ident">T</span>; <span class="ident">N</span>];
             <span class="comment">// SAFETY: ok because we just checked that the length fits</span>
             <span class="kw">unsafe</span> { <span class="prelude-val">Ok</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">ptr</span>) }
@@ -742,8 +809,8 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">TryFromSliceError</span>;
 
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>; <span class="ident">N</span>], <span class="ident">TryFromSliceError</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">slice</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">N</span> {
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>; <span class="ident">N</span>], <span class="ident">TryFromSliceError</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="ident">slice</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">N</span> {
             <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">slice</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> [<span class="ident">T</span>; <span class="ident">N</span>];
             <span class="comment">// SAFETY: ok because we just checked that the length fits</span>
             <span class="kw">unsafe</span> { <span class="prelude-val">Ok</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">ptr</span>) }
@@ -753,6 +820,18 @@
     }
 }
 
+<span class="doccomment">/// The hash of an array is the same as that of the corresponding slice,</span>
+<span class="doccomment">/// as required by the `Borrow` implementation.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// #![feature(build_hasher_simple_hash_one)]</span>
+<span class="doccomment">/// use std::hash::BuildHasher;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// let b = std::collections::hash_map::RandomState::new();</span>
+<span class="doccomment">/// let a: [u8; 3] = [0xa8, 0x3c, 0x09];</span>
+<span class="doccomment">/// let s: &amp;[u8] = &amp;[0xa8, 0x3c, 0x09];</span>
+<span class="doccomment">/// assert_eq!(b.hash_one(a), b.hash_one(s));</span>
+<span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Hash</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Hash</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
     <span class="kw">fn</span> <span class="ident">hash</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">hash::Hasher</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">H</span>) {
@@ -762,7 +841,7 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">fmt::Debug</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Debug::fmt</span>(<span class="op">&amp;&amp;</span><span class="self">self</span>[..], <span class="ident">f</span>)
     }
 }
@@ -783,7 +862,7 @@
     <span class="doccomment">/// 2021 edition -- see the [array] Editions section for more information.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [array]: prim@array</span>
-    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::IntoIter</span> {
+    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::IntoIter</span> {
         <span class="ident">IntoIter::new</span>(<span class="self">self</span>)
     }
 }
@@ -793,7 +872,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>;
     <span class="kw">type</span> <span class="ident">IntoIter</span> <span class="op">=</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) -&gt; <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>()
     }
 }
@@ -803,7 +882,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span>;
     <span class="kw">type</span> <span class="ident">IntoIter</span> <span class="op">=</span> <span class="ident">IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) -&gt; <span class="ident">IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter_mut</span>()
     }
 }
@@ -816,7 +895,7 @@
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="op">&lt;</span>[<span class="ident">T</span>] <span class="kw">as</span> <span class="ident">Index</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Output</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">I</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">Index::index</span>(<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">&amp;</span>[<span class="ident">T</span>], <span class="ident">index</span>)
     }
 }
@@ -827,143 +906,31 @@
     [<span class="ident">T</span>]: <span class="ident">IndexMut</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Output</span> {
+    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">I</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="ident">IndexMut::index_mut</span>(<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="ident">index</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">PartialEq</span><span class="op">&lt;</span>[<span class="ident">B</span>; <span class="ident">N</span>]<span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">A</span>; <span class="ident">N</span>]
-<span class="kw">where</span>
-    <span class="ident">A</span>: <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
-{
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">B</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>[..] <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>[..]
-    }
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">B</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>[..] <span class="op">!</span><span class="op">=</span> <span class="ident">other</span>[..]
-    }
-}
-
-<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">PartialEq</span><span class="op">&lt;</span>[<span class="ident">B</span>]<span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">A</span>; <span class="ident">N</span>]
-<span class="kw">where</span>
-    <span class="ident">A</span>: <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
-{
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">B</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>[..] <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>[..]
-    }
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">B</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>[..] <span class="op">!</span><span class="op">=</span> <span class="ident">other</span>[..]
-    }
-}
-
-<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">PartialEq</span><span class="op">&lt;</span>[<span class="ident">A</span>; <span class="ident">N</span>]<span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">B</span>]
-<span class="kw">where</span>
-    <span class="ident">B</span>: <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>,
-{
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">A</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>[..] <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>[..]
-    }
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">A</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>[..] <span class="op">!</span><span class="op">=</span> <span class="ident">other</span>[..]
-    }
-}
-
-<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">B</span>]<span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">A</span>; <span class="ident">N</span>]
-<span class="kw">where</span>
-    <span class="ident">A</span>: <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
-{
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="op">&amp;&amp;</span>[<span class="ident">B</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>[..] <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>[..]
-    }
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="op">&amp;&amp;</span>[<span class="ident">B</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>[..] <span class="op">!</span><span class="op">=</span> <span class="ident">other</span>[..]
-    }
-}
-
-<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">PartialEq</span><span class="op">&lt;</span>[<span class="ident">A</span>; <span class="ident">N</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="kw-2">&amp;</span>[<span class="ident">B</span>]
-<span class="kw">where</span>
-    <span class="ident">B</span>: <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>,
-{
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">A</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>[..] <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>[..]
-    }
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">A</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>[..] <span class="op">!</span><span class="op">=</span> <span class="ident">other</span>[..]
-    }
-}
-
-<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">B</span>]<span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">A</span>; <span class="ident">N</span>]
-<span class="kw">where</span>
-    <span class="ident">A</span>: <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
-{
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="op">&amp;&amp;</span><span class="kw-2">mut</span> [<span class="ident">B</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>[..] <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>[..]
-    }
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="op">&amp;&amp;</span><span class="kw-2">mut</span> [<span class="ident">B</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>[..] <span class="op">!</span><span class="op">=</span> <span class="ident">other</span>[..]
-    }
-}
-
-<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">PartialEq</span><span class="op">&lt;</span>[<span class="ident">A</span>; <span class="ident">N</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">B</span>]
-<span class="kw">where</span>
-    <span class="ident">B</span>: <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>,
-{
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">A</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>[..] <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>[..]
-    }
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">A</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>[..] <span class="op">!</span><span class="op">=</span> <span class="ident">other</span>[..]
-    }
-}
-
-<span class="comment">// NOTE: some less important impls are omitted to reduce code bloat</span>
-<span class="comment">// __impl_slice_eq2! { [A; $N], &amp;&#39;b [B; $N] }</span>
-<span class="comment">// __impl_slice_eq2! { [A; $N], &amp;&#39;b mut [B; $N] }</span>
-
-<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Eq</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Eq</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {}
-
-<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">PartialOrd</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">PartialOrd</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
         <span class="ident">PartialOrd::partial_cmp</span>(<span class="op">&amp;&amp;</span><span class="self">self</span>[..], <span class="op">&amp;&amp;</span><span class="ident">other</span>[..])
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">lt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">lt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>]) -&gt; <span class="ident">bool</span> {
         <span class="ident">PartialOrd::lt</span>(<span class="op">&amp;&amp;</span><span class="self">self</span>[..], <span class="op">&amp;&amp;</span><span class="ident">other</span>[..])
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">le</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">le</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>]) -&gt; <span class="ident">bool</span> {
         <span class="ident">PartialOrd::le</span>(<span class="op">&amp;&amp;</span><span class="self">self</span>[..], <span class="op">&amp;&amp;</span><span class="ident">other</span>[..])
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ge</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">ge</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>]) -&gt; <span class="ident">bool</span> {
         <span class="ident">PartialOrd::ge</span>(<span class="op">&amp;&amp;</span><span class="self">self</span>[..], <span class="op">&amp;&amp;</span><span class="ident">other</span>[..])
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">gt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">gt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>]) -&gt; <span class="ident">bool</span> {
         <span class="ident">PartialOrd::gt</span>(<span class="op">&amp;&amp;</span><span class="self">self</span>[..], <span class="op">&amp;&amp;</span><span class="ident">other</span>[..])
     }
 }
@@ -972,7 +939,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Ord</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Ord</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ordering</span> {
+    <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>]) -&gt; <span class="ident">Ordering</span> {
         <span class="ident">Ord::cmp</span>(<span class="op">&amp;&amp;</span><span class="self">self</span>[..], <span class="op">&amp;&amp;</span><span class="ident">other</span>[..])
     }
 }
@@ -982,19 +949,20 @@
 <span class="comment">// different numbers isn&#39;t supported yet.</span>
 
 <span class="macro">macro_rules!</span> <span class="ident">array_impl_default</span> {
-    {<span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ts</span>:<span class="ident">ident</span>)<span class="kw-2">*</span>} <span class="op">=</span><span class="op">&gt;</span> {
+    {<span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ts</span>:<span class="ident">ident</span>)<span class="kw-2">*</span>} =&gt; {
         <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.4.0&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_default&quot;</span>)]</span>
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>] <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Default</span> {
-            <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">T</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>] {
+            <span class="kw">fn</span> <span class="ident">default</span>() -&gt; [<span class="ident">T</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>] {
                 [<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t::default</span>(), $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ts::default</span>()),<span class="kw-2">*</span>]
             }
         }
         <span class="macro">array_impl_default!</span>{(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span> <span class="op">-</span> <span class="number">1</span>), $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ts</span>)<span class="kw-2">*</span>}
     };
-    {<span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>:<span class="ident">expr</span>,} <span class="op">=</span><span class="op">&gt;</span> {
+    {<span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>:<span class="ident">expr</span>,} =&gt; {
         <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.4.0&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_default&quot;</span>)]</span>
-        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>] {
-            <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">T</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>] { [] }
+        <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_default_impls&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;87864&quot;</span>)]</span>
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">const</span> <span class="ident">Default</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>] {
+            <span class="kw">fn</span> <span class="ident">default</span>() -&gt; [<span class="ident">T</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">n</span>] { [] }
         }
     };
 }
@@ -1006,10 +974,31 @@
     <span class="doccomment">/// Returns an array of the same size as `self`, with function `f` applied to each element</span>
     <span class="doccomment">/// in order.</span>
     <span class="doccomment">///</span>
+    <span class="doccomment">/// If you don&#39;t necessarily need a new fixed-size array, consider using</span>
+    <span class="doccomment">/// [`Iterator::map`] instead.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Note on performance and stack usage</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Unfortunately, usages of this method are currently not always optimized</span>
+    <span class="doccomment">/// as well as they could be. This mainly concerns large arrays, as mapping</span>
+    <span class="doccomment">/// over small arrays seem to be optimized just fine. Also note that in</span>
+    <span class="doccomment">/// debug mode (i.e. without any optimizations), this method can use a lot</span>
+    <span class="doccomment">/// of stack space (a few times the size of the array or more).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Therefore, in performance-critical code, try to avoid using this method</span>
+    <span class="doccomment">/// on large arrays or check the emitted code. Also try to avoid chained</span>
+    <span class="doccomment">/// maps (e.g. `arr.map(...).map(...)`).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// In many cases, you can instead use [`Iterator::map`] by calling `.iter()`</span>
+    <span class="doccomment">/// or `.into_iter()` on your array. `[T; N]::map` is only necessary if you</span>
+    <span class="doccomment">/// really need a new array of the same size as the result. Rust&#39;s lazy</span>
+    <span class="doccomment">/// iterators tend to get optimized very well.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(array_map)]</span>
     <span class="doccomment">/// let x = [1, 2, 3];</span>
     <span class="doccomment">/// let y = x.map(|v| v + 1);</span>
     <span class="doccomment">/// assert_eq!(y, [2, 3, 4]);</span>
@@ -1023,10 +1012,10 @@
     <span class="doccomment">/// let y = x.map(|v| v.len());</span>
     <span class="doccomment">/// assert_eq!(y, [6, 9, 3, 3]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_map&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;75243&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">U</span>; <span class="ident">N</span>]
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_map&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.55.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; [<span class="ident">U</span>; <span class="ident">N</span>]
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">U</span>,
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">T</span>) -&gt; <span class="ident">U</span>,
     {
         <span class="comment">// SAFETY: we know for certain that this iterator will yield exactly `N`</span>
         <span class="comment">// items.</span>
@@ -1050,7 +1039,7 @@
     <span class="doccomment">/// assert_eq!(z, [(1, 4), (2, 5), (3, 6)]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_zip&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;80094&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">zip</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">rhs</span>: [<span class="ident">U</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> [(<span class="ident">T</span>, <span class="ident">U</span>); <span class="ident">N</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">zip</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">rhs</span>: [<span class="ident">U</span>; <span class="ident">N</span>]) -&gt; [(<span class="ident">T</span>, <span class="ident">U</span>); <span class="ident">N</span>] {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">IntoIterator::into_iter</span>(<span class="self">self</span>).<span class="ident">zip</span>(<span class="ident">rhs</span>);
 
         <span class="comment">// SAFETY: we know for certain that this iterator will yield exactly `N`</span>
@@ -1059,15 +1048,15 @@
     }
 
     <span class="doccomment">/// Returns a slice containing the entire array. Equivalent to `&amp;s[..]`.</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_methods&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76118&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">T</span>] {
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_as_slice&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.57.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">T</span>] {
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Returns a mutable slice containing the entire array. Equivalent to</span>
     <span class="doccomment">/// `&amp;mut s[..]`.</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_methods&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76118&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>] {
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_as_slice&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.57.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>] {
         <span class="self">self</span>
     }
 
@@ -1087,10 +1076,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method is particularly useful if combined with other methods, like</span>
     <span class="doccomment">/// [`map`](#method.map). This way, you can avoid moving the original</span>
-    <span class="doccomment">/// array if its elements are not `Copy`.</span>
+    <span class="doccomment">/// array if its elements are not [`Copy`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(array_methods, array_map)]</span>
+    <span class="doccomment">/// #![feature(array_methods)]</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// let strings = [&quot;Ferris&quot;.to_string(), &quot;♥&quot;.to_string(), &quot;Rust&quot;.to_string()];</span>
     <span class="doccomment">/// let is_ascii = strings.each_ref().map(|s| s.is_ascii());</span>
@@ -1100,7 +1089,7 @@
     <span class="doccomment">/// assert_eq!(strings.len(), 3);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_methods&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76118&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">each_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> [<span class="kw-2">&amp;</span><span class="ident">T</span>; <span class="ident">N</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">each_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; [<span class="kw-2">&amp;</span><span class="ident">T</span>; <span class="ident">N</span>] {
         <span class="comment">// SAFETY: we know for certain that this iterator will yield exactly `N`</span>
         <span class="comment">// items.</span>
         <span class="kw">unsafe</span> { <span class="ident">collect_into_array_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">iter</span>()) }
@@ -1122,7 +1111,7 @@
     <span class="doccomment">/// assert_eq!(floats, [0.0, 2.7, -1.0]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_methods&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76118&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">each_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> [<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>; <span class="ident">N</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">each_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; [<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>; <span class="ident">N</span>] {
         <span class="comment">// SAFETY: we know for certain that this iterator will yield exactly `N`</span>
         <span class="comment">// items.</span>
         <span class="kw">unsafe</span> { <span class="ident">collect_into_array_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">iter_mut</span>()) }
@@ -1139,21 +1128,35 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// It is up to the caller to guarantee that `iter` yields at least `N` items.</span>
 <span class="doccomment">/// Violating this condition causes undefined behavior.</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">collect_into_array_unchecked</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">I::Item</span>; <span class="ident">N</span>]
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">collect_into_array_rslt_unchecked</span><span class="op">&lt;</span><span class="ident">E</span>, <span class="ident">I</span>, <span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(
+    <span class="ident">iter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">I</span>,
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>], <span class="ident">E</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="comment">// Note: `TrustedLen` here is somewhat of an experiment. This is just an</span>
     <span class="comment">// internal function, so feel free to remove if this bound turns out to be a</span>
     <span class="comment">// bad idea. In that case, remember to also remove the lower bound</span>
     <span class="comment">// `debug_assert!` below!</span>
-    <span class="ident">I</span>: <span class="ident">Iterator</span> <span class="op">+</span> <span class="ident">TrustedLen</span>,
+    <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">TrustedLen</span>,
 {
     <span class="macro">debug_assert!</span>(<span class="ident">N</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">iter</span>.<span class="ident">size_hint</span>().<span class="number">1</span>.<span class="ident">unwrap_or</span>(<span class="ident">usize::MAX</span>));
     <span class="macro">debug_assert!</span>(<span class="ident">N</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">iter</span>.<span class="ident">size_hint</span>().<span class="number">0</span>);
 
-    <span class="kw">match</span> <span class="ident">collect_into_array</span>(<span class="ident">iter</span>) {
-        <span class="prelude-val">Some</span>(<span class="ident">array</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">array</span>,
-        <span class="comment">// SAFETY: covered by the function contract.</span>
-        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> { <span class="kw">crate</span><span class="ident">::hint::unreachable_unchecked</span>() },
+    <span class="comment">// SAFETY: covered by the function contract.</span>
+    <span class="kw">unsafe</span> { <span class="ident">collect_into_array</span>(<span class="ident">iter</span>).<span class="ident">unwrap_unchecked</span>() }
+}
+
+<span class="comment">// Infallible version of `collect_into_array_rslt_unchecked`.</span>
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">collect_into_array_unchecked</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">I</span>) -&gt; [<span class="ident">I::Item</span>; <span class="ident">N</span>]
+<span class="kw">where</span>
+    <span class="ident">I</span>: <span class="ident">Iterator</span> <span class="op">+</span> <span class="ident">TrustedLen</span>,
+{
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">map</span>(<span class="prelude-val">Ok</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Infallible</span><span class="op">&gt;</span>);
+
+    <span class="comment">// SAFETY: The same safety considerations w.r.t. the iterator length</span>
+    <span class="comment">// apply for `collect_into_array_rslt_unchecked` as for</span>
+    <span class="comment">// `collect_into_array_unchecked`</span>
+    <span class="kw">match</span> <span class="kw">unsafe</span> { <span class="ident">collect_into_array_rslt_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">map</span>) } {
+        <span class="prelude-val">Ok</span>(<span class="ident">array</span>) =&gt; <span class="ident">array</span>,
     }
 }
 
@@ -1167,54 +1170,60 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// If `iter.next()` panicks, all items already yielded by the iterator are</span>
 <span class="doccomment">/// dropped.</span>
-<span class="kw">fn</span> <span class="ident">collect_into_array</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>[<span class="ident">I::Item</span>; <span class="ident">N</span>]<span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">collect_into_array</span><span class="op">&lt;</span><span class="ident">E</span>, <span class="ident">I</span>, <span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">I</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>], <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">I</span>: <span class="ident">Iterator</span>,
+    <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 {
-    <span class="kw">if</span> <span class="ident">N</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+    <span class="kw">if</span> <span class="ident">N</span> <span class="op">==</span> <span class="number">0</span> {
         <span class="comment">// SAFETY: An empty array is always inhabited and has no validity invariants.</span>
-        <span class="kw">return</span> <span class="kw">unsafe</span> { <span class="prelude-val">Some</span>(<span class="ident">mem::zeroed</span>()) };
+        <span class="kw">return</span> <span class="kw">unsafe</span> { <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">mem::zeroed</span>())) };
     }
 
-    <span class="kw">struct</span> <span class="ident">Guard</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>,
+    <span class="kw">struct</span> <span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="ident">array_mut</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>; <span class="ident">N</span>],
         <span class="ident">initialized</span>: <span class="ident">usize</span>,
     }
 
-    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Guard</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span> {
+    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span> {
         <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
             <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">initialized</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">N</span>);
 
-            <span class="kw">let</span> <span class="ident">initialized_part</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::ptr::slice_from_raw_parts_mut</span>(<span class="self">self</span>.<span class="ident">ptr</span>, <span class="self">self</span>.<span class="ident">initialized</span>);
-
-            <span class="comment">// SAFETY: this raw slice will contain only initialized objects.</span>
+            <span class="comment">// SAFETY: this slice will contain only initialized objects.</span>
             <span class="kw">unsafe</span> {
-                <span class="kw">crate</span><span class="ident">::ptr::drop_in_place</span>(<span class="ident">initialized_part</span>);
+                <span class="ident"><span class="kw">crate</span>::ptr::drop_in_place</span>(<span class="ident">MaybeUninit::slice_assume_init_mut</span>(
+                    <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">array_mut</span>.<span class="ident">get_unchecked_mut</span>(..<span class="self">self</span>.<span class="ident">initialized</span>),
+                ));
             }
         }
     }
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">array</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit_array</span>::<span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">guard</span>: <span class="ident">Guard</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">N</span><span class="op">&gt;</span> <span class="op">=</span>
-        <span class="ident">Guard</span> { <span class="ident">ptr</span>: <span class="ident">MaybeUninit::slice_as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">array</span>), <span class="ident">initialized</span>: <span class="number">0</span> };
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">guard</span> <span class="op">=</span> <span class="ident">Guard</span> { <span class="ident">array_mut</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">array</span>, <span class="ident">initialized</span>: <span class="number">0</span> };
 
-    <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">item</span>) <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">next</span>() {
+    <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">item_rslt</span>) <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">next</span>() {
+        <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">item_rslt</span> {
+            <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
+                <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">err</span>));
+            }
+            <span class="prelude-val">Ok</span>(<span class="ident">elem</span>) =&gt; <span class="ident">elem</span>,
+        };
+
         <span class="comment">// SAFETY: `guard.initialized` starts at 0, is increased by one in the</span>
         <span class="comment">// loop and the loop is aborted once it reaches N (which is</span>
         <span class="comment">// `array.len()`).</span>
         <span class="kw">unsafe</span> {
-            <span class="ident">array</span>.<span class="ident">get_unchecked_mut</span>(<span class="ident">guard</span>.<span class="ident">initialized</span>).<span class="ident">write</span>(<span class="ident">item</span>);
+            <span class="ident">guard</span>.<span class="ident">array_mut</span>.<span class="ident">get_unchecked_mut</span>(<span class="ident">guard</span>.<span class="ident">initialized</span>).<span class="ident">write</span>(<span class="ident">item</span>);
         }
         <span class="ident">guard</span>.<span class="ident">initialized</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
 
         <span class="comment">// Check if the whole array was initialized.</span>
-        <span class="kw">if</span> <span class="ident">guard</span>.<span class="ident">initialized</span> <span class="op">=</span><span class="op">=</span> <span class="ident">N</span> {
+        <span class="kw">if</span> <span class="ident">guard</span>.<span class="ident">initialized</span> <span class="op">==</span> <span class="ident">N</span> {
             <span class="ident">mem::forget</span>(<span class="ident">guard</span>);
 
             <span class="comment">// SAFETY: the condition above asserts that all elements are</span>
             <span class="comment">// initialized.</span>
             <span class="kw">let</span> <span class="ident">out</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">MaybeUninit::array_assume_init</span>(<span class="ident">array</span>) };
-            <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">out</span>);
+            <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">out</span>));
         }
     }
 
@@ -1223,5 +1232,7 @@
     <span class="comment">// dropping all already initialized elements.</span>
     <span class="prelude-val">None</span>
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

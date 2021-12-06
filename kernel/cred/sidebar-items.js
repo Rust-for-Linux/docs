@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Credential","Wraps the kernel’s `struct cred`."],["CredentialRef","A wrapper for [`Credential`] that doesn’t automatically decrement the refcount when dropped."]]});

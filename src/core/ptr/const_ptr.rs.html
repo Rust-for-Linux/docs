@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ptr/const_ptr.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>const_ptr.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;ptr&#x2F;const_ptr.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>const_ptr.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1071,12 +1069,11 @@
 <span id="1069">1069</span>
 <span id="1070">1070</span>
 <span id="1071">1071</span>
-</pre><pre class="rust">
-<span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cmp::Ordering</span>::{<span class="self">self</span>, <span class="ident">Equal</span>, <span class="ident">Greater</span>, <span class="ident">Less</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::intrinsics</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::mem</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::slice</span>::{<span class="self">self</span>, <span class="ident">SliceIndex</span>};
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cmp::Ordering</span>::{<span class="self">self</span>, <span class="ident">Equal</span>, <span class="ident">Greater</span>, <span class="ident">Less</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::intrinsics</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::slice</span>::{<span class="self">self</span>, <span class="ident">SliceIndex</span>};
 
 <span class="attribute">#[<span class="ident">lang</span> <span class="op">=</span> <span class="string">&quot;const_ptr&quot;</span>]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> {
@@ -1108,7 +1105,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ptr_is_null&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;74939&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_null</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_null</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="comment">// Compare via a cast to a thin pointer, so fat pointers are only</span>
         <span class="comment">// considering their &quot;data&quot; part for null-ness.</span>
         (<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>).<span class="ident">guaranteed_eq</span>(<span class="ident">null</span>())
@@ -1118,17 +1115,17 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ptr_cast&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.38.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ptr_cast&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.38.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">cast</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">U</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">cast</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">U</span> {
         <span class="self">self</span> <span class="kw">as</span> <span class="kw">_</span>
     }
 
-    <span class="doccomment">/// Decompose a (possibly wide) pointer into is address and metadata components.</span>
+    <span class="doccomment">/// Decompose a (possibly wide) pointer into its address and metadata components.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The pointer can be later reconstructed with [`from_raw_parts`].</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ptr_metadata&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;81513&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ptr_metadata&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;81513&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_raw_parts</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">*</span><span class="kw">const</span> (), <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="kw">super</span><span class="ident">::Pointee</span><span class="op">&gt;</span><span class="ident">::Metadata</span>) {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_raw_parts</span>(<span class="self">self</span>) -&gt; (<span class="kw-2">*</span><span class="kw">const</span> (), <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident"><span class="kw">super</span>::Pointee</span><span class="op">&gt;</span><span class="ident">::Metadata</span>) {
         (<span class="self">self</span>.<span class="ident">cast</span>(), <span class="ident">metadata</span>(<span class="self">self</span>))
     }
 
@@ -1190,7 +1187,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ptr_as_ref&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.9.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_ref</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_ref</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="comment">// SAFETY: the caller must guarantee that `self` is valid</span>
         <span class="comment">// for a reference if it isn&#39;t null.</span>
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_null</span>() { <span class="prelude-val">None</span> } <span class="kw">else</span> { <span class="kw">unsafe</span> { <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>) } }
@@ -1237,7 +1234,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ptr_as_uninit&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;75402&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_uninit_ref</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_uninit_ref</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
@@ -1301,7 +1298,7 @@
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;returns a new pointer rather than modifying its argument&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ptr_offset&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;71499&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">offset</span>(<span class="self">self</span>, <span class="ident">count</span>: <span class="ident">isize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">offset</span>(<span class="self">self</span>, <span class="ident">count</span>: <span class="ident">isize</span>) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
@@ -1318,7 +1315,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This operation itself is always safe, but using the resulting pointer is not.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The resulting pointer &quot;remembers&quot; the [allocated object] that `self` points to; it may not</span>
+    <span class="doccomment">/// The resulting pointer &quot;remembers&quot; the [allocated object] that `self` points to; it must not</span>
     <span class="doccomment">/// be used to read or write other allocated objects.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// In other words, `let z = x.wrapping_offset((y as isize) - (x as isize))` does *not* make `z`</span>
@@ -1363,7 +1360,7 @@
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;returns a new pointer rather than modifying its argument&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ptr_offset&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;71499&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">wrapping_offset</span>(<span class="self">self</span>, <span class="ident">count</span>: <span class="ident">isize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">wrapping_offset</span>(<span class="self">self</span>, <span class="ident">count</span>: <span class="ident">isize</span>) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
@@ -1455,7 +1452,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ptr_offset_from&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.47.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ptr_offset_from&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;41079&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">offset_from</span>(<span class="self">self</span>, <span class="ident">origin</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">isize</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">offset_from</span>(<span class="self">self</span>, <span class="ident">origin</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) -&gt; <span class="ident">isize</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
@@ -1478,7 +1475,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`guaranteed_ne`]: #method.guaranteed_ne</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The return value may change depending on the compiler version and unsafe code may not</span>
+    <span class="doccomment">/// The return value may change depending on the compiler version and unsafe code might not</span>
     <span class="doccomment">/// rely on the result of this function for soundness. It is suggested to only use this function</span>
     <span class="doccomment">/// for performance optimizations where spurious `false` return values by this function do not</span>
     <span class="doccomment">/// affect the outcome, but just the performance.</span>
@@ -1489,7 +1486,7 @@
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_raw_ptr_comparison&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;53020&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_raw_ptr_comparison&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;53020&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">guaranteed_eq</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">guaranteed_eq</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) -&gt; <span class="ident">bool</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
@@ -1509,7 +1506,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`guaranteed_eq`]: #method.guaranteed_eq</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The return value may change depending on the compiler version and unsafe code may not</span>
+    <span class="doccomment">/// The return value may change depending on the compiler version and unsafe code might not</span>
     <span class="doccomment">/// rely on the result of this function for soundness. It is suggested to only use this function</span>
     <span class="doccomment">/// for performance optimizations where spurious `false` return values by this function do not</span>
     <span class="doccomment">/// affect the outcome, but just the performance.</span>
@@ -1520,7 +1517,7 @@
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_raw_ptr_comparison&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;53020&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_raw_ptr_comparison&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;53020&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">guaranteed_ne</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">guaranteed_ne</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) -&gt; <span class="ident">bool</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
@@ -1582,7 +1579,7 @@
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;returns a new pointer rather than modifying its argument&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ptr_offset&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;71499&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
@@ -1646,7 +1643,7 @@
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;returns a new pointer rather than modifying its argument&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ptr_offset&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;71499&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
@@ -1664,7 +1661,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This operation itself is always safe, but using the resulting pointer is not.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The resulting pointer &quot;remembers&quot; the [allocated object] that `self` points to; it may not</span>
+    <span class="doccomment">/// The resulting pointer &quot;remembers&quot; the [allocated object] that `self` points to; it must not</span>
     <span class="doccomment">/// be used to read or write other allocated objects.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// In other words, `let z = x.wrapping_add((y as usize) - (x as usize))` does *not* make `z`</span>
@@ -1709,7 +1706,7 @@
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;returns a new pointer rather than modifying its argument&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ptr_offset&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;71499&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">wrapping_add</span>(<span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">wrapping_add</span>(<span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
@@ -1726,7 +1723,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This operation itself is always safe, but using the resulting pointer is not.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The resulting pointer &quot;remembers&quot; the [allocated object] that `self` points to; it may not</span>
+    <span class="doccomment">/// The resulting pointer &quot;remembers&quot; the [allocated object] that `self` points to; it must not</span>
     <span class="doccomment">/// be used to read or write other allocated objects.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// In other words, `let z = x.wrapping_sub((x as usize) - (y as usize))` does *not* make `z`</span>
@@ -1771,7 +1768,7 @@
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;returns a new pointer rather than modifying its argument&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ptr_offset&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;71499&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">wrapping_sub</span>(<span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">wrapping_sub</span>(<span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
@@ -1809,7 +1806,7 @@
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;set_ptr_value&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;75091&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;returns a new pointer rather than modifying its argument&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_ptr_value</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_ptr_value</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">thin</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>;
         <span class="comment">// SAFETY: In case of a thin pointer, this operations is identical</span>
         <span class="comment">// to a simple assignment. In case of a fat pointer, with the current</span>
@@ -1828,7 +1825,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pointer_methods&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.26.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ptr_read&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;80377&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="self">self</span>) -&gt; <span class="ident">T</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
@@ -1848,7 +1845,7 @@
     <span class="doccomment">/// [`ptr::read_volatile`]: crate::ptr::read_volatile()</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pointer_methods&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.26.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read_volatile</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read_volatile</span>(<span class="self">self</span>) -&gt; <span class="ident">T</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
@@ -1867,7 +1864,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pointer_methods&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.26.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ptr_read&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;80377&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read_unaligned</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">read_unaligned</span>(<span class="self">self</span>) -&gt; <span class="ident">T</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
@@ -1953,7 +1950,7 @@
     <span class="doccomment">/// # } }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;align_offset&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">align_offset</span>(<span class="self">self</span>, <span class="ident">align</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">align_offset</span>(<span class="self">self</span>, <span class="ident">align</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Sized</span>,
     {
@@ -1987,7 +1984,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_ptr_len&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;71146&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_slice_ptr_len&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;71146&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="ident">metadata</span>(<span class="self">self</span>)
     }
 
@@ -2007,7 +2004,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_ptr_get&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;74265&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_ptr_get&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;74265&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> {
         <span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>
     }
 
@@ -2032,7 +2029,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_ptr_get&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;74265&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_unchecked</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">index</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">I::Output</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_unchecked</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">index</span>: <span class="ident">I</span>) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">I::Output</span>
     <span class="kw">where</span>
         <span class="ident">I</span>: <span class="ident">SliceIndex</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span>,
     {
@@ -2079,7 +2076,7 @@
     <span class="doccomment">/// [allocated object]: crate::ptr#allocated-object</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;ptr_as_uninit&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;75402&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_uninit_slice</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>]<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_uninit_slice</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_null</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -2093,8 +2090,8 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">other</span>
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) -&gt; <span class="ident">bool</span> {
+        <span class="kw-2">*</span><span class="self">self</span> <span class="op">==</span> <span class="kw-2">*</span><span class="ident">other</span>
     }
 }
 
@@ -2105,10 +2102,10 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Ord</span> <span class="kw">for</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ordering</span> {
+    <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) -&gt; <span class="ident">Ordering</span> {
         <span class="kw">if</span> <span class="self">self</span> <span class="op">&lt;</span> <span class="ident">other</span> {
             <span class="ident">Less</span>
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span> <span class="op">==</span> <span class="ident">other</span> {
             <span class="ident">Equal</span>
         } <span class="kw">else</span> {
             <span class="ident">Greater</span>
@@ -2119,29 +2116,31 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">PartialOrd</span> <span class="kw">for</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
         <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">cmp</span>(<span class="ident">other</span>))
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">lt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">lt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw-2">*</span><span class="self">self</span> <span class="op">&lt;</span> <span class="kw-2">*</span><span class="ident">other</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">le</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">le</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw-2">*</span><span class="self">self</span> <span class="op">&lt;</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">other</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">gt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">gt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw-2">*</span><span class="self">self</span> <span class="op">&gt;</span> <span class="kw-2">*</span><span class="ident">other</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ge</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">ge</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw-2">*</span><span class="self">self</span> <span class="op">&gt;</span><span class="op">=</span> <span class="kw-2">*</span><span class="ident">other</span>
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

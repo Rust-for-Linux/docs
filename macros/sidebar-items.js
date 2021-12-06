@@ -1,1 +1,1 @@
-initSidebarItems({"macro":[["module","Declares a kernel module."],["module_misc_device","Declares a kernel module that exposes a single misc device."]]});
+initSidebarItems({"macro":[["module","Declares a kernel module."]]});

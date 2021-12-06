@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/../../stdarch/crates/core_arch/src/x86/sse.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sse.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../../../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../../../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img src="../../../../../../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;..&#x2F;..&#x2F;stdarch&#x2F;crates&#x2F;core_arch&#x2F;src&#x2F;x86&#x2F;sse.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sse.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../../../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -3276,8 +3274,7 @@
 <span id="3274">3274</span>
 <span id="3275">3275</span>
 <span id="3276">3276</span>
-</pre><pre class="rust">
-<span class="doccomment">//! Streaming SIMD Extensions (SSE)</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Streaming SIMD Extensions (SSE)</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">core_arch</span>::{<span class="ident">simd</span>::<span class="kw-2">*</span>, <span class="ident">simd_llvm</span>::<span class="kw-2">*</span>, <span class="ident">x86</span>::<span class="kw-2">*</span>},
@@ -3295,7 +3292,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">addss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_add_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_add_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">addss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -3306,7 +3303,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">addps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_add_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_add_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">simd_add</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -3318,7 +3315,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">subss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_sub_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_sub_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">subss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -3329,7 +3326,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">subps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_sub_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_sub_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">simd_sub</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -3341,7 +3338,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">mulss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mul_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mul_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">mulss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -3352,7 +3349,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">mulps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mul_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mul_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">simd_mul</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -3364,7 +3361,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">divss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_div_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_div_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">divss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -3375,7 +3372,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">divps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_div_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_div_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">simd_div</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -3387,7 +3384,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">sqrtss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_sqrt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_sqrt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">sqrtss</span>(<span class="ident">a</span>)
 }
 
@@ -3399,7 +3396,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">sqrtps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_sqrt_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_sqrt_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">sqrtps</span>(<span class="ident">a</span>)
 }
 
@@ -3411,7 +3408,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">rcpss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_rcp_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_rcp_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">rcpss</span>(<span class="ident">a</span>)
 }
 
@@ -3423,7 +3420,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">rcpps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_rcp_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_rcp_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">rcpps</span>(<span class="ident">a</span>)
 }
 
@@ -3435,7 +3432,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">rsqrtss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_rsqrt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_rsqrt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">rsqrtss</span>(<span class="ident">a</span>)
 }
 
@@ -3447,7 +3444,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">rsqrtps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_rsqrt_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_rsqrt_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">rsqrtps</span>(<span class="ident">a</span>)
 }
 
@@ -3460,7 +3457,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">minss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_min_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_min_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">minss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -3472,7 +3469,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">minps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_min_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_min_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="comment">// See the `test_mm_min_ps` test why this can&#39;t be implemented using `simd_fmin`.</span>
     <span class="ident">minps</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
@@ -3486,7 +3483,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">maxss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_max_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_max_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">maxss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -3498,7 +3495,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">maxps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_max_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_max_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="comment">// See the `test_mm_min_ps` test why this can&#39;t be implemented using `simd_fmax`.</span>
     <span class="ident">maxps</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
@@ -3514,7 +3511,7 @@
     <span class="ident">assert_instr</span>(<span class="ident">andps</span>)
 )]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_and_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_and_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="kw">let</span> <span class="ident">a</span>: <span class="ident">__m128i</span> <span class="op">=</span> <span class="ident">mem::transmute</span>(<span class="ident">a</span>);
     <span class="kw">let</span> <span class="ident">b</span>: <span class="ident">__m128i</span> <span class="op">=</span> <span class="ident">mem::transmute</span>(<span class="ident">b</span>);
     <span class="ident">mem::transmute</span>(<span class="ident">simd_and</span>(<span class="ident">a</span>, <span class="ident">b</span>))
@@ -3535,7 +3532,7 @@
     <span class="ident">assert_instr</span>(<span class="ident">andnps</span>)
 )]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_andnot_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_andnot_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="kw">let</span> <span class="ident">a</span>: <span class="ident">__m128i</span> <span class="op">=</span> <span class="ident">mem::transmute</span>(<span class="ident">a</span>);
     <span class="kw">let</span> <span class="ident">b</span>: <span class="ident">__m128i</span> <span class="op">=</span> <span class="ident">mem::transmute</span>(<span class="ident">b</span>);
     <span class="kw">let</span> <span class="ident">mask</span>: <span class="ident">__m128i</span> <span class="op">=</span> <span class="ident">mem::transmute</span>(<span class="ident">i32x4::splat</span>(<span class="op">-</span><span class="number">1</span>));
@@ -3553,7 +3550,7 @@
     <span class="ident">assert_instr</span>(<span class="ident">orps</span>)
 )]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_or_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_or_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="kw">let</span> <span class="ident">a</span>: <span class="ident">__m128i</span> <span class="op">=</span> <span class="ident">mem::transmute</span>(<span class="ident">a</span>);
     <span class="kw">let</span> <span class="ident">b</span>: <span class="ident">__m128i</span> <span class="op">=</span> <span class="ident">mem::transmute</span>(<span class="ident">b</span>);
     <span class="ident">mem::transmute</span>(<span class="ident">simd_or</span>(<span class="ident">a</span>, <span class="ident">b</span>))
@@ -3571,7 +3568,7 @@
     <span class="ident">assert_instr</span>(<span class="ident">xorps</span>)
 )]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_xor_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_xor_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="kw">let</span> <span class="ident">a</span>: <span class="ident">__m128i</span> <span class="op">=</span> <span class="ident">mem::transmute</span>(<span class="ident">a</span>);
     <span class="kw">let</span> <span class="ident">b</span>: <span class="ident">__m128i</span> <span class="op">=</span> <span class="ident">mem::transmute</span>(<span class="ident">b</span>);
     <span class="ident">mem::transmute</span>(<span class="ident">simd_xor</span>(<span class="ident">a</span>, <span class="ident">b</span>))
@@ -3586,7 +3583,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpeqss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpeq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpeq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpss</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="number">0</span>)
 }
 
@@ -3600,7 +3597,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpltss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmplt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmplt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpss</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="number">1</span>)
 }
 
@@ -3614,7 +3611,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpless</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmple_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmple_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpss</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="number">2</span>)
 }
 
@@ -3628,7 +3625,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpltss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpgt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpgt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="macro">simd_shuffle4!</span>(<span class="ident">a</span>, <span class="ident">cmpss</span>(<span class="ident">b</span>, <span class="ident">a</span>, <span class="number">1</span>), [<span class="number">4</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])
 }
 
@@ -3642,7 +3639,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpless</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpge_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpge_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="macro">simd_shuffle4!</span>(<span class="ident">a</span>, <span class="ident">cmpss</span>(<span class="ident">b</span>, <span class="ident">a</span>, <span class="number">2</span>), [<span class="number">4</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])
 }
 
@@ -3656,7 +3653,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpneqss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpneq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpneq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpss</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="number">4</span>)
 }
 
@@ -3670,7 +3667,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpnltss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpnlt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpnlt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpss</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="number">5</span>)
 }
 
@@ -3684,7 +3681,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpnless</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpnle_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpnle_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpss</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="number">6</span>)
 }
 
@@ -3698,7 +3695,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpnltss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpngt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpngt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="macro">simd_shuffle4!</span>(<span class="ident">a</span>, <span class="ident">cmpss</span>(<span class="ident">b</span>, <span class="ident">a</span>, <span class="number">5</span>), [<span class="number">4</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])
 }
 
@@ -3712,7 +3709,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpnless</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpnge_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpnge_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="macro">simd_shuffle4!</span>(<span class="ident">a</span>, <span class="ident">cmpss</span>(<span class="ident">b</span>, <span class="ident">a</span>, <span class="number">6</span>), [<span class="number">4</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])
 }
 
@@ -3726,7 +3723,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpordss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpord_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpord_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpss</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="number">7</span>)
 }
 
@@ -3740,7 +3737,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpunordss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpunord_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpunord_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpss</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="number">3</span>)
 }
 
@@ -3753,7 +3750,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpeqps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpeq_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpeq_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpps</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="number">0</span>)
 }
 
@@ -3766,7 +3763,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpltps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmplt_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmplt_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpps</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="number">1</span>)
 }
 
@@ -3780,7 +3777,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpleps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmple_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmple_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpps</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="number">2</span>)
 }
 
@@ -3793,7 +3790,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpltps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpgt_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpgt_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpps</span>(<span class="ident">b</span>, <span class="ident">a</span>, <span class="number">1</span>)
 }
 
@@ -3807,7 +3804,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpleps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpge_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpge_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpps</span>(<span class="ident">b</span>, <span class="ident">a</span>, <span class="number">2</span>)
 }
 
@@ -3820,7 +3817,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpneqps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpneq_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpneq_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpps</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="number">4</span>)
 }
 
@@ -3834,7 +3831,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpnltps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpnlt_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpnlt_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpps</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="number">5</span>)
 }
 
@@ -3848,7 +3845,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpnleps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpnle_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpnle_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpps</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="number">6</span>)
 }
 
@@ -3862,7 +3859,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpnltps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpngt_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpngt_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpps</span>(<span class="ident">b</span>, <span class="ident">a</span>, <span class="number">5</span>)
 }
 
@@ -3876,7 +3873,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpnleps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpnge_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpnge_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpps</span>(<span class="ident">b</span>, <span class="ident">a</span>, <span class="number">6</span>)
 }
 
@@ -3890,7 +3887,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpordps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpord_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpord_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpps</span>(<span class="ident">b</span>, <span class="ident">a</span>, <span class="number">7</span>)
 }
 
@@ -3904,7 +3901,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpunordps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpunord_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cmpunord_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cmpps</span>(<span class="ident">b</span>, <span class="ident">a</span>, <span class="number">3</span>)
 }
 
@@ -3916,7 +3913,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">comiss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_comieq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_comieq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">comieq_ss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -3928,7 +3925,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">comiss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_comilt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_comilt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">comilt_ss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -3941,7 +3938,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">comiss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_comile_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_comile_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">comile_ss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -3954,7 +3951,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">comiss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_comigt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_comigt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">comigt_ss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -3967,7 +3964,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">comiss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_comige_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_comige_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">comige_ss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -3979,7 +3976,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">comiss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_comineq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_comineq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">comineq_ss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -3992,7 +3989,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ucomiss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_ucomieq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_ucomieq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">ucomieq_ss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -4006,7 +4003,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ucomiss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_ucomilt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_ucomilt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">ucomilt_ss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -4020,7 +4017,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ucomiss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_ucomile_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_ucomile_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">ucomile_ss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -4034,7 +4031,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ucomiss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_ucomigt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_ucomigt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">ucomigt_ss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -4048,7 +4045,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ucomiss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_ucomige_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_ucomige_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">ucomige_ss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -4061,7 +4058,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ucomiss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_ucomineq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_ucomineq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">ucomineq_ss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -4079,7 +4076,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cvtss2si</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cvtss_si32</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cvtss_si32</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">cvtss2si</span>(<span class="ident">a</span>)
 }
 
@@ -4090,7 +4087,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cvtss2si</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cvt_ss2si</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cvt_ss2si</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">_mm_cvtss_si32</span>(<span class="ident">a</span>)
 }
 
@@ -4110,7 +4107,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cvttss2si</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cvttss_si32</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cvttss_si32</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">cvttss2si</span>(<span class="ident">a</span>)
 }
 
@@ -4121,7 +4118,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cvttss2si</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cvtt_ss2si</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cvtt_ss2si</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">_mm_cvttss_si32</span>(<span class="ident">a</span>)
 }
 
@@ -4133,7 +4130,7 @@
 <span class="comment">// No point in using assert_instrs. In Unix x86_64 calling convention this is a</span>
 <span class="comment">// no-op, and on Windows it&#39;s just a `mov`.</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cvtss_f32</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cvtss_f32</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">f32</span> {
     <span class="ident">simd_extract</span>(<span class="ident">a</span>, <span class="number">0</span>)
 }
 
@@ -4148,7 +4145,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cvtsi2ss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cvtsi32_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cvtsi32_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">i32</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">cvtsi2ss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -4159,7 +4156,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cvtsi2ss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cvt_si2ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_cvt_si2ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">i32</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">_mm_cvtsi32_ss</span>(<span class="ident">a</span>, <span class="ident">b</span>)
 }
 
@@ -4171,7 +4168,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">movss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_set_ss</span>(<span class="ident">a</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_set_ss</span>(<span class="ident">a</span>: <span class="ident">f32</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">__m128</span>(<span class="ident">a</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)
 }
 
@@ -4182,7 +4179,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">shufps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_set1_ps</span>(<span class="ident">a</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_set1_ps</span>(<span class="ident">a</span>: <span class="ident">f32</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">__m128</span>(<span class="ident">a</span>, <span class="ident">a</span>, <span class="ident">a</span>, <span class="ident">a</span>)
 }
 
@@ -4193,7 +4190,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">shufps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_set_ps1</span>(<span class="ident">a</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_set_ps1</span>(<span class="ident">a</span>: <span class="ident">f32</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">_mm_set1_ps</span>(<span class="ident">a</span>)
 }
 
@@ -4220,7 +4217,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">unpcklps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_set_ps</span>(<span class="ident">a</span>: <span class="ident">f32</span>, <span class="ident">b</span>: <span class="ident">f32</span>, <span class="ident">c</span>: <span class="ident">f32</span>, <span class="ident">d</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_set_ps</span>(<span class="ident">a</span>: <span class="ident">f32</span>, <span class="ident">b</span>: <span class="ident">f32</span>, <span class="ident">c</span>: <span class="ident">f32</span>, <span class="ident">d</span>: <span class="ident">f32</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">__m128</span>(<span class="ident">d</span>, <span class="ident">c</span>, <span class="ident">b</span>, <span class="ident">a</span>)
 }
 
@@ -4246,7 +4243,7 @@
     <span class="ident">assert_instr</span>(<span class="ident">movaps</span>)
 )]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_setr_ps</span>(<span class="ident">a</span>: <span class="ident">f32</span>, <span class="ident">b</span>: <span class="ident">f32</span>, <span class="ident">c</span>: <span class="ident">f32</span>, <span class="ident">d</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_setr_ps</span>(<span class="ident">a</span>: <span class="ident">f32</span>, <span class="ident">b</span>: <span class="ident">f32</span>, <span class="ident">c</span>: <span class="ident">f32</span>, <span class="ident">d</span>: <span class="ident">f32</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">__m128</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">d</span>)
 }
 
@@ -4257,7 +4254,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">xorps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_setzero_ps</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_setzero_ps</span>() -&gt; <span class="ident">__m128</span> {
     <span class="ident">__m128</span>(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)
 }
 
@@ -4266,7 +4263,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;stdarch&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;27731&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">_MM_SHUFFLE</span>(<span class="ident">z</span>: <span class="ident">u32</span>, <span class="ident">y</span>: <span class="ident">u32</span>, <span class="ident">x</span>: <span class="ident">u32</span>, <span class="ident">w</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">_MM_SHUFFLE</span>(<span class="ident">z</span>: <span class="ident">u32</span>, <span class="ident">y</span>: <span class="ident">u32</span>, <span class="ident">x</span>: <span class="ident">u32</span>, <span class="ident">w</span>: <span class="ident">u32</span>) -&gt; <span class="ident">i32</span> {
     ((<span class="ident">z</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">6</span>) <span class="op">|</span> (<span class="ident">y</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span>) <span class="op">|</span> (<span class="ident">x</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>) <span class="op">|</span> <span class="ident">w</span>) <span class="kw">as</span> <span class="ident">i32</span>
 }
 
@@ -4279,7 +4276,7 @@
 <span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_shuffle_ps)</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Note that there appears to be a mistake within Intel&#39;s Intrinsics Guide.</span>
-<span class="doccomment">/// `_mm_shuffle_ps` is supposed to take an `i32` instead of an `u32`</span>
+<span class="doccomment">/// `_mm_shuffle_ps` is supposed to take an `i32` instead of a `u32`</span>
 <span class="doccomment">/// as is the case for [other shuffle intrinsics](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_shuffle_).</span>
 <span class="doccomment">/// Performing an implicit type conversion between an unsigned integer and a signed integer</span>
 <span class="doccomment">/// does not cause a problem in C, however Rust&#39;s commitment to strong typing does not allow this.</span>
@@ -4288,7 +4285,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">shufps</span>, <span class="ident">MASK</span> <span class="op">=</span> <span class="number">3</span>))]</span>
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_shuffle_ps</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">MASK</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_shuffle_ps</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">MASK</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="macro">static_assert_imm8!</span>(<span class="ident">MASK</span>);
     <span class="macro">simd_shuffle4!</span>(
         <span class="ident">a</span>,
@@ -4310,7 +4307,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">unpckhps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_unpackhi_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_unpackhi_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="macro">simd_shuffle4!</span>(<span class="ident">a</span>, <span class="ident">b</span>, [<span class="number">2</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">7</span>])
 }
 
@@ -4322,7 +4319,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">unpcklps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_unpacklo_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_unpacklo_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="macro">simd_shuffle4!</span>(<span class="ident">a</span>, <span class="ident">b</span>, [<span class="number">0</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>])
 }
 
@@ -4334,7 +4331,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;windows&quot;</span>)), <span class="ident">assert_instr</span>(<span class="ident">movhlps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_movehl_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_movehl_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="comment">// TODO; figure why this is a different instruction on Windows?</span>
     <span class="macro">simd_shuffle4!</span>(<span class="ident">a</span>, <span class="ident">b</span>, [<span class="number">6</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">3</span>])
 }
@@ -4347,7 +4344,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;windows&quot;</span>)), <span class="ident">assert_instr</span>(<span class="ident">movlhps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_movelh_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_movelh_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="macro">simd_shuffle4!</span>(<span class="ident">a</span>, <span class="ident">b</span>, [<span class="number">0</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">5</span>])
 }
 
@@ -4364,7 +4361,7 @@
 <span class="comment">// so we only temporarily test this on i686 and x86_64 but not on i586:</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_feature</span> <span class="op">=</span> <span class="string">&quot;sse2&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">movmskps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_movemask_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_movemask_ps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span> {
     <span class="ident">movmskps</span>(<span class="ident">a</span>)
 }
 
@@ -4378,7 +4375,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">movss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_load_ss</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_load_ss</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">__m128</span>(<span class="kw-2">*</span><span class="ident">p</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)
 }
 
@@ -4393,7 +4390,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">movss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_load1_ps</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_load1_ps</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>) -&gt; <span class="ident">__m128</span> {
     <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">p</span>;
     <span class="ident">__m128</span>(<span class="ident">a</span>, <span class="ident">a</span>, <span class="ident">a</span>, <span class="ident">a</span>)
 }
@@ -4405,7 +4402,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">movss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_load_ps1</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_load_ps1</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>) -&gt; <span class="ident">__m128</span> {
     <span class="ident">_mm_load1_ps</span>(<span class="ident">p</span>)
 }
 
@@ -4424,7 +4421,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">movaps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_load_ps</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_load_ps</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>) -&gt; <span class="ident">__m128</span> {
     <span class="kw-2">*</span>(<span class="ident">p</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">__m128</span>)
 }
 
@@ -4441,7 +4438,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">movups</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_loadu_ps</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_loadu_ps</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>) -&gt; <span class="ident">__m128</span> {
     <span class="comment">// Note: Using `*p` would require `f32` alignment, but `movups` has no</span>
     <span class="comment">// alignment restrictions.</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span> <span class="op">=</span> <span class="ident">_mm_undefined_ps</span>();
@@ -4478,7 +4475,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">movaps</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_loadr_ps</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_loadr_ps</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>) -&gt; <span class="ident">__m128</span> {
     <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm_load_ps</span>(<span class="ident">p</span>);
     <span class="macro">simd_shuffle4!</span>(<span class="ident">a</span>, <span class="ident">a</span>, [<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>])
 }
@@ -4491,7 +4488,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86_mm_loadu_si64&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.46.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_loadu_si64</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128i</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_loadu_si64</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="ident">__m128i</span> {
     <span class="ident">transmute</span>(<span class="ident">i64x2</span>(<span class="ident">ptr::read_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i64</span>), <span class="number">0</span>))
 }
 
@@ -4625,7 +4622,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">movss</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_move_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_move_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span> {
     <span class="macro">simd_shuffle4!</span>(<span class="ident">a</span>, <span class="ident">b</span>, [<span class="number">4</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])
 }
 
@@ -4654,7 +4651,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">stmxcsr</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_getcsr</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_getcsr</span>() -&gt; <span class="ident">u32</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="number">0_i32</span>;
     <span class="ident">stmxcsr</span>((<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">result</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>);
     <span class="ident">result</span> <span class="kw">as</span> <span class="ident">u32</span>
@@ -4873,7 +4870,7 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_MM_GET_EXCEPTION_MASK</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_MM_GET_EXCEPTION_MASK</span>() -&gt; <span class="ident">u32</span> {
     <span class="ident">_mm_getcsr</span>() <span class="op">&amp;</span> <span class="ident">_MM_MASK_MASK</span>
 }
 
@@ -4884,7 +4881,7 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_MM_GET_EXCEPTION_STATE</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_MM_GET_EXCEPTION_STATE</span>() -&gt; <span class="ident">u32</span> {
     <span class="ident">_mm_getcsr</span>() <span class="op">&amp;</span> <span class="ident">_MM_EXCEPT_MASK</span>
 }
 
@@ -4895,7 +4892,7 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_MM_GET_FLUSH_ZERO_MODE</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_MM_GET_FLUSH_ZERO_MODE</span>() -&gt; <span class="ident">u32</span> {
     <span class="ident">_mm_getcsr</span>() <span class="op">&amp;</span> <span class="ident">_MM_FLUSH_ZERO_MASK</span>
 }
 
@@ -4906,7 +4903,7 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_MM_GET_ROUNDING_MODE</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_MM_GET_ROUNDING_MODE</span>() -&gt; <span class="ident">u32</span> {
     <span class="ident">_mm_getcsr</span>() <span class="op">&amp;</span> <span class="ident">_MM_ROUND_MASK</span>
 }
 
@@ -5042,7 +5039,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;simd_x86&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_undefined_ps</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_undefined_ps</span>() -&gt; <span class="ident">__m128</span> {
     <span class="ident">_mm_set1_ps</span>(<span class="number">0.0</span>)
 }
 
@@ -5073,67 +5070,67 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">improper_ctypes</span>)]</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.add.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">addss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">addss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.sub.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">subss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">subss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.mul.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">mulss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">mulss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.div.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">divss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">divss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.sqrt.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sqrtss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">sqrtss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.sqrt.ps&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sqrtps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">sqrtps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.rcp.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">rcpss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">rcpss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.rcp.ps&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">rcpps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">rcpps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.rsqrt.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">rsqrtss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">rsqrtss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.rsqrt.ps&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">rsqrtps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">rsqrtps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.min.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">minss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">minss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.min.ps&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">minps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">minps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.max.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">maxss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">maxss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.max.ps&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">maxps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">maxps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.movmsk.ps&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">movmskps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">movmskps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.cmp.ps&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">cmpps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">imm8</span>: <span class="ident">i8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">cmpps</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">imm8</span>: <span class="ident">i8</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.comieq.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">comieq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">comieq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.comilt.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">comilt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">comilt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.comile.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">comile_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">comile_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.comigt.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">comigt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">comigt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.comige.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">comige_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">comige_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.comineq.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">comineq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">comineq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.ucomieq.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ucomieq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">ucomieq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.ucomilt.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ucomilt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">ucomilt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.ucomile.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ucomile_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">ucomile_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.ucomigt.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ucomigt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">ucomigt_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.ucomige.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ucomige_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">ucomige_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.ucomineq.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ucomineq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">ucomineq_ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.cvtss2si&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">cvtss2si</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">cvtss2si</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.cvttss2si&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">cvttss2si</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span>;
+    <span class="kw">fn</span> <span class="ident">cvttss2si</span>(<span class="ident">a</span>: <span class="ident">__m128</span>) -&gt; <span class="ident">i32</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.cvtsi2ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">cvtsi2ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">cvtsi2ss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">i32</span>) -&gt; <span class="ident">__m128</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.sfence&quot;</span>]</span>
     <span class="kw">fn</span> <span class="ident">sfence</span>();
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.stmxcsr&quot;</span>]</span>
@@ -5143,7 +5140,7 @@
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.prefetch&quot;</span>]</span>
     <span class="kw">fn</span> <span class="ident">prefetch</span>(<span class="ident">p</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i8</span>, <span class="ident">rw</span>: <span class="ident">i32</span>, <span class="ident">loc</span>: <span class="ident">i32</span>, <span class="ident">ty</span>: <span class="ident">i32</span>);
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.sse.cmp.ss&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">cmpss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">imm8</span>: <span class="ident">i8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">__m128</span>;
+    <span class="kw">fn</span> <span class="ident">cmpss</span>(<span class="ident">a</span>: <span class="ident">__m128</span>, <span class="ident">b</span>: <span class="ident">__m128</span>, <span class="ident">imm8</span>: <span class="ident">i8</span>) -&gt; <span class="ident">__m128</span>;
 }
 
 <span class="doccomment">/// Stores `a` into the memory at `mem_addr` using a non-temporal memory hint.</span>
@@ -5167,7 +5164,7 @@
     <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">boxed</span>, <span class="ident">f32::NAN</span>};
     <span class="kw">use</span> <span class="ident">stdarch_test::simd_test</span>;
 
-    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::core_arch</span>::{<span class="ident">simd</span>::<span class="kw-2">*</span>, <span class="ident">x86</span>::<span class="kw-2">*</span>};
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::core_arch</span>::{<span class="ident">simd</span>::<span class="kw-2">*</span>, <span class="ident">x86</span>::<span class="kw-2">*</span>};
 
     <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;sse&quot;</span>)]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm_add_ps</span>() {
@@ -6429,7 +6426,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">vals</span>.<span class="ident">as_mut_ptr</span>();
 
         <span class="comment">// Make sure p is **not** aligned to 16-byte boundary</span>
-        <span class="kw">if</span> (<span class="ident">p</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">&amp;</span> <span class="number">0xf</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> (<span class="ident">p</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">&amp;</span> <span class="number">0xf</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="ident">ofs</span> <span class="op">=</span> <span class="number">1</span>;
             <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">offset</span>(<span class="number">1</span>);
         }
@@ -6553,5 +6550,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-search-index-js="../../../../../../../../../search-index.js" data-search-js="../../../../../../../../../search.js"></div><script src="../../../../../../../../../main.js"></script><script src="../../../../../../../../../source-script.js"></script><script src="../../../../../../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-search-index-js="../../../../../../../../../search-index.js" data-search-js="../../../../../../../../../search.js"></div>
+    <script src="../../../../../../../../../main.js"></script><script src="../../../../../../../../../source-script.js"></script><script src="../../../../../../../../../source-files.js"></script>
+</body></html>

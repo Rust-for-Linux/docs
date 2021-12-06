@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/beta-2021-06-23-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/iter/adapters/peekable.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>peekable.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;iter&#x2F;adapters&#x2F;peekable.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>peekable.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -335,32 +333,8 @@
 <span id="333">333</span>
 <span id="334">334</span>
 <span id="335">335</span>
-<span id="336">336</span>
-<span id="337">337</span>
-<span id="338">338</span>
-<span id="339">339</span>
-<span id="340">340</span>
-<span id="341">341</span>
-<span id="342">342</span>
-<span id="343">343</span>
-<span id="344">344</span>
-<span id="345">345</span>
-<span id="346">346</span>
-<span id="347">347</span>
-<span id="348">348</span>
-<span id="349">349</span>
-<span id="350">350</span>
-<span id="351">351</span>
-<span id="352">352</span>
-<span id="353">353</span>
-<span id="354">354</span>
-<span id="355">355</span>
-<span id="356">356</span>
-<span id="357">357</span>
-<span id="358">358</span>
-</pre><pre class="rust">
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::iter</span>::{<span class="ident">adapters::SourceIter</span>, <span class="ident">FusedIterator</span>, <span class="ident">TrustedLen</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ops</span>::{<span class="ident">ControlFlow</span>, <span class="ident">Try</span>};
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::iter</span>::{<span class="ident">adapters::SourceIter</span>, <span class="ident">FusedIterator</span>, <span class="ident">TrustedLen</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ops</span>::{<span class="ident">ControlFlow</span>, <span class="ident">Try</span>};
 
 <span class="doccomment">/// An iterator with a `peek()` that returns an optional reference to the next</span>
 <span class="doccomment">/// element.</span>
@@ -380,7 +354,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&gt;</span> <span class="ident">Peekable</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">in</span> <span class="kw">crate</span><span class="ident">::iter</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">iter</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Peekable</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">in</span> <span class="ident"><span class="kw">crate</span>::iter</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">iter</span>: <span class="ident">I</span>) -&gt; <span class="ident">Peekable</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span> {
         <span class="ident">Peekable</span> { <span class="ident">iter</span>, <span class="ident">peeked</span>: <span class="prelude-val">None</span> }
     }
 }
@@ -394,83 +368,83 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">I::Item</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">peeked</span>.<span class="ident">take</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">v</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">v</span>) =&gt; <span class="ident">v</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>(),
         }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">rustc_inherit_overflow_checks</span>]</span>
-    <span class="kw">fn</span> <span class="ident">count</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">count</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">peeked</span>.<span class="ident">take</span>() {
-            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">0</span>,
-            <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="number">1</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">count</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">count</span>(),
+            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) =&gt; <span class="number">0</span>,
+            <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; <span class="number">1</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">count</span>(),
+            <span class="prelude-val">None</span> =&gt; <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">count</span>(),
         }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">peeked</span>.<span class="ident">take</span>() {
-            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="prelude-val">Some</span>(<span class="ident">v</span> @ <span class="prelude-val">Some</span>(<span class="kw">_</span>)) <span class="kw">if</span> <span class="ident">n</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">v</span>,
-            <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">nth</span>(<span class="ident">n</span> <span class="op">-</span> <span class="number">1</span>),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">nth</span>(<span class="ident">n</span>),
+            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">None</span>,
+            <span class="prelude-val">Some</span>(<span class="ident">v</span> @ <span class="prelude-val">Some</span>(<span class="kw">_</span>)) <span class="kw">if</span> <span class="ident">n</span> <span class="op">==</span> <span class="number">0</span> =&gt; <span class="ident">v</span>,
+            <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">nth</span>(<span class="ident">n</span> <span class="op">-</span> <span class="number">1</span>),
+            <span class="prelude-val">None</span> =&gt; <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">nth</span>(<span class="ident">n</span>),
         }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">last</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">last</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">peek_opt</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">peeked</span>.<span class="ident">take</span>() {
-            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">None</span>,
-            <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">v</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">None</span>,
+            <span class="prelude-val">Some</span>(<span class="ident">v</span>) =&gt; <span class="ident">v</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="prelude-val">None</span>,
         };
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">last</span>().<span class="ident">or</span>(<span class="ident">peek_opt</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> <span class="ident">peek_len</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">peeked</span> {
-            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> (<span class="number">0</span>, <span class="prelude-val">Some</span>(<span class="number">0</span>)),
-            <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="number">1</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">0</span>,
+            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) =&gt; <span class="kw">return</span> (<span class="number">0</span>, <span class="prelude-val">Some</span>(<span class="number">0</span>)),
+            <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; <span class="number">1</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="number">0</span>,
         };
         <span class="kw">let</span> (<span class="ident">lo</span>, <span class="ident">hi</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">size_hint</span>();
         <span class="kw">let</span> <span class="ident">lo</span> <span class="op">=</span> <span class="ident">lo</span>.<span class="ident">saturating_add</span>(<span class="ident">peek_len</span>);
         <span class="kw">let</span> <span class="ident">hi</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">hi</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>.<span class="ident">checked_add</span>(<span class="ident">peek_len</span>),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="prelude-val">Some</span>(<span class="ident">x</span>) =&gt; <span class="ident">x</span>.<span class="ident">checked_add</span>(<span class="ident">peek_len</span>),
+            <span class="prelude-val">None</span> =&gt; <span class="prelude-val">None</span>,
         };
         (<span class="ident">lo</span>, <span class="ident">hi</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">try_fold</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">init</span>: <span class="ident">B</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+    <span class="kw">fn</span> <span class="ident">try_fold</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">init</span>: <span class="ident">B</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">R</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">B</span>, <span class="self">Self</span><span class="ident">::Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>,
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">B</span>, <span class="ident"><span class="self">Self</span>::Item</span>) -&gt; <span class="ident">R</span>,
         <span class="ident">R</span>: <span class="ident">Try</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
     {
         <span class="kw">let</span> <span class="ident">acc</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">peeked</span>.<span class="ident">take</span>() {
-            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="kw">try</span> { <span class="ident">init</span> },
-            <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>(<span class="ident">init</span>, <span class="ident">v</span>)<span class="question-mark">?</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">init</span>,
+            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) =&gt; <span class="kw">return</span> <span class="kw">try</span> { <span class="ident">init</span> },
+            <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>)) =&gt; <span class="ident">f</span>(<span class="ident">init</span>, <span class="ident">v</span>)<span class="question-mark">?</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="ident">init</span>,
         };
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">try_fold</span>(<span class="ident">acc</span>, <span class="ident">f</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fold</span><span class="op">&lt;</span><span class="ident">Acc</span>, <span class="ident">Fold</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">init</span>: <span class="ident">Acc</span>, <span class="kw-2">mut</span> <span class="ident">fold</span>: <span class="ident">Fold</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Acc</span>
+    <span class="kw">fn</span> <span class="ident">fold</span><span class="op">&lt;</span><span class="ident">Acc</span>, <span class="ident">Fold</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">init</span>: <span class="ident">Acc</span>, <span class="kw-2">mut</span> <span class="ident">fold</span>: <span class="ident">Fold</span>) -&gt; <span class="ident">Acc</span>
     <span class="kw">where</span>
-        <span class="ident">Fold</span>: <span class="ident">FnMut</span>(<span class="ident">Acc</span>, <span class="self">Self</span><span class="ident">::Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Acc</span>,
+        <span class="ident">Fold</span>: <span class="ident">FnMut</span>(<span class="ident">Acc</span>, <span class="ident"><span class="self">Self</span>::Item</span>) -&gt; <span class="ident">Acc</span>,
     {
         <span class="kw">let</span> <span class="ident">acc</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">peeked</span> {
-            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">init</span>,
-            <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fold</span>(<span class="ident">init</span>, <span class="ident">v</span>),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">init</span>,
+            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) =&gt; <span class="kw">return</span> <span class="ident">init</span>,
+            <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>)) =&gt; <span class="ident">fold</span>(<span class="ident">init</span>, <span class="ident">v</span>),
+            <span class="prelude-val">None</span> =&gt; <span class="ident">init</span>,
         };
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">fold</span>(<span class="ident">acc</span>, <span class="ident">fold</span>)
     }
@@ -482,69 +456,46 @@
     <span class="ident">I</span>: <span class="ident">DoubleEndedIterator</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">peeked</span>.<span class="ident">as_mut</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">v</span> @ <span class="prelude-val">Some</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next_back</span>().<span class="ident">or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">take</span>()),
-            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next_back</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">v</span> @ <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next_back</span>().<span class="ident">or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">take</span>()),
+            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">None</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next_back</span>(),
         }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>))]</span>
-    <span class="kw">fn</span> <span class="ident">try_rfold</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">init</span>: <span class="ident">B</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+    <span class="kw">fn</span> <span class="ident">try_rfold</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">init</span>: <span class="ident">B</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">R</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">B</span>, <span class="self">Self</span><span class="ident">::Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>,
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">B</span>, <span class="ident"><span class="self">Self</span>::Item</span>) -&gt; <span class="ident">R</span>,
         <span class="ident">R</span>: <span class="ident">Try</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
     {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">peeked</span>.<span class="ident">take</span>() {
-            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">try</span> { <span class="ident">init</span> },
-            <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">try_rfold</span>(<span class="ident">init</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>).<span class="ident">branch</span>() {
-                <span class="ident">ControlFlow::Continue</span>(<span class="ident">acc</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>(<span class="ident">acc</span>, <span class="ident">v</span>),
-                <span class="ident">ControlFlow::Break</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) =&gt; <span class="kw">try</span> { <span class="ident">init</span> },
+            <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>)) =&gt; <span class="kw">match</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">try_rfold</span>(<span class="ident">init</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>).<span class="ident">branch</span>() {
+                <span class="ident">ControlFlow::Continue</span>(<span class="ident">acc</span>) =&gt; <span class="ident">f</span>(<span class="ident">acc</span>, <span class="ident">v</span>),
+                <span class="ident">ControlFlow::Break</span>(<span class="ident">r</span>) =&gt; {
                     <span class="self">self</span>.<span class="ident">peeked</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>));
                     <span class="ident">R::from_residual</span>(<span class="ident">r</span>)
                 }
             },
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">try_rfold</span>(<span class="ident">init</span>, <span class="ident">f</span>),
+            <span class="prelude-val">None</span> =&gt; <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">try_rfold</span>(<span class="ident">init</span>, <span class="ident">f</span>),
         }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">bootstrap</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">try_rfold</span><span class="op">&lt;</span><span class="ident">B</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">init</span>: <span class="ident">B</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
+    <span class="kw">fn</span> <span class="ident">rfold</span><span class="op">&lt;</span><span class="ident">Acc</span>, <span class="ident">Fold</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">init</span>: <span class="ident">Acc</span>, <span class="kw-2">mut</span> <span class="ident">fold</span>: <span class="ident">Fold</span>) -&gt; <span class="ident">Acc</span>
     <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">Sized</span>,
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">B</span>, <span class="self">Self</span><span class="ident">::Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>,
-        <span class="ident">R</span>: <span class="ident">Try</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
-    {
-        <span class="kw">let</span> <span class="ident">_use_the_import</span>: <span class="ident">ControlFlow</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">peeked</span>.<span class="ident">take</span>() {
-            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">try</span> { <span class="ident">init</span> },
-            <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">try_rfold</span>(<span class="ident">init</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>).<span class="ident">into_result</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">acc</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>(<span class="ident">acc</span>, <span class="ident">v</span>),
-                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="self">self</span>.<span class="ident">peeked</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>));
-                    <span class="ident">R::from_error</span>(<span class="ident">e</span>)
-                }
-            },
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">try_rfold</span>(<span class="ident">init</span>, <span class="ident">f</span>),
-        }
-    }
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">rfold</span><span class="op">&lt;</span><span class="ident">Acc</span>, <span class="ident">Fold</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">init</span>: <span class="ident">Acc</span>, <span class="kw-2">mut</span> <span class="ident">fold</span>: <span class="ident">Fold</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Acc</span>
-    <span class="kw">where</span>
-        <span class="ident">Fold</span>: <span class="ident">FnMut</span>(<span class="ident">Acc</span>, <span class="self">Self</span><span class="ident">::Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Acc</span>,
+        <span class="ident">Fold</span>: <span class="ident">FnMut</span>(<span class="ident">Acc</span>, <span class="ident"><span class="self">Self</span>::Item</span>) -&gt; <span class="ident">Acc</span>,
     {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">peeked</span> {
-            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">init</span>,
-            <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) =&gt; <span class="ident">init</span>,
+            <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">v</span>)) =&gt; {
                 <span class="kw">let</span> <span class="ident">acc</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">rfold</span>(<span class="ident">init</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fold</span>);
                 <span class="ident">fold</span>(<span class="ident">acc</span>, <span class="ident">v</span>)
             }
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">rfold</span>(<span class="ident">init</span>, <span class="ident">fold</span>),
+            <span class="prelude-val">None</span> =&gt; <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">rfold</span>(<span class="ident">init</span>, <span class="ident">fold</span>),
         }
     }
 }
@@ -595,7 +546,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">iter</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">iter</span>;
         <span class="self">self</span>.<span class="ident">peeked</span>.<span class="ident">get_or_insert_with</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">iter</span>.<span class="ident">next</span>()).<span class="ident">as_ref</span>()
     }
@@ -635,7 +586,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;peekable_peek_mut&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.53.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">I::Item</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">I::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">iter</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">iter</span>;
         <span class="self">self</span>.<span class="ident">peeked</span>.<span class="ident">get_or_insert_with</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">iter</span>.<span class="ident">next</span>()).<span class="ident">as_mut</span>()
     }
@@ -666,10 +617,10 @@
     <span class="doccomment">/// assert_eq!(iter.next(), Some(10));</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;peekable_next_if&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.51.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">next_if</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">func</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="ident">I::Item</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">next_if</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">func</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="ident">I::Item</span>) -&gt; <span class="ident">bool</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">next</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">matched</span>) <span class="kw">if</span> <span class="ident">func</span>(<span class="kw-2">&amp;</span><span class="ident">matched</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">matched</span>),
-            <span class="ident">other</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">matched</span>) <span class="kw">if</span> <span class="ident">func</span>(<span class="kw-2">&amp;</span><span class="ident">matched</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">matched</span>),
+            <span class="ident">other</span> =&gt; {
                 <span class="comment">// Since we called `self.next()`, we consumed `self.peeked`.</span>
                 <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">peeked</span>.<span class="ident">is_none</span>());
                 <span class="self">self</span>.<span class="ident">peeked</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">other</span>);
@@ -692,12 +643,12 @@
     <span class="doccomment">/// assert_eq!(iter.next(), Some(1));</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;peekable_next_if&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.51.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">next_if_eq</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">expected</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">next_if_eq</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">expected</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>,
         <span class="ident">I::Item</span>: <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
     {
-        <span class="self">self</span>.<span class="ident">next_if</span>(<span class="op">|</span><span class="ident">next</span><span class="op">|</span> <span class="ident">next</span> <span class="op">=</span><span class="op">=</span> <span class="ident">expected</span>)
+        <span class="self">self</span>.<span class="ident">next_if</span>(<span class="op">|</span><span class="ident">next</span><span class="op">|</span> <span class="ident">next</span> <span class="op">==</span> <span class="ident">expected</span>)
     }
 }
 
@@ -705,17 +656,19 @@
 <span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span> <span class="ident">TrustedLen</span> <span class="kw">for</span> <span class="ident">Peekable</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">I</span>: <span class="ident">TrustedLen</span> {}
 
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inplace_iteration&quot;</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Iterator</span>, <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&gt;</span> <span class="ident">SourceIter</span> <span class="kw">for</span> <span class="ident">Peekable</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>
+<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&gt;</span> <span class="ident">SourceIter</span> <span class="kw">for</span> <span class="ident">Peekable</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">I</span>: <span class="ident">SourceIter</span><span class="op">&lt;</span><span class="ident">Source</span> <span class="op">=</span> <span class="ident">S</span><span class="op">&gt;</span>,
+    <span class="ident">I</span>: <span class="ident">SourceIter</span>,
 {
-    <span class="kw">type</span> <span class="ident">Source</span> <span class="op">=</span> <span class="ident">S</span>;
+    <span class="kw">type</span> <span class="ident">Source</span> <span class="op">=</span> <span class="ident">I::Source</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_inner</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">S</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_inner</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">I::Source</span> {
         <span class="comment">// SAFETY: unsafe function forwarding to unsafe function with the same requirements</span>
         <span class="kw">unsafe</span> { <span class="ident">SourceIter::as_inner</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">iter</span>) }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="core" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="core" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

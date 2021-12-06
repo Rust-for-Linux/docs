@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/alloc/string.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>string.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../alloc/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;alloc&#x2F;string.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>string.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../alloc/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -2847,8 +2845,17 @@
 <span id="2845">2845</span>
 <span id="2846">2846</span>
 <span id="2847">2847</span>
-</pre><pre class="rust">
-<span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
+<span id="2848">2848</span>
+<span id="2849">2849</span>
+<span id="2850">2850</span>
+<span id="2851">2851</span>
+<span id="2852">2852</span>
+<span id="2853">2853</span>
+<span id="2854">2854</span>
+<span id="2855">2855</span>
+<span id="2856">2856</span>
+<span id="2857">2857</span>
+</pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
 
 <span class="doccomment">//! A UTF-8–encoded, growable string.</span>
 <span class="doccomment">//!</span>
@@ -2915,13 +2922,13 @@
 <span class="kw">use</span> <span class="ident">core::str::pattern::Pattern</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::borrow</span>::{<span class="ident">Cow</span>, <span class="ident">ToOwned</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::boxed::Box</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::collections::TryReserveError</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::str</span>::{<span class="self">self</span>, <span class="ident">Chars</span>, <span class="ident">Utf8Error</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::borrow</span>::{<span class="ident">Cow</span>, <span class="ident">ToOwned</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::boxed::Box</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::collections::TryReserveError</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::str</span>::{<span class="self">self</span>, <span class="ident">Chars</span>, <span class="ident">Utf8Error</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::str</span>::{<span class="ident">from_boxed_utf8_unchecked</span>, <span class="ident">FromStr</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::vec::Vec</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::str</span>::{<span class="ident">from_boxed_utf8_unchecked</span>, <span class="ident">FromStr</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::vec::Vec</span>;
 
 <span class="doccomment">/// A UTF-8–encoded, growable string.</span>
 <span class="doccomment">///</span>
@@ -2931,7 +2938,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// You can create a `String` from [a literal string][`str`] with [`String::from`]:</span>
+<span class="doccomment">/// You can create a `String` from [a literal string][`&amp;str`] with [`String::from`]:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`String::from`]: From::from</span>
 <span class="doccomment">///</span>
@@ -2980,7 +2987,7 @@
 <span class="doccomment">/// println!(&quot;The first letter of s is {}&quot;, s[0]); // ERROR!!!</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`OsString`]: ../../std/ffi/struct.OsString.html</span>
+<span class="doccomment">/// [`OsString`]: ../../std/ffi/struct.OsString.html &quot;ffi::OsString&quot;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Indexing is intended to be a constant-time operation, but UTF-8 encoding</span>
 <span class="doccomment">/// does not allow us to do this. Furthermore, it&#39;s not clear what sort of</span>
@@ -2993,7 +3000,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Deref</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// `String`s implement [`Deref`]`&lt;Target=str&gt;`, and so inherit all of [`str`]&#39;s</span>
+<span class="doccomment">/// `String` implements &lt;code&gt;[Deref]&lt;Target = [str]&gt;&lt;/code&gt;, and so inherits all of [`str`]&#39;s</span>
 <span class="doccomment">/// methods. In addition, this means that you can pass a `String` to a</span>
 <span class="doccomment">/// function which takes a [`&amp;str`] by using an ampersand (`&amp;`):</span>
 <span class="doccomment">///</span>
@@ -3034,7 +3041,7 @@
 <span class="doccomment">/// to explicitly extract the string slice containing the string. The second</span>
 <span class="doccomment">/// way changes `example_func(&amp;example_string);` to</span>
 <span class="doccomment">/// `example_func(&amp;*example_string);`. In this case we are dereferencing a</span>
-<span class="doccomment">/// `String` to a [`str`][`&amp;str`], then referencing the [`str`][`&amp;str`] back to</span>
+<span class="doccomment">/// `String` to a [`str`], then referencing the [`str`] back to</span>
 <span class="doccomment">/// [`&amp;str`]. The second way is more idiomatic, however both work to do the</span>
 <span class="doccomment">/// conversion explicitly rather than relying on the implicit conversion.</span>
 <span class="doccomment">///</span>
@@ -3134,12 +3141,14 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// Here, there&#39;s no need to allocate more memory inside the loop.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`str`]: prim@str</span>
-<span class="doccomment">/// [`&amp;str`]: prim@str</span>
-<span class="doccomment">/// [`Deref`]: core::ops::Deref</span>
+<span class="doccomment">/// [str]: prim@str &quot;str&quot;</span>
+<span class="doccomment">/// [`str`]: prim@str &quot;str&quot;</span>
+<span class="doccomment">/// [`&amp;str`]: prim@str &quot;&amp;str&quot;</span>
+<span class="doccomment">/// [Deref]: core::ops::Deref &quot;ops::Deref&quot;</span>
+<span class="doccomment">/// [`Deref`]: core::ops::Deref &quot;ops::Deref&quot;</span>
 <span class="doccomment">/// [`as_str()`]: String::as_str</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialOrd</span>, <span class="ident">Eq</span>, <span class="ident">Ord</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">test</span>), <span class="ident">rustc_diagnostic_item</span> <span class="op">=</span> <span class="string">&quot;string_type&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">test</span>), <span class="ident">rustc_diagnostic_item</span> <span class="op">=</span> <span class="string">&quot;String&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">String</span> {
     <span class="ident">vec</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
@@ -3160,10 +3169,10 @@
 <span class="doccomment">/// an analogue to `FromUtf8Error`, and you can get one from a `FromUtf8Error`</span>
 <span class="doccomment">/// through the [`utf8_error`] method.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`Utf8Error`]: core::str::Utf8Error</span>
-<span class="doccomment">/// [`std::str`]: core::str</span>
-<span class="doccomment">/// [`&amp;str`]: prim@str</span>
-<span class="doccomment">/// [`utf8_error`]: Self::utf8_error</span>
+<span class="doccomment">/// [`Utf8Error`]: str::Utf8Error &quot;std::str::Utf8Error&quot;</span>
+<span class="doccomment">/// [`std::str`]: core::str &quot;std::str&quot;</span>
+<span class="doccomment">/// [`&amp;str`]: prim@str &quot;&amp;str&quot;</span>
+<span class="doccomment">/// [`utf8_error`]: FromUtf8Error::utf8_error</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">///</span>
@@ -3228,7 +3237,8 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_string_new&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.39.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">String</span> {
         <span class="ident">String</span> { <span class="ident">vec</span>: <span class="ident">Vec::new</span>() }
     }
 
@@ -3271,10 +3281,9 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;malloc&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_capacity</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_capacity</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>) -&gt; <span class="ident">String</span> {
         <span class="ident">String</span> { <span class="ident">vec</span>: <span class="ident">Vec::with_capacity</span>(<span class="ident">capacity</span>) }
     }
 
@@ -3284,7 +3293,7 @@
     <span class="comment">// NB see the slice::hack module in slice.rs for more information</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">String</span> {
         <span class="macro">panic!</span>(<span class="string">&quot;not available with cfg(test)&quot;</span>);
     }
 
@@ -3341,15 +3350,15 @@
     <span class="doccomment">/// with this error.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`from_utf8_unchecked`]: String::from_utf8_unchecked</span>
-    <span class="doccomment">/// [`Vec&lt;u8&gt;`]: crate::vec::Vec</span>
-    <span class="doccomment">/// [`&amp;str`]: prim@str</span>
+    <span class="doccomment">/// [`Vec&lt;u8&gt;`]: crate::vec::Vec &quot;Vec&quot;</span>
+    <span class="doccomment">/// [`&amp;str`]: prim@str &quot;&amp;str&quot;</span>
     <span class="doccomment">/// [`into_bytes`]: String::into_bytes</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_utf8</span>(<span class="ident">vec</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">FromUtf8Error</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_utf8</span>(<span class="ident">vec</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">FromUtf8Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">str::from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">vec</span>) {
-            <span class="prelude-val">Ok</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">String</span> { <span class="ident">vec</span> }),
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">FromUtf8Error</span> { <span class="ident">bytes</span>: <span class="ident">vec</span>, <span class="ident">error</span>: <span class="ident">e</span> }),
+            <span class="prelude-val">Ok</span>(..) =&gt; <span class="prelude-val">Ok</span>(<span class="ident">String</span> { <span class="ident">vec</span> }),
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">FromUtf8Error</span> { <span class="ident">bytes</span>: <span class="ident">vec</span>, <span class="ident">error</span>: <span class="ident">e</span> }),
         }
     }
 
@@ -3378,7 +3387,7 @@
     <span class="doccomment">/// it&#39;s already valid UTF-8, we don&#39;t need a new allocation. This return</span>
     <span class="doccomment">/// type allows us to handle both cases.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Cow&lt;&#39;a, str&gt;`]: crate::borrow::Cow</span>
+    <span class="doccomment">/// [`Cow&lt;&#39;a, str&gt;`]: crate::borrow::Cow &quot;borrow::Cow&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -3404,12 +3413,12 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_utf8_lossy</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_utf8_lossy</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">lossy::Utf8Lossy::from_bytes</span>(<span class="ident">v</span>).<span class="ident">chunks</span>();
 
         <span class="kw">let</span> (<span class="ident">first_valid</span>, <span class="ident">first_broken</span>) <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">chunk</span>) <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">next</span>() {
             <span class="kw">let</span> <span class="ident">lossy::Utf8LossyChunk</span> { <span class="ident">valid</span>, <span class="ident">broken</span> } <span class="op">=</span> <span class="ident">chunk</span>;
-            <span class="kw">if</span> <span class="ident">valid</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">v</span>.<span class="ident">len</span>() {
+            <span class="kw">if</span> <span class="ident">valid</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">v</span>.<span class="ident">len</span>() {
                 <span class="macro">debug_assert!</span>(<span class="ident">broken</span>.<span class="ident">is_empty</span>());
                 <span class="kw">return</span> <span class="ident">Cow::Borrowed</span>(<span class="ident">valid</span>);
             }
@@ -3457,7 +3466,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_utf16</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span>[<span class="ident">u16</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">FromUtf16Error</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_utf16</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span>[<span class="ident">u16</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">FromUtf16Error</span><span class="op">&gt;</span> {
         <span class="comment">// This isn&#39;t done via collect::&lt;Result&lt;_, _&gt;&gt;() for performance reasons.</span>
         <span class="comment">// FIXME: the function can be simplified again when #48994 is closed.</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">String::with_capacity</span>(<span class="ident">v</span>.<span class="ident">len</span>());
@@ -3479,7 +3488,7 @@
     <span class="doccomment">/// conversion requires a memory allocation.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`from_utf8_lossy`]: String::from_utf8_lossy</span>
-    <span class="doccomment">/// [`Cow&lt;&#39;a, str&gt;`]: crate::borrow::Cow</span>
+    <span class="doccomment">/// [`Cow&lt;&#39;a, str&gt;`]: crate::borrow::Cow &quot;borrow::Cow&quot;</span>
     <span class="doccomment">/// [U+FFFD]: core::char::REPLACEMENT_CHARACTER</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
@@ -3498,7 +3507,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_utf16_lossy</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span>[<span class="ident">u16</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_utf16_lossy</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span>[<span class="ident">u16</span>]) -&gt; <span class="ident">String</span> {
         <span class="ident">decode_utf16</span>(<span class="ident">v</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>()).<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="ident">unwrap_or</span>(<span class="ident">REPLACEMENT_CHARACTER</span>)).<span class="ident">collect</span>()
     }
 
@@ -3528,8 +3537,9 @@
     <span class="doccomment">/// let rebuilt = unsafe { String::from_raw_parts(ptr, len, cap) };</span>
     <span class="doccomment">/// assert_eq!(rebuilt, &quot;hello&quot;);</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;`self` will be dropped if the result is not used&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_into_raw_parts&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;65816&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_raw_parts</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">usize</span>, <span class="ident">usize</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_raw_parts</span>(<span class="self">self</span>) -&gt; (<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">usize</span>, <span class="ident">usize</span>) {
         <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">into_raw_parts</span>()
     }
 
@@ -3580,7 +3590,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_parts</span>(<span class="ident">buf</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">length</span>: <span class="ident">usize</span>, <span class="ident">capacity</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_parts</span>(<span class="ident">buf</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">length</span>: <span class="ident">usize</span>, <span class="ident">capacity</span>: <span class="ident">usize</span>) -&gt; <span class="ident">String</span> {
         <span class="kw">unsafe</span> { <span class="ident">String</span> { <span class="ident">vec</span>: <span class="ident">Vec::from_raw_parts</span>(<span class="ident">buf</span>, <span class="ident">length</span>, <span class="ident">capacity</span>) } }
     }
 
@@ -3613,8 +3623,9 @@
     <span class="doccomment">/// assert_eq!(&quot;💖&quot;, sparkle_heart);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_utf8_unchecked</span>(<span class="ident">bytes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_utf8_unchecked</span>(<span class="ident">bytes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) -&gt; <span class="ident">String</span> {
         <span class="ident">String</span> { <span class="ident">vec</span>: <span class="ident">bytes</span> }
     }
 
@@ -3633,8 +3644,9 @@
     <span class="doccomment">/// assert_eq!(&amp;[104, 101, 108, 108, 111][..], &amp;bytes[..]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;`self` will be dropped if the result is not used&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_bytes</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_bytes</span>(<span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">vec</span>
     }
 
@@ -3650,8 +3662,9 @@
     <span class="doccomment">/// assert_eq!(&quot;foo&quot;, s.as_str());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;string_as_str&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.7.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="self">self</span>
     }
 
@@ -3670,8 +3683,9 @@
     <span class="doccomment">/// assert_eq!(&quot;FOOBAR&quot;, s_mut_str);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;string_as_str&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.7.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="self">self</span>
     }
 
@@ -3744,7 +3758,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">capacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">capacity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">capacity</span>()
     }
 
@@ -3775,7 +3789,7 @@
     <span class="doccomment">/// assert!(s.capacity() &gt;= 10);</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// This may not actually increase the capacity:</span>
+    <span class="doccomment">/// This might not actually increase the capacity:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// let mut s = String::with_capacity(10);</span>
@@ -3823,7 +3837,7 @@
     <span class="doccomment">/// assert!(s.capacity() &gt;= 10);</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// This may not actually increase the capacity:</span>
+    <span class="doccomment">/// This might not actually increase the capacity:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// let mut s = String::with_capacity(10);</span>
@@ -3861,7 +3875,6 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(try_reserve)]</span>
     <span class="doccomment">/// use std::collections::TryReserveError;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// fn process_data(data: &amp;str) -&gt; Result&lt;String, TryReserveError&gt; {</span>
@@ -3877,8 +3890,8 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// # process_data(&quot;rust&quot;).expect(&quot;why is the test harness OOMing on 4 bytes?&quot;);</span>
     <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_reserve&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;48043&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_reserve</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">additional</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_reserve&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.57.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_reserve</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">additional</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">try_reserve</span>(<span class="ident">additional</span>)
     }
 
@@ -3889,7 +3902,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that the allocator may give the collection more space than it</span>
     <span class="doccomment">/// requests. Therefore, capacity can not be relied upon to be precisely</span>
-    <span class="doccomment">/// minimal. Prefer `reserve` if future insertions are expected.</span>
+    <span class="doccomment">/// minimal. Prefer [`reserve`] if future insertions are expected.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`reserve`]: String::reserve</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
@@ -3899,7 +3914,6 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(try_reserve)]</span>
     <span class="doccomment">/// use std::collections::TryReserveError;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// fn process_data(data: &amp;str) -&gt; Result&lt;String, TryReserveError&gt; {</span>
@@ -3915,8 +3929,8 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// # process_data(&quot;rust&quot;).expect(&quot;why is the test harness OOMing on 4 bytes?&quot;);</span>
     <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_reserve&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;48043&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_reserve_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">additional</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_reserve&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.57.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_reserve_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">additional</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">try_reserve_exact</span>(<span class="ident">additional</span>)
     }
 
@@ -3952,7 +3966,6 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(shrink_to)]</span>
     <span class="doccomment">/// let mut s = String::from(&quot;foo&quot;);</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// s.reserve(100);</span>
@@ -3965,7 +3978,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;shrink_to&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;56431&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;shrink_to&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.56.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shrink_to</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">min_capacity</span>: <span class="ident">usize</span>) {
         <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">shrink_to</span>(<span class="ident">min_capacity</span>)
     }
@@ -3990,8 +4003,8 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ch</span>: <span class="ident">char</span>) {
         <span class="kw">match</span> <span class="ident">ch</span>.<span class="ident">len_utf8</span>() {
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">push</span>(<span class="ident">ch</span> <span class="kw">as</span> <span class="ident">u8</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">extend_from_slice</span>(<span class="ident">ch</span>.<span class="ident">encode_utf8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0</span>; <span class="number">4</span>]).<span class="ident">as_bytes</span>()),
+            <span class="number">1</span> =&gt; <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">push</span>(<span class="ident">ch</span> <span class="kw">as</span> <span class="ident">u8</span>),
+            <span class="kw">_</span> =&gt; <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">extend_from_slice</span>(<span class="ident">ch</span>.<span class="ident">encode_utf8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0</span>; <span class="number">4</span>]).<span class="ident">as_bytes</span>()),
         }
     }
 
@@ -4011,8 +4024,9 @@
     <span class="doccomment">/// assert_eq!(&amp;[104, 101, 108, 108, 111], s.as_bytes());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">vec</span>
     }
 
@@ -4067,7 +4081,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ch</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">chars</span>().<span class="ident">rev</span>().<span class="ident">next</span>()<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">newlen</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">ch</span>.<span class="ident">len_utf8</span>();
         <span class="kw">unsafe</span> {
@@ -4099,10 +4113,10 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">char</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident">char</span> {
         <span class="kw">let</span> <span class="ident">ch</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>[<span class="ident">idx</span>..].<span class="ident">chars</span>().<span class="ident">next</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">ch</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ch</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;cannot remove a char from the end of a string&quot;</span>),
+            <span class="prelude-val">Some</span>(<span class="ident">ch</span>) =&gt; <span class="ident">ch</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="macro">panic!</span>(<span class="string">&quot;cannot remove a char from the end of a string&quot;</span>),
         };
 
         <span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="ident">idx</span> <span class="op">+</span> <span class="ident">ch</span>.<span class="ident">len_utf8</span>();
@@ -4204,20 +4218,21 @@
     <span class="doccomment">/// assert_eq!(s, &quot;foobar&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The exact order may be useful for tracking external state, like an index.</span>
+    <span class="doccomment">/// Because the elements are visited exactly once in the original order,</span>
+    <span class="doccomment">/// external state may be used to decide which elements to keep.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// let mut s = String::from(&quot;abcde&quot;);</span>
     <span class="doccomment">/// let keep = [false, true, true, false, true];</span>
-    <span class="doccomment">/// let mut i = 0;</span>
-    <span class="doccomment">/// s.retain(|_| (keep[i], i += 1).0);</span>
+    <span class="doccomment">/// let mut iter = keep.iter();</span>
+    <span class="doccomment">/// s.retain(|_| *iter.next().unwrap());</span>
     <span class="doccomment">/// assert_eq!(s, &quot;bce&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;string_retain&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.26.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">retain</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>)
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>,
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">char</span>) -&gt; <span class="ident">bool</span>,
     {
         <span class="kw">struct</span> <span class="ident">SetLenOnDrop</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
             <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">String</span>,
@@ -4303,7 +4318,7 @@
 
         <span class="kw">unsafe</span> {
             <span class="ident">ptr::copy</span>(<span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">as_ptr</span>().<span class="ident">add</span>(<span class="ident">idx</span>), <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">add</span>(<span class="ident">idx</span> <span class="op">+</span> <span class="ident">amt</span>), <span class="ident">len</span> <span class="op">-</span> <span class="ident">idx</span>);
-            <span class="ident">ptr::copy</span>(<span class="ident">bytes</span>.<span class="ident">as_ptr</span>(), <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">add</span>(<span class="ident">idx</span>), <span class="ident">amt</span>);
+            <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">bytes</span>.<span class="ident">as_ptr</span>(), <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">add</span>(<span class="ident">idx</span>), <span class="ident">amt</span>);
             <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">set_len</span>(<span class="ident">len</span> <span class="op">+</span> <span class="ident">amt</span>);
         }
     }
@@ -4366,12 +4381,12 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_mut_vec</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_mut_vec</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">vec</span>
     }
 
     <span class="doccomment">/// Returns the length of this `String`, in bytes, not [`char`]s or</span>
-    <span class="doccomment">/// graphemes. In other words, it may not be what a human considers the</span>
+    <span class="doccomment">/// graphemes. In other words, it might not be what a human considers the</span>
     <span class="doccomment">/// length of the string.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
@@ -4386,10 +4401,9 @@
     <span class="doccomment">/// assert_eq!(fancy_f.len(), 4);</span>
     <span class="doccomment">/// assert_eq!(fancy_f.chars().count(), 3);</span>
     <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;length&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">len</span>()
     }
 
@@ -4408,8 +4422,8 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">0</span>
     }
 
     <span class="doccomment">/// Splits the string into two at the given byte index.</span>
@@ -4439,7 +4453,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;string_split_off&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.16.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;use `.truncate()` if you don&#39;t need the other half&quot;</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_off</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">at</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_off</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">at</span>: <span class="ident">usize</span>) -&gt; <span class="ident">String</span> {
         <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">is_char_boundary</span>(<span class="ident">at</span>));
         <span class="kw">let</span> <span class="ident">other</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">split_off</span>(<span class="ident">at</span>);
         <span class="kw">unsafe</span> { <span class="ident">String::from_utf8_unchecked</span>(<span class="ident">other</span>) }
@@ -4498,7 +4512,7 @@
     <span class="doccomment">/// assert_eq!(s, &quot;&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;drain&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.6.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">drain</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">range</span>: <span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Drain</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">drain</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">range</span>: <span class="ident">R</span>) -&gt; <span class="ident">Drain</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">R</span>: <span class="ident">RangeBounds</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
     {
@@ -4556,16 +4570,16 @@
         <span class="comment">// WARNING: Inlining this variable would be unsound (#81138)</span>
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">range</span>.<span class="ident">start_bound</span>();
         <span class="kw">match</span> <span class="ident">start</span> {
-            <span class="ident">Included</span>(<span class="kw-2">&amp;</span><span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">is_char_boundary</span>(<span class="ident">n</span>)),
-            <span class="ident">Excluded</span>(<span class="kw-2">&amp;</span><span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">is_char_boundary</span>(<span class="ident">n</span> <span class="op">+</span> <span class="number">1</span>)),
-            <span class="ident">Unbounded</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="ident">Included</span>(<span class="kw-2">&amp;</span><span class="ident">n</span>) =&gt; <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">is_char_boundary</span>(<span class="ident">n</span>)),
+            <span class="ident">Excluded</span>(<span class="kw-2">&amp;</span><span class="ident">n</span>) =&gt; <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">is_char_boundary</span>(<span class="ident">n</span> <span class="op">+</span> <span class="number">1</span>)),
+            <span class="ident">Unbounded</span> =&gt; {}
         };
         <span class="comment">// WARNING: Inlining this variable would be unsound (#81138)</span>
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">range</span>.<span class="ident">end_bound</span>();
         <span class="kw">match</span> <span class="ident">end</span> {
-            <span class="ident">Included</span>(<span class="kw-2">&amp;</span><span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">is_char_boundary</span>(<span class="ident">n</span> <span class="op">+</span> <span class="number">1</span>)),
-            <span class="ident">Excluded</span>(<span class="kw-2">&amp;</span><span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">is_char_boundary</span>(<span class="ident">n</span>)),
-            <span class="ident">Unbounded</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="ident">Included</span>(<span class="kw-2">&amp;</span><span class="ident">n</span>) =&gt; <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">is_char_boundary</span>(<span class="ident">n</span> <span class="op">+</span> <span class="number">1</span>)),
+            <span class="ident">Excluded</span>(<span class="kw-2">&amp;</span><span class="ident">n</span>) =&gt; <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">is_char_boundary</span>(<span class="ident">n</span>)),
+            <span class="ident">Unbounded</span> =&gt; {}
         };
 
         <span class="comment">// Using `range` again would be unsound (#81138)</span>
@@ -4574,11 +4588,11 @@
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">as_mut_vec</span>() }.<span class="ident">splice</span>((<span class="ident">start</span>, <span class="ident">end</span>), <span class="ident">replace_with</span>.<span class="ident">bytes</span>());
     }
 
-    <span class="doccomment">/// Converts this `String` into a [`Box`]`&lt;`[`str`]`&gt;`.</span>
+    <span class="doccomment">/// Converts this `String` into a &lt;code&gt;[Box]&lt;[str]&gt;&lt;/code&gt;.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This will drop any excess capacity.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`str`]: prim@str</span>
+    <span class="doccomment">/// [str]: prim@str &quot;str&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -4591,8 +4605,9 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;box_str&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.4.0&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;`self` will be dropped if the result is not used&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_boxed_str</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_boxed_str</span>(<span class="self">self</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">into_boxed_slice</span>();
         <span class="kw">unsafe</span> { <span class="ident">from_boxed_utf8_unchecked</span>(<span class="ident">slice</span>) }
     }
@@ -4613,8 +4628,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(&amp;[0, 159], value.unwrap_err().as_bytes());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;from_utf8_error_as_bytes&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.26.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">bytes</span>[..]
     }
 
@@ -4636,8 +4652,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(vec![0, 159], value.unwrap_err().into_bytes());</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;`self` will be dropped if the result is not used&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_bytes</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_bytes</span>(<span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">bytes</span>
     }
 
@@ -4648,8 +4665,8 @@
     <span class="doccomment">/// an analogue to `FromUtf8Error`. See its documentation for more details</span>
     <span class="doccomment">/// on using it.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`std::str`]: core::str</span>
-    <span class="doccomment">/// [`&amp;str`]: prim@str</span>
+    <span class="doccomment">/// [`std::str`]: core::str &quot;std::str&quot;</span>
+    <span class="doccomment">/// [`&amp;str`]: prim@str &quot;&amp;str&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -4665,21 +4682,21 @@
     <span class="doccomment">/// assert_eq!(1, error.valid_up_to());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">utf8_error</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Utf8Error</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">utf8_error</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Utf8Error</span> {
         <span class="self">self</span>.<span class="ident">error</span>
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">FromUtf8Error</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Display::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">error</span>, <span class="ident">f</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">FromUtf16Error</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Display::fmt</span>(<span class="string">&quot;invalid utf-16: lone surrogate found&quot;</span>, <span class="ident">f</span>)
     }
 }
@@ -4687,7 +4704,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">String</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">String</span> { <span class="ident">vec</span>: <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">clone</span>() }
     }
 
@@ -4699,7 +4716,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
-    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">char</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">char</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) -&gt; <span class="ident">String</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
         <span class="ident">buf</span>.<span class="ident">extend</span>(<span class="ident">iter</span>);
         <span class="ident">buf</span>
@@ -4709,7 +4726,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;string_from_iter_by_ref&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.17.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">char</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
-    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">char</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">char</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) -&gt; <span class="ident">String</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
         <span class="ident">buf</span>.<span class="ident">extend</span>(<span class="ident">iter</span>);
         <span class="ident">buf</span>
@@ -4719,7 +4736,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
-    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) -&gt; <span class="ident">String</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
         <span class="ident">buf</span>.<span class="ident">extend</span>(<span class="ident">iter</span>);
         <span class="ident">buf</span>
@@ -4729,15 +4746,15 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;extend_string&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.4.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
-    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) -&gt; <span class="ident">String</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iterator</span> <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">into_iter</span>();
 
         <span class="comment">// Because we&#39;re iterating over `String`s, we can avoid at least</span>
         <span class="comment">// one allocation by getting the first string from the iterator</span>
         <span class="comment">// and appending to it all the subsequent strings.</span>
         <span class="kw">match</span> <span class="ident">iterator</span>.<span class="ident">next</span>() {
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">String::new</span>(),
-            <span class="prelude-val">Some</span>(<span class="kw-2">mut</span> <span class="ident">buf</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">None</span> =&gt; <span class="ident">String::new</span>(),
+            <span class="prelude-val">Some</span>(<span class="kw-2">mut</span> <span class="ident">buf</span>) =&gt; {
                 <span class="ident">buf</span>.<span class="ident">extend</span>(<span class="ident">iterator</span>);
                 <span class="ident">buf</span>
             }
@@ -4748,7 +4765,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;box_str2&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.45.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
-    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) -&gt; <span class="ident">String</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
         <span class="ident">buf</span>.<span class="ident">extend</span>(<span class="ident">iter</span>);
         <span class="ident">buf</span>
@@ -4758,15 +4775,15 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;herd_cows&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.19.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
-    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) -&gt; <span class="ident">String</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iterator</span> <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">into_iter</span>();
 
         <span class="comment">// Because we&#39;re iterating over CoWs, we can (potentially) avoid at least</span>
         <span class="comment">// one allocation by getting the first item and appending to it all the</span>
         <span class="comment">// subsequent items.</span>
         <span class="kw">match</span> <span class="ident">iterator</span>.<span class="ident">next</span>() {
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">String::new</span>(),
-            <span class="prelude-val">Some</span>(<span class="ident">cow</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">None</span> =&gt; <span class="ident">String::new</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">cow</span>) =&gt; {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">cow</span>.<span class="ident">into_owned</span>();
                 <span class="ident">buf</span>.<span class="ident">extend</span>(<span class="ident">iterator</span>);
                 <span class="ident">buf</span>
@@ -4876,32 +4893,32 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span> <span class="ident">Pattern</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="ident">String</span> {
     <span class="kw">type</span> <span class="ident">Searcher</span> <span class="op">=</span> <span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="ident">str</span> <span class="kw">as</span> <span class="ident">Pattern</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Searcher</span>;
 
-    <span class="kw">fn</span> <span class="ident">into_searcher</span>(<span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="ident">str</span> <span class="kw">as</span> <span class="ident">Pattern</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Searcher</span> {
+    <span class="kw">fn</span> <span class="ident">into_searcher</span>(<span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) -&gt; <span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="ident">str</span> <span class="kw">as</span> <span class="ident">Pattern</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Searcher</span> {
         <span class="self">self</span>[..].<span class="ident">into_searcher</span>(<span class="ident">haystack</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">is_contained_in</span>(<span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">is_contained_in</span>(<span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>[..].<span class="ident">is_contained_in</span>(<span class="ident">haystack</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">is_prefix_of</span>(<span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">is_prefix_of</span>(<span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>[..].<span class="ident">is_prefix_of</span>(<span class="ident">haystack</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">strip_prefix_of</span>(<span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">strip_prefix_of</span>(<span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="self">self</span>[..].<span class="ident">strip_prefix_of</span>(<span class="ident">haystack</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">is_suffix_of</span>(<span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">is_suffix_of</span>(<span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>[..].<span class="ident">is_suffix_of</span>(<span class="ident">haystack</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">strip_suffix_of</span>(<span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">strip_suffix_of</span>(<span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="self">self</span>[..].<span class="ident">strip_suffix_of</span>(<span class="ident">haystack</span>)
     }
 }
@@ -4909,26 +4926,26 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">String</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">PartialEq::eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>[..], <span class="kw-2">&amp;</span><span class="ident">other</span>[..])
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">String</span>) -&gt; <span class="ident">bool</span> {
         <span class="ident">PartialEq::ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>[..], <span class="kw-2">&amp;</span><span class="ident">other</span>[..])
     }
 }
 
 <span class="macro">macro_rules!</span> <span class="ident">impl_eq</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">lhs</span>:<span class="ident">ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rhs</span>: <span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">lhs</span>:<span class="ident">ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rhs</span>: <span class="ident">ty</span>) =&gt; {
         <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_lifetimes</span>)]</span>
         <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span> <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">rhs</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">lhs</span> {
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">rhs</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+            <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">rhs</span>) -&gt; <span class="ident">bool</span> {
                 <span class="ident">PartialEq::eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>[..], <span class="kw-2">&amp;</span><span class="ident">other</span>[..])
             }
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">rhs</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+            <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">rhs</span>) -&gt; <span class="ident">bool</span> {
                 <span class="ident">PartialEq::ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>[..], <span class="kw-2">&amp;</span><span class="ident">other</span>[..])
             }
         }
@@ -4937,11 +4954,11 @@
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_lifetimes</span>)]</span>
         <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span> <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">lhs</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rhs</span> {
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">lhs</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+            <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">lhs</span>) -&gt; <span class="ident">bool</span> {
                 <span class="ident">PartialEq::eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>[..], <span class="kw-2">&amp;</span><span class="ident">other</span>[..])
             }
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">lhs</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+            <span class="kw">fn</span> <span class="ident">ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">lhs</span>) -&gt; <span class="ident">bool</span> {
                 <span class="ident">PartialEq::ne</span>(<span class="kw-2">&amp;</span><span class="self">self</span>[..], <span class="kw-2">&amp;</span><span class="ident">other</span>[..])
             }
         }
@@ -4958,10 +4975,11 @@
 <span class="macro">impl_eq!</span> { <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">String</span> }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">String</span> {
+<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_default_impls&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;87864&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="kw">const</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="doccomment">/// Creates an empty `String`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="ident">String</span> {
         <span class="ident">String::new</span>()
     }
 }
@@ -4969,7 +4987,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Display::fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">f</span>)
     }
 }
@@ -4977,7 +4995,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Debug::fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">f</span>)
     }
 }
@@ -5033,7 +5051,7 @@
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">String</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">String</span> {
         <span class="self">self</span>.<span class="ident">push_str</span>(<span class="ident">other</span>);
         <span class="self">self</span>
     }
@@ -5056,7 +5074,7 @@
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">str</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::Range</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::Range</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>[..][<span class="ident">index</span>]
     }
 }
@@ -5065,7 +5083,7 @@
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">str</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::RangeTo</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::RangeTo</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>[..][<span class="ident">index</span>]
     }
 }
@@ -5074,7 +5092,7 @@
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">str</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::RangeFrom</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::RangeFrom</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>[..][<span class="ident">index</span>]
     }
 }
@@ -5083,7 +5101,7 @@
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">str</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_index</span>: <span class="ident">ops::RangeFull</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_index</span>: <span class="ident">ops::RangeFull</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="kw">unsafe</span> { <span class="ident">str::from_utf8_unchecked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">vec</span>) }
     }
 }
@@ -5092,7 +5110,7 @@
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">str</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::RangeInclusive</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::RangeInclusive</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="ident">Index::index</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">index</span>)
     }
 }
@@ -5101,7 +5119,7 @@
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">str</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::RangeToInclusive</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::RangeToInclusive</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="ident">Index::index</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">index</span>)
     }
 }
@@ -5109,42 +5127,42 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derefmut_for_string&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.3.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ops::IndexMut</span><span class="op">&lt;</span><span class="ident">ops::Range</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::Range</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::Range</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>[..][<span class="ident">index</span>]
     }
 }
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derefmut_for_string&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.3.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ops::IndexMut</span><span class="op">&lt;</span><span class="ident">ops::RangeTo</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::RangeTo</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::RangeTo</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>[..][<span class="ident">index</span>]
     }
 }
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derefmut_for_string&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.3.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ops::IndexMut</span><span class="op">&lt;</span><span class="ident">ops::RangeFrom</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::RangeFrom</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::RangeFrom</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>[..][<span class="ident">index</span>]
     }
 }
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derefmut_for_string&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.3.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ops::IndexMut</span><span class="op">&lt;</span><span class="ident">ops::RangeFull</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_index</span>: <span class="ident">ops::RangeFull</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_index</span>: <span class="ident">ops::RangeFull</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="kw">unsafe</span> { <span class="ident">str::from_utf8_unchecked_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">vec</span>) }
     }
 }
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inclusive_range&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.26.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ops::IndexMut</span><span class="op">&lt;</span><span class="ident">ops::RangeInclusive</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::RangeInclusive</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::RangeInclusive</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="ident">IndexMut::index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">index</span>)
     }
 }
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inclusive_range&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.26.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ops::IndexMut</span><span class="op">&lt;</span><span class="ident">ops::RangeToInclusive</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::RangeToInclusive</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">ops::RangeToInclusive</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="ident">IndexMut::index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">index</span>)
     }
 }
@@ -5154,7 +5172,7 @@
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">str</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="kw">unsafe</span> { <span class="ident">str::from_utf8_unchecked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">vec</span>) }
     }
 }
@@ -5162,7 +5180,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derefmut_for_string&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.3.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ops::DerefMut</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="kw">unsafe</span> { <span class="ident">str::from_utf8_unchecked_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">vec</span>) }
     }
 }
@@ -5171,7 +5189,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// This alias exists for backwards compatibility, and may be eventually deprecated.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`Infallible`]: core::convert::Infallible</span>
+<span class="doccomment">/// [`Infallible`]: core::convert::Infallible &quot;convert::Infallible&quot;</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;str_parse_error&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.5.0&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ParseError</span> <span class="op">=</span> <span class="ident">core::convert::Infallible</span>;
 
@@ -5180,7 +5198,7 @@
 <span class="kw">impl</span> <span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="kw">type</span> <span class="prelude-val">Err</span> <span class="op">=</span> <span class="ident">core::convert::Infallible</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="self">Self</span><span class="ident">::Err</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident"><span class="self">Self</span>::Err</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="ident">String::from</span>(<span class="ident">s</span>))
     }
 }
@@ -5210,7 +5228,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">rustc_conversion_suggestion</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span>;
+    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span>;
 }
 
 <span class="doccomment">/// # Panics</span>
@@ -5227,7 +5245,7 @@
     <span class="comment">// See &lt;https://github.com/rust-lang/rust/pull/74852&gt;, the last attempt</span>
     <span class="comment">// to try to remove it.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">formatter</span> <span class="op">=</span> <span class="ident">core::fmt::Formatter::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>);
         <span class="comment">// Bypass format_args!() to avoid write_str with zero-length strs</span>
@@ -5241,7 +5259,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;char_to_string_specialization&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.46.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ToString</span> <span class="kw">for</span> <span class="ident">char</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="ident">String::from</span>(<span class="self">self</span>.<span class="ident">encode_utf8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0</span>; <span class="number">4</span>]))
     }
 }
@@ -5250,7 +5268,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;u8_to_string_specialization&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.54.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ToString</span> <span class="kw">for</span> <span class="ident">u8</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::with_capacity</span>(<span class="number">3</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">n</span> <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>;
         <span class="kw">if</span> <span class="ident">n</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">10</span> {
@@ -5270,7 +5288,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;i8_to_string_specialization&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.54.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ToString</span> <span class="kw">for</span> <span class="ident">i8</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::with_capacity</span>(<span class="number">4</span>);
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_negative</span>() {
             <span class="ident">buf</span>.<span class="ident">push</span>(<span class="string">&#39;-&#39;</span>);
@@ -5293,7 +5311,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;str_to_string_specialization&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.9.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ToString</span> <span class="kw">for</span> <span class="ident">str</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="ident">String::from</span>(<span class="self">self</span>)
     }
 }
@@ -5302,7 +5320,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cow_str_to_string_specialization&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.17.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ToString</span> <span class="kw">for</span> <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">str</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="self">self</span>[..].<span class="ident">to_owned</span>()
     }
 }
@@ -5311,7 +5329,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;string_to_string_specialization&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.17.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ToString</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
         <span class="self">self</span>.<span class="ident">to_owned</span>()
     }
 }
@@ -5319,7 +5337,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="self">self</span>
     }
 }
@@ -5327,7 +5345,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;string_as_mut&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.43.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">AsMut</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="self">self</span>
     }
 }
@@ -5335,7 +5353,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
+    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
         <span class="self">self</span>.<span class="ident">as_bytes</span>()
     }
 }
@@ -5347,7 +5365,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// The result is allocated on the heap.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">String</span> {
         <span class="ident">s</span>.<span class="ident">to_owned</span>()
     }
 }
@@ -5359,7 +5377,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// The result is allocated on the heap.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">str</span>) -&gt; <span class="ident">String</span> {
         <span class="ident">s</span>.<span class="ident">to_owned</span>()
     }
 }
@@ -5371,7 +5389,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This clones `s` and returns the clone.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">String</span>) -&gt; <span class="ident">String</span> {
         <span class="ident">s</span>.<span class="ident">clone</span>()
     }
 }
@@ -5394,7 +5412,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(&quot;hello world&quot;, s3)</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="ident">String</span> {
         <span class="ident">s</span>.<span class="ident">into_string</span>()
     }
 }
@@ -5415,7 +5433,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(&quot;hello world&quot;, s3)</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">String</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> {
         <span class="ident">s</span>.<span class="ident">into_boxed_str</span>()
     }
 }
@@ -5439,7 +5457,7 @@
     <span class="doccomment">/// let owned: String = String::from(cow);</span>
     <span class="doccomment">/// assert_eq!(&amp;owned[..], &quot;eggplant&quot;);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="ident">String</span> {
         <span class="ident">s</span>.<span class="ident">into_owned</span>()
     }
 }
@@ -5458,9 +5476,9 @@
     <span class="doccomment">/// assert_eq!(Cow::from(&quot;eggplant&quot;), Cow::Borrowed(&quot;eggplant&quot;));</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Borrowed`]: crate::borrow::Cow::Borrowed</span>
+    <span class="doccomment">/// [`Borrowed`]: crate::borrow::Cow::Borrowed &quot;borrow::Cow::Borrowed&quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) -&gt; <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="ident">Cow::Borrowed</span>(<span class="ident">s</span>)
     }
 }
@@ -5481,9 +5499,9 @@
     <span class="doccomment">/// assert_eq!(Cow::from(s), Cow::&lt;&#39;static, str&gt;::Owned(s2));</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Owned`]: crate::borrow::Cow::Owned</span>
+    <span class="doccomment">/// [`Owned`]: crate::borrow::Cow::Owned &quot;borrow::Cow::Owned&quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">String</span>) -&gt; <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="ident">Cow::Owned</span>(<span class="ident">s</span>)
     }
 }
@@ -5503,9 +5521,9 @@
     <span class="doccomment">/// assert_eq!(Cow::from(&amp;s), Cow::Borrowed(&quot;eggplant&quot;));</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Borrowed`]: crate::borrow::Cow::Borrowed</span>
+    <span class="doccomment">/// [`Borrowed`]: crate::borrow::Cow::Borrowed &quot;borrow::Cow::Borrowed&quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">String</span>) -&gt; <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="ident">Cow::Borrowed</span>(<span class="ident">s</span>.<span class="ident">as_str</span>())
     }
 }
@@ -5513,7 +5531,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cow_str_from_iter&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.12.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">char</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">it</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">char</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">it</span>: <span class="ident">I</span>) -&gt; <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="ident">Cow::Owned</span>(<span class="ident">FromIterator::from_iter</span>(<span class="ident">it</span>))
     }
 }
@@ -5521,7 +5539,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cow_str_from_iter&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.12.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span> <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">it</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">it</span>: <span class="ident">I</span>) -&gt; <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="ident">Cow::Owned</span>(<span class="ident">FromIterator::from_iter</span>(<span class="ident">it</span>))
     }
 }
@@ -5529,7 +5547,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cow_str_from_iter&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.12.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">it</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">it</span>: <span class="ident">I</span>) -&gt; <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="ident">Cow::Owned</span>(<span class="ident">FromIterator::from_iter</span>(<span class="ident">it</span>))
     }
 }
@@ -5550,7 +5568,7 @@
     <span class="doccomment">///     println!(&quot;{}&quot;, b);</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">string</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">string</span>: <span class="ident">String</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
         <span class="ident">string</span>.<span class="ident">into_bytes</span>()
     }
 }
@@ -5559,13 +5577,13 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Write</span> <span class="kw">for</span> <span class="ident">String</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="ident">push_str</span>(<span class="ident">s</span>);
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">write_char</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">write_char</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="ident">push</span>(<span class="ident">c</span>);
         <span class="prelude-val">Ok</span>(())
     }
@@ -5591,7 +5609,7 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;collection_debug&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.17.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Drain</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_tuple</span>(<span class="string">&quot;Drain&quot;</span>).<span class="ident">field</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_str</span>()).<span class="ident">finish</span>()
     }
 }
@@ -5621,49 +5639,48 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(string_drain_as_str)]</span>
     <span class="doccomment">/// let mut s = String::from(&quot;abc&quot;);</span>
     <span class="doccomment">/// let mut drain = s.drain(..);</span>
     <span class="doccomment">/// assert_eq!(drain.as_str(), &quot;abc&quot;);</span>
     <span class="doccomment">/// let _ = drain.next().unwrap();</span>
     <span class="doccomment">/// assert_eq!(drain.as_str(), &quot;bc&quot;);</span>
     <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;string_drain_as_str&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76905&quot;</span>)]</span> <span class="comment">// Note: uncomment AsRef impls below when stabilizing.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;string_drain_as_str&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.55.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">as_str</span>()
     }
 }
 
-<span class="comment">// Uncomment when stabilizing `string_drain_as_str`.</span>
-<span class="comment">// #[unstable(feature = &quot;string_drain_as_str&quot;, issue = &quot;76905&quot;)]</span>
-<span class="comment">// impl&lt;&#39;a&gt; AsRef&lt;str&gt; for Drain&lt;&#39;a&gt; {</span>
-<span class="comment">//     fn as_ref(&amp;self) -&gt; &amp;str {</span>
-<span class="comment">//         self.as_str()</span>
-<span class="comment">//     }</span>
-<span class="comment">// }</span>
-<span class="comment">//</span>
-<span class="comment">// #[unstable(feature = &quot;string_drain_as_str&quot;, issue = &quot;76905&quot;)]</span>
-<span class="comment">// impl&lt;&#39;a&gt; AsRef&lt;[u8]&gt; for Drain&lt;&#39;a&gt; {</span>
-<span class="comment">//     fn as_ref(&amp;self) -&gt; &amp;[u8] {</span>
-<span class="comment">//         self.as_str().as_bytes()</span>
-<span class="comment">//     }</span>
-<span class="comment">// }</span>
+<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;string_drain_as_str&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.55.0&quot;</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Drain</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
+        <span class="self">self</span>.<span class="ident">as_str</span>()
+    }
+}
+
+<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;string_drain_as_str&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.55.0&quot;</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Drain</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
+        <span class="self">self</span>.<span class="ident">as_str</span>().<span class="ident">as_bytes</span>()
+    }
+}
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;drain&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.6.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">Drain</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">char</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">size_hint</span>()
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">last</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">last</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">next_back</span>()
     }
 }
@@ -5671,7 +5688,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;drain&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.6.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">DoubleEndedIterator</span> <span class="kw">for</span> <span class="ident">Drain</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next_back</span>()
     }
 }
@@ -5691,9 +5708,11 @@
     <span class="doccomment">/// assert_eq!(&quot;a&quot;, &amp;s[..]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">c</span>: <span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">c</span>: <span class="ident">char</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">c</span>.<span class="ident">to_string</span>()
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="alloc" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="alloc" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
+</body></html>
