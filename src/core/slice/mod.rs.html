@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;slice&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;slice&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -3581,6 +3582,25 @@
 <span id="3581">3581</span>
 <span id="3582">3582</span>
 <span id="3583">3583</span>
+<span id="3584">3584</span>
+<span id="3585">3585</span>
+<span id="3586">3586</span>
+<span id="3587">3587</span>
+<span id="3588">3588</span>
+<span id="3589">3589</span>
+<span id="3590">3590</span>
+<span id="3591">3591</span>
+<span id="3592">3592</span>
+<span id="3593">3593</span>
+<span id="3594">3594</span>
+<span id="3595">3595</span>
+<span id="3596">3596</span>
+<span id="3597">3597</span>
+<span id="3598">3598</span>
+<span id="3599">3599</span>
+<span id="3600">3600</span>
+<span id="3601">3601</span>
+<span id="3602">3602</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Slice management and manipulation.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! For more details see [`std::slice`].</span>
@@ -3740,7 +3760,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_slice_first_last&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;83570&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">first_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">first_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">first</span>, ..] <span class="op">=</span> <span class="self">self</span> { <span class="prelude-val">Some</span>(<span class="ident">first</span>) } <span class="kw">else</span> { <span class="prelude-val">None</span> }
     }
 
@@ -3780,7 +3800,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_splits&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.5.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_slice_first_last&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;83570&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">split_first_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>])<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">split_first_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="kw-2">&amp;mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>])<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">first</span>, <span class="ident">tail</span> @ ..] <span class="op">=</span> <span class="self">self</span> { <span class="prelude-val">Some</span>((<span class="ident">first</span>, <span class="ident">tail</span>)) } <span class="kw">else</span> { <span class="prelude-val">None</span> }
     }
 
@@ -3820,7 +3840,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_splits&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.5.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_slice_first_last&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;83570&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">split_last_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>])<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">split_last_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="kw-2">&amp;mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>])<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">init</span> @ .., <span class="ident">last</span>] <span class="op">=</span> <span class="self">self</span> { <span class="prelude-val">Some</span>((<span class="ident">last</span>, <span class="ident">init</span>)) } <span class="kw">else</span> { <span class="prelude-val">None</span> }
     }
 
@@ -3857,7 +3877,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_slice_first_last&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;83570&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">last_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">last_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="kw">let</span> [.., <span class="ident">last</span>] <span class="op">=</span> <span class="self">self</span> { <span class="prelude-val">Some</span>(<span class="ident">last</span>) } <span class="kw">else</span> { <span class="prelude-val">None</span> }
     }
 
@@ -3904,7 +3924,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">I</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">I::Output</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">I</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">I::Output</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">I</span>: <span class="ident">SliceIndex</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
     {
@@ -3971,14 +3991,14 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_unchecked_mut</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">I</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">I::Output</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_unchecked_mut</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">I</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">I::Output</span>
     <span class="kw">where</span>
         <span class="ident">I</span>: <span class="ident">SliceIndex</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
     {
         <span class="comment">// SAFETY: the caller must uphold the safety requirements for `get_unchecked_mut`;</span>
         <span class="comment">// the slice is dereferencable because `self` is a safe reference.</span>
         <span class="comment">// The returned pointer is safe because impls of `SliceIndex` have to guarantee that it is.</span>
-        <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">index</span>.<span class="ident">get_unchecked_mut</span>(<span class="self">self</span>) }
+        <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">index</span>.<span class="ident">get_unchecked_mut</span>(<span class="self">self</span>) }
     }
 
     <span class="doccomment">/// Returns a raw pointer to the slice&#39;s buffer.</span>
@@ -4010,8 +4030,8 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_slice_as_ptr&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.32.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> {
-        <span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> [<span class="ident">T</span>] <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const</span> <span class="ident">T</span> {
+        <span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*const</span> [<span class="ident">T</span>] <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">T</span>
     }
 
     <span class="doccomment">/// Returns an unsafe mutable pointer to the slice&#39;s buffer.</span>
@@ -4038,8 +4058,8 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ptr_offset&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;71499&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
-        <span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> [<span class="ident">T</span>] <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">T</span> {
+        <span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*mut</span> [<span class="ident">T</span>] <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>
     }
 
     <span class="doccomment">/// Returns the two raw pointers spanning the slice.</span>
@@ -4073,7 +4093,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_ptr_range&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.48.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ptr_offset&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;71499&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">as_ptr_range</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Range</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">as_ptr_range</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Range</span><span class="op">&lt;</span><span class="kw-2">*const</span> <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_ptr</span>();
         <span class="comment">// SAFETY: The `add` here is safe, because:</span>
         <span class="comment">//</span>
@@ -4115,7 +4135,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_ptr_range&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.48.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ptr_offset&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;71499&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr_range</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">Range</span><span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">as_mut_ptr_range</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">Range</span><span class="op">&lt;</span><span class="kw-2">*mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut_ptr</span>();
         <span class="comment">// SAFETY: See as_ptr_range() above for why `add` here is safe.</span>
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">start</span>.<span class="ident">add</span>(<span class="self">self</span>.<span class="ident">len</span>()) };
@@ -4136,13 +4156,14 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// let mut v = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;];</span>
-    <span class="doccomment">/// v.swap(1, 3);</span>
-    <span class="doccomment">/// assert!(v == [&quot;a&quot;, &quot;d&quot;, &quot;c&quot;, &quot;b&quot;]);</span>
+    <span class="doccomment">/// let mut v = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;];</span>
+    <span class="doccomment">/// v.swap(2, 4);</span>
+    <span class="doccomment">/// assert!(v == [&quot;a&quot;, &quot;b&quot;, &quot;e&quot;, &quot;d&quot;, &quot;c&quot;]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_swap&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;83163&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">a</span>: <span class="ident">usize</span>, <span class="ident">b</span>: <span class="ident">usize</span>) {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">a</span>: <span class="ident">usize</span>, <span class="ident">b</span>: <span class="ident">usize</span>) {
         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>[<span class="ident">a</span>];
         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>[<span class="ident">b</span>];
 
@@ -4178,7 +4199,8 @@
     <span class="doccomment">/// [`swap`]: slice::swap</span>
     <span class="doccomment">/// [undefined behavior]: https://doc.rust-lang.org/reference/behavior-considered-undefined.html</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_swap_unchecked&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;88539&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">swap_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">a</span>: <span class="ident">usize</span>, <span class="ident">b</span>: <span class="ident">usize</span>) {
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_swap&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;83163&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">swap_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">a</span>: <span class="ident">usize</span>, <span class="ident">b</span>: <span class="ident">usize</span>) {
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
         {
             <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>[<span class="ident">a</span>];
@@ -4203,101 +4225,42 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reverse</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">i</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">ln</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reverse</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="kw">let</span> <span class="ident">half_len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>() <span class="op">/</span> <span class="number">2</span>;
+        <span class="kw">let</span> <span class="ident">Range</span> { <span class="ident">start</span>, <span class="ident">end</span> } <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut_ptr_range</span>();
 
-        <span class="comment">// For very small types, all the individual reads in the normal</span>
-        <span class="comment">// path perform poorly.  We can do better, given efficient unaligned</span>
-        <span class="comment">// load/store, by loading a larger chunk and reversing a register.</span>
-
-        <span class="comment">// Ideally LLVM would do this for us, as it knows better than we do</span>
-        <span class="comment">// whether unaligned reads are efficient (since that changes between</span>
-        <span class="comment">// different ARM versions, for example) and what the best chunk size</span>
-        <span class="comment">// would be.  Unfortunately, as of LLVM 4.0 (2017-05) it only unrolls</span>
-        <span class="comment">// the loop, so we need to do this ourselves.  (Hypothesis: reverse</span>
-        <span class="comment">// is troublesome because the sides can be aligned differently --</span>
-        <span class="comment">// will be, when the length is odd -- so there&#39;s no way of emitting</span>
-        <span class="comment">// pre- and postludes to use fully-aligned SIMD in the middle.)</span>
-
-        <span class="kw">let</span> <span class="ident">fast_unaligned</span> <span class="op">=</span> <span class="macro">cfg!</span>(<span class="ident">any</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86&quot;</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86_64&quot;</span>));
-
-        <span class="kw">if</span> <span class="ident">fast_unaligned</span> <span class="op">&amp;&amp;</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">==</span> <span class="number">1</span> {
-            <span class="comment">// Use the llvm.bswap intrinsic to reverse u8s in a usize</span>
-            <span class="kw">let</span> <span class="ident">chunk</span> <span class="op">=</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>();
-            <span class="kw">while</span> <span class="ident">i</span> <span class="op">+</span> <span class="ident">chunk</span> <span class="op">-</span> <span class="number">1</span> <span class="op">&lt;</span> <span class="ident">ln</span> <span class="op">/</span> <span class="number">2</span> {
-                <span class="comment">// SAFETY: There are several things to check here:</span>
-                <span class="comment">//</span>
-                <span class="comment">// - Note that `chunk` is either 4 or 8 due to the cfg check</span>
-                <span class="comment">//   above. So `chunk - 1` is positive.</span>
-                <span class="comment">// - Indexing with index `i` is fine as the loop check guarantees</span>
-                <span class="comment">//   `i + chunk - 1 &lt; ln / 2`</span>
-                <span class="comment">//   &lt;=&gt; `i &lt; ln / 2 - (chunk - 1) &lt; ln / 2 &lt; ln`.</span>
-                <span class="comment">// - Indexing with index `ln - i - chunk = ln - (i + chunk)` is fine:</span>
-                <span class="comment">//   - `i + chunk &gt; 0` is trivially true.</span>
-                <span class="comment">//   - The loop check guarantees:</span>
-                <span class="comment">//     `i + chunk - 1 &lt; ln / 2`</span>
-                <span class="comment">//     &lt;=&gt; `i + chunk ≤ ln / 2 ≤ ln`, thus subtraction does not underflow.</span>
-                <span class="comment">// - The `read_unaligned` and `write_unaligned` calls are fine:</span>
-                <span class="comment">//   - `pa` points to index `i` where `i &lt; ln / 2 - (chunk - 1)`</span>
-                <span class="comment">//     (see above) and `pb` points to index `ln - i - chunk`, so</span>
-                <span class="comment">//     both are at least `chunk`</span>
-                <span class="comment">//     many bytes away from the end of `self`.</span>
-                <span class="comment">//   - Any initialized memory is valid `usize`.</span>
-                <span class="kw">unsafe</span> {
-                    <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut_ptr</span>();
-                    <span class="kw">let</span> <span class="ident">pa</span> <span class="op">=</span> <span class="ident">ptr</span>.<span class="ident">add</span>(<span class="ident">i</span>);
-                    <span class="kw">let</span> <span class="ident">pb</span> <span class="op">=</span> <span class="ident">ptr</span>.<span class="ident">add</span>(<span class="ident">ln</span> <span class="op">-</span> <span class="ident">i</span> <span class="op">-</span> <span class="ident">chunk</span>);
-                    <span class="kw">let</span> <span class="ident">va</span> <span class="op">=</span> <span class="ident">ptr::read_unaligned</span>(<span class="ident">pa</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">usize</span>);
-                    <span class="kw">let</span> <span class="ident">vb</span> <span class="op">=</span> <span class="ident">ptr::read_unaligned</span>(<span class="ident">pb</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">usize</span>);
-                    <span class="ident">ptr::write_unaligned</span>(<span class="ident">pa</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">usize</span>, <span class="ident">vb</span>.<span class="ident">swap_bytes</span>());
-                    <span class="ident">ptr::write_unaligned</span>(<span class="ident">pb</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">usize</span>, <span class="ident">va</span>.<span class="ident">swap_bytes</span>());
-                }
-                <span class="ident">i</span> <span class="op">+</span><span class="op">=</span> <span class="ident">chunk</span>;
-            }
-        }
-
-        <span class="kw">if</span> <span class="ident">fast_unaligned</span> <span class="op">&amp;&amp;</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">==</span> <span class="number">2</span> {
-            <span class="comment">// Use rotate-by-16 to reverse u16s in a u32</span>
-            <span class="kw">let</span> <span class="ident">chunk</span> <span class="op">=</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>() <span class="op">/</span> <span class="number">2</span>;
-            <span class="kw">while</span> <span class="ident">i</span> <span class="op">+</span> <span class="ident">chunk</span> <span class="op">-</span> <span class="number">1</span> <span class="op">&lt;</span> <span class="ident">ln</span> <span class="op">/</span> <span class="number">2</span> {
-                <span class="comment">// SAFETY: An unaligned u32 can be read from `i` if `i + 1 &lt; ln`</span>
-                <span class="comment">// (and obviously `i &lt; ln`), because each element is 2 bytes and</span>
-                <span class="comment">// we&#39;re reading 4.</span>
-                <span class="comment">//</span>
-                <span class="comment">// `i + chunk - 1 &lt; ln / 2` # while condition</span>
-                <span class="comment">// `i + 2 - 1 &lt; ln / 2`</span>
-                <span class="comment">// `i + 1 &lt; ln / 2`</span>
-                <span class="comment">//</span>
-                <span class="comment">// Since it&#39;s less than the length divided by 2, then it must be</span>
-                <span class="comment">// in bounds.</span>
-                <span class="comment">//</span>
-                <span class="comment">// This also means that the condition `0 &lt; i + chunk &lt;= ln` is</span>
-                <span class="comment">// always respected, ensuring the `pb` pointer can be used</span>
-                <span class="comment">// safely.</span>
-                <span class="kw">unsafe</span> {
-                    <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut_ptr</span>();
-                    <span class="kw">let</span> <span class="ident">pa</span> <span class="op">=</span> <span class="ident">ptr</span>.<span class="ident">add</span>(<span class="ident">i</span>);
-                    <span class="kw">let</span> <span class="ident">pb</span> <span class="op">=</span> <span class="ident">ptr</span>.<span class="ident">add</span>(<span class="ident">ln</span> <span class="op">-</span> <span class="ident">i</span> <span class="op">-</span> <span class="ident">chunk</span>);
-                    <span class="kw">let</span> <span class="ident">va</span> <span class="op">=</span> <span class="ident">ptr::read_unaligned</span>(<span class="ident">pa</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u32</span>);
-                    <span class="kw">let</span> <span class="ident">vb</span> <span class="op">=</span> <span class="ident">ptr::read_unaligned</span>(<span class="ident">pb</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u32</span>);
-                    <span class="ident">ptr::write_unaligned</span>(<span class="ident">pa</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u32</span>, <span class="ident">vb</span>.<span class="ident">rotate_left</span>(<span class="number">16</span>));
-                    <span class="ident">ptr::write_unaligned</span>(<span class="ident">pb</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u32</span>, <span class="ident">va</span>.<span class="ident">rotate_left</span>(<span class="number">16</span>));
-                }
-                <span class="ident">i</span> <span class="op">+</span><span class="op">=</span> <span class="ident">chunk</span>;
-            }
-        }
-
-        <span class="kw">while</span> <span class="ident">i</span> <span class="op">&lt;</span> <span class="ident">ln</span> <span class="op">/</span> <span class="number">2</span> {
-            <span class="comment">// SAFETY: `i` is inferior to half the length of the slice so</span>
-            <span class="comment">// accessing `i` and `ln - i - 1` is safe (`i` starts at 0 and</span>
-            <span class="comment">// will not go further than `ln / 2 - 1`).</span>
-            <span class="comment">// The resulting pointers `pa` and `pb` are therefore valid and</span>
-            <span class="comment">// aligned, and can be read from and written to.</span>
+        <span class="comment">// These slices will skip the middle item for an odd length,</span>
+        <span class="comment">// since that one doesn&#39;t need to move.</span>
+        <span class="kw">let</span> (<span class="ident">front_half</span>, <span class="ident">back_half</span>) <span class="op">=</span>
+            <span class="comment">// SAFETY: Both are subparts of the original slice, so the memory</span>
+            <span class="comment">// range is valid, and they don&#39;t overlap because they&#39;re each only</span>
+            <span class="comment">// half (or less) of the original slice.</span>
             <span class="kw">unsafe</span> {
-                <span class="self">self</span>.<span class="ident">swap_unchecked</span>(<span class="ident">i</span>, <span class="ident">ln</span> <span class="op">-</span> <span class="ident">i</span> <span class="op">-</span> <span class="number">1</span>);
+                (
+                    <span class="ident">slice::from_raw_parts_mut</span>(<span class="ident">start</span>, <span class="ident">half_len</span>),
+                    <span class="ident">slice::from_raw_parts_mut</span>(<span class="ident">end</span>.<span class="ident">sub</span>(<span class="ident">half_len</span>), <span class="ident">half_len</span>),
+                )
+            };
+
+        <span class="comment">// Introducing a function boundary here means that the two halves</span>
+        <span class="comment">// get `noalias` markers, allowing better optimization as LLVM</span>
+        <span class="comment">// knows that they&#39;re disjoint, unlike in the original slice.</span>
+        <span class="ident">revswap</span>(<span class="ident">front_half</span>, <span class="ident">back_half</span>, <span class="ident">half_len</span>);
+
+        <span class="attribute">#[<span class="ident">inline</span>]</span>
+        <span class="kw">fn</span> <span class="ident">revswap</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="ident">b</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="ident">n</span>: <span class="ident">usize</span>) {
+            <span class="macro">debug_assert_eq!</span>(<span class="ident">a</span>.<span class="ident">len</span>(), <span class="ident">n</span>);
+            <span class="macro">debug_assert_eq!</span>(<span class="ident">b</span>.<span class="ident">len</span>(), <span class="ident">n</span>);
+
+            <span class="comment">// Because this function is first compiled in isolation,</span>
+            <span class="comment">// this check tells LLVM that the indexing below is</span>
+            <span class="comment">// in-bounds.  Then after inlining -- once the actual</span>
+            <span class="comment">// lengths of the slices are known -- it&#39;s removed.</span>
+            <span class="kw">let</span> (<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span> (<span class="kw-2">&amp;mut</span> <span class="ident">a</span>[..<span class="ident">n</span>], <span class="kw-2">&amp;mut</span> <span class="ident">b</span>[..<span class="ident">n</span>]);
+
+            <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">n</span> {
+                <span class="ident">mem::swap</span>(<span class="kw-2">&amp;mut</span> <span class="ident">a</span>[<span class="ident">i</span>], <span class="kw-2">&amp;mut</span> <span class="ident">b</span>[<span class="ident">n</span> <span class="op">-</span> <span class="number">1</span> <span class="op">-</span> <span class="ident">i</span>]);
             }
-            <span class="ident">i</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
         }
     }
 
@@ -4333,7 +4296,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">iter_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">iter_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">IterMut::new</span>(<span class="self">self</span>)
     }
 
@@ -4437,7 +4400,7 @@
     <span class="doccomment">/// [`rchunks_mut`]: slice::rchunks_mut</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">chunks_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">chunk_size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">ChunksMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">chunks_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">chunk_size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">ChunksMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="macro">assert_ne!</span>(<span class="ident">chunk_size</span>, <span class="number">0</span>);
         <span class="ident">ChunksMut::new</span>(<span class="self">self</span>, <span class="ident">chunk_size</span>)
     }
@@ -4516,7 +4479,7 @@
     <span class="doccomment">/// [`rchunks_exact_mut`]: slice::rchunks_exact_mut</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;chunks_exact&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.31.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">chunks_exact_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">chunk_size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">ChunksExactMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">chunks_exact_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">chunk_size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">ChunksExactMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="macro">assert_ne!</span>(<span class="ident">chunk_size</span>, <span class="number">0</span>);
         <span class="ident">ChunksExactMut::new</span>(<span class="self">self</span>, <span class="ident">chunk_size</span>)
     }
@@ -4686,7 +4649,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_as_chunks&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;74985&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_chunks_unchecked_mut</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [[<span class="ident">T</span>; <span class="ident">N</span>]] {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">as_chunks_unchecked_mut</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> [[<span class="ident">T</span>; <span class="ident">N</span>]] {
         <span class="macro">debug_assert_ne!</span>(<span class="ident">N</span>, <span class="number">0</span>);
         <span class="macro">debug_assert_eq!</span>(<span class="self">self</span>.<span class="ident">len</span>() <span class="op">%</span> <span class="ident">N</span>, <span class="number">0</span>);
         <span class="kw">let</span> <span class="ident">new_len</span> <span class="op">=</span>
@@ -4723,7 +4686,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_as_chunks&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;74985&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_chunks_mut</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [[<span class="ident">T</span>; <span class="ident">N</span>]], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>]) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_chunks_mut</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; (<span class="kw-2">&amp;mut</span> [[<span class="ident">T</span>; <span class="ident">N</span>]], <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>]) {
         <span class="macro">assert_ne!</span>(<span class="ident">N</span>, <span class="number">0</span>);
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>() <span class="op">/</span> <span class="ident">N</span>;
         <span class="kw">let</span> (<span class="ident">multiple_of_n</span>, <span class="ident">remainder</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">split_at_mut</span>(<span class="ident">len</span> <span class="op">*</span> <span class="ident">N</span>);
@@ -4759,7 +4722,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_as_chunks&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;74985&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_rchunks_mut</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [[<span class="ident">T</span>; <span class="ident">N</span>]]) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_rchunks_mut</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> [[<span class="ident">T</span>; <span class="ident">N</span>]]) {
         <span class="macro">assert_ne!</span>(<span class="ident">N</span>, <span class="number">0</span>);
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>() <span class="op">/</span> <span class="ident">N</span>;
         <span class="kw">let</span> (<span class="ident">remainder</span>, <span class="ident">multiple_of_n</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">split_at_mut</span>(<span class="self">self</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">len</span> <span class="op">*</span> <span class="ident">N</span>);
@@ -4800,7 +4763,7 @@
     <span class="doccomment">/// [`chunks_exact_mut`]: slice::chunks_exact_mut</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_chunks&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;74985&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">array_chunks_mut</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">ArrayChunksMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">array_chunks_mut</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">ArrayChunksMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span> {
         <span class="macro">assert_ne!</span>(<span class="ident">N</span>, <span class="number">0</span>);
         <span class="ident">ArrayChunksMut::new</span>(<span class="self">self</span>)
     }
@@ -4904,7 +4867,7 @@
     <span class="doccomment">/// [`chunks_mut`]: slice::chunks_mut</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rchunks&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.31.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rchunks_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">chunk_size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">RChunksMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rchunks_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">chunk_size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">RChunksMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="macro">assert!</span>(<span class="ident">chunk_size</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>);
         <span class="ident">RChunksMut::new</span>(<span class="self">self</span>, <span class="ident">chunk_size</span>)
     }
@@ -4986,7 +4949,7 @@
     <span class="doccomment">/// [`chunks_exact_mut`]: slice::chunks_exact_mut</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rchunks&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.31.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rchunks_exact_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">chunk_size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">RChunksExactMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rchunks_exact_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">chunk_size</span>: <span class="ident">usize</span>) -&gt; <span class="ident">RChunksExactMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="macro">assert!</span>(<span class="ident">chunk_size</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>);
         <span class="ident">RChunksExactMut::new</span>(<span class="self">self</span>, <span class="ident">chunk_size</span>)
     }
@@ -5074,7 +5037,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_group_by&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;80552&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">group_by_mut</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">pred</span>: <span class="ident">F</span>) -&gt; <span class="ident">GroupByMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">group_by_mut</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">pred</span>: <span class="ident">F</span>) -&gt; <span class="ident">GroupByMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
     {
@@ -5146,7 +5109,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_at_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">mid</span>: <span class="ident">usize</span>) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>]) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_at_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">mid</span>: <span class="ident">usize</span>) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>]) {
         <span class="macro">assert!</span>(<span class="ident">mid</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>());
         <span class="comment">// SAFETY: `[ptr; mid]` and `[mid; len]` are inside `self`, which</span>
         <span class="comment">// fulfills the requirements of `from_raw_parts_mut`.</span>
@@ -5237,7 +5200,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_split_at_unchecked&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;76014&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">split_at_mut_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">mid</span>: <span class="ident">usize</span>) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>]) {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">split_at_mut_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">mid</span>: <span class="ident">usize</span>) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>]) {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut_ptr</span>();
 
@@ -5246,6 +5209,80 @@
         <span class="comment">// `[ptr; mid]` and `[mid; len]` are not overlapping, so returning a mutable reference</span>
         <span class="comment">// is fine.</span>
         <span class="kw">unsafe</span> { (<span class="ident">from_raw_parts_mut</span>(<span class="ident">ptr</span>, <span class="ident">mid</span>), <span class="ident">from_raw_parts_mut</span>(<span class="ident">ptr</span>.<span class="ident">add</span>(<span class="ident">mid</span>), <span class="ident">len</span> <span class="op">-</span> <span class="ident">mid</span>)) }
+    }
+
+    <span class="doccomment">/// Divides one slice into an array and a remainder slice at an index.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The array will contain all indices from `[0, N)` (excluding</span>
+    <span class="doccomment">/// the index `N` itself) and the slice will contain all</span>
+    <span class="doccomment">/// indices from `[N, len)` (excluding the index `len` itself).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Panics if `N &gt; len`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(split_array)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let v = &amp;[1, 2, 3, 4, 5, 6][..];</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///    let (left, right) = v.split_array_ref::&lt;0&gt;();</span>
+    <span class="doccomment">///    assert_eq!(left, &amp;[]);</span>
+    <span class="doccomment">///    assert_eq!(right, [1, 2, 3, 4, 5, 6]);</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let (left, right) = v.split_array_ref::&lt;2&gt;();</span>
+    <span class="doccomment">///     assert_eq!(left, &amp;[1, 2]);</span>
+    <span class="doccomment">///     assert_eq!(right, [3, 4, 5, 6]);</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let (left, right) = v.split_array_ref::&lt;6&gt;();</span>
+    <span class="doccomment">///     assert_eq!(left, &amp;[1, 2, 3, 4, 5, 6]);</span>
+    <span class="doccomment">///     assert_eq!(right, []);</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;split_array&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;90091&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_array_ref</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>], <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) {
+        <span class="kw">let</span> (<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">split_at</span>(<span class="ident">N</span>);
+        <span class="comment">// SAFETY: a points to [T; N]? Yes it&#39;s [T] of length N (checked by split_at)</span>
+        <span class="kw">unsafe</span> { (<span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">a</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> [<span class="ident">T</span>; <span class="ident">N</span>]), <span class="ident">b</span>) }
+    }
+
+    <span class="doccomment">/// Divides one mutable slice into an array and a remainder slice at an index.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The array will contain all indices from `[0, N)` (excluding</span>
+    <span class="doccomment">/// the index `N` itself) and the slice will contain all</span>
+    <span class="doccomment">/// indices from `[N, len)` (excluding the index `len` itself).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Panics if `N &gt; len`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(split_array)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut v = &amp;mut [1, 0, 3, 0, 5, 6][..];</span>
+    <span class="doccomment">/// let (left, right) = v.split_array_mut::&lt;2&gt;();</span>
+    <span class="doccomment">/// assert_eq!(left, &amp;mut [1, 0]);</span>
+    <span class="doccomment">/// assert_eq!(right, [3, 0, 5, 6]);</span>
+    <span class="doccomment">/// left[1] = 2;</span>
+    <span class="doccomment">/// right[1] = 4;</span>
+    <span class="doccomment">/// assert_eq!(v, [1, 2, 3, 4, 5, 6]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;split_array&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;90091&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_array_mut</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>; <span class="ident">N</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>]) {
+        <span class="kw">let</span> (<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">split_at_mut</span>(<span class="ident">N</span>);
+        <span class="comment">// SAFETY: a points to [T; N]? Yes it&#39;s [T] of length N (checked by split_at_mut)</span>
+        <span class="kw">unsafe</span> { (<span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>(<span class="ident">a</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> [<span class="ident">T</span>; <span class="ident">N</span>]), <span class="ident">b</span>) }
     }
 
     <span class="doccomment">/// Returns an iterator over subslices separated by elements that match</span>
@@ -5312,7 +5349,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_mut</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">pred</span>: <span class="ident">F</span>) -&gt; <span class="ident">SplitMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_mut</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">pred</span>: <span class="ident">F</span>) -&gt; <span class="ident">SplitMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
     {
@@ -5372,7 +5409,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;split_inclusive&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.51.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_inclusive_mut</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">pred</span>: <span class="ident">F</span>) -&gt; <span class="ident">SplitInclusiveMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_inclusive_mut</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">pred</span>: <span class="ident">F</span>) -&gt; <span class="ident">SplitInclusiveMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
     {
@@ -5434,7 +5471,7 @@
     <span class="doccomment">///</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_rsplit&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rsplit_mut</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">pred</span>: <span class="ident">F</span>) -&gt; <span class="ident">RSplitMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rsplit_mut</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">pred</span>: <span class="ident">F</span>) -&gt; <span class="ident">RSplitMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
     {
@@ -5488,7 +5525,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">splitn_mut</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>, <span class="ident">pred</span>: <span class="ident">F</span>) -&gt; <span class="ident">SplitNMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">splitn_mut</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>, <span class="ident">pred</span>: <span class="ident">F</span>) -&gt; <span class="ident">SplitNMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
     {
@@ -5544,7 +5581,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rsplitn_mut</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>, <span class="ident">pred</span>: <span class="ident">F</span>) -&gt; <span class="ident">RSplitNMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rsplitn_mut</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>, <span class="ident">pred</span>: <span class="ident">F</span>) -&gt; <span class="ident">RSplitNMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
     {
@@ -5915,7 +5952,7 @@
     <span class="doccomment">/// [pdqsort]: https://github.com/orlp/pdqsort</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;sort_unstable&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.20.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sort_unstable</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sort_unstable</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>)
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Ord</span>,
     {
@@ -5970,7 +6007,7 @@
     <span class="doccomment">/// [pdqsort]: https://github.com/orlp/pdqsort</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;sort_unstable&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.20.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sort_unstable_by</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">compare</span>: <span class="ident">F</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sort_unstable_by</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">compare</span>: <span class="ident">F</span>)
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">Ordering</span>,
     {
@@ -6008,7 +6045,7 @@
     <span class="doccomment">/// [pdqsort]: https://github.com/orlp/pdqsort</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;sort_unstable&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.20.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sort_unstable_by_key</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sort_unstable_by_key</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>)
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">K</span>,
         <span class="ident">K</span>: <span class="ident">Ord</span>,
@@ -6020,7 +6057,7 @@
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_partition_at_index&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;55300&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.49.0&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;use the select_nth_unstable() instead&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">partition_at_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>])
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">partition_at_index</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>])
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Ord</span>,
     {
@@ -6033,10 +6070,10 @@
     <span class="attribute">#[<span class="ident">rustc_deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.49.0&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;use select_nth_unstable_by() instead&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">partition_at_index_by</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">index</span>: <span class="ident">usize</span>,
         <span class="ident">compare</span>: <span class="ident">F</span>,
-    ) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>])
+    ) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>])
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">Ordering</span>,
     {
@@ -6049,10 +6086,10 @@
     <span class="attribute">#[<span class="ident">rustc_deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.49.0&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;use the select_nth_unstable_by_key() instead&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">partition_at_index_by_key</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">F</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">index</span>: <span class="ident">usize</span>,
         <span class="ident">f</span>: <span class="ident">F</span>,
-    ) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>])
+    ) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>])
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">K</span>,
         <span class="ident">K</span>: <span class="ident">Ord</span>,
@@ -6098,12 +6135,12 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_select_nth_unstable&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.49.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">select_nth_unstable</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>])
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">select_nth_unstable</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>])
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Ord</span>,
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="op">|</span><span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">T</span><span class="op">|</span> <span class="ident">a</span>.<span class="ident">lt</span>(<span class="ident">b</span>);
-        <span class="ident">sort::partition_at_index</span>(<span class="self">self</span>, <span class="ident">index</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>)
+        <span class="ident">sort::partition_at_index</span>(<span class="self">self</span>, <span class="ident">index</span>, <span class="kw-2">&amp;mut</span> <span class="ident">f</span>)
     }
 
     <span class="doccomment">/// Reorder the slice with a comparator function such that the element at `index` is at its</span>
@@ -6147,15 +6184,15 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_select_nth_unstable&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.49.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">select_nth_unstable_by</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">index</span>: <span class="ident">usize</span>,
         <span class="kw-2">mut</span> <span class="ident">compare</span>: <span class="ident">F</span>,
-    ) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>])
+    ) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>])
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">Ordering</span>,
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="op">|</span><span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">T</span><span class="op">|</span> <span class="ident">compare</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">==</span> <span class="ident">Less</span>;
-        <span class="ident">sort::partition_at_index</span>(<span class="self">self</span>, <span class="ident">index</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>)
+        <span class="ident">sort::partition_at_index</span>(<span class="self">self</span>, <span class="ident">index</span>, <span class="kw-2">&amp;mut</span> <span class="ident">f</span>)
     }
 
     <span class="doccomment">/// Reorder the slice with a key extraction function such that the element at `index` is at its</span>
@@ -6199,16 +6236,16 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_select_nth_unstable&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.49.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">select_nth_unstable_by_key</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">F</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">index</span>: <span class="ident">usize</span>,
         <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>,
-    ) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>])
+    ) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>])
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">K</span>,
         <span class="ident">K</span>: <span class="ident">Ord</span>,
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">g</span> <span class="op">=</span> <span class="op">|</span><span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">T</span><span class="op">|</span> <span class="ident">f</span>(<span class="ident">a</span>).<span class="ident">lt</span>(<span class="kw-2">&amp;</span><span class="ident">f</span>(<span class="ident">b</span>));
-        <span class="ident">sort::partition_at_index</span>(<span class="self">self</span>, <span class="ident">index</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">g</span>)
+        <span class="ident">sort::partition_at_index</span>(<span class="self">self</span>, <span class="ident">index</span>, <span class="kw-2">&amp;mut</span> <span class="ident">g</span>)
     }
 
     <span class="doccomment">/// Moves all consecutive repeated elements to the end of the slice according to the</span>
@@ -6233,7 +6270,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_partition_dedup&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;54279&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">partition_dedup</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>])
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">partition_dedup</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>])
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">PartialEq</span>,
     {
@@ -6267,9 +6304,9 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_partition_dedup&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;54279&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">partition_dedup_by</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">same_bucket</span>: <span class="ident">F</span>) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>])
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">partition_dedup_by</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">same_bucket</span>: <span class="ident">F</span>) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>])
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;mut</span> <span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
     {
         <span class="comment">// Although we have a mutable reference to `self`, we cannot make</span>
         <span class="comment">// *arbitrary* changes. The `same_bucket` calls could panic, so we</span>
@@ -6330,7 +6367,7 @@
 
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         <span class="kw">if</span> <span class="ident">len</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">1</span> {
-            <span class="kw">return</span> (<span class="self">self</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+            <span class="kw">return</span> (<span class="self">self</span>, <span class="kw-2">&amp;mut</span> []);
         }
 
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut_ptr</span>();
@@ -6357,10 +6394,10 @@
             <span class="kw">while</span> <span class="ident">next_read</span> <span class="op">&lt;</span> <span class="ident">len</span> {
                 <span class="kw">let</span> <span class="ident">ptr_read</span> <span class="op">=</span> <span class="ident">ptr</span>.<span class="ident">add</span>(<span class="ident">next_read</span>);
                 <span class="kw">let</span> <span class="ident">prev_ptr_write</span> <span class="op">=</span> <span class="ident">ptr</span>.<span class="ident">add</span>(<span class="ident">next_write</span> <span class="op">-</span> <span class="number">1</span>);
-                <span class="kw">if</span> <span class="op">!</span><span class="ident">same_bucket</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">ptr_read</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">prev_ptr_write</span>) {
+                <span class="kw">if</span> <span class="op">!</span><span class="ident">same_bucket</span>(<span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">ptr_read</span>, <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">prev_ptr_write</span>) {
                     <span class="kw">if</span> <span class="ident">next_read</span> <span class="op">!</span><span class="op">=</span> <span class="ident">next_write</span> {
                         <span class="kw">let</span> <span class="ident">ptr_write</span> <span class="op">=</span> <span class="ident">prev_ptr_write</span>.<span class="ident">offset</span>(<span class="number">1</span>);
-                        <span class="ident">mem::swap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">ptr_read</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">ptr_write</span>);
+                        <span class="ident">mem::swap</span>(<span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">ptr_read</span>, <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">ptr_write</span>);
                     }
                     <span class="ident">next_write</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
                 }
@@ -6393,9 +6430,9 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_partition_dedup&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;54279&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">partition_dedup_by_key</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">key</span>: <span class="ident">F</span>) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>])
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">partition_dedup_by_key</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">key</span>: <span class="ident">F</span>) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>])
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="ident">K</span>,
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;mut</span> <span class="ident">T</span>) -&gt; <span class="ident">K</span>,
         <span class="ident">K</span>: <span class="ident">PartialEq</span>,
     {
         <span class="self">self</span>.<span class="ident">partition_dedup_by</span>(<span class="op">|</span><span class="ident">a</span>, <span class="ident">b</span><span class="op">|</span> <span class="ident">key</span>(<span class="ident">a</span>) <span class="op">==</span> <span class="ident">key</span>(<span class="ident">b</span>))
@@ -6432,7 +6469,7 @@
     <span class="doccomment">/// assert_eq!(a, [&#39;a&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;, &#39;b&#39;, &#39;f&#39;]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_rotate&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.26.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_left</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">mid</span>: <span class="ident">usize</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_left</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">mid</span>: <span class="ident">usize</span>) {
         <span class="macro">assert!</span>(<span class="ident">mid</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>());
         <span class="kw">let</span> <span class="ident">k</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">mid</span>;
         <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut_ptr</span>();
@@ -6475,7 +6512,7 @@
     <span class="doccomment">/// assert_eq!(a, [&#39;a&#39;, &#39;e&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;f&#39;]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_rotate&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.26.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_right</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">k</span>: <span class="ident">usize</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_right</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">k</span>: <span class="ident">usize</span>) {
         <span class="macro">assert!</span>(<span class="ident">k</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>());
         <span class="kw">let</span> <span class="ident">mid</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">k</span>;
         <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut_ptr</span>();
@@ -6498,7 +6535,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;memset&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_fill&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.50.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fill</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">T</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fill</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">T</span>)
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Clone</span>,
     {
@@ -6523,7 +6560,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;memset&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_fill_with&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.51.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fill_with</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fill_with</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>)
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnMut</span>() -&gt; <span class="ident">T</span>,
     {
@@ -6535,9 +6572,6 @@
     <span class="doccomment">/// Copies the elements from `src` into `self`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The length of `src` must be the same as `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `T` implements `Copy`, it can be more performant to use</span>
-    <span class="doccomment">/// [`copy_from_slice`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
@@ -6588,7 +6622,8 @@
     <span class="doccomment">/// [`copy_from_slice`]: slice::copy_from_slice</span>
     <span class="doccomment">/// [`split_at_mut`]: slice::split_at_mut</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;clone_from_slice&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.7.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clone_from_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>])
+    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clone_from_slice</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>])
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Clone</span>,
     {
@@ -6651,7 +6686,8 @@
     <span class="doccomment">/// [`split_at_mut`]: slice::split_at_mut</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;memcpy&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;copy_from_slice&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.9.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>])
+    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>])
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Copy</span>,
     {
@@ -6705,7 +6741,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;copy_within&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.37.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">track_caller</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">copy_within</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">RangeBounds</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="ident">R</span>, <span class="ident">dest</span>: <span class="ident">usize</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">copy_within</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">RangeBounds</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="ident">R</span>, <span class="ident">dest</span>: <span class="ident">usize</span>)
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Copy</span>,
     {
@@ -6771,7 +6807,8 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`split_at_mut`]: slice::split_at_mut</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;swap_with_slice&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap_with_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>]) {
+    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap_with_slice</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>]) {
         <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">other</span>.<span class="ident">len</span>(), <span class="string">&quot;destination and source slices have different lengths&quot;</span>);
         <span class="comment">// SAFETY: `self` is valid for `self.len()` elements by definition, and `src` was</span>
         <span class="comment">// checked to have the same length. The slices cannot overlap because</span>
@@ -6825,7 +6862,7 @@
                 <span class="comment">// remove all factors of 2 from b</span>
                 <span class="ident">b</span> <span class="op">&gt;</span><span class="op">&gt;</span><span class="op">=</span> <span class="ident">ctz_b</span>;
                 <span class="kw">if</span> <span class="ident">a</span> <span class="op">&gt;</span> <span class="ident">b</span> {
-                    <span class="ident">mem::swap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">a</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">b</span>);
+                    <span class="ident">mem::swap</span>(<span class="kw-2">&amp;mut</span> <span class="ident">a</span>, <span class="kw-2">&amp;mut</span> <span class="ident">b</span>);
                 }
                 <span class="ident">b</span> <span class="op">=</span> <span class="ident">b</span> <span class="op">-</span> <span class="ident">a</span>;
                 <span class="comment">// SAFETY: `b` is checked to be non-zero.</span>
@@ -6902,7 +6939,7 @@
             <span class="kw">unsafe</span> {
                 (
                     <span class="ident">left</span>,
-                    <span class="ident">from_raw_parts</span>(<span class="ident">rest</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">U</span>, <span class="ident">us_len</span>),
+                    <span class="ident">from_raw_parts</span>(<span class="ident">rest</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">U</span>, <span class="ident">us_len</span>),
                     <span class="ident">from_raw_parts</span>(<span class="ident">rest</span>.<span class="ident">as_ptr</span>().<span class="ident">add</span>(<span class="ident">rest</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">ts_len</span>), <span class="ident">ts_len</span>),
                 )
             }
@@ -6940,11 +6977,11 @@
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_align_to&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.30.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">align_to_mut</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; (<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">U</span>], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>]) {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">align_to_mut</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">U</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>]) {
         <span class="comment">// Note that most of this function will be constant-evaluated,</span>
         <span class="kw">if</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>() <span class="op">==</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">==</span> <span class="number">0</span> {
             <span class="comment">// handle ZSTs specially, which is – don&#39;t handle them at all.</span>
-            <span class="kw">return</span> (<span class="self">self</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+            <span class="kw">return</span> (<span class="self">self</span>, <span class="kw-2">&amp;mut</span> [], <span class="kw-2">&amp;mut</span> []);
         }
 
         <span class="comment">// First, find at what point do we split between the first and 2nd slice. Easy with</span>
@@ -6959,7 +6996,7 @@
         <span class="comment">// satisfying its safety constraints.</span>
         <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident"><span class="kw">crate</span>::ptr::align_offset</span>(<span class="ident">ptr</span>, <span class="ident">mem::align_of</span>::<span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>()) };
         <span class="kw">if</span> <span class="ident">offset</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">len</span>() {
-            (<span class="self">self</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [], <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [])
+            (<span class="self">self</span>, <span class="kw-2">&amp;mut</span> [], <span class="kw-2">&amp;mut</span> [])
         } <span class="kw">else</span> {
             <span class="kw">let</span> (<span class="ident">left</span>, <span class="ident">rest</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">split_at_mut</span>(<span class="ident">offset</span>);
             <span class="kw">let</span> (<span class="ident">us_len</span>, <span class="ident">ts_len</span>) <span class="op">=</span> <span class="ident">rest</span>.<span class="ident">align_to_offsets</span>::<span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>();
@@ -6970,7 +7007,7 @@
             <span class="kw">unsafe</span> {
                 (
                     <span class="ident">left</span>,
-                    <span class="ident">from_raw_parts_mut</span>(<span class="ident">mut_ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">U</span>, <span class="ident">us_len</span>),
+                    <span class="ident">from_raw_parts_mut</span>(<span class="ident">mut_ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">U</span>, <span class="ident">us_len</span>),
                     <span class="ident">from_raw_parts_mut</span>(<span class="ident">mut_ptr</span>.<span class="ident">add</span>(<span class="ident">rest_len</span> <span class="op">-</span> <span class="ident">ts_len</span>), <span class="ident">ts_len</span>),
                 )
             }
@@ -7086,14 +7123,15 @@
 }
 
 <span class="kw">trait</span> <span class="ident">CloneFromSpec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">spec_clone_from</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]);
+    <span class="kw">fn</span> <span class="ident">spec_clone_from</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]);
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">CloneFromSpec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">T</span>]
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">Clone</span>,
 {
-    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">spec_clone_from</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) {
+    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
+    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">spec_clone_from</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) {
         <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">src</span>.<span class="ident">len</span>(), <span class="string">&quot;destination and source slices have different lengths&quot;</span>);
         <span class="comment">// NOTE: We need to explicitly slice them to the same length</span>
         <span class="comment">// to make it easier for the optimizer to elide bounds checking.</span>
@@ -7110,7 +7148,8 @@
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">Copy</span>,
 {
-    <span class="kw">fn</span> <span class="ident">spec_clone_from</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) {
+    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
+    <span class="kw">fn</span> <span class="ident">spec_clone_from</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) {
         <span class="self">self</span>.<span class="ident">copy_from_slice</span>(<span class="ident">src</span>);
     }
 }
@@ -7126,10 +7165,10 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;mut_slice_default&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.5.0&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_default_impls&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;87864&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">const</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>] {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">const</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>] {
     <span class="doccomment">/// Creates a mutable empty slice.</span>
     <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []
+        <span class="kw-2">&amp;mut</span> []
     }
 }
 
@@ -7166,5 +7205,4 @@
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
 </body></html>

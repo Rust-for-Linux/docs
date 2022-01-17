@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;task&#x2F;wake.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>wake.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;task&#x2F;wake.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>wake.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -294,6 +295,8 @@
 <span id="294">294</span>
 <span id="295">295</span>
 <span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
 </pre><pre class="rust"><code><span class="attribute">#![<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fmt</span>;
@@ -314,7 +317,7 @@
     <span class="doccomment">/// that is associated with the task.</span>
     <span class="doccomment">/// The value of this field gets passed to all functions that are part of</span>
     <span class="doccomment">/// the vtable as the first parameter.</span>
-    <span class="ident">data</span>: <span class="kw-2">*</span><span class="kw">const</span> (),
+    <span class="ident">data</span>: <span class="kw-2">*const</span> (),
     <span class="doccomment">/// Virtual function pointer table that customizes the behavior of this waker.</span>
     <span class="ident">vtable</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">RawWakerVTable</span>,
 }
@@ -336,7 +339,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="kw-2">*</span><span class="kw">const</span> (), <span class="ident">vtable</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">RawWakerVTable</span>) -&gt; <span class="ident">RawWaker</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="kw-2">*const</span> (), <span class="ident">vtable</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">RawWakerVTable</span>) -&gt; <span class="ident">RawWaker</span> {
         <span class="ident">RawWaker</span> { <span class="ident">data</span>, <span class="ident">vtable</span> }
     }
 }
@@ -361,7 +364,7 @@
     <span class="doccomment">/// required for this additional instance of a [`RawWaker`] and associated</span>
     <span class="doccomment">/// task. Calling `wake` on the resulting [`RawWaker`] should result in a wakeup</span>
     <span class="doccomment">/// of the same task that would have been awoken by the original [`RawWaker`].</span>
-    <span class="ident">clone</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw">const</span> ()) -&gt; <span class="ident">RawWaker</span>,
+    <span class="ident">clone</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*const</span> ()) -&gt; <span class="ident">RawWaker</span>,
 
     <span class="doccomment">/// This function will be called when `wake` is called on the [`Waker`].</span>
     <span class="doccomment">/// It must wake up the task associated with this [`RawWaker`].</span>
@@ -369,21 +372,21 @@
     <span class="doccomment">/// The implementation of this function must make sure to release any</span>
     <span class="doccomment">/// resources that are associated with this instance of a [`RawWaker`] and</span>
     <span class="doccomment">/// associated task.</span>
-    <span class="ident">wake</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw">const</span> ()),
+    <span class="ident">wake</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*const</span> ()),
 
     <span class="doccomment">/// This function will be called when `wake_by_ref` is called on the [`Waker`].</span>
     <span class="doccomment">/// It must wake up the task associated with this [`RawWaker`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function is similar to `wake`, but must not consume the provided data</span>
     <span class="doccomment">/// pointer.</span>
-    <span class="ident">wake_by_ref</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw">const</span> ()),
+    <span class="ident">wake_by_ref</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*const</span> ()),
 
     <span class="doccomment">/// This function gets called when a [`RawWaker`] gets dropped.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The implementation of this function must make sure to release any</span>
     <span class="doccomment">/// resources that are associated with this instance of a [`RawWaker`] and</span>
     <span class="doccomment">/// associated task.</span>
-    <span class="ident">drop</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw">const</span> ()),
+    <span class="ident">drop</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*const</span> ()),
 }
 
 <span class="kw">impl</span> <span class="ident">RawWakerVTable</span> {
@@ -429,10 +432,10 @@
     <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_allow_const_fn_unstable</span>(<span class="ident">const_fn_fn_ptr_basics</span>)]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>(
-        <span class="ident">clone</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw">const</span> ()) -&gt; <span class="ident">RawWaker</span>,
-        <span class="ident">wake</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw">const</span> ()),
-        <span class="ident">wake_by_ref</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw">const</span> ()),
-        <span class="ident">drop</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw">const</span> ()),
+        <span class="ident">clone</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*const</span> ()) -&gt; <span class="ident">RawWaker</span>,
+        <span class="ident">wake</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*const</span> ()),
+        <span class="ident">wake_by_ref</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*const</span> ()),
+        <span class="ident">drop</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*const</span> ()),
     ) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">clone</span>, <span class="ident">wake</span>, <span class="ident">wake_by_ref</span>, <span class="ident">drop</span> }
     }
@@ -463,6 +466,7 @@
 
     <span class="doccomment">/// Returns a reference to the `Waker` for the current task.</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">waker</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Waker</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">waker</span>
@@ -471,7 +475,7 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Context&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;waker&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">waker</span>).<span class="ident">finish</span>()
     }
 }
@@ -538,6 +542,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function is primarily used for optimization purposes.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">will_wake</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Waker</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">waker</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">waker</span>
@@ -572,7 +577,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Waker</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="comment">// SAFETY: This is safe because `Waker::from_raw` is the only way</span>
         <span class="comment">// to initialize `drop` and `data` requiring the user to acknowledge</span>
         <span class="comment">// that the contract of `RawWaker` is upheld.</span>
@@ -582,8 +587,8 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;futures_api&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.36.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Waker</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="kw">let</span> <span class="ident">vtable_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">waker</span>.<span class="ident">vtable</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">RawWakerVTable</span>;
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+        <span class="kw">let</span> <span class="ident">vtable_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">waker</span>.<span class="ident">vtable</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">RawWakerVTable</span>;
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Waker&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;data&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">waker</span>.<span class="ident">data</span>)
             .<span class="ident">field</span>(<span class="string">&quot;vtable&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">vtable_ptr</span>)
@@ -592,5 +597,4 @@
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
 </body></html>

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;ffi.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>ffi.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../core/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;ffi.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>ffi.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../core/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -458,7 +459,7 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std_debug&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.16.0&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">c_void</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;c_void&quot;</span>).<span class="ident">finish</span>()
     }
 }
@@ -468,7 +469,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
     <span class="ident">all</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;powerpc&quot;</span>), <span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86_64&quot;</span>)),
     <span class="ident">all</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>, <span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>)),
-    <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;wasm32&quot;</span>,
+    <span class="ident">target_family</span> <span class="op">=</span> <span class="string">&quot;wasm&quot;</span>,
     <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;asmjs&quot;</span>,
     <span class="ident">windows</span>
 ))]</span>
@@ -481,7 +482,7 @@
 )]</span>
 <span class="attribute">#[<span class="ident">lang</span> <span class="op">=</span> <span class="string">&quot;va_list&quot;</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VaListImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span> {
-    <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+    <span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
 
     <span class="comment">// Invariant over `&#39;f`, so each `VaListImpl&lt;&#39;f&gt;` object is tied to</span>
     <span class="comment">// the region of the function it&#39;s defined in</span>
@@ -491,7 +492,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
     <span class="ident">all</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;powerpc&quot;</span>), <span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86_64&quot;</span>)),
     <span class="ident">all</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>, <span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>)),
-    <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;wasm32&quot;</span>,
+    <span class="ident">target_family</span> <span class="op">=</span> <span class="string">&quot;wasm&quot;</span>,
     <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;asmjs&quot;</span>,
     <span class="ident">windows</span>
 ))]</span>
@@ -502,7 +503,7 @@
     <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;44930&quot;</span>
 )]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">VaListImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;va_list* {:p}&quot;</span>, <span class="self">self</span>.<span class="ident">ptr</span>)
     }
 }
@@ -527,9 +528,9 @@
 )]</span>
 <span class="attribute">#[<span class="ident">lang</span> <span class="op">=</span> <span class="string">&quot;va_list&quot;</span>]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VaListImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span> {
-    <span class="ident">stack</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-    <span class="ident">gr_top</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-    <span class="ident">vr_top</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+    <span class="ident">stack</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+    <span class="ident">gr_top</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+    <span class="ident">vr_top</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
     <span class="ident">gr_offs</span>: <span class="ident">i32</span>,
     <span class="ident">vr_offs</span>: <span class="ident">i32</span>,
     <span class="ident">_marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;f</span> <span class="kw-2">mut</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;f</span> <span class="ident">c_void</span><span class="op">&gt;</span>,
@@ -550,8 +551,8 @@
     <span class="ident">gpr</span>: <span class="ident">u8</span>,
     <span class="ident">fpr</span>: <span class="ident">u8</span>,
     <span class="ident">reserved</span>: <span class="ident">u16</span>,
-    <span class="ident">overflow_arg_area</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-    <span class="ident">reg_save_area</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+    <span class="ident">overflow_arg_area</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+    <span class="ident">reg_save_area</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
     <span class="ident">_marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;f</span> <span class="kw-2">mut</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;f</span> <span class="ident">c_void</span><span class="op">&gt;</span>,
 }
 
@@ -569,8 +570,8 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VaListImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span> {
     <span class="ident">gp_offset</span>: <span class="ident">i32</span>,
     <span class="ident">fp_offset</span>: <span class="ident">i32</span>,
-    <span class="ident">overflow_arg_area</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
-    <span class="ident">reg_save_area</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">c_void</span>,
+    <span class="ident">overflow_arg_area</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
+    <span class="ident">reg_save_area</span>: <span class="kw-2">*mut</span> <span class="ident">c_void</span>,
     <span class="ident">_marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;f</span> <span class="kw-2">mut</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;f</span> <span class="ident">c_void</span><span class="op">&gt;</span>,
 }
 
@@ -591,7 +592,7 @@
             <span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86_64&quot;</span>)
         ),
         <span class="ident">all</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>, <span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>)),
-        <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;wasm32&quot;</span>,
+        <span class="ident">target_family</span> <span class="op">=</span> <span class="string">&quot;wasm&quot;</span>,
         <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;asmjs&quot;</span>,
         <span class="ident">windows</span>
     ))]</span>
@@ -600,7 +601,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(
         <span class="ident">any</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;powerpc&quot;</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86_64&quot;</span>),
         <span class="ident">any</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>))),
-        <span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;wasm32&quot;</span>),
+        <span class="ident">not</span>(<span class="ident">target_family</span> <span class="op">=</span> <span class="string">&quot;wasm&quot;</span>),
         <span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;asmjs&quot;</span>),
         <span class="ident">not</span>(<span class="ident">windows</span>)
     ))]</span>
@@ -612,7 +613,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
     <span class="ident">all</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;powerpc&quot;</span>), <span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86_64&quot;</span>)),
     <span class="ident">all</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>, <span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>)),
-    <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;wasm32&quot;</span>,
+    <span class="ident">target_family</span> <span class="op">=</span> <span class="string">&quot;wasm&quot;</span>,
     <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;asmjs&quot;</span>,
     <span class="ident">windows</span>
 ))]</span>
@@ -633,7 +634,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(
     <span class="ident">any</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;powerpc&quot;</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86_64&quot;</span>),
     <span class="ident">any</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>))),
-    <span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;wasm32&quot;</span>),
+    <span class="ident">not</span>(<span class="ident">target_family</span> <span class="op">=</span> <span class="string">&quot;wasm&quot;</span>),
     <span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;asmjs&quot;</span>),
     <span class="ident">not</span>(<span class="ident">windows</span>)
 ))]</span>
@@ -674,8 +675,8 @@
 )]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;f</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">VaList</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;f</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">VaListImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span> {
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">inner</span>
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">VaListImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span> {
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">inner</span>
     }
 }
 
@@ -721,14 +722,14 @@
               all supported platforms&quot;</span>,
     <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;44930&quot;</span>
 )]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">sealed_trait::VaArgSafe</span> <span class="kw">for</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">sealed_trait::VaArgSafe</span> <span class="kw">for</span> <span class="kw-2">*mut</span> <span class="ident">T</span> {}
 <span class="attribute">#[<span class="ident">unstable</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;c_variadic&quot;</span>,
     <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;the `c_variadic` feature has not been properly tested on \
               all supported platforms&quot;</span>,
     <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;44930&quot;</span>
 )]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">sealed_trait::VaArgSafe</span> <span class="kw">for</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> {}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">sealed_trait::VaArgSafe</span> <span class="kw">for</span> <span class="kw-2">*const</span> <span class="ident">T</span> {}
 
 <span class="attribute">#[<span class="ident">unstable</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;c_variadic&quot;</span>,
@@ -739,7 +740,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span> <span class="ident">VaListImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Advance to the next arg.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">arg</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">sealed_trait::VaArgSafe</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">arg</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">sealed_trait::VaArgSafe</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">T</span> {
         <span class="comment">// SAFETY: the caller must uphold the safety contract for `va_arg`.</span>
         <span class="kw">unsafe</span> { <span class="ident">va_arg</span>(<span class="self">self</span>) }
     }
@@ -753,7 +754,7 @@
         <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">f</span>(<span class="ident">ap</span>.<span class="ident">as_va_list</span>());
         <span class="comment">// SAFETY: the caller must uphold the safety contract for `va_end`.</span>
         <span class="kw">unsafe</span> {
-            <span class="ident">va_end</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ap</span>);
+            <span class="ident">va_end</span>(<span class="kw-2">&amp;mut</span> <span class="ident">ap</span>);
         }
         <span class="ident">ret</span>
     }
@@ -784,7 +785,7 @@
     <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;44930&quot;</span>
 )]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">VaListImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="comment">// FIXME: this should call `va_end`, but there&#39;s no clean way to</span>
         <span class="comment">// guarantee that `drop` always gets inlined into its caller,</span>
         <span class="comment">// so the `va_end` would get directly called from the same function as</span>
@@ -801,16 +802,15 @@
 <span class="kw">extern</span> <span class="string">&quot;rust-intrinsic&quot;</span> {
     <span class="doccomment">/// Destroy the arglist `ap` after initialization with `va_start` or</span>
     <span class="doccomment">/// `va_copy`.</span>
-    <span class="kw">fn</span> <span class="ident">va_end</span>(<span class="ident">ap</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">VaListImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>);
+    <span class="kw">fn</span> <span class="ident">va_end</span>(<span class="ident">ap</span>: <span class="kw-2">&amp;mut</span> <span class="ident">VaListImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>);
 
     <span class="doccomment">/// Copies the current location of arglist `src` to the arglist `dst`.</span>
-    <span class="kw">fn</span> <span class="ident">va_copy</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span>(<span class="ident">dest</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">VaListImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">VaListImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span>);
+    <span class="kw">fn</span> <span class="ident">va_copy</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span>(<span class="ident">dest</span>: <span class="kw-2">*mut</span> <span class="ident">VaListImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span>, <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">VaListImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span>);
 
     <span class="doccomment">/// Loads an argument of type `T` from the `va_list` `ap` and increment the</span>
     <span class="doccomment">/// argument `ap` points to.</span>
-    <span class="kw">fn</span> <span class="ident">va_arg</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">sealed_trait::VaArgSafe</span><span class="op">&gt;</span>(<span class="ident">ap</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">VaListImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">T</span>;
+    <span class="kw">fn</span> <span class="ident">va_arg</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">sealed_trait::VaArgSafe</span><span class="op">&gt;</span>(<span class="ident">ap</span>: <span class="kw-2">&amp;mut</span> <span class="ident">VaListImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">T</span>;
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
 </body></html>

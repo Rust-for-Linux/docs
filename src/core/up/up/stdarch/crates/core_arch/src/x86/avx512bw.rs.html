@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;..&#x2F;..&#x2F;stdarch&#x2F;crates&#x2F;core_arch&#x2F;src&#x2F;x86&#x2F;avx512bw.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>avx512bw.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../../../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">    1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;..&#x2F;..&#x2F;stdarch&#x2F;crates&#x2F;core_arch&#x2F;src&#x2F;x86&#x2F;avx512bw.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>avx512bw.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><script defer src="../../../../../../../../../main.js"></script><script defer src="../../../../../../../../../source-script.js"></script><script defer src="../../../../../../../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../../../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">    1</span>
 <span id="2">    2</span>
 <span id="3">    3</span>
 <span id="4">    4</span>
@@ -22293,8 +22294,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vmovups</span>))]</span> <span class="comment">//should be vmovdqu16</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_loadu_epi16</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i16</span>) -&gt; <span class="ident">__m512i</span> {
-    <span class="ident">ptr::read_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">__m512i</span>)
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_loadu_epi16</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i16</span>) -&gt; <span class="ident">__m512i</span> {
+    <span class="ident">ptr::read_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">__m512i</span>)
 }
 
 <span class="doccomment">/// Load 256-bits (composed of 16 packed 16-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.</span>
@@ -22303,8 +22304,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vmovups</span>))]</span> <span class="comment">//should be vmovdqu16</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_loadu_epi16</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i16</span>) -&gt; <span class="ident">__m256i</span> {
-    <span class="ident">ptr::read_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">__m256i</span>)
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_loadu_epi16</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i16</span>) -&gt; <span class="ident">__m256i</span> {
+    <span class="ident">ptr::read_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">__m256i</span>)
 }
 
 <span class="doccomment">/// Load 128-bits (composed of 8 packed 16-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.</span>
@@ -22313,8 +22314,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vmovups</span>))]</span> <span class="comment">//should be vmovdqu16</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_loadu_epi16</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i16</span>) -&gt; <span class="ident">__m128i</span> {
-    <span class="ident">ptr::read_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">__m128i</span>)
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_loadu_epi16</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i16</span>) -&gt; <span class="ident">__m128i</span> {
+    <span class="ident">ptr::read_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">__m128i</span>)
 }
 
 <span class="doccomment">/// Load 512-bits (composed of 64 packed 8-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.</span>
@@ -22323,8 +22324,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vmovups</span>))]</span> <span class="comment">//should be vmovdqu8</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_loadu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i8</span>) -&gt; <span class="ident">__m512i</span> {
-    <span class="ident">ptr::read_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">__m512i</span>)
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_loadu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>) -&gt; <span class="ident">__m512i</span> {
+    <span class="ident">ptr::read_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">__m512i</span>)
 }
 
 <span class="doccomment">/// Load 256-bits (composed of 32 packed 8-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.</span>
@@ -22333,8 +22334,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vmovups</span>))]</span> <span class="comment">//should be vmovdqu8</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_loadu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i8</span>) -&gt; <span class="ident">__m256i</span> {
-    <span class="ident">ptr::read_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">__m256i</span>)
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_loadu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>) -&gt; <span class="ident">__m256i</span> {
+    <span class="ident">ptr::read_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">__m256i</span>)
 }
 
 <span class="doccomment">/// Load 128-bits (composed of 16 packed 8-bit integers) from memory into dst. mem_addr does not need to be aligned on any particular boundary.</span>
@@ -22343,8 +22344,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vmovups</span>))]</span> <span class="comment">//should be vmovdqu8</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_loadu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i8</span>) -&gt; <span class="ident">__m128i</span> {
-    <span class="ident">ptr::read_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">__m128i</span>)
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_loadu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>) -&gt; <span class="ident">__m128i</span> {
+    <span class="ident">ptr::read_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">__m128i</span>)
 }
 
 <span class="doccomment">/// Store 512-bits (composed of 32 packed 16-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.</span>
@@ -22353,8 +22354,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vmovups</span>))]</span> <span class="comment">//should be vmovdqu16</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_storeu_epi16</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i16</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>) {
-    <span class="ident">ptr::write_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">__m512i</span>, <span class="ident">a</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_storeu_epi16</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i16</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>) {
+    <span class="ident">ptr::write_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">__m512i</span>, <span class="ident">a</span>);
 }
 
 <span class="doccomment">/// Store 256-bits (composed of 16 packed 16-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.</span>
@@ -22363,8 +22364,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vmovups</span>))]</span> <span class="comment">//should be vmovdqu16</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_storeu_epi16</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i16</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>) {
-    <span class="ident">ptr::write_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">__m256i</span>, <span class="ident">a</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_storeu_epi16</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i16</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>) {
+    <span class="ident">ptr::write_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">__m256i</span>, <span class="ident">a</span>);
 }
 
 <span class="doccomment">/// Store 128-bits (composed of 8 packed 16-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.</span>
@@ -22373,8 +22374,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vmovups</span>))]</span> <span class="comment">//should be vmovdqu16</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_storeu_epi16</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i16</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>) {
-    <span class="ident">ptr::write_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">__m128i</span>, <span class="ident">a</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_storeu_epi16</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i16</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>) {
+    <span class="ident">ptr::write_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">__m128i</span>, <span class="ident">a</span>);
 }
 
 <span class="doccomment">/// Store 512-bits (composed of 64 packed 8-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.</span>
@@ -22383,8 +22384,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vmovups</span>))]</span> <span class="comment">//should be vmovdqu8</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>) {
-    <span class="ident">ptr::write_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">__m512i</span>, <span class="ident">a</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>) {
+    <span class="ident">ptr::write_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">__m512i</span>, <span class="ident">a</span>);
 }
 
 <span class="doccomment">/// Store 256-bits (composed of 32 packed 8-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.</span>
@@ -22393,8 +22394,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vmovups</span>))]</span> <span class="comment">//should be vmovdqu8</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>) {
-    <span class="ident">ptr::write_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">__m256i</span>, <span class="ident">a</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>) {
+    <span class="ident">ptr::write_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">__m256i</span>, <span class="ident">a</span>);
 }
 
 <span class="doccomment">/// Store 128-bits (composed of 16 packed 8-bit integers) from a into memory. mem_addr does not need to be aligned on any particular boundary.</span>
@@ -22403,8 +22404,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vmovups</span>))]</span> <span class="comment">//should be vmovdqu8</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>) {
-    <span class="ident">ptr::write_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">__m128i</span>, <span class="ident">a</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>) {
+    <span class="ident">ptr::write_unaligned</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">__m128i</span>, <span class="ident">a</span>);
 }
 
 <span class="doccomment">/// Multiply packed signed 16-bit integers in a and b, producing intermediate signed 32-bit integers. Horizontally add adjacent pairs of intermediate 32-bit integers, and pack the results in dst.</span>
@@ -25974,8 +25975,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">mov</span>))]</span> <span class="comment">//should be kmovq</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_store_mask64</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u64</span>, <span class="ident">a</span>: <span class="ident">__mmask64</span>) {
-    <span class="ident">ptr::write</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">__mmask64</span>, <span class="ident">a</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_store_mask64</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">u64</span>, <span class="ident">a</span>: <span class="ident">__mmask64</span>) {
+    <span class="ident">ptr::write</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">__mmask64</span>, <span class="ident">a</span>);
 }
 
 <span class="doccomment">/// Store 32-bit mask from a into memory.</span>
@@ -25984,8 +25985,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">mov</span>))]</span> <span class="comment">//should be kmovd</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_store_mask32</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u32</span>, <span class="ident">a</span>: <span class="ident">__mmask32</span>) {
-    <span class="ident">ptr::write</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">__mmask32</span>, <span class="ident">a</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_store_mask32</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">u32</span>, <span class="ident">a</span>: <span class="ident">__mmask32</span>) {
+    <span class="ident">ptr::write</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">__mmask32</span>, <span class="ident">a</span>);
 }
 
 <span class="doccomment">/// Load 64-bit mask from memory into k.</span>
@@ -25994,8 +25995,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">mov</span>))]</span> <span class="comment">//should be kmovq</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_load_mask64</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u64</span>) -&gt; <span class="ident">__mmask64</span> {
-    <span class="ident">ptr::read</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">__mmask64</span>)
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_load_mask64</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">u64</span>) -&gt; <span class="ident">__mmask64</span> {
+    <span class="ident">ptr::read</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">__mmask64</span>)
 }
 
 <span class="doccomment">/// Load 32-bit mask from memory into k.</span>
@@ -26004,8 +26005,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">mov</span>))]</span> <span class="comment">//should be kmovd</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_load_mask32</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>) -&gt; <span class="ident">__mmask32</span> {
-    <span class="ident">ptr::read</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">__mmask32</span>)
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_load_mask32</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">u32</span>) -&gt; <span class="ident">__mmask32</span> {
+    <span class="ident">ptr::read</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">__mmask32</span>)
 }
 
 <span class="doccomment">/// Compute the absolute differences of packed unsigned 8-bit integers in a and b, then horizontally sum each consecutive 8 differences to produce eight unsigned 16-bit integers, and pack these unsigned 16-bit integers in the low 16 bits of 64-bit elements in dst.</span>
@@ -27618,8 +27619,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpmovswb</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_mask_cvtsepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask32</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>) {
-    <span class="ident">vpmovswbmem</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x32</span>(), <span class="ident">k</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_mask_cvtsepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask32</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>) {
+    <span class="ident">vpmovswbmem</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x32</span>(), <span class="ident">k</span>);
 }
 
 <span class="doccomment">/// Convert packed signed 16-bit integers in a to packed 8-bit integers with signed saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.</span>
@@ -27628,8 +27629,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpmovswb</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_mask_cvtsepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask16</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>) {
-    <span class="ident">vpmovswbmem256</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x16</span>(), <span class="ident">k</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_mask_cvtsepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask16</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>) {
+    <span class="ident">vpmovswbmem256</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x16</span>(), <span class="ident">k</span>);
 }
 
 <span class="doccomment">/// Convert packed signed 16-bit integers in a to packed 8-bit integers with signed saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.</span>
@@ -27638,8 +27639,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpmovswb</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_cvtsepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>) {
-    <span class="ident">vpmovswbmem128</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x8</span>(), <span class="ident">k</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_cvtsepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>) {
+    <span class="ident">vpmovswbmem128</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x8</span>(), <span class="ident">k</span>);
 }
 
 <span class="doccomment">/// Convert packed 16-bit integers in a to packed 8-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.</span>
@@ -27648,8 +27649,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpmovwb</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_mask_cvtepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask32</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>) {
-    <span class="ident">vpmovwbmem</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x32</span>(), <span class="ident">k</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_mask_cvtepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask32</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>) {
+    <span class="ident">vpmovwbmem</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x32</span>(), <span class="ident">k</span>);
 }
 
 <span class="doccomment">/// Convert packed 16-bit integers in a to packed 8-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.</span>
@@ -27658,8 +27659,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpmovwb</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_mask_cvtepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask16</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>) {
-    <span class="ident">vpmovwbmem256</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x16</span>(), <span class="ident">k</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_mask_cvtepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask16</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>) {
+    <span class="ident">vpmovwbmem256</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x16</span>(), <span class="ident">k</span>);
 }
 
 <span class="doccomment">/// Convert packed 16-bit integers in a to packed 8-bit integers with truncation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.</span>
@@ -27668,8 +27669,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpmovwb</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_cvtepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>) {
-    <span class="ident">vpmovwbmem128</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x8</span>(), <span class="ident">k</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_cvtepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>) {
+    <span class="ident">vpmovwbmem128</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x8</span>(), <span class="ident">k</span>);
 }
 
 <span class="doccomment">/// Convert packed unsigned 16-bit integers in a to packed unsigned 8-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.</span>
@@ -27678,8 +27679,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpmovuswb</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_mask_cvtusepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask32</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>) {
-    <span class="ident">vpmovuswbmem</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x32</span>(), <span class="ident">k</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_mask_cvtusepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask32</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>) {
+    <span class="ident">vpmovuswbmem</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x32</span>(), <span class="ident">k</span>);
 }
 
 <span class="doccomment">/// Convert packed unsigned 16-bit integers in a to packed unsigned 8-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.</span>
@@ -27688,8 +27689,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpmovuswb</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_mask_cvtusepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask16</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>) {
-    <span class="ident">vpmovuswbmem256</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x16</span>(), <span class="ident">k</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_mask_cvtusepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask16</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>) {
+    <span class="ident">vpmovuswbmem256</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x16</span>(), <span class="ident">k</span>);
 }
 
 <span class="doccomment">/// Convert packed unsigned 16-bit integers in a to packed unsigned 8-bit integers with unsigned saturation, and store the active results (those with their respective bit set in writemask k) to unaligned memory at base_addr.</span>
@@ -27698,8 +27699,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512bw,avx512vl&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpmovuswb</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_cvtusepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>) {
-    <span class="ident">vpmovuswbmem128</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x8</span>(), <span class="ident">k</span>);
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_cvtusepi16_storeu_epi8</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>) {
+    <span class="ident">vpmovuswbmem128</span>(<span class="ident">mem_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>.<span class="ident">as_i16x8</span>(), <span class="ident">k</span>);
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">improper_ctypes</span>)]</span>
@@ -27920,25 +27921,25 @@
     <span class="kw">fn</span> <span class="ident">vpmovuswb128</span>(<span class="ident">a</span>: <span class="ident">u16x8</span>, <span class="ident">src</span>: <span class="ident">u8x16</span>, <span class="ident">mask</span>: <span class="ident">u8</span>) -&gt; <span class="ident">u8x16</span>;
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.pmovs.wb.mem.512&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpmovswbmem</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x32</span>, <span class="ident">mask</span>: <span class="ident">u32</span>);
+    <span class="kw">fn</span> <span class="ident">vpmovswbmem</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x32</span>, <span class="ident">mask</span>: <span class="ident">u32</span>);
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.pmovs.wb.mem.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpmovswbmem256</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x16</span>, <span class="ident">mask</span>: <span class="ident">u16</span>);
+    <span class="kw">fn</span> <span class="ident">vpmovswbmem256</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x16</span>, <span class="ident">mask</span>: <span class="ident">u16</span>);
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.pmovs.wb.mem.128&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpmovswbmem128</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x8</span>, <span class="ident">mask</span>: <span class="ident">u8</span>);
+    <span class="kw">fn</span> <span class="ident">vpmovswbmem128</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x8</span>, <span class="ident">mask</span>: <span class="ident">u8</span>);
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.pmov.wb.mem.512&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpmovwbmem</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x32</span>, <span class="ident">mask</span>: <span class="ident">u32</span>);
+    <span class="kw">fn</span> <span class="ident">vpmovwbmem</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x32</span>, <span class="ident">mask</span>: <span class="ident">u32</span>);
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.pmov.wb.mem.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpmovwbmem256</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x16</span>, <span class="ident">mask</span>: <span class="ident">u16</span>);
+    <span class="kw">fn</span> <span class="ident">vpmovwbmem256</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x16</span>, <span class="ident">mask</span>: <span class="ident">u16</span>);
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.pmov.wb.mem.128&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpmovwbmem128</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x8</span>, <span class="ident">mask</span>: <span class="ident">u8</span>);
+    <span class="kw">fn</span> <span class="ident">vpmovwbmem128</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x8</span>, <span class="ident">mask</span>: <span class="ident">u8</span>);
 
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.pmovus.wb.mem.512&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpmovuswbmem</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x32</span>, <span class="ident">mask</span>: <span class="ident">u32</span>);
+    <span class="kw">fn</span> <span class="ident">vpmovuswbmem</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x32</span>, <span class="ident">mask</span>: <span class="ident">u32</span>);
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.pmovus.wb.mem.256&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpmovuswbmem256</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x16</span>, <span class="ident">mask</span>: <span class="ident">u16</span>);
+    <span class="kw">fn</span> <span class="ident">vpmovuswbmem256</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x16</span>, <span class="ident">mask</span>: <span class="ident">u16</span>);
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.pmovus.wb.mem.128&quot;</span>]</span>
-    <span class="kw">fn</span> <span class="ident">vpmovuswbmem128</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x8</span>, <span class="ident">mask</span>: <span class="ident">u8</span>);
+    <span class="kw">fn</span> <span class="ident">vpmovuswbmem128</span>(<span class="ident">mem_addr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">i16x8</span>, <span class="ident">mask</span>: <span class="ident">u8</span>);
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
@@ -31962,7 +31963,7 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm512_storeu_epi16</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm512_set1_epi16</span>(<span class="number">9</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm512_undefined_epi32</span>();
-        <span class="ident">_mm512_storeu_epi16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i16</span>, <span class="ident">a</span>);
+        <span class="ident">_mm512_storeu_epi16</span>(<span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i16</span>, <span class="ident">a</span>);
         <span class="ident">assert_eq_m512i</span>(<span class="ident">r</span>, <span class="ident">a</span>);
     }
 
@@ -31970,7 +31971,7 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm256_storeu_epi16</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm256_set1_epi16</span>(<span class="number">9</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_set1_epi32</span>(<span class="number">0</span>);
-        <span class="ident">_mm256_storeu_epi16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i16</span>, <span class="ident">a</span>);
+        <span class="ident">_mm256_storeu_epi16</span>(<span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i16</span>, <span class="ident">a</span>);
         <span class="ident">assert_eq_m256i</span>(<span class="ident">r</span>, <span class="ident">a</span>);
     }
 
@@ -31978,7 +31979,7 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm_storeu_epi16</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm_set1_epi16</span>(<span class="number">9</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_set1_epi32</span>(<span class="number">0</span>);
-        <span class="ident">_mm_storeu_epi16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i16</span>, <span class="ident">a</span>);
+        <span class="ident">_mm_storeu_epi16</span>(<span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i16</span>, <span class="ident">a</span>);
         <span class="ident">assert_eq_m128i</span>(<span class="ident">r</span>, <span class="ident">a</span>);
     }
 
@@ -31986,7 +31987,7 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm512_storeu_epi8</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm512_set1_epi8</span>(<span class="number">9</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm512_undefined_epi32</span>();
-        <span class="ident">_mm512_storeu_epi8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>);
+        <span class="ident">_mm512_storeu_epi8</span>(<span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>);
         <span class="ident">assert_eq_m512i</span>(<span class="ident">r</span>, <span class="ident">a</span>);
     }
 
@@ -31994,7 +31995,7 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm256_storeu_epi8</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm256_set1_epi8</span>(<span class="number">9</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_set1_epi32</span>(<span class="number">0</span>);
-        <span class="ident">_mm256_storeu_epi8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>);
+        <span class="ident">_mm256_storeu_epi8</span>(<span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>);
         <span class="ident">assert_eq_m256i</span>(<span class="ident">r</span>, <span class="ident">a</span>);
     }
 
@@ -32002,7 +32003,7 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm_storeu_epi8</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm_set1_epi8</span>(<span class="number">9</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_set1_epi32</span>(<span class="number">0</span>);
-        <span class="ident">_mm_storeu_epi8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>);
+        <span class="ident">_mm_storeu_epi8</span>(<span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>);
         <span class="ident">assert_eq_m128i</span>(<span class="ident">r</span>, <span class="ident">a</span>);
     }
 
@@ -35245,7 +35246,7 @@
         <span class="kw">let</span> <span class="ident">a</span>: <span class="ident">__mmask64</span> <span class="op">=</span>
             <span class="number">0b11111111_00000000_11111111_00000000_11111111_00000000_11111111_00000000</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="ident">_store_mask64</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u64</span>, <span class="ident">a</span>);
+        <span class="ident">_store_mask64</span>(<span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u64</span>, <span class="ident">a</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">a</span>);
     }
 
@@ -35253,7 +35254,7 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_store_mask32</span>() {
         <span class="kw">let</span> <span class="ident">a</span>: <span class="ident">__mmask32</span> <span class="op">=</span> <span class="number">0b11111111_00000000_11111111_00000000</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="number">0</span>;
-        <span class="ident">_store_mask32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u32</span>, <span class="ident">a</span>);
+        <span class="ident">_store_mask32</span>(<span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u32</span>, <span class="ident">a</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">a</span>);
     }
 
@@ -36260,7 +36261,7 @@
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm512_set1_epi16</span>(<span class="ident">i16::MAX</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_undefined_si256</span>();
         <span class="ident">_mm512_mask_cvtsepi16_storeu_epi8</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>,
+            <span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>,
             <span class="number">0b11111111_11111111_11111111_11111111</span>,
             <span class="ident">a</span>,
         );
@@ -36272,7 +36273,7 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm256_mask_cvtsepi16_storeu_epi8</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm256_set1_epi16</span>(<span class="ident">i16::MAX</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_undefined_si128</span>();
-        <span class="ident">_mm256_mask_cvtsepi16_storeu_epi8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="number">0b11111111_11111111</span>, <span class="ident">a</span>);
+        <span class="ident">_mm256_mask_cvtsepi16_storeu_epi8</span>(<span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="number">0b11111111_11111111</span>, <span class="ident">a</span>);
         <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm_set1_epi8</span>(<span class="ident">i8::MAX</span>);
         <span class="ident">assert_eq_m128i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
     }
@@ -36281,7 +36282,7 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm_mask_cvtsepi16_storeu_epi8</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm_set1_epi16</span>(<span class="ident">i16::MAX</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_set1_epi8</span>(<span class="number">0</span>);
-        <span class="ident">_mm_mask_cvtsepi16_storeu_epi8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="number">0b11111111</span>, <span class="ident">a</span>);
+        <span class="ident">_mm_mask_cvtsepi16_storeu_epi8</span>(<span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="number">0b11111111</span>, <span class="ident">a</span>);
         <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
         <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm_set_epi8</span>(
             <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>,
@@ -36295,7 +36296,7 @@
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm512_set1_epi16</span>(<span class="number">8</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_undefined_si256</span>();
         <span class="ident">_mm512_mask_cvtepi16_storeu_epi8</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>,
+            <span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>,
             <span class="number">0b11111111_11111111_11111111_11111111</span>,
             <span class="ident">a</span>,
         );
@@ -36307,7 +36308,7 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm256_mask_cvtepi16_storeu_epi8</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm256_set1_epi16</span>(<span class="number">8</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_undefined_si128</span>();
-        <span class="ident">_mm256_mask_cvtepi16_storeu_epi8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="number">0b11111111_11111111</span>, <span class="ident">a</span>);
+        <span class="ident">_mm256_mask_cvtepi16_storeu_epi8</span>(<span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="number">0b11111111_11111111</span>, <span class="ident">a</span>);
         <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm_set1_epi8</span>(<span class="number">8</span>);
         <span class="ident">assert_eq_m128i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
     }
@@ -36316,7 +36317,7 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm_mask_cvtepi16_storeu_epi8</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm_set1_epi16</span>(<span class="number">8</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_set1_epi8</span>(<span class="number">0</span>);
-        <span class="ident">_mm_mask_cvtepi16_storeu_epi8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="number">0b11111111</span>, <span class="ident">a</span>);
+        <span class="ident">_mm_mask_cvtepi16_storeu_epi8</span>(<span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="number">0b11111111</span>, <span class="ident">a</span>);
         <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm_set_epi8</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">8</span>, <span class="number">8</span>, <span class="number">8</span>, <span class="number">8</span>, <span class="number">8</span>, <span class="number">8</span>, <span class="number">8</span>, <span class="number">8</span>);
         <span class="ident">assert_eq_m128i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
     }
@@ -36326,7 +36327,7 @@
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm512_set1_epi16</span>(<span class="ident">i16::MAX</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_undefined_si256</span>();
         <span class="ident">_mm512_mask_cvtusepi16_storeu_epi8</span>(
-            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>,
+            <span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>,
             <span class="number">0b11111111_11111111_11111111_11111111</span>,
             <span class="ident">a</span>,
         );
@@ -36338,7 +36339,7 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm256_mask_cvtusepi16_storeu_epi8</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm256_set1_epi16</span>(<span class="ident">i16::MAX</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_undefined_si128</span>();
-        <span class="ident">_mm256_mask_cvtusepi16_storeu_epi8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="number">0b11111111_11111111</span>, <span class="ident">a</span>);
+        <span class="ident">_mm256_mask_cvtusepi16_storeu_epi8</span>(<span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="number">0b11111111_11111111</span>, <span class="ident">a</span>);
         <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm_set1_epi8</span>(<span class="ident">u8::MAX</span> <span class="kw">as</span> <span class="ident">i8</span>);
         <span class="ident">assert_eq_m128i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
     }
@@ -36347,7 +36348,7 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm_mask_cvtusepi16_storeu_epi8</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm_set1_epi16</span>(<span class="ident">i16::MAX</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_set1_epi8</span>(<span class="number">0</span>);
-        <span class="ident">_mm_mask_cvtusepi16_storeu_epi8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="number">0b11111111</span>, <span class="ident">a</span>);
+        <span class="ident">_mm_mask_cvtusepi16_storeu_epi8</span>(<span class="kw-2">&amp;mut</span> <span class="ident">r</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="number">0b11111111</span>, <span class="ident">a</span>);
         <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
         <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm_set_epi8</span>(
             <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>,
@@ -36360,5 +36361,4 @@
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-search-index-js="../../../../../../../../../search-index.js" data-search-js="../../../../../../../../../search.js"></div>
-    <script src="../../../../../../../../../main.js"></script><script src="../../../../../../../../../source-script.js"></script><script src="../../../../../../../../../source-files.js"></script>
 </body></html>

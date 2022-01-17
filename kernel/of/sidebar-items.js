@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["ConstOfMatchTable","An Open Firmware Match Table that can be constructed at build time."],["OfMatchTable","A kernel Open Firmware / devicetree match table."]]});
+initSidebarItems({"enum":[["DeviceId","An open firmware device id."]]});

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;alloc&#x2F;fmt.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>fmt.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../alloc/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;alloc&#x2F;fmt.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>fmt.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../alloc/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -581,6 +582,24 @@
 <span id="581">581</span>
 <span id="582">582</span>
 <span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
 
 <span class="doccomment">//! Utilities for formatting and printing `String`s.</span>
@@ -602,6 +621,8 @@
 <span class="doccomment">//! format!(&quot;The number is {}&quot;, 1);   // =&gt; &quot;The number is 1&quot;</span>
 <span class="doccomment">//! format!(&quot;{:?}&quot;, (3, 4));          // =&gt; &quot;(3, 4)&quot;</span>
 <span class="doccomment">//! format!(&quot;{value}&quot;, value=4);      // =&gt; &quot;4&quot;</span>
+<span class="doccomment">//! let people = &quot;Rustaceans&quot;;</span>
+<span class="doccomment">//! format!(&quot;Hello {people}!&quot;);       // =&gt; &quot;Hello Rustaceans!&quot;</span>
 <span class="doccomment">//! format!(&quot;{} {}&quot;, 1, 2);           // =&gt; &quot;1 2&quot;</span>
 <span class="doccomment">//! format!(&quot;{:04}&quot;, 42);             // =&gt; &quot;0042&quot; with leading zeros</span>
 <span class="doccomment">//! format!(&quot;{:#?}&quot;, (100, 200));     // =&gt; &quot;(</span>
@@ -665,6 +686,19 @@
 <span class="doccomment">//! format!(&quot;{a} {c} {b}&quot;, a=&quot;a&quot;, b=&#39;b&#39;, c=3);  // =&gt; &quot;a 3 b&quot;</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
+<span class="doccomment">//! If a named parameter does not appear in the argument list, `format!` will</span>
+<span class="doccomment">//! reference a variable with that name in the current scope.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//! let argument = 2 + 2;</span>
+<span class="doccomment">//! format!(&quot;{argument}&quot;);   // =&gt; &quot;4&quot;</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! fn make_string(a: u32, b: &amp;str) -&gt; String {</span>
+<span class="doccomment">//!     format!(&quot;{b} {a}&quot;)</span>
+<span class="doccomment">//! }</span>
+<span class="doccomment">//! make_string(927, &quot;label&quot;); // =&gt; &quot;label 927&quot;</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
 <span class="doccomment">//! It is not valid to put positional parameters (those without names) after</span>
 <span class="doccomment">//! arguments that have names. Like with positional parameters, it is not</span>
 <span class="doccomment">//! valid to provide named parameters that are unused by the format string.</span>
@@ -683,6 +717,8 @@
 <span class="doccomment">//! println!(&quot;Hello {:1$}!&quot;, &quot;x&quot;, 5);</span>
 <span class="doccomment">//! println!(&quot;Hello {1:0$}!&quot;, 5, &quot;x&quot;);</span>
 <span class="doccomment">//! println!(&quot;Hello {:width$}!&quot;, &quot;x&quot;, width = 5);</span>
+<span class="doccomment">//! let width = 5;</span>
+<span class="doccomment">//! println!(&quot;Hello {:width$}!&quot;, &quot;x&quot;);</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! This is a parameter for the &quot;minimum width&quot; that the format should take up.</span>
@@ -1157,6 +1193,7 @@
 <span class="doccomment">/// [`format_args!`]: core::format_args</span>
 <span class="doccomment">/// [`format!`]: crate::format</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
+<span class="attribute">#[<span class="ident">must_use</span>]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">format</span>(<span class="ident">args</span>: <span class="ident">Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">string::String</span> {
     <span class="kw">let</span> <span class="ident">capacity</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">estimated_capacity</span>();
@@ -1166,5 +1203,4 @@
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="alloc" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
 </body></html>

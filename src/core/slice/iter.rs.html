@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;slice&#x2F;iter.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>iter.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;slice&#x2F;iter.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>iter.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -3193,6 +3194,19 @@
 <span id="3193">3193</span>
 <span id="3194">3194</span>
 <span id="3195">3195</span>
+<span id="3196">3196</span>
+<span id="3197">3197</span>
+<span id="3198">3198</span>
+<span id="3199">3199</span>
+<span id="3200">3200</span>
+<span id="3201">3201</span>
+<span id="3202">3202</span>
+<span id="3203">3203</span>
+<span id="3204">3204</span>
+<span id="3205">3205</span>
+<span id="3206">3206</span>
+<span id="3207">3207</span>
+<span id="3208">3208</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Definitions of a bunch of iterators for `[T]`.</span>
 
 <span class="attribute">#[<span class="ident">macro_use</span>]</span> <span class="comment">// import iterator! and forward_iterator!</span>
@@ -3232,7 +3246,7 @@
 
 <span class="comment">// Macro helper functions</span>
 <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-<span class="kw">fn</span> <span class="ident">size_from_ptr</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw">_</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) -&gt; <span class="ident">usize</span> {
+<span class="kw">fn</span> <span class="ident">size_from_ptr</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw">_</span>: <span class="kw-2">*const</span> <span class="ident">T</span>) -&gt; <span class="ident">usize</span> {
     <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>()
 }
 
@@ -3259,7 +3273,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="ident">ptr</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-    <span class="ident">end</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>, <span class="comment">// If T is a ZST, this is actually ptr+len.  This encoding is picked so that</span>
+    <span class="ident">end</span>: <span class="kw-2">*const</span> <span class="ident">T</span>, <span class="comment">// If T is a ZST, this is actually ptr+len.  This encoding is picked so that</span>
     <span class="comment">// ptr == end is a quick test for the Iterator being empty, that works</span>
     <span class="comment">// for both ZST and non-ZST.</span>
     <span class="ident">_marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span><span class="op">&gt;</span>,
@@ -3267,7 +3281,7 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;core_impl_debug&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.9.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">fmt::Debug</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_tuple</span>(<span class="string">&quot;Iter&quot;</span>).<span class="ident">field</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_slice</span>()).<span class="ident">finish</span>()
     }
 }
@@ -3286,12 +3300,12 @@
             <span class="ident">assume</span>(<span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>());
 
             <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">==</span> <span class="number">0</span> {
-                (<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>).<span class="ident">wrapping_add</span>(<span class="ident">slice</span>.<span class="ident">len</span>()) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>
+                (<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>).<span class="ident">wrapping_add</span>(<span class="ident">slice</span>.<span class="ident">len</span>()) <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">T</span>
             } <span class="kw">else</span> {
                 <span class="ident">ptr</span>.<span class="ident">add</span>(<span class="ident">slice</span>.<span class="ident">len</span>())
             };
 
-            <span class="self">Self</span> { <span class="ident">ptr</span>: <span class="ident">NonNull::new_unchecked</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>), <span class="ident">end</span>, <span class="ident">_marker</span>: <span class="ident">PhantomData</span> }
+            <span class="self">Self</span> { <span class="ident">ptr</span>: <span class="ident">NonNull::new_unchecked</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>), <span class="ident">end</span>, <span class="ident">_marker</span>: <span class="ident">PhantomData</span> }
         }
     }
 
@@ -3326,7 +3340,7 @@
     }
 }
 
-<span class="macro">iterator!</span> {<span class="kw">struct</span> <span class="ident">Iter</span> -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>, <span class="kw">const</span>, {<span class="comment">/* no mut */</span>}, {
+<span class="macro">iterator!</span> {<span class="kw">struct</span> <span class="ident">Iter</span> -&gt; <span class="kw-2">*const</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>, <span class="kw">const</span>, {<span class="comment">/* no mut */</span>}, {
     <span class="kw">fn</span> <span class="ident">is_sorted_by</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">compare</span>: <span class="ident">F</span>) -&gt; <span class="ident">bool</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
@@ -3379,7 +3393,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="ident">ptr</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-    <span class="ident">end</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="comment">// If T is a ZST, this is actually ptr+len.  This encoding is picked so that</span>
+    <span class="ident">end</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="comment">// If T is a ZST, this is actually ptr+len.  This encoding is picked so that</span>
     <span class="comment">// ptr == end is a quick test for the Iterator being empty, that works</span>
     <span class="comment">// for both ZST and non-ZST.</span>
     <span class="ident">_marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span>,
@@ -3387,7 +3401,7 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;core_impl_debug&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.9.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">fmt::Debug</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_tuple</span>(<span class="string">&quot;IterMut&quot;</span>).<span class="ident">field</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">make_slice</span>()).<span class="ident">finish</span>()
     }
 }
@@ -3421,7 +3435,7 @@
             <span class="ident">assume</span>(<span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>());
 
             <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">==</span> <span class="number">0</span> {
-                (<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>).<span class="ident">wrapping_add</span>(<span class="ident">slice</span>.<span class="ident">len</span>()) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>
+                (<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>).<span class="ident">wrapping_add</span>(<span class="ident">slice</span>.<span class="ident">len</span>()) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>
             } <span class="kw">else</span> {
                 <span class="ident">ptr</span>.<span class="ident">add</span>(<span class="ident">slice</span>.<span class="ident">len</span>())
             };
@@ -3508,7 +3522,7 @@
     }
 }
 
-<span class="macro">iterator!</span> {<span class="kw">struct</span> <span class="ident">IterMut</span> -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">mut</span>, {<span class="kw-2">mut</span>}, {}}
+<span class="macro">iterator!</span> {<span class="kw">struct</span> <span class="ident">IterMut</span> -&gt; <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span>, <span class="kw-2">mut</span>, {<span class="kw-2">mut</span>}, {}}
 
 <span class="doccomment">/// An internal abstraction over the splitting iterators, so that</span>
 <span class="doccomment">/// splitn, splitn_mut etc can be implemented once.</span>
@@ -3516,7 +3530,7 @@
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">trait</span> <span class="ident">SplitIter</span>: <span class="ident">DoubleEndedIterator</span> {
     <span class="doccomment">/// Marks the underlying iterator as complete, extracting the remaining</span>
     <span class="doccomment">/// portion of the slice.</span>
-    <span class="kw">fn</span> <span class="ident">finish</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">finish</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span>;
 }
 
 <span class="doccomment">/// An iterator over subslices separated by elements that match a predicate</span>
@@ -3557,7 +3571,7 @@
 <span class="kw">where</span>
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Split&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;v&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">v</span>).<span class="ident">field</span>(<span class="string">&quot;finished&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">finished</span>).<span class="ident">finish</span>()
     }
 }
@@ -3581,7 +3595,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">finished</span> {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
@@ -3614,7 +3628,7 @@
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">finished</span> {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
@@ -3635,7 +3649,7 @@
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">finish</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">finish</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">finished</span> {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -3685,7 +3699,7 @@
 <span class="kw">where</span>
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;SplitInclusive&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;v&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">v</span>)
             .<span class="ident">field</span>(<span class="string">&quot;finished&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">finished</span>)
@@ -3712,7 +3726,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">finished</span> {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
@@ -3746,7 +3760,7 @@
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">finished</span> {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
@@ -3804,7 +3818,7 @@
 <span class="kw">where</span>
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;SplitMut&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;v&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">v</span>).<span class="ident">field</span>(<span class="string">&quot;finished&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">finished</span>).<span class="ident">finish</span>()
     }
 }
@@ -3814,12 +3828,12 @@
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">finish</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">finish</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">finished</span> {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
             <span class="self">self</span>.<span class="ident">finished</span> <span class="op">=</span> <span class="bool-val">true</span>;
-            <span class="prelude-val">Some</span>(<span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []))
+            <span class="prelude-val">Some</span>(<span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []))
         }
     }
 }
@@ -3832,22 +3846,22 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">finished</span> {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
 
         <span class="kw">let</span> <span class="ident">idx_opt</span> <span class="op">=</span> {
             <span class="comment">// work around borrowck limitations</span>
-            <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">pred</span>;
+            <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">pred</span>;
             <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> (<span class="kw-2">*</span><span class="ident">pred</span>)(<span class="ident">x</span>))
         };
         <span class="kw">match</span> <span class="ident">idx_opt</span> {
             <span class="prelude-val">None</span> =&gt; <span class="self">self</span>.<span class="ident">finish</span>(),
             <span class="prelude-val">Some</span>(<span class="ident">idx</span>) =&gt; {
-                <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+                <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []);
                 <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="ident">idx</span>);
-                <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">tail</span>[<span class="number">1</span>..];
+                <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="ident">tail</span>[<span class="number">1</span>..];
                 <span class="prelude-val">Some</span>(<span class="ident">head</span>)
             }
         }
@@ -3871,23 +3885,23 @@
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">finished</span> {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
 
         <span class="kw">let</span> <span class="ident">idx_opt</span> <span class="op">=</span> {
             <span class="comment">// work around borrowck limitations</span>
-            <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">pred</span>;
+            <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">pred</span>;
             <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">iter</span>().<span class="ident">rposition</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> (<span class="kw-2">*</span><span class="ident">pred</span>)(<span class="ident">x</span>))
         };
         <span class="kw">match</span> <span class="ident">idx_opt</span> {
             <span class="prelude-val">None</span> =&gt; <span class="self">self</span>.<span class="ident">finish</span>(),
             <span class="prelude-val">Some</span>(<span class="ident">idx</span>) =&gt; {
-                <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+                <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []);
                 <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="ident">idx</span>);
                 <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">head</span>;
-                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">tail</span>[<span class="number">1</span>..])
+                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut</span> <span class="ident">tail</span>[<span class="number">1</span>..])
             }
         }
     }
@@ -3933,7 +3947,7 @@
 <span class="kw">where</span>
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;SplitInclusiveMut&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;v&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">v</span>)
             .<span class="ident">field</span>(<span class="string">&quot;finished&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">finished</span>)
@@ -3949,21 +3963,21 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">finished</span> {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
 
         <span class="kw">let</span> <span class="ident">idx_opt</span> <span class="op">=</span> {
             <span class="comment">// work around borrowck limitations</span>
-            <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">pred</span>;
+            <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">pred</span>;
             <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> (<span class="kw-2">*</span><span class="ident">pred</span>)(<span class="ident">x</span>))
         };
         <span class="kw">let</span> <span class="ident">idx</span> <span class="op">=</span> <span class="ident">idx_opt</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">idx</span><span class="op">|</span> <span class="ident">idx</span> <span class="op">+</span> <span class="number">1</span>).<span class="ident">unwrap_or</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>());
         <span class="kw">if</span> <span class="ident">idx</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() {
             <span class="self">self</span>.<span class="ident">finished</span> <span class="op">=</span> <span class="bool-val">true</span>;
         }
-        <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+        <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []);
         <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="ident">idx</span>);
         <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">tail</span>;
         <span class="prelude-val">Some</span>(<span class="ident">head</span>)
@@ -3988,7 +4002,7 @@
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">finished</span> {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
@@ -3997,7 +4011,7 @@
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
             <span class="comment">// work around borrowck limitations</span>
-            <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">pred</span>;
+            <span class="kw">let</span> <span class="ident">pred</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">pred</span>;
 
             <span class="comment">// The last index of self.v is already checked and found to match</span>
             <span class="comment">// by the last iteration, so we start searching a new match</span>
@@ -4009,7 +4023,7 @@
         <span class="kw">if</span> <span class="ident">idx</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="self">self</span>.<span class="ident">finished</span> <span class="op">=</span> <span class="bool-val">true</span>;
         }
-        <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+        <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []);
         <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="ident">idx</span>);
         <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">head</span>;
         <span class="prelude-val">Some</span>(<span class="ident">tail</span>)
@@ -4034,7 +4048,6 @@
 <span class="doccomment">/// [`rsplit`]: slice::rsplit</span>
 <span class="doccomment">/// [slices]: slice</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_rsplit&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span> <span class="comment">// Is this correct, or does it incorrectly require `T: Clone`?</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RSplit</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="lifetime">&#39;a</span>, <span class="ident">P</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
@@ -4054,11 +4067,22 @@
 <span class="kw">where</span>
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;RSplit&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;v&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">v</span>)
             .<span class="ident">field</span>(<span class="string">&quot;finished&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">finished</span>)
             .<span class="ident">finish</span>()
+    }
+}
+
+<span class="comment">// FIXME(#26925) Remove in favor of `#[derive(Clone)]`</span>
+<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_rsplit&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.27.0&quot;</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">P</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">RSplit</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">P</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">P</span>: <span class="ident">Clone</span> <span class="op">+</span> <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
+{
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident">RSplit</span> { <span class="ident">inner</span>: <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">clone</span>() }
     }
 }
 
@@ -4070,7 +4094,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">next_back</span>()
     }
 
@@ -4086,7 +4110,7 @@
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">next</span>()
     }
 }
@@ -4097,7 +4121,7 @@
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">finish</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">finish</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">finish</span>()
     }
 }
@@ -4139,7 +4163,7 @@
 <span class="kw">where</span>
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;RSplitMut&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;v&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">v</span>)
             .<span class="ident">field</span>(<span class="string">&quot;finished&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">finished</span>)
@@ -4153,7 +4177,7 @@
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">finish</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">finish</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">finish</span>()
     }
 }
@@ -4166,7 +4190,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">next_back</span>()
     }
 
@@ -4182,7 +4206,7 @@
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">next</span>()
     }
 }
@@ -4203,7 +4227,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">count</span> {
             <span class="number">0</span> =&gt; <span class="prelude-val">None</span>,
             <span class="number">1</span> =&gt; {
@@ -4261,7 +4285,7 @@
 <span class="kw">where</span>
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;SplitN&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;inner&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>).<span class="ident">finish</span>()
     }
 }
@@ -4301,7 +4325,7 @@
 <span class="kw">where</span>
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;RSplitN&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;inner&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>).<span class="ident">finish</span>()
     }
 }
@@ -4340,7 +4364,7 @@
 <span class="kw">where</span>
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;SplitNMut&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;inner&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>).<span class="ident">finish</span>()
     }
 }
@@ -4380,7 +4404,7 @@
 <span class="kw">where</span>
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;RSplitNMut&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;inner&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">inner</span>).<span class="ident">finish</span>()
     }
 }
@@ -4430,7 +4454,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">get</span>() <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -4456,7 +4480,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">end</span>, <span class="ident">overflow</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">get</span>().<span class="ident">overflowing_add</span>(<span class="ident">n</span>);
         <span class="kw">if</span> <span class="ident">end</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">overflow</span> {
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[];
@@ -4479,7 +4503,7 @@
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
         <span class="comment">// SAFETY: since the caller guarantees that `i` is in bounds,</span>
         <span class="comment">// which means that `i` cannot overflow an `isize`, and the</span>
         <span class="comment">// slice created by `from_raw_parts` is a subslice of `self.v`</span>
@@ -4491,7 +4515,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">DoubleEndedIterator</span> <span class="kw">for</span> <span class="ident">Windows</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">get</span>() <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -4502,7 +4526,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">end</span>, <span class="ident">overflow</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>().<span class="ident">overflowing_sub</span>(<span class="ident">n</span>);
         <span class="kw">if</span> <span class="ident">end</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">size</span>.<span class="ident">get</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">overflow</span> {
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[];
@@ -4578,7 +4602,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">is_empty</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -4607,7 +4631,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">start</span>, <span class="ident">overflow</span>) <span class="op">=</span> <span class="ident">n</span>.<span class="ident">overflowing_mul</span>(<span class="self">self</span>.<span class="ident">chunk_size</span>);
         <span class="kw">if</span> <span class="ident">start</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">overflow</span> {
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[];
@@ -4634,7 +4658,7 @@
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">idx</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
         <span class="comment">// SAFETY: the caller guarantees that `i` is in bounds,</span>
         <span class="comment">// which means that `start` must be in bounds of the</span>
@@ -4653,7 +4677,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">DoubleEndedIterator</span> <span class="kw">for</span> <span class="ident">Chunks</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">is_empty</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -4666,7 +4690,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         <span class="kw">if</span> <span class="ident">n</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">len</span> {
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[];
@@ -4739,12 +4763,12 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">is_empty</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="ident">sz</span> <span class="op">=</span> <span class="ident">cmp::min</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>(), <span class="self">self</span>.<span class="ident">chunk_size</span>);
-            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []);
             <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="ident">sz</span>);
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">tail</span>;
             <span class="prelude-val">Some</span>(<span class="ident">head</span>)
@@ -4769,17 +4793,17 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">start</span>, <span class="ident">overflow</span>) <span class="op">=</span> <span class="ident">n</span>.<span class="ident">overflowing_mul</span>(<span class="self">self</span>.<span class="ident">chunk_size</span>);
         <span class="kw">if</span> <span class="ident">start</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">overflow</span> {
-            <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [];
+            <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> [];
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">start</span>.<span class="ident">checked_add</span>(<span class="self">self</span>.<span class="ident">chunk_size</span>) {
                 <span class="prelude-val">Some</span>(<span class="ident">sum</span>) =&gt; <span class="ident">cmp::min</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>(), <span class="ident">sum</span>),
                 <span class="prelude-val">None</span> =&gt; <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>(),
             };
-            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []);
             <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="ident">end</span>);
             <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">nth</span>) <span class="op">=</span> <span class="ident">head</span>.<span class="ident">split_at_mut</span>(<span class="ident">start</span>);
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">tail</span>;
@@ -4793,12 +4817,12 @@
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> (<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>) <span class="op">/</span> <span class="self">self</span>.<span class="ident">chunk_size</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
-            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>[<span class="ident">start</span>..])
+            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>[<span class="ident">start</span>..])
         }
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">idx</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
         <span class="comment">// SAFETY: see comments for `Chunks::__iterator_get_unchecked`.</span>
         <span class="comment">//</span>
@@ -4816,13 +4840,13 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">DoubleEndedIterator</span> <span class="kw">for</span> <span class="ident">ChunksMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">is_empty</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="ident">remainder</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">%</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
             <span class="kw">let</span> <span class="ident">sz</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">remainder</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> { <span class="ident">remainder</span> } <span class="kw">else</span> { <span class="self">self</span>.<span class="ident">chunk_size</span> };
-            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []);
             <span class="kw">let</span> <span class="ident">tmp_len</span> <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">len</span>();
             <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="ident">tmp_len</span> <span class="op">-</span> <span class="ident">sz</span>);
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">head</span>;
@@ -4831,10 +4855,10 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         <span class="kw">if</span> <span class="ident">n</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">len</span> {
-            <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [];
+            <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> [];
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> (<span class="ident">len</span> <span class="op">-</span> <span class="number">1</span> <span class="op">-</span> <span class="ident">n</span>) <span class="op">*</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
@@ -4842,7 +4866,7 @@
                 <span class="prelude-val">Some</span>(<span class="ident">res</span>) =&gt; <span class="ident">cmp::min</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>(), <span class="ident">res</span>),
                 <span class="prelude-val">None</span> =&gt; <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>(),
             };
-            <span class="kw">let</span> (<span class="ident">temp</span>, <span class="ident">_tail</span>) <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []).<span class="ident">split_at_mut</span>(<span class="ident">end</span>);
+            <span class="kw">let</span> (<span class="ident">temp</span>, <span class="ident">_tail</span>) <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []).<span class="ident">split_at_mut</span>(<span class="ident">end</span>);
             <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">nth_back</span>) <span class="op">=</span> <span class="ident">temp</span>.<span class="ident">split_at_mut</span>(<span class="ident">start</span>);
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">head</span>;
             <span class="prelude-val">Some</span>(<span class="ident">nth_back</span>)
@@ -4909,6 +4933,7 @@
     <span class="doccomment">/// Returns the remainder of the original slice that is not going to be</span>
     <span class="doccomment">/// returned by the iterator. The returned slice has at most `chunk_size-1`</span>
     <span class="doccomment">/// elements.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;chunks_exact&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.31.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remainder</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>] {
         <span class="self">self</span>.<span class="ident">rem</span>
@@ -4928,7 +4953,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">chunk_size</span> {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -4950,7 +4975,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">start</span>, <span class="ident">overflow</span>) <span class="op">=</span> <span class="ident">n</span>.<span class="ident">overflowing_mul</span>(<span class="self">self</span>.<span class="ident">chunk_size</span>);
         <span class="kw">if</span> <span class="ident">start</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">overflow</span> {
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[];
@@ -4968,7 +4993,7 @@
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">idx</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
         <span class="comment">// SAFETY: mostly identical to `Chunks::__iterator_get_unchecked`.</span>
         <span class="kw">unsafe</span> { <span class="ident">from_raw_parts</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">as_ptr</span>().<span class="ident">add</span>(<span class="ident">start</span>), <span class="self">self</span>.<span class="ident">chunk_size</span>) }
@@ -4978,7 +5003,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;chunks_exact&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.31.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">DoubleEndedIterator</span> <span class="kw">for</span> <span class="ident">ChunksExact</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">chunk_size</span> {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -4989,7 +5014,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         <span class="kw">if</span> <span class="ident">n</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">len</span> {
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[];
@@ -5079,11 +5104,11 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">chunk_size</span> {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
-            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []);
             <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="self">self</span>.<span class="ident">chunk_size</span>);
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">tail</span>;
             <span class="prelude-val">Some</span>(<span class="ident">head</span>)
@@ -5102,13 +5127,13 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">start</span>, <span class="ident">overflow</span>) <span class="op">=</span> <span class="ident">n</span>.<span class="ident">overflowing_mul</span>(<span class="self">self</span>.<span class="ident">chunk_size</span>);
         <span class="kw">if</span> <span class="ident">start</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">overflow</span> {
-            <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [];
+            <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> [];
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
-            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []);
             <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">snd</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="ident">start</span>);
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">snd</span>;
             <span class="self">self</span>.<span class="ident">next</span>()
@@ -5121,7 +5146,7 @@
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">idx</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
         <span class="comment">// SAFETY: see comments for `ChunksMut::__iterator_get_unchecked`.</span>
         <span class="kw">unsafe</span> { <span class="ident">from_raw_parts_mut</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">add</span>(<span class="ident">start</span>), <span class="self">self</span>.<span class="ident">chunk_size</span>) }
@@ -5131,11 +5156,11 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;chunks_exact&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.31.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">DoubleEndedIterator</span> <span class="kw">for</span> <span class="ident">ChunksExactMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">chunk_size</span> {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
-            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []);
             <span class="kw">let</span> <span class="ident">tmp_len</span> <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">len</span>();
             <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="ident">tmp_len</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">chunk_size</span>);
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">head</span>;
@@ -5144,15 +5169,15 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         <span class="kw">if</span> <span class="ident">n</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">len</span> {
-            <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [];
+            <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> [];
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> (<span class="ident">len</span> <span class="op">-</span> <span class="number">1</span> <span class="op">-</span> <span class="ident">n</span>) <span class="op">*</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
             <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">start</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
-            <span class="kw">let</span> (<span class="ident">temp</span>, <span class="ident">_tail</span>) <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []).<span class="ident">split_at_mut</span>(<span class="ident">end</span>);
+            <span class="kw">let</span> (<span class="ident">temp</span>, <span class="ident">_tail</span>) <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []).<span class="ident">split_at_mut</span>(<span class="ident">end</span>);
             <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">nth_back</span>) <span class="op">=</span> <span class="ident">temp</span>.<span class="ident">split_at_mut</span>(<span class="ident">start</span>);
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">head</span>;
             <span class="prelude-val">Some</span>(<span class="ident">nth_back</span>)
@@ -5202,7 +5227,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_windows&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;75027&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ArrayWindows</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="lifetime">&#39;a</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> {
-    <span class="ident">slice_head</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>,
+    <span class="ident">slice_head</span>: <span class="kw-2">*const</span> <span class="ident">T</span>,
     <span class="ident">num</span>: <span class="ident">usize</span>,
     <span class="ident">marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span>,
 }
@@ -5220,7 +5245,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>; <span class="ident">N</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
@@ -5246,7 +5271,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">num</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">n</span> {
             <span class="self">self</span>.<span class="ident">num</span> <span class="op">=</span> <span class="number">0</span>;
             <span class="kw">return</span> <span class="prelude-val">None</span>;
@@ -5270,7 +5295,7 @@
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_windows&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;75027&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">DoubleEndedIterator</span> <span class="kw">for</span> <span class="ident">ArrayWindows</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">num</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
@@ -5281,7 +5306,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">num</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">n</span> {
             <span class="self">self</span>.<span class="ident">num</span> <span class="op">=</span> <span class="number">0</span>;
             <span class="kw">return</span> <span class="prelude-val">None</span>;
@@ -5338,6 +5363,7 @@
     <span class="doccomment">/// Returns the remainder of the original slice that is not going to be</span>
     <span class="doccomment">/// returned by the iterator. The returned slice has at most `N-1`</span>
     <span class="doccomment">/// elements.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_chunks&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;74985&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remainder</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>] {
         <span class="self">self</span>.<span class="ident">rem</span>
@@ -5357,7 +5383,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>; <span class="ident">N</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>()
     }
 
@@ -5372,7 +5398,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">nth</span>(<span class="ident">n</span>)
     }
 
@@ -5382,7 +5408,7 @@
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
         <span class="comment">// SAFETY: The safety guarantees of `__iterator_get_unchecked` are</span>
         <span class="comment">// transferred to the caller.</span>
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">__iterator_get_unchecked</span>(<span class="ident">i</span>) }
@@ -5392,12 +5418,12 @@
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_chunks&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;74985&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">DoubleEndedIterator</span> <span class="kw">for</span> <span class="ident">ArrayChunks</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next_back</span>()
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">nth_back</span>(<span class="ident">n</span>)
     }
 }
@@ -5475,7 +5501,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>; <span class="ident">N</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>()
     }
 
@@ -5490,7 +5516,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">nth</span>(<span class="ident">n</span>)
     }
 
@@ -5500,7 +5526,7 @@
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
         <span class="comment">// SAFETY: The safety guarantees of `__iterator_get_unchecked` are transferred to</span>
         <span class="comment">// the caller.</span>
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">__iterator_get_unchecked</span>(<span class="ident">i</span>) }
@@ -5510,12 +5536,12 @@
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_chunks&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;74985&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">DoubleEndedIterator</span> <span class="kw">for</span> <span class="ident">ArrayChunksMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next_back</span>()
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">nth_back</span>(<span class="ident">n</span>)
     }
 }
@@ -5587,7 +5613,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">is_empty</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -5616,7 +5642,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">end</span>, <span class="ident">overflow</span>) <span class="op">=</span> <span class="ident">n</span>.<span class="ident">overflowing_mul</span>(<span class="self">self</span>.<span class="ident">chunk_size</span>);
         <span class="kw">if</span> <span class="ident">end</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">overflow</span> {
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[];
@@ -5646,7 +5672,7 @@
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">idx</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">end</span>.<span class="ident">checked_sub</span>(<span class="self">self</span>.<span class="ident">chunk_size</span>) {
             <span class="prelude-val">None</span> =&gt; <span class="number">0</span>,
@@ -5660,7 +5686,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rchunks&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.31.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">DoubleEndedIterator</span> <span class="kw">for</span> <span class="ident">RChunks</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">is_empty</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -5673,7 +5699,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         <span class="kw">if</span> <span class="ident">n</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">len</span> {
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[];
@@ -5745,12 +5771,12 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">is_empty</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="ident">sz</span> <span class="op">=</span> <span class="ident">cmp::min</span>(<span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>(), <span class="self">self</span>.<span class="ident">chunk_size</span>);
-            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []);
             <span class="kw">let</span> <span class="ident">tmp_len</span> <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">len</span>();
             <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="ident">tmp_len</span> <span class="op">-</span> <span class="ident">sz</span>);
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">head</span>;
@@ -5776,10 +5802,10 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">end</span>, <span class="ident">overflow</span>) <span class="op">=</span> <span class="ident">n</span>.<span class="ident">overflowing_mul</span>(<span class="self">self</span>.<span class="ident">chunk_size</span>);
         <span class="kw">if</span> <span class="ident">end</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">overflow</span> {
-            <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [];
+            <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> [];
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
             <span class="comment">// Can&#39;t underflow because of the check above</span>
@@ -5788,7 +5814,7 @@
                 <span class="prelude-val">Some</span>(<span class="ident">sum</span>) =&gt; <span class="ident">sum</span>,
                 <span class="prelude-val">None</span> =&gt; <span class="number">0</span>,
             };
-            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []);
             <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="ident">start</span>);
             <span class="kw">let</span> (<span class="ident">nth</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">tail</span>.<span class="ident">split_at_mut</span>(<span class="ident">end</span> <span class="op">-</span> <span class="ident">start</span>);
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">head</span>;
@@ -5803,12 +5829,12 @@
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="ident">rem</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">%</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
             <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">rem</span> <span class="op">==</span> <span class="number">0</span> { <span class="self">self</span>.<span class="ident">chunk_size</span> } <span class="kw">else</span> { <span class="ident">rem</span> };
-            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>[<span class="number">0</span>..<span class="ident">end</span>])
+            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>[<span class="number">0</span>..<span class="ident">end</span>])
         }
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">idx</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">end</span>.<span class="ident">checked_sub</span>(<span class="self">self</span>.<span class="ident">chunk_size</span>) {
             <span class="prelude-val">None</span> =&gt; <span class="number">0</span>,
@@ -5823,13 +5849,13 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rchunks&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.31.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">DoubleEndedIterator</span> <span class="kw">for</span> <span class="ident">RChunksMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">is_empty</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="ident">remainder</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">%</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
             <span class="kw">let</span> <span class="ident">sz</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">remainder</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> { <span class="ident">remainder</span> } <span class="kw">else</span> { <span class="self">self</span>.<span class="ident">chunk_size</span> };
-            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []);
             <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="ident">sz</span>);
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">tail</span>;
             <span class="prelude-val">Some</span>(<span class="ident">head</span>)
@@ -5837,17 +5863,17 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         <span class="kw">if</span> <span class="ident">n</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">len</span> {
-            <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [];
+            <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> [];
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
             <span class="comment">// can&#39;t underflow because `n &lt; len`</span>
             <span class="kw">let</span> <span class="ident">offset_from_end</span> <span class="op">=</span> (<span class="ident">len</span> <span class="op">-</span> <span class="number">1</span> <span class="op">-</span> <span class="ident">n</span>) <span class="op">*</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
             <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">offset_from_end</span>;
             <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">end</span>.<span class="ident">saturating_sub</span>(<span class="self">self</span>.<span class="ident">chunk_size</span>);
-            <span class="kw">let</span> (<span class="ident">tmp</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []).<span class="ident">split_at_mut</span>(<span class="ident">end</span>);
+            <span class="kw">let</span> (<span class="ident">tmp</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []).<span class="ident">split_at_mut</span>(<span class="ident">end</span>);
             <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">nth_back</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="ident">start</span>);
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">tail</span>;
             <span class="prelude-val">Some</span>(<span class="ident">nth_back</span>)
@@ -5913,6 +5939,7 @@
     <span class="doccomment">/// Returns the remainder of the original slice that is not going to be</span>
     <span class="doccomment">/// returned by the iterator. The returned slice has at most `chunk_size-1`</span>
     <span class="doccomment">/// elements.</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rchunks&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.31.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remainder</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>] {
         <span class="self">self</span>.<span class="ident">rem</span>
@@ -5932,7 +5959,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">chunk_size</span> {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -5954,7 +5981,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">end</span>, <span class="ident">overflow</span>) <span class="op">=</span> <span class="ident">n</span>.<span class="ident">overflowing_mul</span>(<span class="self">self</span>.<span class="ident">chunk_size</span>);
         <span class="kw">if</span> <span class="ident">end</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">overflow</span> {
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[];
@@ -5972,7 +5999,7 @@
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">idx</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">end</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
         <span class="comment">// SAFETY:</span>
@@ -5984,7 +6011,7 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rchunks&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.31.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">DoubleEndedIterator</span> <span class="kw">for</span> <span class="ident">RChunksExact</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">chunk_size</span> {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -5995,7 +6022,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         <span class="kw">if</span> <span class="ident">n</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">len</span> {
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[];
@@ -6087,11 +6114,11 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">chunk_size</span> {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
-            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []);
             <span class="kw">let</span> <span class="ident">tmp_len</span> <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">len</span>();
             <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="ident">tmp_len</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">chunk_size</span>);
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">head</span>;
@@ -6111,13 +6138,13 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">end</span>, <span class="ident">overflow</span>) <span class="op">=</span> <span class="ident">n</span>.<span class="ident">overflowing_mul</span>(<span class="self">self</span>.<span class="ident">chunk_size</span>);
         <span class="kw">if</span> <span class="ident">end</span> <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">overflow</span> {
-            <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [];
+            <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> [];
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
-            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []);
             <span class="kw">let</span> <span class="ident">tmp_len</span> <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">len</span>();
             <span class="kw">let</span> (<span class="ident">fst</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="ident">tmp_len</span> <span class="op">-</span> <span class="ident">end</span>);
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">fst</span>;
@@ -6131,7 +6158,7 @@
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__iterator_get_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) -&gt; <span class="ident"><span class="self">Self</span>::Item</span> {
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">idx</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">end</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
         <span class="comment">// SAFETY: see comments for `RChunksMut::__iterator_get_unchecked`.</span>
@@ -6142,11 +6169,11 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rchunks&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.31.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">DoubleEndedIterator</span> <span class="kw">for</span> <span class="ident">RChunksExactMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">chunk_size</span> {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
-            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []);
+            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []);
             <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="self">self</span>.<span class="ident">chunk_size</span>);
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">tail</span>;
             <span class="prelude-val">Some</span>(<span class="ident">head</span>)
@@ -6154,10 +6181,10 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
         <span class="kw">if</span> <span class="ident">n</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">len</span> {
-            <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [];
+            <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> [];
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
             <span class="comment">// now that we know that `n` corresponds to a chunk,</span>
@@ -6165,7 +6192,7 @@
             <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> (<span class="ident">len</span> <span class="op">-</span> <span class="ident">n</span>) <span class="op">*</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
             <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">offset</span>;
             <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">start</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">chunk_size</span>;
-            <span class="kw">let</span> (<span class="ident">tmp</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> []).<span class="ident">split_at_mut</span>(<span class="ident">end</span>);
+            <span class="kw">let</span> (<span class="ident">tmp</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">v</span>, <span class="kw-2">&amp;mut</span> []).<span class="ident">split_at_mut</span>(<span class="ident">end</span>);
             <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">nth_back</span>) <span class="op">=</span> <span class="ident">tmp</span>.<span class="ident">split_at_mut</span>(<span class="ident">start</span>);
             <span class="self">self</span>.<span class="ident">v</span> <span class="op">=</span> <span class="ident">tail</span>;
             <span class="prelude-val">Some</span>(<span class="ident">nth_back</span>)
@@ -6243,7 +6270,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">slice</span>.<span class="ident">is_empty</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -6275,7 +6302,7 @@
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">slice</span>.<span class="ident">is_empty</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -6296,7 +6323,7 @@
 
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_group_by&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;80552&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="ident">fmt::Debug</span>, <span class="ident">P</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">GroupBy</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>, <span class="ident">P</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;GroupBy&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;slice&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">slice</span>).<span class="ident">finish</span>()
     }
 }
@@ -6329,7 +6356,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">T</span>];
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">slice</span>.<span class="ident">is_empty</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -6338,7 +6365,7 @@
             <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>([<span class="ident">l</span>, <span class="ident">r</span>]) <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">next</span>() {
                 <span class="kw">if</span> (<span class="self">self</span>.<span class="ident">predicate</span>)(<span class="ident">l</span>, <span class="ident">r</span>) { <span class="ident">len</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span> } <span class="kw">else</span> { <span class="kw">break</span> }
             }
-            <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="ident">mem::take</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">slice</span>);
+            <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="ident">mem::take</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">slice</span>);
             <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">slice</span>.<span class="ident">split_at_mut</span>(<span class="ident">len</span>);
             <span class="self">self</span>.<span class="ident">slice</span> <span class="op">=</span> <span class="ident">tail</span>;
             <span class="prelude-val">Some</span>(<span class="ident">head</span>)
@@ -6362,7 +6389,7 @@
     <span class="ident">P</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">slice</span>.<span class="ident">is_empty</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -6371,7 +6398,7 @@
             <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>([<span class="ident">l</span>, <span class="ident">r</span>]) <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">next_back</span>() {
                 <span class="kw">if</span> (<span class="self">self</span>.<span class="ident">predicate</span>)(<span class="ident">l</span>, <span class="ident">r</span>) { <span class="ident">len</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span> } <span class="kw">else</span> { <span class="kw">break</span> }
             }
-            <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="ident">mem::take</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">slice</span>);
+            <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="ident">mem::take</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">slice</span>);
             <span class="kw">let</span> (<span class="ident">head</span>, <span class="ident">tail</span>) <span class="op">=</span> <span class="ident">slice</span>.<span class="ident">split_at_mut</span>(<span class="ident">slice</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">len</span>);
             <span class="self">self</span>.<span class="ident">slice</span> <span class="op">=</span> <span class="ident">head</span>;
             <span class="prelude-val">Some</span>(<span class="ident">tail</span>)
@@ -6384,11 +6411,10 @@
 
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_group_by&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;80552&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="lifetime">&#39;a</span> <span class="op">+</span> <span class="ident">fmt::Debug</span>, <span class="ident">P</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">GroupByMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>, <span class="ident">P</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;GroupByMut&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;slice&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">slice</span>).<span class="ident">finish</span>()
     }
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
 </body></html>

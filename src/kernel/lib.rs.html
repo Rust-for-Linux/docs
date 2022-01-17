@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -254,6 +255,12 @@
 <span id="254">254</span>
 <span id="255">255</span>
 <span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! The `kernel` crate.</span>
@@ -274,8 +281,12 @@
     <span class="ident">concat_idents</span>,
     <span class="ident">const_fn_trait_bound</span>,
     <span class="ident">const_mut_refs</span>,
+    <span class="ident">const_ptr_offset_from</span>,
+    <span class="ident">const_refs_to_cell</span>,
+    <span class="ident">const_trait_impl</span>,
     <span class="ident">doc_cfg</span>,
     <span class="ident">generic_associated_types</span>,
+    <span class="ident">maybe_uninit_extra</span>,
     <span class="ident">ptr_metadata</span>,
     <span class="ident">receiver_trait</span>,
     <span class="ident">coerce_unsized</span>,
@@ -300,6 +311,8 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">buffer</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">c_types</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">chrdev</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">CONFIG_COMMON_CLK</span>)]</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">clk</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">cred</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">device</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">driver</span>;
@@ -340,7 +353,7 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">io_mem</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">iov_iter</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">of</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">platdev</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">platform</span>;
 <span class="kw">mod</span> <span class="ident">types</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">user_ptr</span>;
 
@@ -376,7 +389,7 @@
 <span class="doccomment">/// Equivalent to `THIS_MODULE` in the C API.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// C header: `include/linux/export.h`</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ThisModule</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::module</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ThisModule</span>(<span class="kw-2">*mut</span> <span class="ident">bindings::module</span>);
 
 <span class="comment">// SAFETY: `THIS_MODULE` may be used from all threads within a module.</span>
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">ThisModule</span> {}
@@ -387,7 +400,7 @@
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The pointer must be equal to the right `THIS_MODULE`.</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_ptr</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::module</span>) -&gt; <span class="ident">ThisModule</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_ptr</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::module</span>) -&gt; <span class="ident">ThisModule</span> {
         <span class="ident">ThisModule</span>(<span class="ident">ptr</span>)
     }
 
@@ -421,7 +434,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">CONFIG_SYSFS</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">KParamGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="comment">// SAFETY: `kernel_param_lock` will check if the pointer is null and</span>
         <span class="comment">// use the built-in mutex in that case. The existance of `self`</span>
         <span class="comment">// guarantees that the lock is held.</span>
@@ -456,11 +469,11 @@
         <span class="comment">// SAFETY: The pointer is valid and aligned, just not initialised; `addr_of` ensures that</span>
         <span class="comment">// we don&#39;t actually read from `outer` (which would be UB) nor create an intermediate</span>
         <span class="comment">// reference.</span>
-        <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="macro">core::ptr::addr_of!</span>((<span class="kw-2">*</span><span class="ident">outer</span>).$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>) } <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>;
+        <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="macro">core::ptr::addr_of!</span>((<span class="kw-2">*</span><span class="ident">outer</span>).$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>) } <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>;
         <span class="comment">// To avoid warnings when nesting `unsafe` blocks.</span>
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_unsafe</span>)]</span>
         <span class="comment">// SAFETY: The two pointers are within the same allocation block.</span>
-        <span class="kw">unsafe</span> { <span class="ident">inner</span>.<span class="ident">offset_from</span>(<span class="ident">outer</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">inner</span>.<span class="ident">offset_from</span>(<span class="ident">outer</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>) }
     }}
 }
 
@@ -493,9 +506,9 @@
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">container_of</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ptr</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ty</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {{
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>;
+        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>;
         <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro">crate::offset_of!</span>(<span class="macro-nonterminal">$</span><span class="kw">type</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>);
-        <span class="ident">ptr</span>.<span class="ident">wrapping_offset</span>(<span class="op">-</span><span class="ident">offset</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="macro-nonterminal">$</span><span class="kw">type</span>
+        <span class="ident">ptr</span>.<span class="ident">wrapping_offset</span>(<span class="op">-</span><span class="ident">offset</span>) <span class="kw">as</span> <span class="kw-2">*const</span> <span class="macro-nonterminal">$</span><span class="kw">type</span>
     }}
 }
 
@@ -512,5 +525,4 @@
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
 </body></html>

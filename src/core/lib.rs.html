@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../core/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../core/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -387,6 +388,18 @@
 <span id="387">387</span>
 <span id="388">388</span>
 <span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
 </pre><pre class="rust"><code><span class="doccomment">//! # The Rust Core Library</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! The Rust Core Library is the dependency-free[^free] foundation of [The</span>
@@ -486,6 +499,7 @@
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">explicit_outlives_requirements</span>)]</span>
 <span class="comment">//</span>
 <span class="comment">// Library features for const fns:</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_align_offset</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_align_of_val</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_alloc_layout</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_arguments_as_str</span>)]</span>
@@ -493,9 +507,12 @@
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_bigint_helper_methods</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_caller_location</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_cell_into_inner</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_char_convert</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_discriminant</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_eval_select</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_float_bits_conv</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_float_classify</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_fmt_arguments_new</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_heap</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_inherent_unchecked_arith</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_int_unchecked_arith</span>)]</span>
@@ -504,6 +521,8 @@
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_likely</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_maybe_uninit_as_ptr</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_maybe_uninit_assume_init</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_num_from_num</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_ops</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_option</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_pin</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_replace</span>)]</span>
@@ -515,15 +534,19 @@
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_size_of_val</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_slice_from_raw_parts</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_slice_ptr_len</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_str_from_utf8_unchecked_mut</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_swap</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_trait_impl</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_type_id</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_type_name</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_default_impls</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">duration_consts_2</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">duration_consts_float</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">ptr_metadata</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">slice_ptr_get</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">str_internals</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">variant_count</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_array_from_ref</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_slice_from_ref</span>)]</span>
 <span class="comment">//</span>
 <span class="comment">// Language features:</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">abi_unadjusted</span>)]</span>
@@ -538,16 +561,17 @@
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_fn_trait_bound</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_impl_trait</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_mut_refs</span>)]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">bootstrap</span>, <span class="ident">feature</span>(<span class="ident">const_panic</span>))]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_precise_live_drops</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_raw_ptr_deref</span>)]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">bootstrap</span>, <span class="ident">feature</span>(<span class="ident">const_raw_ptr_deref</span>))]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_refs_to_cell</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">decl_macro</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">derive_default_enum</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">doc_cfg</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">doc_notable_trait</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">doc_primitive</span>)]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">bootstrap</span>, <span class="ident">feature</span>(<span class="ident">doc_primitive</span>))]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>), <span class="ident">feature</span>(<span class="ident">rustdoc_internals</span>))]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">exhaustive_patterns</span>)]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>), <span class="ident">feature</span>(<span class="ident">doc_cfg_hide</span>))]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">doc_cfg_hide</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">extern_types</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">fundamental</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">if_let_guard</span>)]</span>
@@ -558,7 +582,7 @@
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">llvm_asm</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">min_specialization</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">mixed_integer_ops</span>)]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>), <span class="ident">feature</span>(<span class="ident">must_not_suspend</span>))]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">must_not_suspend</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">negative_impls</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">never_type</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">no_core</span>)]</span>
@@ -577,6 +601,7 @@
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">try_blocks</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">unboxed_closures</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">unsized_fn_params</span>)]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>), <span class="ident">feature</span>(<span class="ident">asm_const</span>))]</span>
 <span class="comment">//</span>
 <span class="comment">// Target features:</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">aarch64_target_feature</span>)]</span>
@@ -778,5 +803,4 @@
 <span class="macro">include!</span>(<span class="string">&quot;primitive_docs.rs&quot;</span>);
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
 </body></html>

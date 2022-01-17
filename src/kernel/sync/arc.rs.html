@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;sync&#x2F;arc.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>arc.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;sync&#x2F;arc.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>arc.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -615,7 +616,7 @@
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">borrow_usize</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">encoded</span>: <span class="ident">usize</span>) -&gt; <span class="ident">RefBorrow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="comment">// SAFETY: By the safety requirement of this function, we know that `encoded` came from</span>
         <span class="comment">// a previous call to `Ref::into_usize`.</span>
-        <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="ident">NonNull::new</span>(<span class="ident">encoded</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">RefInner</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="ident">NonNull::new</span>(<span class="ident">encoded</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">RefInner</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>).<span class="ident">unwrap</span>();
 
         <span class="comment">// SAFETY: The safety requirements ensure that the object remains alive for the lifetime of</span>
         <span class="comment">// the returned value. There is no way to create mutable references to the object.</span>
@@ -627,7 +628,7 @@
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// `encoded` must have been returned by a previous call to [`Ref::into_usize`]. Additionally,</span>
-    <span class="doccomment">/// it can only be called once for each previous call to [``Ref::into_usize`].</span>
+    <span class="doccomment">/// it can only be called once for each previous call to [`Ref::into_usize`].</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_usize</span>(<span class="ident">encoded</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
         <span class="comment">// SAFETY: By the safety invariants we know that `encoded` came from `Ref::into_usize`, so</span>
         <span class="comment">// the reference count held then will be owned by the new `Ref` object.</span>
@@ -658,8 +659,8 @@
     <span class="doccomment">/// Deconstructs a [`Ref`] object into a raw pointer.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// It can be reconstructed once via [`Ref::from_raw`].</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_raw</span>(<span class="ident">obj</span>: <span class="self">Self</span>) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">obj</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_raw</span>(<span class="ident">obj</span>: <span class="self">Self</span>) -&gt; <span class="kw-2">*const</span> <span class="ident">T</span> {
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">obj</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">T</span>;
         <span class="ident">core::mem::forget</span>(<span class="ident">obj</span>);
         <span class="ident">ret</span>
     }
@@ -672,8 +673,8 @@
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// `ptr` must have been returned by a previous call to [`Ref::into_raw`]. Additionally, it</span>
-    <span class="doccomment">/// can only be called once for each previous call to [``Ref::into_raw`].</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span>) -&gt; <span class="self">Self</span> {
+    <span class="doccomment">/// can only be called once for each previous call to [`Ref::into_raw`].</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">T</span>) -&gt; <span class="self">Self</span> {
         <span class="comment">// SAFETY: The safety requirement ensures that the pointer is valid.</span>
         <span class="kw">let</span> <span class="ident">align</span> <span class="op">=</span> <span class="ident">core::mem::align_of_val</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">ptr</span> });
         <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">Layout::new</span>::<span class="op">&lt;</span><span class="ident">RefInner</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span>()
@@ -683,8 +684,8 @@
             .<span class="ident">size</span>();
         <span class="comment">// SAFETY: The pointer is in bounds because by the safety requirements `ptr` came from</span>
         <span class="comment">// `Ref::into_raw`, so it is a pointer `offset` bytes from the beginning of the allocation.</span>
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw">unsafe</span> { (<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>).<span class="ident">sub</span>(<span class="ident">offset</span>) };
-        <span class="kw">let</span> <span class="ident">metadata</span> <span class="op">=</span> <span class="ident">ptr::metadata</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">RefInner</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw">unsafe</span> { (<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>).<span class="ident">sub</span>(<span class="ident">offset</span>) };
+        <span class="kw">let</span> <span class="ident">metadata</span> <span class="op">=</span> <span class="ident">ptr::metadata</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">RefInner</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">ptr::from_raw_parts_mut</span>(<span class="ident">data</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">metadata</span>);
         <span class="comment">// SAFETY: By the safety requirements we know that `ptr` came from `Ref::into_raw`, so the</span>
         <span class="comment">// reference count held then will be owned by the new `Ref` object.</span>
@@ -734,7 +735,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Ref</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="comment">// SAFETY: By the type invariant, there is necessarily a reference to the object. We cannot</span>
         <span class="comment">// touch `refcount` after it&#39;s decremented to a non-zero value because another thread/CPU</span>
         <span class="comment">// may concurrently decrement it to zero and free it. It is ok to have a raw pointer to</span>
@@ -773,7 +774,7 @@
         <span class="comment">// reference count.</span>
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">NonNull::new</span>(<span class="kw">unsafe</span> { <span class="ident">alloc</span>(<span class="ident">layout</span>) }).<span class="ident">ok_or</span>(<span class="ident">Error::ENOMEM</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span>
-            <span class="ident">core::ptr::slice_from_raw_parts_mut</span>(<span class="ident">ptr</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">v</span>.<span class="ident">len</span>()) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">RefInner</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span>;
+            <span class="ident">core::ptr::slice_from_raw_parts_mut</span>(<span class="ident">ptr</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">v</span>.<span class="ident">len</span>()) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">RefInner</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span>;
 
         <span class="comment">// SAFETY: Just an FFI call that returns a `refcount_t` initialised to 1.</span>
         <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="ident">Opaque::new</span>(<span class="kw">unsafe</span> { <span class="ident">bindings::REFCOUNT_INIT</span>(<span class="number">1</span>) });
@@ -785,7 +786,7 @@
         <span class="kw">unsafe</span> {
             <span class="ident">core::ptr::copy_nonoverlapping</span>(
                 <span class="ident">v</span>.<span class="ident">as_ptr</span>(),
-                <span class="macro">core::ptr::addr_of_mut!</span>((<span class="kw-2">*</span><span class="ident">inner</span>).<span class="ident">data</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> [<span class="ident">T</span>] <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>,
+                <span class="macro">core::ptr::addr_of_mut!</span>((<span class="kw-2">*</span><span class="ident">inner</span>).<span class="ident">data</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> [<span class="ident">T</span>] <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>,
                 <span class="ident">v</span>.<span class="ident">len</span>(),
             )
         };
@@ -991,14 +992,13 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniqueRef</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident"><span class="self">Self</span>::Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident"><span class="self">Self</span>::Target</span> {
         <span class="comment">// SAFETY: By the `Ref` type invariant, there is necessarily a reference to the object, so</span>
         <span class="comment">// it is safe to dereference it. Additionally, we know there is only one reference when</span>
         <span class="comment">// it&#39;s inside a `UniqueRef`, so it is safe to get a mutable reference.</span>
-        <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ptr</span>.<span class="ident">as_mut</span>().<span class="ident">data</span> }
+        <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ptr</span>.<span class="ident">as_mut</span>().<span class="ident">data</span> }
     }
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="kernel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
 </body></html>

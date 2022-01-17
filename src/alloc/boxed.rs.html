@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;alloc&#x2F;boxed.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>boxed.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../alloc/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;alloc&#x2F;boxed.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>boxed.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../alloc/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1842,6 +1843,9 @@
 <span id="1842">1842</span>
 <span id="1843">1843</span>
 <span id="1844">1844</span>
+<span id="1845">1845</span>
+<span id="1846">1846</span>
+<span id="1847">1847</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
 
 <span class="doccomment">//! A pointer type for heap allocation.</span>
@@ -2015,6 +2019,9 @@
 <span class="attribute">#[<span class="ident">lang</span> <span class="op">=</span> <span class="string">&quot;owned_box&quot;</span>]</span>
 <span class="attribute">#[<span class="ident">fundamental</span>]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
+<span class="comment">// The declaration of the `Box` struct must be kept in sync with the</span>
+<span class="comment">// `alloc::alloc::box_free` function or ICEs will happen. See the comment</span>
+<span class="comment">// on `box_free` for more details.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Box</span><span class="op">&lt;</span>
     <span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>,
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span> <span class="ident">A</span>: <span class="ident">Allocator</span> <span class="op">=</span> <span class="ident">Global</span>,
@@ -2371,7 +2378,7 @@
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;box_into_boxed_slice&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;71582&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_boxed_slice</span>(<span class="ident">boxed</span>: <span class="self">Self</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">T</span>], <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>) <span class="op">=</span> <span class="ident">Box::into_raw_with_allocator</span>(<span class="ident">boxed</span>);
-        <span class="kw">unsafe</span> { <span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> [<span class="ident">T</span>; <span class="number">1</span>], <span class="ident">alloc</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> [<span class="ident">T</span>; <span class="number">1</span>], <span class="ident">alloc</span>) }
     }
 
     <span class="doccomment">/// Consumes the `Box`, returning the wrapped value.</span>
@@ -2474,7 +2481,7 @@
                 <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AllocError</span>),
             };
             <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">Global</span>.<span class="ident">allocate</span>(<span class="ident">layout</span>)<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">RawVec::from_raw_parts_in</span>(<span class="ident">ptr</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>, <span class="ident">len</span>, <span class="ident">Global</span>).<span class="ident">into_box</span>(<span class="ident">len</span>))
+            <span class="prelude-val">Ok</span>(<span class="ident">RawVec::from_raw_parts_in</span>(<span class="ident">ptr</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="ident">len</span>, <span class="ident">Global</span>).<span class="ident">into_box</span>(<span class="ident">len</span>))
         }
     }
 
@@ -2506,7 +2513,7 @@
                 <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">AllocError</span>),
             };
             <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">Global</span>.<span class="ident">allocate_zeroed</span>(<span class="ident">layout</span>)<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">RawVec::from_raw_parts_in</span>(<span class="ident">ptr</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>, <span class="ident">len</span>, <span class="ident">Global</span>).<span class="ident">into_box</span>(<span class="ident">len</span>))
+            <span class="prelude-val">Ok</span>(<span class="ident">RawVec::from_raw_parts_in</span>(<span class="ident">ptr</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="ident">len</span>, <span class="ident">Global</span>).<span class="ident">into_box</span>(<span class="ident">len</span>))
         }
     }
 }
@@ -2604,7 +2611,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">assume_init</span>(<span class="self">self</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>) <span class="op">=</span> <span class="ident">Box::into_raw_with_allocator</span>(<span class="self">self</span>);
-        <span class="kw">unsafe</span> { <span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>) }
     }
 }
 
@@ -2643,7 +2650,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">assume_init</span>(<span class="self">self</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">T</span>], <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>) <span class="op">=</span> <span class="ident">Box::into_raw_with_allocator</span>(<span class="self">self</span>);
-        <span class="kw">unsafe</span> { <span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="ident">alloc</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> [<span class="ident">T</span>], <span class="ident">alloc</span>) }
     }
 }
 
@@ -2691,7 +2698,7 @@
     <span class="doccomment">/// [`Layout`]: crate::Layout</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;box_raw&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.4.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">raw</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>) -&gt; <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">raw</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="ident"><span class="self">Self</span>::from_raw_in</span>(<span class="ident">raw</span>, <span class="ident">Global</span>) }
     }
 }
@@ -2746,7 +2753,7 @@
     <span class="doccomment">/// [`Layout`]: crate::Layout</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_in</span>(<span class="ident">raw</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_in</span>(<span class="ident">raw</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">Box</span>(<span class="kw">unsafe</span> { <span class="ident">Unique::new_unchecked</span>(<span class="ident">raw</span>) }, <span class="ident">alloc</span>)
     }
 
@@ -2791,7 +2798,7 @@
     <span class="doccomment">/// [memory layout]: self#memory-layout</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;box_raw&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.4.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_raw</span>(<span class="ident">b</span>: <span class="self">Self</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_raw</span>(<span class="ident">b</span>: <span class="self">Self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">T</span> {
         <span class="ident"><span class="self">Self</span>::into_raw_with_allocator</span>(<span class="ident">b</span>).<span class="number">0</span>
     }
 
@@ -2843,7 +2850,7 @@
     <span class="doccomment">/// [memory layout]: self#memory-layout</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_raw_with_allocator</span>(<span class="ident">b</span>: <span class="self">Self</span>) -&gt; (<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">A</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_raw_with_allocator</span>(<span class="ident">b</span>: <span class="self">Self</span>) -&gt; (<span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">A</span>) {
         <span class="kw">let</span> (<span class="ident">leaked</span>, <span class="ident">alloc</span>) <span class="op">=</span> <span class="ident">Box::into_unique</span>(<span class="ident">b</span>);
         (<span class="ident">leaked</span>.<span class="ident">as_ptr</span>(), <span class="ident">alloc</span>)
     }
@@ -2917,7 +2924,7 @@
     <span class="kw">where</span>
         <span class="ident">A</span>: <span class="lifetime">&#39;a</span>,
     {
-        <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="ident">mem::ManuallyDrop::new</span>(<span class="ident">b</span>).<span class="number">0</span>.<span class="ident">as_ptr</span>() }
+        <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">mem::ManuallyDrop::new</span>(<span class="ident">b</span>).<span class="number">0</span>.<span class="ident">as_ptr</span>() }
     }
 
     <span class="doccomment">/// Converts a `Box&lt;T&gt;` into a `Pin&lt;Box&lt;T&gt;&gt;`</span>
@@ -2939,7 +2946,7 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="attribute">#[<span class="ident">may_dangle</span>]</span> <span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="comment">// FIXME: Do nothing, drop is currently performed by compiler.</span>
     }
 }
@@ -3014,7 +3021,7 @@
     <span class="doccomment">/// assert_eq!(yp, &amp;*y);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">clone_from</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">source</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) {
+    <span class="kw">fn</span> <span class="ident">clone_from</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">source</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">clone_from</span>(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">source</span>));
     }
 }
@@ -3075,7 +3082,7 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Hash</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">Hash</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">hash</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Hasher</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">H</span>) {
+    <span class="kw">fn</span> <span class="ident">hash</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Hasher</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">state</span>: <span class="kw-2">&amp;mut</span> <span class="ident">H</span>) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">hash</span>(<span class="ident">state</span>);
     }
 }
@@ -3085,43 +3092,43 @@
     <span class="kw">fn</span> <span class="ident">finish</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u64</span> {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">finish</span>()
     }
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) {
+    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write</span>(<span class="ident">bytes</span>)
     }
-    <span class="kw">fn</span> <span class="ident">write_u8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">u8</span>) {
+    <span class="kw">fn</span> <span class="ident">write_u8</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">u8</span>) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_u8</span>(<span class="ident">i</span>)
     }
-    <span class="kw">fn</span> <span class="ident">write_u16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">u16</span>) {
+    <span class="kw">fn</span> <span class="ident">write_u16</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">u16</span>) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_u16</span>(<span class="ident">i</span>)
     }
-    <span class="kw">fn</span> <span class="ident">write_u32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">u32</span>) {
+    <span class="kw">fn</span> <span class="ident">write_u32</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">u32</span>) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_u32</span>(<span class="ident">i</span>)
     }
-    <span class="kw">fn</span> <span class="ident">write_u64</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">u64</span>) {
+    <span class="kw">fn</span> <span class="ident">write_u64</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">u64</span>) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_u64</span>(<span class="ident">i</span>)
     }
-    <span class="kw">fn</span> <span class="ident">write_u128</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">u128</span>) {
+    <span class="kw">fn</span> <span class="ident">write_u128</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">u128</span>) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_u128</span>(<span class="ident">i</span>)
     }
-    <span class="kw">fn</span> <span class="ident">write_usize</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) {
+    <span class="kw">fn</span> <span class="ident">write_usize</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_usize</span>(<span class="ident">i</span>)
     }
-    <span class="kw">fn</span> <span class="ident">write_i8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">i8</span>) {
+    <span class="kw">fn</span> <span class="ident">write_i8</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">i8</span>) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_i8</span>(<span class="ident">i</span>)
     }
-    <span class="kw">fn</span> <span class="ident">write_i16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">i16</span>) {
+    <span class="kw">fn</span> <span class="ident">write_i16</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">i16</span>) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_i16</span>(<span class="ident">i</span>)
     }
-    <span class="kw">fn</span> <span class="ident">write_i32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">i32</span>) {
+    <span class="kw">fn</span> <span class="ident">write_i32</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">i32</span>) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_i32</span>(<span class="ident">i</span>)
     }
-    <span class="kw">fn</span> <span class="ident">write_i64</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">i64</span>) {
+    <span class="kw">fn</span> <span class="ident">write_i64</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">i64</span>) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_i64</span>(<span class="ident">i</span>)
     }
-    <span class="kw">fn</span> <span class="ident">write_i128</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">i128</span>) {
+    <span class="kw">fn</span> <span class="ident">write_i128</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">i128</span>) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_i128</span>(<span class="ident">i</span>)
     }
-    <span class="kw">fn</span> <span class="ident">write_isize</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">isize</span>) {
+    <span class="kw">fn</span> <span class="ident">write_isize</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">isize</span>) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_isize</span>(<span class="ident">i</span>)
     }
 }
@@ -3280,7 +3287,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">str</span>, <span class="ident">A</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>) <span class="op">=</span> <span class="ident">Box::into_raw_with_allocator</span>(<span class="ident">s</span>);
-        <span class="kw">unsafe</span> { <span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="ident">alloc</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> [<span class="ident">u8</span>], <span class="ident">alloc</span>) }
     }
 }
 
@@ -3317,7 +3324,7 @@
     <span class="doccomment">/// `boxed_slice.len()` does not equal `N`.</span>
     <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">boxed_slice</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="ident">boxed_slice</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">N</span> {
-            <span class="prelude-val">Ok</span>(<span class="kw">unsafe</span> { <span class="ident">Box::from_raw</span>(<span class="ident">Box::into_raw</span>(<span class="ident">boxed_slice</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> [<span class="ident">T</span>; <span class="ident">N</span>]) })
+            <span class="prelude-val">Ok</span>(<span class="kw">unsafe</span> { <span class="ident">Box::from_raw</span>(<span class="ident">Box::into_raw</span>(<span class="ident">boxed_slice</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> [<span class="ident">T</span>; <span class="ident">N</span>]) })
         } <span class="kw">else</span> {
             <span class="prelude-val">Err</span>(<span class="ident">boxed_slice</span>)
         }
@@ -3347,8 +3354,8 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">downcast</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Any</span><span class="op">&gt;</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>, <span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() {
             <span class="kw">unsafe</span> {
-                <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>): (<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Any</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">Box::into_raw_with_allocator</span>(<span class="self">self</span>);
-                <span class="prelude-val">Ok</span>(<span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>))
+                <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>): (<span class="kw-2">*mut</span> <span class="kw">dyn</span> <span class="ident">Any</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">Box::into_raw_with_allocator</span>(<span class="self">self</span>);
+                <span class="prelude-val">Ok</span>(<span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>))
             }
         } <span class="kw">else</span> {
             <span class="prelude-val">Err</span>(<span class="self">self</span>)
@@ -3379,8 +3386,8 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">downcast</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Any</span><span class="op">&gt;</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>, <span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() {
             <span class="kw">unsafe</span> {
-                <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>): (<span class="kw-2">*</span><span class="kw-2">mut</span> (<span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="ident">Send</span>), <span class="kw">_</span>) <span class="op">=</span> <span class="ident">Box::into_raw_with_allocator</span>(<span class="self">self</span>);
-                <span class="prelude-val">Ok</span>(<span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>))
+                <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>): (<span class="kw-2">*mut</span> (<span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="ident">Send</span>), <span class="kw">_</span>) <span class="op">=</span> <span class="ident">Box::into_raw_with_allocator</span>(<span class="self">self</span>);
+                <span class="prelude-val">Ok</span>(<span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>))
             }
         } <span class="kw">else</span> {
             <span class="prelude-val">Err</span>(<span class="self">self</span>)
@@ -3411,9 +3418,9 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">downcast</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Any</span><span class="op">&gt;</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>, <span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() {
             <span class="kw">unsafe</span> {
-                <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>): (<span class="kw-2">*</span><span class="kw-2">mut</span> (<span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>), <span class="kw">_</span>) <span class="op">=</span>
+                <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>): (<span class="kw-2">*mut</span> (<span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>), <span class="kw">_</span>) <span class="op">=</span>
                     <span class="ident">Box::into_raw_with_allocator</span>(<span class="self">self</span>);
-                <span class="prelude-val">Ok</span>(<span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>))
+                <span class="prelude-val">Ok</span>(<span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>))
             }
         } <span class="kw">else</span> {
             <span class="prelude-val">Err</span>(<span class="self">self</span>)
@@ -3423,24 +3430,24 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">fmt::Display</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Display::fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">f</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">fmt::Debug</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Debug::fmt</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>, <span class="ident">f</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">fmt::Pointer</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="comment">// It&#39;s not possible to extract the inner Uniq directly from the Box,</span>
         <span class="comment">// instead we cast it to a *const which aliases the Unique</span>
-        <span class="kw">let</span> <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">T</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>;
+        <span class="kw">let</span> <span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">T</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>;
         <span class="ident">fmt::Pointer::fmt</span>(<span class="kw-2">&amp;</span><span class="ident">ptr</span>, <span class="ident">f</span>)
     }
 }
@@ -3456,8 +3463,8 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span> {
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">T</span> {
+        <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>
     }
 }
 
@@ -3467,13 +3474,13 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">A</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">I::Item</span>;
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">next</span>()
     }
     <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">size_hint</span>()
     }
-    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">nth</span>(<span class="ident">n</span>)
     }
     <span class="kw">fn</span> <span class="ident">last</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
@@ -3509,10 +3516,10 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">DoubleEndedIterator</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">DoubleEndedIterator</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">next_back</span>()
     }
-    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nth_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I::Item</span><span class="op">&gt;</span> {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">nth_back</span>(<span class="ident">n</span>)
     }
 }
@@ -3540,7 +3547,7 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;boxed_closure_impls&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.35.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Args</span>, <span class="ident">F</span>: <span class="ident">FnMut</span><span class="op">&lt;</span><span class="ident">Args</span><span class="op">&gt;</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">FnMut</span><span class="op">&lt;</span><span class="ident">Args</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">extern</span> <span class="string">&quot;rust-call&quot;</span> <span class="kw">fn</span> <span class="ident">call_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">args</span>: <span class="ident">Args</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
+    <span class="kw">extern</span> <span class="string">&quot;rust-call&quot;</span> <span class="kw">fn</span> <span class="ident">call_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">args</span>: <span class="ident">Args</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="op">&lt;</span><span class="ident">F</span> <span class="kw">as</span> <span class="ident">FnMut</span><span class="op">&lt;</span><span class="ident">Args</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::call_mut</span>(<span class="self">self</span>, <span class="ident">args</span>)
     }
 }
@@ -3574,7 +3581,7 @@
         <span class="self">self</span>.<span class="ident">to_vec_in</span>(<span class="ident">alloc</span>).<span class="ident">into_boxed_slice</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">clone_from</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) {
+    <span class="kw">fn</span> <span class="ident">clone_from</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">other</span>.<span class="ident">len</span>() {
             <span class="self">self</span>.<span class="ident">clone_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">other</span>);
         } <span class="kw">else</span> {
@@ -3592,8 +3599,8 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;box_borrow&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.1.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">borrow::BorrowMut</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">borrow_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span> {
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>
+    <span class="kw">fn</span> <span class="ident">borrow_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">T</span> {
+        <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>
     }
 }
 
@@ -3606,8 +3613,8 @@
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.5.0&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;smart_ptr_as_ref&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">AsMut</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span> {
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>
+    <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">T</span> {
+        <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>
     }
 }
 
@@ -3644,8 +3651,8 @@
     <span class="kw">type</span> <span class="ident">Yield</span> <span class="op">=</span> <span class="ident">G::Yield</span>;
     <span class="kw">type</span> <span class="ident">Return</span> <span class="op">=</span> <span class="ident">G::Return</span>;
 
-    <span class="kw">fn</span> <span class="ident">resume</span>(<span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">arg</span>: <span class="ident">R</span>) -&gt; <span class="ident">GeneratorState</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Yield</span>, <span class="ident"><span class="self">Self</span>::Return</span><span class="op">&gt;</span> {
-        <span class="ident">G::resume</span>(<span class="ident">Pin::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="self">self</span>), <span class="ident">arg</span>)
+    <span class="kw">fn</span> <span class="ident">resume</span>(<span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">arg</span>: <span class="ident">R</span>) -&gt; <span class="ident">GeneratorState</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Yield</span>, <span class="ident"><span class="self">Self</span>::Return</span><span class="op">&gt;</span> {
+        <span class="ident">G::resume</span>(<span class="ident">Pin::new</span>(<span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="self">self</span>), <span class="ident">arg</span>)
     }
 }
 
@@ -3657,7 +3664,7 @@
     <span class="kw">type</span> <span class="ident">Yield</span> <span class="op">=</span> <span class="ident">G::Yield</span>;
     <span class="kw">type</span> <span class="ident">Return</span> <span class="op">=</span> <span class="ident">G::Return</span>;
 
-    <span class="kw">fn</span> <span class="ident">resume</span>(<span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">arg</span>: <span class="ident">R</span>) -&gt; <span class="ident">GeneratorState</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Yield</span>, <span class="ident"><span class="self">Self</span>::Return</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">resume</span>(<span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">arg</span>: <span class="ident">R</span>) -&gt; <span class="ident">GeneratorState</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Yield</span>, <span class="ident"><span class="self">Self</span>::Return</span><span class="op">&gt;</span> {
         <span class="ident">G::resume</span>((<span class="kw-2">*</span><span class="self">self</span>).<span class="ident">as_mut</span>(), <span class="ident">arg</span>)
     }
 }
@@ -3669,8 +3676,8 @@
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">F::Output</span>;
 
-    <span class="kw">fn</span> <span class="ident">poll</span>(<span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Output</span><span class="op">&gt;</span> {
-        <span class="ident">F::poll</span>(<span class="ident">Pin::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="self">self</span>), <span class="ident">cx</span>)
+    <span class="kw">fn</span> <span class="ident">poll</span>(<span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Output</span><span class="op">&gt;</span> {
+        <span class="ident">F::poll</span>(<span class="ident">Pin::new</span>(<span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="self">self</span>), <span class="ident">cx</span>)
     }
 }
 
@@ -3678,8 +3685,8 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Stream</span> <span class="op">+</span> <span class="ident">Unpin</span><span class="op">&gt;</span> <span class="ident">Stream</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">S::Item</span>;
 
-    <span class="kw">fn</span> <span class="ident">poll_next</span>(<span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="ident">Pin::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">poll_next</span>(<span class="ident">cx</span>)
+    <span class="kw">fn</span> <span class="ident">poll_next</span>(<span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Poll</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="ident">Pin::new</span>(<span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">poll_next</span>(<span class="ident">cx</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
@@ -3688,5 +3695,4 @@
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="alloc" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
 </body></html>

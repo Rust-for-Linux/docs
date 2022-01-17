@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;device.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>device.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;device.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>device.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -204,20 +205,367 @@
 <span id="204">204</span>
 <span id="205">205</span>
 <span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! Generic devices that are part of the kernel&#39;s driver model.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! C header: [`include/linux/device.h`](../../../../include/linux/device.h)</span>
 
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">CONFIG_COMMON_CLK</span>)]</span>
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">clk::Clk</span>, <span class="ident">error::from_kernel_err_ptr</span>};
+
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">bindings</span>,
+    <span class="ident">bindings</span>, <span class="ident">c_str</span>, <span class="ident">c_types</span>,
     <span class="ident">revocable</span>::{<span class="ident">Revocable</span>, <span class="ident">RevocableGuard</span>},
     <span class="ident">str::CStr</span>,
     <span class="ident">sync</span>::{<span class="ident">NeedsLockClass</span>, <span class="ident">RevocableMutex</span>, <span class="ident">RevocableMutexGuard</span>, <span class="ident">UniqueRef</span>},
     <span class="prelude-ty">Result</span>,
 };
 <span class="kw">use</span> <span class="ident">core</span>::{
+    <span class="ident">fmt</span>,
     <span class="ident">ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>},
     <span class="ident">pin::Pin</span>,
 };
@@ -234,7 +582,7 @@
 <span class="doccomment">/// has details on why `device_rename` should not be used.</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">RawDevice</span> {
     <span class="doccomment">/// Returns the raw `struct device` related to `self`.</span>
-    <span class="kw">fn</span> <span class="ident">raw_device</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::device</span>;
+    <span class="kw">fn</span> <span class="ident">raw_device</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">bindings::device</span>;
 
     <span class="doccomment">/// Returns the name of the device.</span>
     <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">CStr</span> {
@@ -249,6 +597,110 @@
         <span class="comment">// by the compiler because of their lifetimes).</span>
         <span class="kw">unsafe</span> { <span class="ident">CStr::from_char_ptr</span>(<span class="ident">name</span>) }
     }
+
+    <span class="doccomment">/// Lookups a clock producer consumed by this device.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns a managed reference to the clock producer.</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">CONFIG_COMMON_CLK</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">clk_get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">CStr</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Clk</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">id_ptr</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">id</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">cstr</span>) =&gt; <span class="ident">cstr</span>.<span class="ident">as_char_ptr</span>(),
+            <span class="prelude-val">None</span> =&gt; <span class="ident">core::ptr::null</span>(),
+        };
+
+        <span class="comment">// SAFETY: id_ptr is optional and may be either a valid pointer</span>
+        <span class="comment">// from the type invariant or NULL otherwise.</span>
+        <span class="kw">let</span> <span class="ident">clk_ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">from_kernel_err_ptr</span>(<span class="ident">bindings::clk_get</span>(<span class="self">self</span>.<span class="ident">raw_device</span>(), <span class="ident">id_ptr</span>)) }<span class="question-mark">?</span>;
+
+        <span class="comment">// SAFETY: clock is initialized with valid pointer returned from `bindings::clk_get` call.</span>
+        <span class="kw">unsafe</span> { <span class="prelude-val">Ok</span>(<span class="ident">Clk::new</span>(<span class="ident">clk_ptr</span>)) }
+    }
+
+    <span class="doccomment">/// Prints an emergency-level message (level 0) prefixed with device information.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// More details are available from [`dev_emerg`].</span>
+    <span class="kw">fn</span> <span class="ident">pr_emerg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">args</span>: <span class="ident">fmt::Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) {
+        <span class="comment">// SAFETY: `klevel` is null-terminated, uses one of the kernel constants.</span>
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">printk</span>(<span class="ident">bindings::KERN_EMERG</span>, <span class="ident">args</span>) };
+    }
+
+    <span class="doccomment">/// Prints an alert-level message (level 1) prefixed with device information.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// More details are available from [`dev_alert`].</span>
+    <span class="kw">fn</span> <span class="ident">pr_alert</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">args</span>: <span class="ident">fmt::Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) {
+        <span class="comment">// SAFETY: `klevel` is null-terminated, uses one of the kernel constants.</span>
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">printk</span>(<span class="ident">bindings::KERN_ALERT</span>, <span class="ident">args</span>) };
+    }
+
+    <span class="doccomment">/// Prints a critical-level message (level 2) prefixed with device information.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// More details are available from [`dev_crit`].</span>
+    <span class="kw">fn</span> <span class="ident">pr_crit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">args</span>: <span class="ident">fmt::Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) {
+        <span class="comment">// SAFETY: `klevel` is null-terminated, uses one of the kernel constants.</span>
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">printk</span>(<span class="ident">bindings::KERN_CRIT</span>, <span class="ident">args</span>) };
+    }
+
+    <span class="doccomment">/// Prints an error-level message (level 3) prefixed with device information.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// More details are available from [`dev_err`].</span>
+    <span class="kw">fn</span> <span class="ident">pr_err</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">args</span>: <span class="ident">fmt::Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) {
+        <span class="comment">// SAFETY: `klevel` is null-terminated, uses one of the kernel constants.</span>
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">printk</span>(<span class="ident">bindings::KERN_ERR</span>, <span class="ident">args</span>) };
+    }
+
+    <span class="doccomment">/// Prints a warning-level message (level 4) prefixed with device information.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// More details are available from [`dev_warn`].</span>
+    <span class="kw">fn</span> <span class="ident">pr_warn</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">args</span>: <span class="ident">fmt::Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) {
+        <span class="comment">// SAFETY: `klevel` is null-terminated, uses one of the kernel constants.</span>
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">printk</span>(<span class="ident">bindings::KERN_WARNING</span>, <span class="ident">args</span>) };
+    }
+
+    <span class="doccomment">/// Prints a notice-level message (level 5) prefixed with device information.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// More details are available from [`dev_notice`].</span>
+    <span class="kw">fn</span> <span class="ident">pr_notice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">args</span>: <span class="ident">fmt::Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) {
+        <span class="comment">// SAFETY: `klevel` is null-terminated, uses one of the kernel constants.</span>
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">printk</span>(<span class="ident">bindings::KERN_NOTICE</span>, <span class="ident">args</span>) };
+    }
+
+    <span class="doccomment">/// Prints an info-level message (level 6) prefixed with device information.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// More details are available from [`dev_info`].</span>
+    <span class="kw">fn</span> <span class="ident">pr_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">args</span>: <span class="ident">fmt::Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) {
+        <span class="comment">// SAFETY: `klevel` is null-terminated, uses one of the kernel constants.</span>
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">printk</span>(<span class="ident">bindings::KERN_INFO</span>, <span class="ident">args</span>) };
+    }
+
+    <span class="doccomment">/// Prints a debug-level message (level 7) prefixed with device information.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// More details are available from [`dev_dbg`].</span>
+    <span class="kw">fn</span> <span class="ident">pr_dbg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">args</span>: <span class="ident">fmt::Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) {
+        <span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">debug_assertions</span>) {
+            <span class="comment">// SAFETY: `klevel` is null-terminated, uses one of the kernel constants.</span>
+            <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">printk</span>(<span class="ident">bindings::KERN_DEBUG</span>, <span class="ident">args</span>) };
+        }
+    }
+
+    <span class="doccomment">/// Prints the provided message to the console.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Safety</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Callers must ensure that `klevel` is null-terminated; in particular, one of the</span>
+    <span class="doccomment">/// `KERN_*`constants, for example, `KERN_CRIT`, `KERN_ALERT`, etc.</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">printk</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">klevel</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">msg</span>: <span class="ident">fmt::Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) {
+        <span class="comment">// SAFETY: `klevel` is null-terminated and one of the kernel constants. `self.raw_device`</span>
+        <span class="comment">// is valid because `self` is valid. The &quot;%pA&quot; format string expects a pointer to</span>
+        <span class="comment">// `fmt::Arguments`, which is what we&#39;re passing as the last argument.</span>
+        <span class="kw">unsafe</span> {
+            <span class="ident">bindings::_dev_printk</span>(
+                <span class="ident">klevel</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">c_types::c_char</span>,
+                <span class="self">self</span>.<span class="ident">raw_device</span>(),
+                <span class="macro">c_str!</span>(<span class="string">&quot;%pA&quot;</span>).<span class="ident">as_char_ptr</span>(),
+                <span class="kw-2">&amp;</span><span class="ident">msg</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">c_types::c_void</span>,
+            )
+        };
+    }
 }
 
 <span class="doccomment">/// A ref-counted device.</span>
@@ -258,8 +710,15 @@
 <span class="doccomment">/// `ptr` is valid, non-null, and has a non-zero reference count. One of the references is owned by</span>
 <span class="doccomment">/// `self`, and will be decremented when `self` is dropped.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Device</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::device</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::device</span>,
 }
+
+<span class="comment">// SAFETY: `Device` only holds a pointer to a C device, which is safe to be used from any thread.</span>
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">Device</span> {}
+
+<span class="comment">// SAFETY: `Device` only holds a pointer to a C device, references to which are safe to be used</span>
+<span class="comment">// from any thread.</span>
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">Device</span> {}
 
 <span class="kw">impl</span> <span class="ident">Device</span> {
     <span class="doccomment">/// Creates a new device instance.</span>
@@ -267,8 +726,8 @@
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::device</span>) -&gt; <span class="self">Self</span> {
-        <span class="comment">// SAFETY: By the safety requiments, ptr is valid and its refcounted will be incremented.</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::device</span>) -&gt; <span class="self">Self</span> {
+        <span class="comment">// SAFETY: By the safety requirements, ptr is valid and its refcounted will be incremented.</span>
         <span class="kw">unsafe</span> { <span class="ident">bindings::get_device</span>(<span class="ident">ptr</span>) };
         <span class="comment">// INVARIANT: The safety requirements satisfy all but one invariant, which is that `self`</span>
         <span class="comment">// owns a reference. This is satisfied by the call to `get_device` above.</span>
@@ -283,8 +742,15 @@
     }
 }
 
+<span class="comment">// SAFETY: The device returned by `raw_device` is the one for which we hold a reference.</span>
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">RawDevice</span> <span class="kw">for</span> <span class="ident">Device</span> {
+    <span class="kw">fn</span> <span class="ident">raw_device</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">bindings::device</span> {
+        <span class="self">self</span>.<span class="ident">ptr</span>
+    }
+}
+
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Device</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="comment">// SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe to</span>
         <span class="comment">// relinquish it now.</span>
         <span class="kw">unsafe</span> { <span class="ident">bindings::put_device</span>(<span class="self">self</span>.<span class="ident">ptr</span>) };
@@ -357,8 +823,8 @@
         <span class="ident">resources</span>: <span class="ident">U</span>,
         <span class="ident">general</span>: <span class="ident">V</span>,
         <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">CStr</span>,
-        <span class="ident">key1</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::lock_class_key</span>,
-        <span class="ident">key2</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::lock_class_key</span>,
+        <span class="ident">key1</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::lock_class_key</span>,
+        <span class="ident">key2</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::lock_class_key</span>,
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">UniqueRef</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">Pin::from</span>(<span class="ident">UniqueRef::try_new</span>(<span class="self">Self</span> {
             <span class="comment">// SAFETY: We call `RevocableMutex::init` below.</span>
@@ -368,7 +834,7 @@
         })<span class="question-mark">?</span>);
 
         <span class="comment">// SAFETY: `Data::registrations` is pinned when `Data` is.</span>
-        <span class="kw">let</span> <span class="ident">pinned</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">ret</span>.<span class="ident">as_mut</span>().<span class="ident">map_unchecked_mut</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">d</span>.<span class="ident">registrations</span>) };
+        <span class="kw">let</span> <span class="ident">pinned</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">ret</span>.<span class="ident">as_mut</span>().<span class="ident">map_unchecked_mut</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> <span class="kw-2">&amp;mut</span> <span class="ident">d</span>.<span class="ident">registrations</span>) };
 
         <span class="comment">// SAFETY: The safety requirements of this function satisfy those of `RevocableMutex::init`.</span>
         <span class="kw">unsafe</span> { <span class="ident">pinned</span>.<span class="ident">init</span>(<span class="ident">name</span>, <span class="ident">key1</span>, <span class="ident">key2</span>) };
@@ -406,11 +872,231 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span>, <span class="ident">V</span><span class="op">&gt;</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">Data</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span>, <span class="ident">V</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span> {
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">general</span>
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">V</span> {
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">general</span>
     }
+}
+
+<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">dev_printk</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">method</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">dev</span>:<span class="ident">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {
+        {
+            <span class="comment">// We have an explicity `use` statement here so that callers of this macro are not</span>
+            <span class="comment">// required to explicitly use the `RawDevice` trait to use its functions.</span>
+            <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::device::RawDevice</span>;
+            (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">dev</span>).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">method</span>(<span class="macro">core::format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>));
+        }
+    }
+}
+
+<span class="doccomment">/// Prints an emergency-level message (level 0) prefixed with device information.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This level should be used if the system is unusable.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Equivalent to the kernel&#39;s `dev_emerg` macro.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Mimics the interface of [`std::print!`]. More information about the syntax is available from</span>
+<span class="doccomment">/// [`core::fmt`] and [`alloc::format!`].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use kernel::prelude::*;</span>
+<span class="doccomment">/// # use kernel::device::Device;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// fn example(dev: &amp;Device) {</span>
+<span class="doccomment">///     dev_emerg!(dev, &quot;hello {}\n&quot;, &quot;there&quot;);</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">dev_emerg</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; { <span class="macro-nonterminal">$</span><span class="macro">crate::dev_printk!</span>(<span class="macro-nonterminal">pr_emerg</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>); }
+}
+
+<span class="doccomment">/// Prints an alert-level message (level 1) prefixed with device information.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This level should be used if action must be taken immediately.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Equivalent to the kernel&#39;s `dev_alert` macro.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Mimics the interface of [`std::print!`]. More information about the syntax is available from</span>
+<span class="doccomment">/// [`core::fmt`] and [`alloc::format!`].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use kernel::prelude::*;</span>
+<span class="doccomment">/// # use kernel::device::Device;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// fn example(dev: &amp;Device) {</span>
+<span class="doccomment">///     dev_alert!(dev, &quot;hello {}\n&quot;, &quot;there&quot;);</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">dev_alert</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; { <span class="macro-nonterminal">$</span><span class="macro">crate::dev_printk!</span>(<span class="macro-nonterminal">pr_alert</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>); }
+}
+
+<span class="doccomment">/// Prints a critical-level message (level 2) prefixed with device information.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This level should be used in critical conditions.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Equivalent to the kernel&#39;s `dev_crit` macro.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Mimics the interface of [`std::print!`]. More information about the syntax is available from</span>
+<span class="doccomment">/// [`core::fmt`] and [`alloc::format!`].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use kernel::prelude::*;</span>
+<span class="doccomment">/// # use kernel::device::Device;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// fn example(dev: &amp;Device) {</span>
+<span class="doccomment">///     dev_crit!(dev, &quot;hello {}\n&quot;, &quot;there&quot;);</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">dev_crit</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; { <span class="macro-nonterminal">$</span><span class="macro">crate::dev_printk!</span>(<span class="macro-nonterminal">pr_crit</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>); }
+}
+
+<span class="doccomment">/// Prints an error-level message (level 3) prefixed with device information.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This level should be used in error conditions.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Equivalent to the kernel&#39;s `dev_err` macro.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Mimics the interface of [`std::print!`]. More information about the syntax is available from</span>
+<span class="doccomment">/// [`core::fmt`] and [`alloc::format!`].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use kernel::prelude::*;</span>
+<span class="doccomment">/// # use kernel::device::Device;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// fn example(dev: &amp;Device) {</span>
+<span class="doccomment">///     dev_err!(dev, &quot;hello {}\n&quot;, &quot;there&quot;);</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">dev_err</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; { <span class="macro-nonterminal">$</span><span class="macro">crate::dev_printk!</span>(<span class="macro-nonterminal">pr_err</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>); }
+}
+
+<span class="doccomment">/// Prints a warning-level message (level 4) prefixed with device information.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This level should be used in warning conditions.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Equivalent to the kernel&#39;s `dev_warn` macro.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Mimics the interface of [`std::print!`]. More information about the syntax is available from</span>
+<span class="doccomment">/// [`core::fmt`] and [`alloc::format!`].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use kernel::prelude::*;</span>
+<span class="doccomment">/// # use kernel::device::Device;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// fn example(dev: &amp;Device) {</span>
+<span class="doccomment">///     dev_warn!(dev, &quot;hello {}\n&quot;, &quot;there&quot;);</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">dev_warn</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; { <span class="macro-nonterminal">$</span><span class="macro">crate::dev_printk!</span>(<span class="macro-nonterminal">pr_warn</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>); }
+}
+
+<span class="doccomment">/// Prints a notice-level message (level 5) prefixed with device information.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This level should be used in normal but significant conditions.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Equivalent to the kernel&#39;s `dev_notice` macro.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Mimics the interface of [`std::print!`]. More information about the syntax is available from</span>
+<span class="doccomment">/// [`core::fmt`] and [`alloc::format!`].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use kernel::prelude::*;</span>
+<span class="doccomment">/// # use kernel::device::Device;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// fn example(dev: &amp;Device) {</span>
+<span class="doccomment">///     dev_notice!(dev, &quot;hello {}\n&quot;, &quot;there&quot;);</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">dev_notice</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; { <span class="macro-nonterminal">$</span><span class="macro">crate::dev_printk!</span>(<span class="macro-nonterminal">pr_notice</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>); }
+}
+
+<span class="doccomment">/// Prints an info-level message (level 6) prefixed with device information.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This level should be used for informational messages.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Equivalent to the kernel&#39;s `dev_info` macro.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Mimics the interface of [`std::print!`]. More information about the syntax is available from</span>
+<span class="doccomment">/// [`core::fmt`] and [`alloc::format!`].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use kernel::prelude::*;</span>
+<span class="doccomment">/// # use kernel::device::Device;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// fn example(dev: &amp;Device) {</span>
+<span class="doccomment">///     dev_info!(dev, &quot;hello {}\n&quot;, &quot;there&quot;);</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">dev_info</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; { <span class="macro-nonterminal">$</span><span class="macro">crate::dev_printk!</span>(<span class="macro-nonterminal">pr_info</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>); }
+}
+
+<span class="doccomment">/// Prints a debug-level message (level 7) prefixed with device information.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This level should be used for debug messages.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Equivalent to the kernel&#39;s `dev_dbg` macro, except that it doesn&#39;t support dynamic debug yet.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Mimics the interface of [`std::print!`]. More information about the syntax is available from</span>
+<span class="doccomment">/// [`core::fmt`] and [`alloc::format!`].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use kernel::prelude::*;</span>
+<span class="doccomment">/// # use kernel::device::Device;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// fn example(dev: &amp;Device) {</span>
+<span class="doccomment">///     dev_dbg!(dev, &quot;hello {}\n&quot;, &quot;there&quot;);</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">dev_dbg</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; { <span class="macro-nonterminal">$</span><span class="macro">crate::dev_printk!</span>(<span class="macro-nonterminal">pr_dbg</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>); }
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
 </body></html>

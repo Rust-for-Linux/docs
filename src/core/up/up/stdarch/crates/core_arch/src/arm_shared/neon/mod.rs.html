@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;..&#x2F;..&#x2F;stdarch&#x2F;crates&#x2F;core_arch&#x2F;src&#x2F;arm_shared&#x2F;neon&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../../../../../../../storage.js"></script><script src="../../../../../../../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../../../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../../../../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">    1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;..&#x2F;..&#x2F;stdarch&#x2F;crates&#x2F;core_arch&#x2F;src&#x2F;arm_shared&#x2F;neon&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../../../../../../../storage.js"></script><script src="../../../../../../../../../../crates.js"></script><script defer src="../../../../../../../../../../main.js"></script><script defer src="../../../../../../../../../../source-script.js"></script><script defer src="../../../../../../../../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../../../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../../../../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">    1</span>
 <span id="2">    2</span>
 <span id="3">    3</span>
 <span id="4">    4</span>
@@ -10347,6 +10348,129 @@
 <span id="10347">10347</span>
 <span id="10348">10348</span>
 <span id="10349">10349</span>
+<span id="10350">10350</span>
+<span id="10351">10351</span>
+<span id="10352">10352</span>
+<span id="10353">10353</span>
+<span id="10354">10354</span>
+<span id="10355">10355</span>
+<span id="10356">10356</span>
+<span id="10357">10357</span>
+<span id="10358">10358</span>
+<span id="10359">10359</span>
+<span id="10360">10360</span>
+<span id="10361">10361</span>
+<span id="10362">10362</span>
+<span id="10363">10363</span>
+<span id="10364">10364</span>
+<span id="10365">10365</span>
+<span id="10366">10366</span>
+<span id="10367">10367</span>
+<span id="10368">10368</span>
+<span id="10369">10369</span>
+<span id="10370">10370</span>
+<span id="10371">10371</span>
+<span id="10372">10372</span>
+<span id="10373">10373</span>
+<span id="10374">10374</span>
+<span id="10375">10375</span>
+<span id="10376">10376</span>
+<span id="10377">10377</span>
+<span id="10378">10378</span>
+<span id="10379">10379</span>
+<span id="10380">10380</span>
+<span id="10381">10381</span>
+<span id="10382">10382</span>
+<span id="10383">10383</span>
+<span id="10384">10384</span>
+<span id="10385">10385</span>
+<span id="10386">10386</span>
+<span id="10387">10387</span>
+<span id="10388">10388</span>
+<span id="10389">10389</span>
+<span id="10390">10390</span>
+<span id="10391">10391</span>
+<span id="10392">10392</span>
+<span id="10393">10393</span>
+<span id="10394">10394</span>
+<span id="10395">10395</span>
+<span id="10396">10396</span>
+<span id="10397">10397</span>
+<span id="10398">10398</span>
+<span id="10399">10399</span>
+<span id="10400">10400</span>
+<span id="10401">10401</span>
+<span id="10402">10402</span>
+<span id="10403">10403</span>
+<span id="10404">10404</span>
+<span id="10405">10405</span>
+<span id="10406">10406</span>
+<span id="10407">10407</span>
+<span id="10408">10408</span>
+<span id="10409">10409</span>
+<span id="10410">10410</span>
+<span id="10411">10411</span>
+<span id="10412">10412</span>
+<span id="10413">10413</span>
+<span id="10414">10414</span>
+<span id="10415">10415</span>
+<span id="10416">10416</span>
+<span id="10417">10417</span>
+<span id="10418">10418</span>
+<span id="10419">10419</span>
+<span id="10420">10420</span>
+<span id="10421">10421</span>
+<span id="10422">10422</span>
+<span id="10423">10423</span>
+<span id="10424">10424</span>
+<span id="10425">10425</span>
+<span id="10426">10426</span>
+<span id="10427">10427</span>
+<span id="10428">10428</span>
+<span id="10429">10429</span>
+<span id="10430">10430</span>
+<span id="10431">10431</span>
+<span id="10432">10432</span>
+<span id="10433">10433</span>
+<span id="10434">10434</span>
+<span id="10435">10435</span>
+<span id="10436">10436</span>
+<span id="10437">10437</span>
+<span id="10438">10438</span>
+<span id="10439">10439</span>
+<span id="10440">10440</span>
+<span id="10441">10441</span>
+<span id="10442">10442</span>
+<span id="10443">10443</span>
+<span id="10444">10444</span>
+<span id="10445">10445</span>
+<span id="10446">10446</span>
+<span id="10447">10447</span>
+<span id="10448">10448</span>
+<span id="10449">10449</span>
+<span id="10450">10450</span>
+<span id="10451">10451</span>
+<span id="10452">10452</span>
+<span id="10453">10453</span>
+<span id="10454">10454</span>
+<span id="10455">10455</span>
+<span id="10456">10456</span>
+<span id="10457">10457</span>
+<span id="10458">10458</span>
+<span id="10459">10459</span>
+<span id="10460">10460</span>
+<span id="10461">10461</span>
+<span id="10462">10462</span>
+<span id="10463">10463</span>
+<span id="10464">10464</span>
+<span id="10465">10465</span>
+<span id="10466">10466</span>
+<span id="10467">10467</span>
+<span id="10468">10468</span>
+<span id="10469">10469</span>
+<span id="10470">10470</span>
+<span id="10471">10471</span>
+<span id="10472">10472</span>
 </pre><pre class="rust"><code><span class="doccomment">//! ARMv7 NEON intrinsics</span>
 
 <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
@@ -10432,43 +10556,43 @@
 }
 
 <span class="doccomment">/// ARM-specific type containing two `int8x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int8x8x2_t</span>(<span class="kw">pub</span> <span class="ident">int8x8_t</span>, <span class="kw">pub</span> <span class="ident">int8x8_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `int8x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int8x8x3_t</span>(<span class="kw">pub</span> <span class="ident">int8x8_t</span>, <span class="kw">pub</span> <span class="ident">int8x8_t</span>, <span class="kw">pub</span> <span class="ident">int8x8_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `int8x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int8x8x4_t</span>(<span class="kw">pub</span> <span class="ident">int8x8_t</span>, <span class="kw">pub</span> <span class="ident">int8x8_t</span>, <span class="kw">pub</span> <span class="ident">int8x8_t</span>, <span class="kw">pub</span> <span class="ident">int8x8_t</span>);
 
 <span class="doccomment">/// ARM-specific type containing two `int8x16_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int8x16x2_t</span>(<span class="kw">pub</span> <span class="ident">int8x16_t</span>, <span class="kw">pub</span> <span class="ident">int8x16_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `int8x16_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int8x16x3_t</span>(<span class="kw">pub</span> <span class="ident">int8x16_t</span>, <span class="kw">pub</span> <span class="ident">int8x16_t</span>, <span class="kw">pub</span> <span class="ident">int8x16_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `int8x16_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int8x16x4_t</span>(<span class="kw">pub</span> <span class="ident">int8x16_t</span>, <span class="kw">pub</span> <span class="ident">int8x16_t</span>, <span class="kw">pub</span> <span class="ident">int8x16_t</span>, <span class="kw">pub</span> <span class="ident">int8x16_t</span>);
 
 <span class="doccomment">/// ARM-specific type containing two `uint8x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint8x8x2_t</span>(<span class="kw">pub</span> <span class="ident">uint8x8_t</span>, <span class="kw">pub</span> <span class="ident">uint8x8_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `uint8x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint8x8x3_t</span>(<span class="kw">pub</span> <span class="ident">uint8x8_t</span>, <span class="kw">pub</span> <span class="ident">uint8x8_t</span>, <span class="kw">pub</span> <span class="ident">uint8x8_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `uint8x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint8x8x4_t</span>(<span class="kw">pub</span> <span class="ident">uint8x8_t</span>, <span class="kw">pub</span> <span class="ident">uint8x8_t</span>, <span class="kw">pub</span> <span class="ident">uint8x8_t</span>, <span class="kw">pub</span> <span class="ident">uint8x8_t</span>);
 
 <span class="doccomment">/// ARM-specific type containing two `uint8x16_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint8x16x2_t</span>(<span class="kw">pub</span> <span class="ident">uint8x16_t</span>, <span class="kw">pub</span> <span class="ident">uint8x16_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `uint8x16_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint8x16x3_t</span>(<span class="kw">pub</span> <span class="ident">uint8x16_t</span>, <span class="kw">pub</span> <span class="ident">uint8x16_t</span>, <span class="kw">pub</span> <span class="ident">uint8x16_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `uint8x16_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint8x16x4_t</span>(
     <span class="kw">pub</span> <span class="ident">uint8x16_t</span>,
     <span class="kw">pub</span> <span class="ident">uint8x16_t</span>,
@@ -10477,23 +10601,23 @@
 );
 
 <span class="doccomment">/// ARM-specific type containing two `poly8x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly8x8x2_t</span>(<span class="kw">pub</span> <span class="ident">poly8x8_t</span>, <span class="kw">pub</span> <span class="ident">poly8x8_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `poly8x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly8x8x3_t</span>(<span class="kw">pub</span> <span class="ident">poly8x8_t</span>, <span class="kw">pub</span> <span class="ident">poly8x8_t</span>, <span class="kw">pub</span> <span class="ident">poly8x8_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `poly8x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly8x8x4_t</span>(<span class="kw">pub</span> <span class="ident">poly8x8_t</span>, <span class="kw">pub</span> <span class="ident">poly8x8_t</span>, <span class="kw">pub</span> <span class="ident">poly8x8_t</span>, <span class="kw">pub</span> <span class="ident">poly8x8_t</span>);
 
 <span class="doccomment">/// ARM-specific type containing two `poly8x16_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly8x16x2_t</span>(<span class="kw">pub</span> <span class="ident">poly8x16_t</span>, <span class="kw">pub</span> <span class="ident">poly8x16_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `poly8x16_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly8x16x3_t</span>(<span class="kw">pub</span> <span class="ident">poly8x16_t</span>, <span class="kw">pub</span> <span class="ident">poly8x16_t</span>, <span class="kw">pub</span> <span class="ident">poly8x16_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `poly8x16_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly8x16x4_t</span>(
     <span class="kw">pub</span> <span class="ident">poly8x16_t</span>,
     <span class="kw">pub</span> <span class="ident">poly8x16_t</span>,
@@ -10502,33 +10626,33 @@
 );
 
 <span class="doccomment">/// ARM-specific type containing two `int16x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int16x4x2_t</span>(<span class="kw">pub</span> <span class="ident">int16x4_t</span>, <span class="kw">pub</span> <span class="ident">int16x4_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `int16x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int16x4x3_t</span>(<span class="kw">pub</span> <span class="ident">int16x4_t</span>, <span class="kw">pub</span> <span class="ident">int16x4_t</span>, <span class="kw">pub</span> <span class="ident">int16x4_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `int16x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int16x4x4_t</span>(<span class="kw">pub</span> <span class="ident">int16x4_t</span>, <span class="kw">pub</span> <span class="ident">int16x4_t</span>, <span class="kw">pub</span> <span class="ident">int16x4_t</span>, <span class="kw">pub</span> <span class="ident">int16x4_t</span>);
 
 <span class="doccomment">/// ARM-specific type containing two `int16x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int16x8x2_t</span>(<span class="kw">pub</span> <span class="ident">int16x8_t</span>, <span class="kw">pub</span> <span class="ident">int16x8_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `int16x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int16x8x3_t</span>(<span class="kw">pub</span> <span class="ident">int16x8_t</span>, <span class="kw">pub</span> <span class="ident">int16x8_t</span>, <span class="kw">pub</span> <span class="ident">int16x8_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `int16x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int16x8x4_t</span>(<span class="kw">pub</span> <span class="ident">int16x8_t</span>, <span class="kw">pub</span> <span class="ident">int16x8_t</span>, <span class="kw">pub</span> <span class="ident">int16x8_t</span>, <span class="kw">pub</span> <span class="ident">int16x8_t</span>);
 
 <span class="doccomment">/// ARM-specific type containing two `uint16x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint16x4x2_t</span>(<span class="kw">pub</span> <span class="ident">uint16x4_t</span>, <span class="kw">pub</span> <span class="ident">uint16x4_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `uint16x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint16x4x3_t</span>(<span class="kw">pub</span> <span class="ident">uint16x4_t</span>, <span class="kw">pub</span> <span class="ident">uint16x4_t</span>, <span class="kw">pub</span> <span class="ident">uint16x4_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `uint16x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint16x4x4_t</span>(
     <span class="kw">pub</span> <span class="ident">uint16x4_t</span>,
     <span class="kw">pub</span> <span class="ident">uint16x4_t</span>,
@@ -10537,13 +10661,13 @@
 );
 
 <span class="doccomment">/// ARM-specific type containing two `uint16x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint16x8x2_t</span>(<span class="kw">pub</span> <span class="ident">uint16x8_t</span>, <span class="kw">pub</span> <span class="ident">uint16x8_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `uint16x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint16x8x3_t</span>(<span class="kw">pub</span> <span class="ident">uint16x8_t</span>, <span class="kw">pub</span> <span class="ident">uint16x8_t</span>, <span class="kw">pub</span> <span class="ident">uint16x8_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `uint16x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint16x8x4_t</span>(
     <span class="kw">pub</span> <span class="ident">uint16x8_t</span>,
     <span class="kw">pub</span> <span class="ident">uint16x8_t</span>,
@@ -10552,13 +10676,13 @@
 );
 
 <span class="doccomment">/// ARM-specific type containing two `poly16x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly16x4x2_t</span>(<span class="kw">pub</span> <span class="ident">poly16x4_t</span>, <span class="kw">pub</span> <span class="ident">poly16x4_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `poly16x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly16x4x3_t</span>(<span class="kw">pub</span> <span class="ident">poly16x4_t</span>, <span class="kw">pub</span> <span class="ident">poly16x4_t</span>, <span class="kw">pub</span> <span class="ident">poly16x4_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `poly16x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly16x4x4_t</span>(
     <span class="kw">pub</span> <span class="ident">poly16x4_t</span>,
     <span class="kw">pub</span> <span class="ident">poly16x4_t</span>,
@@ -10567,13 +10691,13 @@
 );
 
 <span class="doccomment">/// ARM-specific type containing two `poly16x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly16x8x2_t</span>(<span class="kw">pub</span> <span class="ident">poly16x8_t</span>, <span class="kw">pub</span> <span class="ident">poly16x8_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `poly16x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly16x8x3_t</span>(<span class="kw">pub</span> <span class="ident">poly16x8_t</span>, <span class="kw">pub</span> <span class="ident">poly16x8_t</span>, <span class="kw">pub</span> <span class="ident">poly16x8_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `poly16x8_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly16x8x4_t</span>(
     <span class="kw">pub</span> <span class="ident">poly16x8_t</span>,
     <span class="kw">pub</span> <span class="ident">poly16x8_t</span>,
@@ -10582,33 +10706,33 @@
 );
 
 <span class="doccomment">/// ARM-specific type containing two `int32x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int32x2x2_t</span>(<span class="kw">pub</span> <span class="ident">int32x2_t</span>, <span class="kw">pub</span> <span class="ident">int32x2_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `int32x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int32x2x3_t</span>(<span class="kw">pub</span> <span class="ident">int32x2_t</span>, <span class="kw">pub</span> <span class="ident">int32x2_t</span>, <span class="kw">pub</span> <span class="ident">int32x2_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `int32x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int32x2x4_t</span>(<span class="kw">pub</span> <span class="ident">int32x2_t</span>, <span class="kw">pub</span> <span class="ident">int32x2_t</span>, <span class="kw">pub</span> <span class="ident">int32x2_t</span>, <span class="kw">pub</span> <span class="ident">int32x2_t</span>);
 
 <span class="doccomment">/// ARM-specific type containing two `int32x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int32x4x2_t</span>(<span class="kw">pub</span> <span class="ident">int32x4_t</span>, <span class="kw">pub</span> <span class="ident">int32x4_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `int32x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int32x4x3_t</span>(<span class="kw">pub</span> <span class="ident">int32x4_t</span>, <span class="kw">pub</span> <span class="ident">int32x4_t</span>, <span class="kw">pub</span> <span class="ident">int32x4_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `int32x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int32x4x4_t</span>(<span class="kw">pub</span> <span class="ident">int32x4_t</span>, <span class="kw">pub</span> <span class="ident">int32x4_t</span>, <span class="kw">pub</span> <span class="ident">int32x4_t</span>, <span class="kw">pub</span> <span class="ident">int32x4_t</span>);
 
 <span class="doccomment">/// ARM-specific type containing two `uint32x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint32x2x2_t</span>(<span class="kw">pub</span> <span class="ident">uint32x2_t</span>, <span class="kw">pub</span> <span class="ident">uint32x2_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `uint32x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint32x2x3_t</span>(<span class="kw">pub</span> <span class="ident">uint32x2_t</span>, <span class="kw">pub</span> <span class="ident">uint32x2_t</span>, <span class="kw">pub</span> <span class="ident">uint32x2_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `uint32x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint32x2x4_t</span>(
     <span class="kw">pub</span> <span class="ident">uint32x2_t</span>,
     <span class="kw">pub</span> <span class="ident">uint32x2_t</span>,
@@ -10617,13 +10741,13 @@
 );
 
 <span class="doccomment">/// ARM-specific type containing two `uint32x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint32x4x2_t</span>(<span class="kw">pub</span> <span class="ident">uint32x4_t</span>, <span class="kw">pub</span> <span class="ident">uint32x4_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `uint32x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint32x4x3_t</span>(<span class="kw">pub</span> <span class="ident">uint32x4_t</span>, <span class="kw">pub</span> <span class="ident">uint32x4_t</span>, <span class="kw">pub</span> <span class="ident">uint32x4_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `uint32x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint32x4x4_t</span>(
     <span class="kw">pub</span> <span class="ident">uint32x4_t</span>,
     <span class="kw">pub</span> <span class="ident">uint32x4_t</span>,
@@ -10632,13 +10756,13 @@
 );
 
 <span class="doccomment">/// ARM-specific type containing two `float32x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">float32x2x2_t</span>(<span class="kw">pub</span> <span class="ident">float32x2_t</span>, <span class="kw">pub</span> <span class="ident">float32x2_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `float32x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">float32x2x3_t</span>(<span class="kw">pub</span> <span class="ident">float32x2_t</span>, <span class="kw">pub</span> <span class="ident">float32x2_t</span>, <span class="kw">pub</span> <span class="ident">float32x2_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `float32x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">float32x2x4_t</span>(
     <span class="kw">pub</span> <span class="ident">float32x2_t</span>,
     <span class="kw">pub</span> <span class="ident">float32x2_t</span>,
@@ -10647,13 +10771,13 @@
 );
 
 <span class="doccomment">/// ARM-specific type containing two `float32x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">float32x4x2_t</span>(<span class="kw">pub</span> <span class="ident">float32x4_t</span>, <span class="kw">pub</span> <span class="ident">float32x4_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `float32x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">float32x4x3_t</span>(<span class="kw">pub</span> <span class="ident">float32x4_t</span>, <span class="kw">pub</span> <span class="ident">float32x4_t</span>, <span class="kw">pub</span> <span class="ident">float32x4_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `float32x4_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">float32x4x4_t</span>(
     <span class="kw">pub</span> <span class="ident">float32x4_t</span>,
     <span class="kw">pub</span> <span class="ident">float32x4_t</span>,
@@ -10662,33 +10786,33 @@
 );
 
 <span class="doccomment">/// ARM-specific type containing four `int64x1_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int64x1x2_t</span>(<span class="kw">pub</span> <span class="ident">int64x1_t</span>, <span class="kw">pub</span> <span class="ident">int64x1_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `int64x1_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int64x1x3_t</span>(<span class="kw">pub</span> <span class="ident">int64x1_t</span>, <span class="kw">pub</span> <span class="ident">int64x1_t</span>, <span class="kw">pub</span> <span class="ident">int64x1_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `int64x1_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int64x1x4_t</span>(<span class="kw">pub</span> <span class="ident">int64x1_t</span>, <span class="kw">pub</span> <span class="ident">int64x1_t</span>, <span class="kw">pub</span> <span class="ident">int64x1_t</span>, <span class="kw">pub</span> <span class="ident">int64x1_t</span>);
 
 <span class="doccomment">/// ARM-specific type containing four `int64x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int64x2x2_t</span>(<span class="kw">pub</span> <span class="ident">int64x2_t</span>, <span class="kw">pub</span> <span class="ident">int64x2_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `int64x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int64x2x3_t</span>(<span class="kw">pub</span> <span class="ident">int64x2_t</span>, <span class="kw">pub</span> <span class="ident">int64x2_t</span>, <span class="kw">pub</span> <span class="ident">int64x2_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `int64x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">int64x2x4_t</span>(<span class="kw">pub</span> <span class="ident">int64x2_t</span>, <span class="kw">pub</span> <span class="ident">int64x2_t</span>, <span class="kw">pub</span> <span class="ident">int64x2_t</span>, <span class="kw">pub</span> <span class="ident">int64x2_t</span>);
 
 <span class="doccomment">/// ARM-specific type containing four `uint64x1_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint64x1x2_t</span>(<span class="kw">pub</span> <span class="ident">uint64x1_t</span>, <span class="kw">pub</span> <span class="ident">uint64x1_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `uint64x1_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint64x1x3_t</span>(<span class="kw">pub</span> <span class="ident">uint64x1_t</span>, <span class="kw">pub</span> <span class="ident">uint64x1_t</span>, <span class="kw">pub</span> <span class="ident">uint64x1_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `uint64x1_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint64x1x4_t</span>(
     <span class="kw">pub</span> <span class="ident">uint64x1_t</span>,
     <span class="kw">pub</span> <span class="ident">uint64x1_t</span>,
@@ -10697,13 +10821,13 @@
 );
 
 <span class="doccomment">/// ARM-specific type containing four `uint64x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint64x2x2_t</span>(<span class="kw">pub</span> <span class="ident">uint64x2_t</span>, <span class="kw">pub</span> <span class="ident">uint64x2_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `uint64x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint64x2x3_t</span>(<span class="kw">pub</span> <span class="ident">uint64x2_t</span>, <span class="kw">pub</span> <span class="ident">uint64x2_t</span>, <span class="kw">pub</span> <span class="ident">uint64x2_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `uint64x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">uint64x2x4_t</span>(
     <span class="kw">pub</span> <span class="ident">uint64x2_t</span>,
     <span class="kw">pub</span> <span class="ident">uint64x2_t</span>,
@@ -10712,13 +10836,13 @@
 );
 
 <span class="doccomment">/// ARM-specific type containing four `poly64x1_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly64x1x2_t</span>(<span class="kw">pub</span> <span class="ident">poly64x1_t</span>, <span class="kw">pub</span> <span class="ident">poly64x1_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `poly64x1_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly64x1x3_t</span>(<span class="kw">pub</span> <span class="ident">poly64x1_t</span>, <span class="kw">pub</span> <span class="ident">poly64x1_t</span>, <span class="kw">pub</span> <span class="ident">poly64x1_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `poly64x1_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly64x1x4_t</span>(
     <span class="kw">pub</span> <span class="ident">poly64x1_t</span>,
     <span class="kw">pub</span> <span class="ident">poly64x1_t</span>,
@@ -10727,13 +10851,13 @@
 );
 
 <span class="doccomment">/// ARM-specific type containing four `poly64x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly64x2x2_t</span>(<span class="kw">pub</span> <span class="ident">poly64x2_t</span>, <span class="kw">pub</span> <span class="ident">poly64x2_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `poly64x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly64x2x3_t</span>(<span class="kw">pub</span> <span class="ident">poly64x2_t</span>, <span class="kw">pub</span> <span class="ident">poly64x2_t</span>, <span class="kw">pub</span> <span class="ident">poly64x2_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `poly64x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">poly64x2x4_t</span>(
     <span class="kw">pub</span> <span class="ident">poly64x2_t</span>,
     <span class="kw">pub</span> <span class="ident">poly64x2_t</span>,
@@ -10827,9 +10951,6 @@
     <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.neon.vpadd.v8i8&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>, <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.aarch64.neon.addp.v8i8&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">vpadd_s8_</span>(<span class="ident">a</span>: <span class="ident">int8x8_t</span>, <span class="ident">b</span>: <span class="ident">int8x8_t</span>) -&gt; <span class="ident">int8x8_t</span>;
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.neon.vpadd.v16i8&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>, <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.aarch64.neon.addp.v16i8&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">vpaddq_s8_</span>(<span class="ident">a</span>: <span class="ident">int8x16_t</span>, <span class="ident">b</span>: <span class="ident">int8x16_t</span>) -&gt; <span class="ident">int8x16_t</span>;
 
     <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.neon.vpaddls.v4i16.v8i8&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg_attr</span>(
@@ -10939,7 +11060,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.8&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">7</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">7</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_s8</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i8</span>, <span class="ident">src</span>: <span class="ident">int8x8_t</span>) -&gt; <span class="ident">int8x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_s8</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>, <span class="ident">src</span>: <span class="ident">int8x8_t</span>) -&gt; <span class="ident">int8x8_t</span> {
     <span class="macro">static_assert_imm3!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -10951,7 +11072,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.8&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">15</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">15</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_s8</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i8</span>, <span class="ident">src</span>: <span class="ident">int8x16_t</span>) -&gt; <span class="ident">int8x16_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_s8</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>, <span class="ident">src</span>: <span class="ident">int8x16_t</span>) -&gt; <span class="ident">int8x16_t</span> {
     <span class="macro">static_assert_imm4!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -10963,7 +11084,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.16&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">3</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">3</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_s16</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i16</span>, <span class="ident">src</span>: <span class="ident">int16x4_t</span>) -&gt; <span class="ident">int16x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_s16</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i16</span>, <span class="ident">src</span>: <span class="ident">int16x4_t</span>) -&gt; <span class="ident">int16x4_t</span> {
     <span class="macro">static_assert_imm2!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -10975,7 +11096,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.16&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">7</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">7</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_s16</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i16</span>, <span class="ident">src</span>: <span class="ident">int16x8_t</span>) -&gt; <span class="ident">int16x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_s16</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i16</span>, <span class="ident">src</span>: <span class="ident">int16x8_t</span>) -&gt; <span class="ident">int16x8_t</span> {
     <span class="macro">static_assert_imm3!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -10987,7 +11108,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.32&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">1</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">1</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_s32</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i32</span>, <span class="ident">src</span>: <span class="ident">int32x2_t</span>) -&gt; <span class="ident">int32x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_s32</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i32</span>, <span class="ident">src</span>: <span class="ident">int32x2_t</span>) -&gt; <span class="ident">int32x2_t</span> {
     <span class="macro">static_assert_imm1!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -10999,7 +11120,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.32&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">3</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">3</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_s32</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i32</span>, <span class="ident">src</span>: <span class="ident">int32x4_t</span>) -&gt; <span class="ident">int32x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_s32</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i32</span>, <span class="ident">src</span>: <span class="ident">int32x4_t</span>) -&gt; <span class="ident">int32x4_t</span> {
     <span class="macro">static_assert_imm2!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11011,7 +11132,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vldr&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">0</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ldr</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">0</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_s64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i64</span>, <span class="ident">src</span>: <span class="ident">int64x1_t</span>) -&gt; <span class="ident">int64x1_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_s64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i64</span>, <span class="ident">src</span>: <span class="ident">int64x1_t</span>) -&gt; <span class="ident">int64x1_t</span> {
     <span class="macro">static_assert!</span>(<span class="ident">LANE</span> : <span class="ident">i32</span> <span class="kw">where</span> <span class="ident">LANE</span> <span class="op">==</span> <span class="number">0</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11023,7 +11144,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vldr&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">1</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">1</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_s64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i64</span>, <span class="ident">src</span>: <span class="ident">int64x2_t</span>) -&gt; <span class="ident">int64x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_s64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i64</span>, <span class="ident">src</span>: <span class="ident">int64x2_t</span>) -&gt; <span class="ident">int64x2_t</span> {
     <span class="macro">static_assert_imm1!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11035,7 +11156,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.8&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">7</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">7</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_u8</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">src</span>: <span class="ident">uint8x8_t</span>) -&gt; <span class="ident">uint8x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_u8</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">src</span>: <span class="ident">uint8x8_t</span>) -&gt; <span class="ident">uint8x8_t</span> {
     <span class="macro">static_assert_imm3!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11047,7 +11168,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.8&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">15</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">15</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_u8</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>, <span class="ident">src</span>: <span class="ident">uint8x16_t</span>) -&gt; <span class="ident">uint8x16_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_u8</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">src</span>: <span class="ident">uint8x16_t</span>) -&gt; <span class="ident">uint8x16_t</span> {
     <span class="macro">static_assert_imm4!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11059,7 +11180,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.16&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">3</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">3</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_u16</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u16</span>, <span class="ident">src</span>: <span class="ident">uint16x4_t</span>) -&gt; <span class="ident">uint16x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_u16</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u16</span>, <span class="ident">src</span>: <span class="ident">uint16x4_t</span>) -&gt; <span class="ident">uint16x4_t</span> {
     <span class="macro">static_assert_imm2!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11071,7 +11192,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.16&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">7</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">7</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_u16</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u16</span>, <span class="ident">src</span>: <span class="ident">uint16x8_t</span>) -&gt; <span class="ident">uint16x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_u16</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u16</span>, <span class="ident">src</span>: <span class="ident">uint16x8_t</span>) -&gt; <span class="ident">uint16x8_t</span> {
     <span class="macro">static_assert_imm3!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11083,7 +11204,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.32&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">1</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">1</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_u32</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>, <span class="ident">src</span>: <span class="ident">uint32x2_t</span>) -&gt; <span class="ident">uint32x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_u32</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u32</span>, <span class="ident">src</span>: <span class="ident">uint32x2_t</span>) -&gt; <span class="ident">uint32x2_t</span> {
     <span class="macro">static_assert_imm1!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11095,7 +11216,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.32&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">3</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">3</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_u32</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>, <span class="ident">src</span>: <span class="ident">uint32x4_t</span>) -&gt; <span class="ident">uint32x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_u32</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u32</span>, <span class="ident">src</span>: <span class="ident">uint32x4_t</span>) -&gt; <span class="ident">uint32x4_t</span> {
     <span class="macro">static_assert_imm2!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11107,7 +11228,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vldr&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">0</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ldr</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">0</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_u64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u64</span>, <span class="ident">src</span>: <span class="ident">uint64x1_t</span>) -&gt; <span class="ident">uint64x1_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_u64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u64</span>, <span class="ident">src</span>: <span class="ident">uint64x1_t</span>) -&gt; <span class="ident">uint64x1_t</span> {
     <span class="macro">static_assert!</span>(<span class="ident">LANE</span> : <span class="ident">i32</span> <span class="kw">where</span> <span class="ident">LANE</span> <span class="op">==</span> <span class="number">0</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11119,7 +11240,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vldr&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">1</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">1</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_u64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u64</span>, <span class="ident">src</span>: <span class="ident">uint64x2_t</span>) -&gt; <span class="ident">uint64x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_u64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u64</span>, <span class="ident">src</span>: <span class="ident">uint64x2_t</span>) -&gt; <span class="ident">uint64x2_t</span> {
     <span class="macro">static_assert_imm1!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11131,7 +11252,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.8&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">7</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">7</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_p8</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p8</span>, <span class="ident">src</span>: <span class="ident">poly8x8_t</span>) -&gt; <span class="ident">poly8x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_p8</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p8</span>, <span class="ident">src</span>: <span class="ident">poly8x8_t</span>) -&gt; <span class="ident">poly8x8_t</span> {
     <span class="macro">static_assert_imm3!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11143,7 +11264,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.8&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">15</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">15</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_p8</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p8</span>, <span class="ident">src</span>: <span class="ident">poly8x16_t</span>) -&gt; <span class="ident">poly8x16_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_p8</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p8</span>, <span class="ident">src</span>: <span class="ident">poly8x16_t</span>) -&gt; <span class="ident">poly8x16_t</span> {
     <span class="macro">static_assert_imm4!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11155,7 +11276,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.16&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">3</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">3</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_p16</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p16</span>, <span class="ident">src</span>: <span class="ident">poly16x4_t</span>) -&gt; <span class="ident">poly16x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_p16</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p16</span>, <span class="ident">src</span>: <span class="ident">poly16x4_t</span>) -&gt; <span class="ident">poly16x4_t</span> {
     <span class="macro">static_assert_imm2!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11167,7 +11288,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.16&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">7</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">7</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_p16</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p16</span>, <span class="ident">src</span>: <span class="ident">poly16x8_t</span>) -&gt; <span class="ident">poly16x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_p16</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p16</span>, <span class="ident">src</span>: <span class="ident">poly16x8_t</span>) -&gt; <span class="ident">poly16x8_t</span> {
     <span class="macro">static_assert_imm3!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11179,7 +11300,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vldr&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">0</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ldr</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">0</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_p64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p64</span>, <span class="ident">src</span>: <span class="ident">poly64x1_t</span>) -&gt; <span class="ident">poly64x1_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_p64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p64</span>, <span class="ident">src</span>: <span class="ident">poly64x1_t</span>) -&gt; <span class="ident">poly64x1_t</span> {
     <span class="macro">static_assert!</span>(<span class="ident">LANE</span> : <span class="ident">i32</span> <span class="kw">where</span> <span class="ident">LANE</span> <span class="op">==</span> <span class="number">0</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11191,7 +11312,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vldr&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">1</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">1</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_p64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p64</span>, <span class="ident">src</span>: <span class="ident">poly64x2_t</span>) -&gt; <span class="ident">poly64x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_p64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p64</span>, <span class="ident">src</span>: <span class="ident">poly64x2_t</span>) -&gt; <span class="ident">poly64x2_t</span> {
     <span class="macro">static_assert_imm1!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11203,7 +11324,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.32&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">1</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">1</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_f32</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>, <span class="ident">src</span>: <span class="ident">float32x2_t</span>) -&gt; <span class="ident">float32x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_f32</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">f32</span>, <span class="ident">src</span>: <span class="ident">float32x2_t</span>) -&gt; <span class="ident">float32x2_t</span> {
     <span class="macro">static_assert_imm1!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11215,7 +11336,7 @@
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.32&quot;</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">3</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">3</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_f32</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>, <span class="ident">src</span>: <span class="ident">float32x4_t</span>) -&gt; <span class="ident">float32x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_f32</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">f32</span>, <span class="ident">src</span>: <span class="ident">float32x4_t</span>) -&gt; <span class="ident">float32x4_t</span> {
     <span class="macro">static_assert_imm2!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -11226,7 +11347,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.8&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_s8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i8</span>) -&gt; <span class="ident">int8x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_s8</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>) -&gt; <span class="ident">int8x8_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1_lane_s8</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">i8x8::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle8!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11237,7 +11358,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.8&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_s8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i8</span>) -&gt; <span class="ident">int8x16_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_s8</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>) -&gt; <span class="ident">int8x16_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1q_lane_s8</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">i8x16::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle16!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11248,7 +11369,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.16&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_s16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i16</span>) -&gt; <span class="ident">int16x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_s16</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i16</span>) -&gt; <span class="ident">int16x4_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1_lane_s16</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">i16x4::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle4!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11259,7 +11380,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.16&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_s16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i16</span>) -&gt; <span class="ident">int16x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_s16</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i16</span>) -&gt; <span class="ident">int16x8_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1q_lane_s16</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">i16x8::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle8!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11270,7 +11391,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.32&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_s32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i32</span>) -&gt; <span class="ident">int32x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_s32</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i32</span>) -&gt; <span class="ident">int32x2_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1_lane_s32</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">i32x2::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle2!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11281,7 +11402,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.32&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_s32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i32</span>) -&gt; <span class="ident">int32x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_s32</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i32</span>) -&gt; <span class="ident">int32x4_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1q_lane_s32</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">i32x4::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle4!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11292,7 +11413,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vldr&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_s64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i64</span>) -&gt; <span class="ident">int64x1_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_s64</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i64</span>) -&gt; <span class="ident">int64x1_t</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>)]</span>
     {
         <span class="ident"><span class="kw">crate</span>::core_arch::aarch64::vld1_s64</span>(<span class="ident">ptr</span>)
@@ -11309,7 +11430,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vldr&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_s64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i64</span>) -&gt; <span class="ident">int64x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_s64</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i64</span>) -&gt; <span class="ident">int64x2_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1q_lane_s64</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">i64x2::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle2!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11320,7 +11441,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.8&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_u8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="ident">uint8x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_u8</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>) -&gt; <span class="ident">uint8x8_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1_lane_u8</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">u8x8::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle8!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11331,7 +11452,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.8&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_u8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="ident">uint8x16_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_u8</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>) -&gt; <span class="ident">uint8x16_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1q_lane_u8</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">u8x16::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle16!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11342,7 +11463,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.16&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_u16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u16</span>) -&gt; <span class="ident">uint16x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_u16</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u16</span>) -&gt; <span class="ident">uint16x4_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1_lane_u16</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">u16x4::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle4!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11353,7 +11474,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.16&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_u16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u16</span>) -&gt; <span class="ident">uint16x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_u16</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u16</span>) -&gt; <span class="ident">uint16x8_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1q_lane_u16</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">u16x8::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle8!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11364,7 +11485,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.32&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_u32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>) -&gt; <span class="ident">uint32x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_u32</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u32</span>) -&gt; <span class="ident">uint32x2_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1_lane_u32</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">u32x2::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle2!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11375,7 +11496,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.32&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_u32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>) -&gt; <span class="ident">uint32x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_u32</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u32</span>) -&gt; <span class="ident">uint32x4_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1q_lane_u32</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">u32x4::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle4!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11386,7 +11507,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vldr&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_u64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u64</span>) -&gt; <span class="ident">uint64x1_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_u64</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u64</span>) -&gt; <span class="ident">uint64x1_t</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>)]</span>
     {
         <span class="ident"><span class="kw">crate</span>::core_arch::aarch64::vld1_u64</span>(<span class="ident">ptr</span>)
@@ -11403,7 +11524,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vldr&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_u64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u64</span>) -&gt; <span class="ident">uint64x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_u64</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u64</span>) -&gt; <span class="ident">uint64x2_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1q_lane_u64</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">u64x2::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle2!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11414,7 +11535,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.8&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_p8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p8</span>) -&gt; <span class="ident">poly8x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_p8</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p8</span>) -&gt; <span class="ident">poly8x8_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1_lane_p8</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">u8x8::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle8!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11425,7 +11546,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.8&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_p8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p8</span>) -&gt; <span class="ident">poly8x16_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_p8</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p8</span>) -&gt; <span class="ident">poly8x16_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1q_lane_p8</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">u8x16::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle16!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11436,7 +11557,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.16&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_p16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p16</span>) -&gt; <span class="ident">poly16x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_p16</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p16</span>) -&gt; <span class="ident">poly16x4_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1_lane_p16</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">u16x4::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle4!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11447,7 +11568,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.16&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_p16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p16</span>) -&gt; <span class="ident">poly16x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_p16</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p16</span>) -&gt; <span class="ident">poly16x8_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1q_lane_p16</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">u16x8::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle8!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11458,7 +11579,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.32&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_f32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>) -&gt; <span class="ident">float32x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_f32</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">f32</span>) -&gt; <span class="ident">float32x2_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1_lane_f32</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">f32x2::splat</span>(<span class="number">0.</span>)));
     <span class="macro">simd_shuffle2!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11469,7 +11590,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vldr&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_p64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p64</span>) -&gt; <span class="ident">poly64x1_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_p64</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p64</span>) -&gt; <span class="ident">poly64x1_t</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>)]</span>
     {
         <span class="ident"><span class="kw">crate</span>::core_arch::aarch64::vld1_p64</span>(<span class="ident">ptr</span>)
@@ -11486,7 +11607,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vldr&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_p64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p64</span>) -&gt; <span class="ident">poly64x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_p64</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p64</span>) -&gt; <span class="ident">poly64x2_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1q_lane_p64</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">u64x2::splat</span>(<span class="number">0</span>)));
     <span class="macro">simd_shuffle2!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>])
 }
@@ -11497,7 +11618,7 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="string">&quot;vld1.32&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_f32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>) -&gt; <span class="ident">float32x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_f32</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">f32</span>) -&gt; <span class="ident">float32x4_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1q_lane_f32</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">f32x4::splat</span>(<span class="number">0.</span>)));
     <span class="macro">simd_shuffle4!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])
 }
@@ -14271,6 +14392,26 @@
     <span class="ident">float32x2_t</span>(<span class="ident">value</span>, <span class="ident">value</span>)
 }
 
+<span class="doccomment">/// Load SIMD&amp;FP register (immediate offset)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">nop</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">nop</span>))]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vldrq_p128</span>(<span class="ident">a</span>: <span class="kw-2">*const</span> <span class="ident">p128</span>) -&gt; <span class="ident">p128</span> {
+    <span class="kw-2">*</span><span class="ident">a</span>
+}
+
+<span class="doccomment">/// Store SIMD&amp;FP register (immediate offset)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v7&quot;</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">nop</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">nop</span>))]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vstrq_p128</span>(<span class="ident">a</span>: <span class="kw-2">*mut</span> <span class="ident">p128</span>, <span class="ident">b</span>: <span class="ident">p128</span>) {
+    <span class="kw-2">*</span><span class="ident">a</span> <span class="op">=</span> <span class="ident">b</span>;
+}
+
 <span class="doccomment">/// Duplicate vector element to vector or scalar</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
@@ -15136,6 +15277,66 @@
     {
         <span class="ident">simd_add</span>(<span class="ident">vpaddlq_u32_</span>(<span class="ident">b</span>), <span class="ident">a</span>)
     }
+}
+
+<span class="doccomment">/// 8-bit integer matrix multiply-accumulate</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>), <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;i8mm&quot;</span>))]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v8&quot;</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">nop</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">smmla</span>))]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vmmlaq_s32</span>(<span class="ident">a</span>: <span class="ident">int32x4_t</span>, <span class="ident">b</span>: <span class="ident">int8x16_t</span>, <span class="ident">c</span>: <span class="ident">int8x16_t</span>) -&gt; <span class="ident">int32x4_t</span> {
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">improper_ctypes</span>)]</span>
+    <span class="kw">extern</span> <span class="string">&quot;unadjusted&quot;</span> {
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.neon.smmla.v4i32.v16i8&quot;</span>)]</span>
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(
+            <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>,
+            <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.aarch64.neon.smmla.v4i32.v16i8&quot;</span>
+        )]</span>
+        <span class="kw">fn</span> <span class="ident">vmmlaq_s32_</span>(<span class="ident">a</span>: <span class="ident">int32x4_t</span>, <span class="ident">b</span>: <span class="ident">int8x16_t</span>, <span class="ident">c</span>: <span class="ident">int8x16_t</span>) -&gt; <span class="ident">int32x4_t</span>;
+    }
+    <span class="ident">vmmlaq_s32_</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
+}
+
+<span class="doccomment">/// 8-bit integer matrix multiply-accumulate</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>), <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;i8mm&quot;</span>))]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v8&quot;</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">nop</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">ummla</span>))]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vmmlaq_u32</span>(<span class="ident">a</span>: <span class="ident">uint32x4_t</span>, <span class="ident">b</span>: <span class="ident">uint8x16_t</span>, <span class="ident">c</span>: <span class="ident">uint8x16_t</span>) -&gt; <span class="ident">uint32x4_t</span> {
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">improper_ctypes</span>)]</span>
+    <span class="kw">extern</span> <span class="string">&quot;unadjusted&quot;</span> {
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.neon.ummla.v4i32.v16i8&quot;</span>)]</span>
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(
+            <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>,
+            <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.aarch64.neon.ummla.v4i32.v16i8&quot;</span>
+        )]</span>
+        <span class="kw">fn</span> <span class="ident">vmmlaq_u32_</span>(<span class="ident">a</span>: <span class="ident">uint32x4_t</span>, <span class="ident">b</span>: <span class="ident">uint8x16_t</span>, <span class="ident">c</span>: <span class="ident">uint8x16_t</span>) -&gt; <span class="ident">uint32x4_t</span>;
+    }
+    <span class="ident">vmmlaq_u32_</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
+}
+
+<span class="doccomment">/// Unsigned and signed 8-bit integer matrix multiply-accumulate</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>), <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;i8mm&quot;</span>))]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;v8&quot;</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">nop</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>), <span class="ident">assert_instr</span>(<span class="ident">usmmla</span>))]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vusmmlaq_s32</span>(<span class="ident">a</span>: <span class="ident">int32x4_t</span>, <span class="ident">b</span>: <span class="ident">uint8x16_t</span>, <span class="ident">c</span>: <span class="ident">int8x16_t</span>) -&gt; <span class="ident">int32x4_t</span> {
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">improper_ctypes</span>)]</span>
+    <span class="kw">extern</span> <span class="string">&quot;unadjusted&quot;</span> {
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.arm.neon.usmmla.v4i32.v16i8&quot;</span>)]</span>
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(
+            <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>,
+            <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.aarch64.neon.usmmla.v4i32.v16i8&quot;</span>
+        )]</span>
+        <span class="kw">fn</span> <span class="ident">vusmmlaq_s32_</span>(<span class="ident">a</span>: <span class="ident">int32x4_t</span>, <span class="ident">b</span>: <span class="ident">uint8x16_t</span>, <span class="ident">c</span>: <span class="ident">int8x16_t</span>) -&gt; <span class="ident">int32x4_t</span>;
+    }
+    <span class="ident">vusmmlaq_s32_</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>)
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
@@ -16163,6 +16364,23 @@
         <span class="kw">let</span> <span class="ident">v</span>: <span class="ident">f32</span> <span class="op">=</span> <span class="number">64.0</span>;
         <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">f32x2::new</span>(<span class="number">64.0</span>, <span class="number">64.0</span>);
         <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">f32x2</span> <span class="op">=</span> <span class="ident">transmute</span>(<span class="ident">vdup_n_f32</span>(<span class="ident">v</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_vldrq_p128</span>() {
+        <span class="kw">let</span> <span class="ident">v</span>: [<span class="ident">p128</span>; <span class="number">2</span>] <span class="op">=</span> [<span class="number">1</span>, <span class="number">2</span>];
+        <span class="kw">let</span> <span class="ident">e</span>: <span class="ident">p128</span> <span class="op">=</span> <span class="number">2</span>;
+        <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">p128</span> <span class="op">=</span> <span class="ident">vldrq_p128</span>(<span class="ident">v</span>[<span class="number">1</span>..].<span class="ident">as_ptr</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_vstrq_p128</span>() {
+        <span class="kw">let</span> <span class="ident">v</span>: [<span class="ident">p128</span>; <span class="number">2</span>] <span class="op">=</span> [<span class="number">1</span>, <span class="number">2</span>];
+        <span class="kw">let</span> <span class="ident">e</span>: <span class="ident">p128</span> <span class="op">=</span> <span class="number">2</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span>: <span class="ident">p128</span> <span class="op">=</span> <span class="number">1</span>;
+        <span class="ident">vstrq_p128</span>(<span class="kw-2">&amp;mut</span> <span class="ident">r</span>, <span class="ident">v</span>[<span class="number">1</span>]);
         <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">e</span>);
     }
 
@@ -20683,6 +20901,35 @@
         <span class="kw">let</span> <span class="ident">e</span>: <span class="ident">u16x8</span> <span class="op">=</span> <span class="ident">transmute</span>(<span class="ident">vrev64q_p16</span>(<span class="ident">transmute</span>(<span class="ident">a</span>)));
         <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">e</span>);
     }
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,i8mm&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_vmmlaq_s32</span>() {
+        <span class="kw">let</span> <span class="ident">a</span>: <span class="ident">i32x4</span> <span class="op">=</span> <span class="ident">i32x4::new</span>(<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">9</span>);
+        <span class="kw">let</span> <span class="ident">b</span>: <span class="ident">i8x16</span> <span class="op">=</span> <span class="ident">i8x16::new</span>(<span class="number">1</span>, <span class="number">21</span>, <span class="number">31</span>, <span class="number">14</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">17</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">13</span>, <span class="number">15</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">16</span>);
+        <span class="kw">let</span> <span class="ident">c</span>: <span class="ident">i8x16</span> <span class="op">=</span> <span class="ident">i8x16::new</span>(<span class="number">12</span>, <span class="number">22</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">56</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">91</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">15</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">17</span>, <span class="number">16</span>);
+        <span class="kw">let</span> <span class="ident">e</span>: <span class="ident">i32x4</span> <span class="op">=</span> <span class="ident">i32x4::new</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">i32x4</span> <span class="op">=</span> <span class="ident">transmute</span>(<span class="ident">vmmlaq_s32</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">transmute</span>(<span class="ident">c</span>)));
+        <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,i8mm&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_vmmlaq_u32</span>() {
+        <span class="kw">let</span> <span class="ident">a</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">9</span>);
+        <span class="kw">let</span> <span class="ident">b</span>: <span class="ident">i8x16</span> <span class="op">=</span> <span class="ident">i8x16::new</span>(<span class="number">1</span>, <span class="number">21</span>, <span class="number">31</span>, <span class="number">14</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">17</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">13</span>, <span class="number">15</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">16</span>);
+        <span class="kw">let</span> <span class="ident">c</span>: <span class="ident">i8x16</span> <span class="op">=</span> <span class="ident">i8x16::new</span>(<span class="number">12</span>, <span class="number">22</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">56</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">91</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">15</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">17</span>, <span class="number">16</span>);
+        <span class="kw">let</span> <span class="ident">e</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">transmute</span>(<span class="ident">vmmlaq_u32</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">transmute</span>(<span class="ident">c</span>)));
+        <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,i8mm&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_vusmmlaq_s32</span>() {
+        <span class="kw">let</span> <span class="ident">a</span>: <span class="ident">i32x4</span> <span class="op">=</span> <span class="ident">i32x4::new</span>(<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">9</span>);
+        <span class="kw">let</span> <span class="ident">b</span>: <span class="ident">i8x16</span> <span class="op">=</span> <span class="ident">i8x16::new</span>(<span class="number">1</span>, <span class="number">21</span>, <span class="number">31</span>, <span class="number">14</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">17</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">13</span>, <span class="number">15</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">16</span>);
+        <span class="kw">let</span> <span class="ident">c</span>: <span class="ident">i8x16</span> <span class="op">=</span> <span class="ident">i8x16::new</span>(<span class="number">12</span>, <span class="number">22</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">56</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">91</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">15</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">17</span>, <span class="number">16</span>);
+        <span class="kw">let</span> <span class="ident">e</span>: <span class="ident">i32x4</span> <span class="op">=</span> <span class="ident">i32x4::new</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">i32x4</span> <span class="op">=</span> <span class="ident">transmute</span>(<span class="ident">vusmmlaq_s32</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">transmute</span>(<span class="ident">c</span>)));
+        <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>, <span class="ident">target_endian</span> <span class="op">=</span> <span class="string">&quot;little&quot;</span>))]</span>
@@ -20698,5 +20945,4 @@
 <span class="kw">mod</span> <span class="ident">store_tests</span>;
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../../../../../../" data-current-crate="core" data-search-index-js="../../../../../../../../../../search-index.js" data-search-js="../../../../../../../../../../search.js"></div>
-    <script src="../../../../../../../../../../main.js"></script><script src="../../../../../../../../../../source-script.js"></script><script src="../../../../../../../../../../source-files.js"></script>
 </body></html>

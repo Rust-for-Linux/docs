@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;str&#x2F;pattern.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pattern.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;str&#x2F;pattern.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pattern.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1611,6 +1612,79 @@
 <span id="1611">1611</span>
 <span id="1612">1612</span>
 <span id="1613">1613</span>
+<span id="1614">1614</span>
+<span id="1615">1615</span>
+<span id="1616">1616</span>
+<span id="1617">1617</span>
+<span id="1618">1618</span>
+<span id="1619">1619</span>
+<span id="1620">1620</span>
+<span id="1621">1621</span>
+<span id="1622">1622</span>
+<span id="1623">1623</span>
+<span id="1624">1624</span>
+<span id="1625">1625</span>
+<span id="1626">1626</span>
+<span id="1627">1627</span>
+<span id="1628">1628</span>
+<span id="1629">1629</span>
+<span id="1630">1630</span>
+<span id="1631">1631</span>
+<span id="1632">1632</span>
+<span id="1633">1633</span>
+<span id="1634">1634</span>
+<span id="1635">1635</span>
+<span id="1636">1636</span>
+<span id="1637">1637</span>
+<span id="1638">1638</span>
+<span id="1639">1639</span>
+<span id="1640">1640</span>
+<span id="1641">1641</span>
+<span id="1642">1642</span>
+<span id="1643">1643</span>
+<span id="1644">1644</span>
+<span id="1645">1645</span>
+<span id="1646">1646</span>
+<span id="1647">1647</span>
+<span id="1648">1648</span>
+<span id="1649">1649</span>
+<span id="1650">1650</span>
+<span id="1651">1651</span>
+<span id="1652">1652</span>
+<span id="1653">1653</span>
+<span id="1654">1654</span>
+<span id="1655">1655</span>
+<span id="1656">1656</span>
+<span id="1657">1657</span>
+<span id="1658">1658</span>
+<span id="1659">1659</span>
+<span id="1660">1660</span>
+<span id="1661">1661</span>
+<span id="1662">1662</span>
+<span id="1663">1663</span>
+<span id="1664">1664</span>
+<span id="1665">1665</span>
+<span id="1666">1666</span>
+<span id="1667">1667</span>
+<span id="1668">1668</span>
+<span id="1669">1669</span>
+<span id="1670">1670</span>
+<span id="1671">1671</span>
+<span id="1672">1672</span>
+<span id="1673">1673</span>
+<span id="1674">1674</span>
+<span id="1675">1675</span>
+<span id="1676">1676</span>
+<span id="1677">1677</span>
+<span id="1678">1678</span>
+<span id="1679">1679</span>
+<span id="1680">1680</span>
+<span id="1681">1681</span>
+<span id="1682">1682</span>
+<span id="1683">1683</span>
+<span id="1684">1684</span>
+<span id="1685">1685</span>
+<span id="1686">1686</span>
 </pre><pre class="rust"><code><span class="doccomment">//! The string Pattern API.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! The Pattern API provides a generic mechanism for using different pattern</span>
@@ -1635,6 +1709,8 @@
 <span class="doccomment">//! assert_eq!(s.find(&quot;you&quot;), Some(4));</span>
 <span class="doccomment">//! // char pattern</span>
 <span class="doccomment">//! assert_eq!(s.find(&#39;n&#39;), Some(2));</span>
+<span class="doccomment">//! // array of chars pattern</span>
+<span class="doccomment">//! assert_eq!(s.find(&amp;[&#39;a&#39;, &#39;e&#39;, &#39;i&#39;, &#39;o&#39;, &#39;u&#39;]), Some(1));</span>
 <span class="doccomment">//! // slice of chars pattern</span>
 <span class="doccomment">//! assert_eq!(s.find(&amp;[&#39;a&#39;, &#39;e&#39;, &#39;i&#39;, &#39;o&#39;, &#39;u&#39;][..]), Some(1));</span>
 <span class="doccomment">//! // closure pattern</span>
@@ -1691,6 +1767,11 @@
 <span class="doccomment">/// assert_eq!(&quot;abaaa&quot;.find(&#39;a&#39;), Some(0));</span>
 <span class="doccomment">/// assert_eq!(&quot;abaaa&quot;.find(&#39;b&#39;), Some(1));</span>
 <span class="doccomment">/// assert_eq!(&quot;abaaa&quot;.find(&#39;c&#39;), None);</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// // &amp;[char; N]</span>
+<span class="doccomment">/// assert_eq!(&quot;ab&quot;.find(&amp;[&#39;b&#39;, &#39;a&#39;]), Some(0));</span>
+<span class="doccomment">/// assert_eq!(&quot;abaaa&quot;.find(&amp;[&#39;a&#39;, &#39;z&#39;]), Some(0));</span>
+<span class="doccomment">/// assert_eq!(&quot;abaaa&quot;.find(&amp;[&#39;c&#39;, &#39;d&#39;]), None);</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// // &amp;[char]</span>
 <span class="doccomment">/// assert_eq!(&quot;ab&quot;.find(&amp;[&#39;b&#39;, &#39;a&#39;][..]), Some(0));</span>
@@ -1825,7 +1906,7 @@
     <span class="doccomment">/// As an example, the pattern `&quot;aaa&quot;` and the haystack `&quot;cbaaaaab&quot;`</span>
     <span class="doccomment">/// might produce the stream</span>
     <span class="doccomment">/// `[Reject(0, 1), Reject(1, 2), Match(2, 5), Reject(5, 8)]`</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span>;
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span>;
 
     <span class="doccomment">/// Finds the next [`Match`][SearchStep::Match] result. See [`next()`][Searcher::next].</span>
     <span class="doccomment">///</span>
@@ -1834,7 +1915,7 @@
     <span class="doccomment">/// `(start_match, end_match)`, where start_match is the index of where</span>
     <span class="doccomment">/// the match begins, and end_match is the index after the end of the match.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_match</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_match</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
         <span class="kw">loop</span> {
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">next</span>() {
                 <span class="ident">SearchStep::Match</span>(<span class="ident">a</span>, <span class="ident">b</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Some</span>((<span class="ident">a</span>, <span class="ident">b</span>)),
@@ -1850,7 +1931,7 @@
     <span class="doccomment">/// Unlike [`next()`][Searcher::next], there is no guarantee that the returned ranges</span>
     <span class="doccomment">/// of this and [`next_match`][Searcher::next_match] will overlap.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_reject</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_reject</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
         <span class="kw">loop</span> {
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">next</span>() {
                 <span class="ident">SearchStep::Reject</span>(<span class="ident">a</span>, <span class="ident">b</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Some</span>((<span class="ident">a</span>, <span class="ident">b</span>)),
@@ -1897,12 +1978,12 @@
     <span class="doccomment">/// As an example, the pattern `&quot;aaa&quot;` and the haystack `&quot;cbaaaaab&quot;`</span>
     <span class="doccomment">/// might produce the stream</span>
     <span class="doccomment">/// `[Reject(7, 8), Match(4, 7), Reject(1, 4), Reject(0, 1)]`.</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span>;
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span>;
 
     <span class="doccomment">/// Finds the next [`Match`][SearchStep::Match] result.</span>
     <span class="doccomment">/// See [`next_back()`][ReverseSearcher::next_back].</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_match_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_match_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
         <span class="kw">loop</span> {
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">next_back</span>() {
                 <span class="ident">SearchStep::Match</span>(<span class="ident">a</span>, <span class="ident">b</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Some</span>((<span class="ident">a</span>, <span class="ident">b</span>)),
@@ -1915,7 +1996,7 @@
     <span class="doccomment">/// Finds the next [`Reject`][SearchStep::Reject] result.</span>
     <span class="doccomment">/// See [`next_back()`][ReverseSearcher::next_back].</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_reject_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_reject_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
         <span class="kw">loop</span> {
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">next_back</span>() {
                 <span class="ident">SearchStep::Reject</span>(<span class="ident">a</span>, <span class="ident">b</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Some</span>((<span class="ident">a</span>, <span class="ident">b</span>)),
@@ -1986,7 +2067,7 @@
         <span class="self">self</span>.<span class="ident">haystack</span>
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span> {
         <span class="kw">let</span> <span class="ident">old_finger</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">finger</span>;
         <span class="comment">// SAFETY: 1-4 guarantee safety of `get_unchecked`</span>
         <span class="comment">// 1. `self.finger` and `self.finger_back` are kept on unicode boundaries</span>
@@ -2013,7 +2094,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_match</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_match</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
         <span class="kw">loop</span> {
             <span class="comment">// get the haystack after the last character found</span>
             <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">haystack</span>.<span class="ident">as_bytes</span>().<span class="ident">get</span>(<span class="self">self</span>.<span class="ident">finger</span>..<span class="self">self</span>.<span class="ident">finger_back</span>)<span class="question-mark">?</span>;
@@ -2060,7 +2141,7 @@
 
 <span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">ReverseSearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CharSearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span> {
         <span class="kw">let</span> <span class="ident">old_finger</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">finger_back</span>;
         <span class="comment">// SAFETY: see the comment for next() above</span>
         <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">haystack</span>.<span class="ident">get_unchecked</span>(<span class="self">self</span>.<span class="ident">finger</span>..<span class="ident">old_finger</span>) };
@@ -2080,7 +2161,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_match_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_match_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">haystack</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">haystack</span>.<span class="ident">as_bytes</span>();
         <span class="kw">loop</span> {
             <span class="comment">// get the haystack up to but not including the last character searched</span>
@@ -2147,7 +2228,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">into_searcher</span>(<span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) -&gt; <span class="ident"><span class="self">Self</span>::Searcher</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">utf8_encoded</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">4</span>];
-        <span class="kw">let</span> <span class="ident">utf8_size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">encode_utf8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">utf8_encoded</span>).<span class="ident">len</span>();
+        <span class="kw">let</span> <span class="ident">utf8_size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">encode_utf8</span>(<span class="kw-2">&amp;mut</span> <span class="ident">utf8_encoded</span>).<span class="ident">len</span>();
         <span class="ident">CharSearcher</span> {
             <span class="ident">haystack</span>,
             <span class="ident">finger</span>: <span class="number">0</span>,
@@ -2164,18 +2245,18 @@
             <span class="ident">haystack</span>.<span class="ident">as_bytes</span>().<span class="ident">contains</span>(<span class="kw-2">&amp;</span>(<span class="self">self</span> <span class="kw">as</span> <span class="ident">u8</span>))
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">4</span>];
-            <span class="self">self</span>.<span class="ident">encode_utf8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buffer</span>).<span class="ident">is_contained_in</span>(<span class="ident">haystack</span>)
+            <span class="self">self</span>.<span class="ident">encode_utf8</span>(<span class="kw-2">&amp;mut</span> <span class="ident">buffer</span>).<span class="ident">is_contained_in</span>(<span class="ident">haystack</span>)
         }
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">is_prefix_of</span>(<span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">encode_utf8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0u8</span>; <span class="number">4</span>]).<span class="ident">is_prefix_of</span>(<span class="ident">haystack</span>)
+        <span class="self">self</span>.<span class="ident">encode_utf8</span>(<span class="kw-2">&amp;mut</span> [<span class="number">0u8</span>; <span class="number">4</span>]).<span class="ident">is_prefix_of</span>(<span class="ident">haystack</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">strip_prefix_of</span>(<span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">encode_utf8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0u8</span>; <span class="number">4</span>]).<span class="ident">strip_prefix_of</span>(<span class="ident">haystack</span>)
+        <span class="self">self</span>.<span class="ident">encode_utf8</span>(<span class="kw-2">&amp;mut</span> [<span class="number">0u8</span>; <span class="number">4</span>]).<span class="ident">strip_prefix_of</span>(<span class="ident">haystack</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -2183,7 +2264,7 @@
     <span class="kw">where</span>
         <span class="ident"><span class="self">Self</span>::Searcher</span>: <span class="ident">ReverseSearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
     {
-        <span class="self">self</span>.<span class="ident">encode_utf8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0u8</span>; <span class="number">4</span>]).<span class="ident">is_suffix_of</span>(<span class="ident">haystack</span>)
+        <span class="self">self</span>.<span class="ident">encode_utf8</span>(<span class="kw-2">&amp;mut</span> [<span class="number">0u8</span>; <span class="number">4</span>]).<span class="ident">is_suffix_of</span>(<span class="ident">haystack</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -2191,7 +2272,7 @@
     <span class="kw">where</span>
         <span class="ident"><span class="self">Self</span>::Searcher</span>: <span class="ident">ReverseSearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
     {
-        <span class="self">self</span>.<span class="ident">encode_utf8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0u8</span>; <span class="number">4</span>]).<span class="ident">strip_suffix_of</span>(<span class="ident">haystack</span>)
+        <span class="self">self</span>.<span class="ident">encode_utf8</span>(<span class="kw-2">&amp;mut</span> [<span class="number">0u8</span>; <span class="number">4</span>]).<span class="ident">strip_suffix_of</span>(<span class="ident">haystack</span>)
     }
 }
 
@@ -2201,7 +2282,7 @@
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="kw">trait</span> <span class="ident">MultiCharEq</span> {
-    <span class="kw">fn</span> <span class="ident">matches</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) -&gt; <span class="ident">bool</span>;
+    <span class="kw">fn</span> <span class="ident">matches</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) -&gt; <span class="ident">bool</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="ident">MultiCharEq</span> <span class="kw">for</span> <span class="ident">F</span>
@@ -2209,14 +2290,28 @@
     <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">char</span>) -&gt; <span class="ident">bool</span>,
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">matches</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">matches</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) -&gt; <span class="ident">bool</span> {
         (<span class="kw-2">*</span><span class="self">self</span>)(<span class="ident">c</span>)
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">MultiCharEq</span> <span class="kw">for</span> [<span class="ident">char</span>; <span class="ident">N</span>] {
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">fn</span> <span class="ident">matches</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span> <span class="op">==</span> <span class="ident">c</span>)
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">MultiCharEq</span> <span class="kw">for</span> <span class="kw-2">&amp;</span>[<span class="ident">char</span>; <span class="ident">N</span>] {
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">fn</span> <span class="ident">matches</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) -&gt; <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span> <span class="op">==</span> <span class="ident">c</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">MultiCharEq</span> <span class="kw">for</span> <span class="kw-2">&amp;</span>[<span class="ident">char</span>] {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">matches</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) -&gt; <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">matches</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">char</span>) -&gt; <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span> <span class="op">==</span> <span class="ident">c</span>)
     }
 }
@@ -2246,8 +2341,8 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span> {
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">char_indices</span>;
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span> {
+        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">char_indices</span>;
         <span class="comment">// Compare lengths of the internal byte slice iterator</span>
         <span class="comment">// to find length of current char</span>
         <span class="kw">let</span> <span class="ident">pre_len</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">iter</span>.<span class="ident">iter</span>.<span class="ident">len</span>();
@@ -2266,8 +2361,8 @@
 
 <span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="ident">MultiCharEq</span><span class="op">&gt;</span> <span class="ident">ReverseSearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MultiCharEqSearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">C</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span> {
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">char_indices</span>;
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span> {
+        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">char_indices</span>;
         <span class="comment">// Compare lengths of the internal byte slice iterator</span>
         <span class="comment">// to find length of current char</span>
         <span class="kw">let</span> <span class="ident">pre_len</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">iter</span>.<span class="ident">iter</span>.<span class="ident">len</span>();
@@ -2337,32 +2432,84 @@
             <span class="self">self</span>.<span class="number">0</span>.<span class="ident">haystack</span>()
         }
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span> {
+        <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span> {
             <span class="self">self</span>.<span class="number">0</span>.<span class="ident">next</span>()
         }
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">fn</span> <span class="ident">next_match</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+        <span class="kw">fn</span> <span class="ident">next_match</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="number">0</span>.<span class="ident">next_match</span>()
         }
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">fn</span> <span class="ident">next_reject</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+        <span class="kw">fn</span> <span class="ident">next_reject</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="number">0</span>.<span class="ident">next_reject</span>()
         }
     };
     (<span class="ident">reverse</span>) =&gt; {
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span> {
+        <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span> {
             <span class="self">self</span>.<span class="number">0</span>.<span class="ident">next_back</span>()
         }
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">fn</span> <span class="ident">next_match_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+        <span class="kw">fn</span> <span class="ident">next_match_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="number">0</span>.<span class="ident">next_match_back</span>()
         }
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">fn</span> <span class="ident">next_reject_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+        <span class="kw">fn</span> <span class="ident">next_reject_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="number">0</span>.<span class="ident">next_reject_back</span>()
         }
     };
+}
+
+<span class="doccomment">/// Associated type for `&lt;[char; N] as Pattern&lt;&#39;a&gt;&gt;::Searcher`.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CharArraySearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(
+    <span class="op">&lt;</span><span class="ident">MultiCharEqPattern</span><span class="op">&lt;</span>[<span class="ident">char</span>; <span class="ident">N</span>]<span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">Pattern</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Searcher</span>,
+);
+
+<span class="doccomment">/// Associated type for `&lt;&amp;[char; N] as Pattern&lt;&#39;a&gt;&gt;::Searcher`.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CharArrayRefSearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(
+    <span class="op">&lt;</span><span class="ident">MultiCharEqPattern</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> [<span class="ident">char</span>; <span class="ident">N</span>]<span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">Pattern</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Searcher</span>,
+);
+
+<span class="doccomment">/// Searches for chars that are equal to any of the [`char`]s in the array.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// assert_eq!(&quot;Hello world&quot;.find([&#39;l&#39;, &#39;l&#39;]), Some(2));</span>
+<span class="doccomment">/// assert_eq!(&quot;Hello world&quot;.find([&#39;l&#39;, &#39;l&#39;]), Some(2));</span>
+<span class="doccomment">/// ```</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Pattern</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">char</span>; <span class="ident">N</span>] {
+    <span class="macro">pattern_methods!</span>(<span class="ident">CharArraySearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">N</span><span class="op">&gt;</span>, <span class="ident">MultiCharEqPattern</span>, <span class="ident">CharArraySearcher</span>);
+}
+
+<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Searcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CharArraySearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">N</span><span class="op">&gt;</span> {
+    <span class="macro">searcher_methods!</span>(<span class="ident">forward</span>);
+}
+
+<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">ReverseSearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CharArraySearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">N</span><span class="op">&gt;</span> {
+    <span class="macro">searcher_methods!</span>(<span class="ident">reverse</span>);
+}
+
+<span class="doccomment">/// Searches for chars that are equal to any of the [`char`]s in the array.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// assert_eq!(&quot;Hello world&quot;.find(&amp;[&#39;l&#39;, &#39;l&#39;]), Some(2));</span>
+<span class="doccomment">/// assert_eq!(&quot;Hello world&quot;.find(&amp;[&#39;l&#39;, &#39;l&#39;]), Some(2));</span>
+<span class="doccomment">/// ```</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Pattern</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> [<span class="ident">char</span>; <span class="ident">N</span>] {
+    <span class="macro">pattern_methods!</span>(<span class="ident">CharArrayRefSearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, <span class="ident">N</span><span class="op">&gt;</span>, <span class="ident">MultiCharEqPattern</span>, <span class="ident">CharArrayRefSearcher</span>);
+}
+
+<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Searcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CharArrayRefSearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, <span class="ident">N</span><span class="op">&gt;</span> {
+    <span class="macro">searcher_methods!</span>(<span class="ident">forward</span>);
+}
+
+<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">ReverseSearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CharArrayRefSearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, <span class="ident">N</span><span class="op">&gt;</span> {
+    <span class="macro">searcher_methods!</span>(<span class="ident">reverse</span>);
 }
 
 <span class="comment">/////////////////////////////////////////////////////////////////////////////</span>
@@ -2411,7 +2558,7 @@
 <span class="kw">where</span>
     <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">char</span>) -&gt; <span class="ident">bool</span>,
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;CharPredicateSearcher&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;haystack&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>.<span class="ident">haystack</span>)
             .<span class="ident">field</span>(<span class="string">&quot;char_indices&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>.<span class="ident">char_indices</span>)
@@ -2579,7 +2726,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">searcher</span> {
             <span class="ident">StrSearcherImpl::Empty</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">searcher</span>) =&gt; {
                 <span class="kw">if</span> <span class="ident">searcher</span>.<span class="ident">is_finished</span> {
@@ -2631,7 +2778,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_match</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_match</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">searcher</span> {
             <span class="ident">StrSearcherImpl::Empty</span>(..) =&gt; <span class="kw">loop</span> {
                 <span class="kw">match</span> <span class="self">self</span>.<span class="ident">next</span>() {
@@ -2664,7 +2811,7 @@
 
 <span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span> <span class="ident">ReverseSearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">StrSearcher</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span> {
+    <span class="kw">fn</span> <span class="ident">next_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">SearchStep</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">searcher</span> {
             <span class="ident">StrSearcherImpl::Empty</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">searcher</span>) =&gt; {
                 <span class="kw">if</span> <span class="ident">searcher</span>.<span class="ident">is_finished</span> {
@@ -2710,7 +2857,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_match_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next_match_back</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">searcher</span> {
             <span class="ident">StrSearcherImpl::Empty</span>(..) =&gt; <span class="kw">loop</span> {
                 <span class="kw">match</span> <span class="self">self</span>.<span class="ident">next_back</span>() {
@@ -2921,7 +3068,7 @@
     <span class="comment">// How far we can jump when we encounter a mismatch is all based on the fact</span>
     <span class="comment">// that (u, v) is a critical factorization for the needle.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">needle</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">long_period</span>: <span class="ident">bool</span>) -&gt; <span class="ident">S::Output</span>
+    <span class="kw">fn</span> <span class="ident">next</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">needle</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">long_period</span>: <span class="ident">bool</span>) -&gt; <span class="ident">S::Output</span>
     <span class="kw">where</span>
         <span class="ident">S</span>: <span class="ident">TwoWayStrategy</span>,
     {
@@ -3004,7 +3151,7 @@
     <span class="comment">// To search in reverse through the haystack, we search forward through</span>
     <span class="comment">// a reversed haystack with a reversed needle, matching first u&#39; and then v&#39;.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_back</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">needle</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">long_period</span>: <span class="ident">bool</span>) -&gt; <span class="ident">S::Output</span>
+    <span class="kw">fn</span> <span class="ident">next_back</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">needle</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">long_period</span>: <span class="ident">bool</span>) -&gt; <span class="ident">S::Output</span>
     <span class="kw">where</span>
         <span class="ident">S</span>: <span class="ident">TwoWayStrategy</span>,
     {
@@ -3226,5 +3373,4 @@
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
 </body></html>

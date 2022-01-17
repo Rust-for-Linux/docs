@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Clk","Represents `struct clk *`."],["EnabledClk","A clock variant that is prepared and enabled."]]});

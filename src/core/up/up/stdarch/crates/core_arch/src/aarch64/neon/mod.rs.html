@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;..&#x2F;..&#x2F;stdarch&#x2F;crates&#x2F;core_arch&#x2F;src&#x2F;aarch64&#x2F;neon&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../../../../../../../storage.js"></script><script src="../../../../../../../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../../../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../../../../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;..&#x2F;..&#x2F;stdarch&#x2F;crates&#x2F;core_arch&#x2F;src&#x2F;aarch64&#x2F;neon&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../../../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../../../../../../../storage.js"></script><script src="../../../../../../../../../../crates.js"></script><script defer src="../../../../../../../../../../main.js"></script><script defer src="../../../../../../../../../../source-script.js"></script><script defer src="../../../../../../../../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../../../../../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../../../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../../../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../../../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../../../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../../../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../../../../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -4866,6 +4867,196 @@
 <span id="4866">4866</span>
 <span id="4867">4867</span>
 <span id="4868">4868</span>
+<span id="4869">4869</span>
+<span id="4870">4870</span>
+<span id="4871">4871</span>
+<span id="4872">4872</span>
+<span id="4873">4873</span>
+<span id="4874">4874</span>
+<span id="4875">4875</span>
+<span id="4876">4876</span>
+<span id="4877">4877</span>
+<span id="4878">4878</span>
+<span id="4879">4879</span>
+<span id="4880">4880</span>
+<span id="4881">4881</span>
+<span id="4882">4882</span>
+<span id="4883">4883</span>
+<span id="4884">4884</span>
+<span id="4885">4885</span>
+<span id="4886">4886</span>
+<span id="4887">4887</span>
+<span id="4888">4888</span>
+<span id="4889">4889</span>
+<span id="4890">4890</span>
+<span id="4891">4891</span>
+<span id="4892">4892</span>
+<span id="4893">4893</span>
+<span id="4894">4894</span>
+<span id="4895">4895</span>
+<span id="4896">4896</span>
+<span id="4897">4897</span>
+<span id="4898">4898</span>
+<span id="4899">4899</span>
+<span id="4900">4900</span>
+<span id="4901">4901</span>
+<span id="4902">4902</span>
+<span id="4903">4903</span>
+<span id="4904">4904</span>
+<span id="4905">4905</span>
+<span id="4906">4906</span>
+<span id="4907">4907</span>
+<span id="4908">4908</span>
+<span id="4909">4909</span>
+<span id="4910">4910</span>
+<span id="4911">4911</span>
+<span id="4912">4912</span>
+<span id="4913">4913</span>
+<span id="4914">4914</span>
+<span id="4915">4915</span>
+<span id="4916">4916</span>
+<span id="4917">4917</span>
+<span id="4918">4918</span>
+<span id="4919">4919</span>
+<span id="4920">4920</span>
+<span id="4921">4921</span>
+<span id="4922">4922</span>
+<span id="4923">4923</span>
+<span id="4924">4924</span>
+<span id="4925">4925</span>
+<span id="4926">4926</span>
+<span id="4927">4927</span>
+<span id="4928">4928</span>
+<span id="4929">4929</span>
+<span id="4930">4930</span>
+<span id="4931">4931</span>
+<span id="4932">4932</span>
+<span id="4933">4933</span>
+<span id="4934">4934</span>
+<span id="4935">4935</span>
+<span id="4936">4936</span>
+<span id="4937">4937</span>
+<span id="4938">4938</span>
+<span id="4939">4939</span>
+<span id="4940">4940</span>
+<span id="4941">4941</span>
+<span id="4942">4942</span>
+<span id="4943">4943</span>
+<span id="4944">4944</span>
+<span id="4945">4945</span>
+<span id="4946">4946</span>
+<span id="4947">4947</span>
+<span id="4948">4948</span>
+<span id="4949">4949</span>
+<span id="4950">4950</span>
+<span id="4951">4951</span>
+<span id="4952">4952</span>
+<span id="4953">4953</span>
+<span id="4954">4954</span>
+<span id="4955">4955</span>
+<span id="4956">4956</span>
+<span id="4957">4957</span>
+<span id="4958">4958</span>
+<span id="4959">4959</span>
+<span id="4960">4960</span>
+<span id="4961">4961</span>
+<span id="4962">4962</span>
+<span id="4963">4963</span>
+<span id="4964">4964</span>
+<span id="4965">4965</span>
+<span id="4966">4966</span>
+<span id="4967">4967</span>
+<span id="4968">4968</span>
+<span id="4969">4969</span>
+<span id="4970">4970</span>
+<span id="4971">4971</span>
+<span id="4972">4972</span>
+<span id="4973">4973</span>
+<span id="4974">4974</span>
+<span id="4975">4975</span>
+<span id="4976">4976</span>
+<span id="4977">4977</span>
+<span id="4978">4978</span>
+<span id="4979">4979</span>
+<span id="4980">4980</span>
+<span id="4981">4981</span>
+<span id="4982">4982</span>
+<span id="4983">4983</span>
+<span id="4984">4984</span>
+<span id="4985">4985</span>
+<span id="4986">4986</span>
+<span id="4987">4987</span>
+<span id="4988">4988</span>
+<span id="4989">4989</span>
+<span id="4990">4990</span>
+<span id="4991">4991</span>
+<span id="4992">4992</span>
+<span id="4993">4993</span>
+<span id="4994">4994</span>
+<span id="4995">4995</span>
+<span id="4996">4996</span>
+<span id="4997">4997</span>
+<span id="4998">4998</span>
+<span id="4999">4999</span>
+<span id="5000">5000</span>
+<span id="5001">5001</span>
+<span id="5002">5002</span>
+<span id="5003">5003</span>
+<span id="5004">5004</span>
+<span id="5005">5005</span>
+<span id="5006">5006</span>
+<span id="5007">5007</span>
+<span id="5008">5008</span>
+<span id="5009">5009</span>
+<span id="5010">5010</span>
+<span id="5011">5011</span>
+<span id="5012">5012</span>
+<span id="5013">5013</span>
+<span id="5014">5014</span>
+<span id="5015">5015</span>
+<span id="5016">5016</span>
+<span id="5017">5017</span>
+<span id="5018">5018</span>
+<span id="5019">5019</span>
+<span id="5020">5020</span>
+<span id="5021">5021</span>
+<span id="5022">5022</span>
+<span id="5023">5023</span>
+<span id="5024">5024</span>
+<span id="5025">5025</span>
+<span id="5026">5026</span>
+<span id="5027">5027</span>
+<span id="5028">5028</span>
+<span id="5029">5029</span>
+<span id="5030">5030</span>
+<span id="5031">5031</span>
+<span id="5032">5032</span>
+<span id="5033">5033</span>
+<span id="5034">5034</span>
+<span id="5035">5035</span>
+<span id="5036">5036</span>
+<span id="5037">5037</span>
+<span id="5038">5038</span>
+<span id="5039">5039</span>
+<span id="5040">5040</span>
+<span id="5041">5041</span>
+<span id="5042">5042</span>
+<span id="5043">5043</span>
+<span id="5044">5044</span>
+<span id="5045">5045</span>
+<span id="5046">5046</span>
+<span id="5047">5047</span>
+<span id="5048">5048</span>
+<span id="5049">5049</span>
+<span id="5050">5050</span>
+<span id="5051">5051</span>
+<span id="5052">5052</span>
+<span id="5053">5053</span>
+<span id="5054">5054</span>
+<span id="5055">5055</span>
+<span id="5056">5056</span>
+<span id="5057">5057</span>
+<span id="5058">5058</span>
 </pre><pre class="rust"><code><span class="doccomment">//! ARMv8 ASIMD intrinsics</span>
 
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
@@ -4894,13 +5085,13 @@
 }
 
 <span class="doccomment">/// ARM-specific type containing two `float64x1_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">float64x1x2_t</span>(<span class="kw">pub</span> <span class="ident">float64x1_t</span>, <span class="kw">pub</span> <span class="ident">float64x1_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `float64x1_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">float64x1x3_t</span>(<span class="kw">pub</span> <span class="ident">float64x1_t</span>, <span class="kw">pub</span> <span class="ident">float64x1_t</span>, <span class="kw">pub</span> <span class="ident">float64x1_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `float64x1_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">float64x1x4_t</span>(
     <span class="kw">pub</span> <span class="ident">float64x1_t</span>,
     <span class="kw">pub</span> <span class="ident">float64x1_t</span>,
@@ -4909,13 +5100,13 @@
 );
 
 <span class="doccomment">/// ARM-specific type containing two `float64x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">float64x2x2_t</span>(<span class="kw">pub</span> <span class="ident">float64x2_t</span>, <span class="kw">pub</span> <span class="ident">float64x2_t</span>);
 <span class="doccomment">/// ARM-specific type containing three `float64x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">float64x2x3_t</span>(<span class="kw">pub</span> <span class="ident">float64x2_t</span>, <span class="kw">pub</span> <span class="ident">float64x2_t</span>, <span class="kw">pub</span> <span class="ident">float64x2_t</span>);
 <span class="doccomment">/// ARM-specific type containing four `float64x2_t` vectors.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">float64x2x4_t</span>(
     <span class="kw">pub</span> <span class="ident">float64x2_t</span>,
     <span class="kw">pub</span> <span class="ident">float64x2_t</span>,
@@ -4971,6 +5162,8 @@
     <span class="kw">fn</span> <span class="ident">vpaddq_s16_</span>(<span class="ident">a</span>: <span class="ident">int16x8_t</span>, <span class="ident">b</span>: <span class="ident">int16x8_t</span>) -&gt; <span class="ident">int16x8_t</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.aarch64.neon.addp.v4i32&quot;</span>]</span>
     <span class="kw">fn</span> <span class="ident">vpaddq_s32_</span>(<span class="ident">a</span>: <span class="ident">int32x4_t</span>, <span class="ident">b</span>: <span class="ident">int32x4_t</span>) -&gt; <span class="ident">int32x4_t</span>;
+    <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.aarch64.neon.addp.v2i64&quot;</span>]</span>
+    <span class="kw">fn</span> <span class="ident">vpaddq_s64_</span>(<span class="ident">a</span>: <span class="ident">int64x2_t</span>, <span class="ident">b</span>: <span class="ident">int64x2_t</span>) -&gt; <span class="ident">int64x2_t</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.aarch64.neon.addp.v16i8&quot;</span>]</span>
     <span class="kw">fn</span> <span class="ident">vpaddq_s8_</span>(<span class="ident">a</span>: <span class="ident">int8x16_t</span>, <span class="ident">b</span>: <span class="ident">int8x16_t</span>) -&gt; <span class="ident">int8x16_t</span>;
 
@@ -5331,7 +5524,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_s8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i8</span>) -&gt; <span class="ident">int8x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_s8</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>) -&gt; <span class="ident">int8x8_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5339,7 +5532,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_s8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i8</span>) -&gt; <span class="ident">int8x16_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_s8</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>) -&gt; <span class="ident">int8x16_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5347,7 +5540,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_s16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i16</span>) -&gt; <span class="ident">int16x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_s16</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i16</span>) -&gt; <span class="ident">int16x4_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5355,7 +5548,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_s16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i16</span>) -&gt; <span class="ident">int16x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_s16</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i16</span>) -&gt; <span class="ident">int16x8_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5363,7 +5556,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_s32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i32</span>) -&gt; <span class="ident">int32x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_s32</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i32</span>) -&gt; <span class="ident">int32x2_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5371,7 +5564,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_s32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i32</span>) -&gt; <span class="ident">int32x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_s32</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i32</span>) -&gt; <span class="ident">int32x4_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5379,7 +5572,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_s64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i64</span>) -&gt; <span class="ident">int64x1_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_s64</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i64</span>) -&gt; <span class="ident">int64x1_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5387,7 +5580,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_s64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i64</span>) -&gt; <span class="ident">int64x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_s64</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i64</span>) -&gt; <span class="ident">int64x2_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5395,7 +5588,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_u8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="ident">uint8x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_u8</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>) -&gt; <span class="ident">uint8x8_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5403,7 +5596,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_u8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>) -&gt; <span class="ident">uint8x16_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_u8</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>) -&gt; <span class="ident">uint8x16_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5411,7 +5604,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_u16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u16</span>) -&gt; <span class="ident">uint16x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_u16</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u16</span>) -&gt; <span class="ident">uint16x4_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5419,7 +5612,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_u16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u16</span>) -&gt; <span class="ident">uint16x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_u16</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u16</span>) -&gt; <span class="ident">uint16x8_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5427,7 +5620,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_u32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>) -&gt; <span class="ident">uint32x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_u32</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u32</span>) -&gt; <span class="ident">uint32x2_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5435,7 +5628,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_u32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u32</span>) -&gt; <span class="ident">uint32x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_u32</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u32</span>) -&gt; <span class="ident">uint32x4_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5443,7 +5636,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_u64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u64</span>) -&gt; <span class="ident">uint64x1_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_u64</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u64</span>) -&gt; <span class="ident">uint64x1_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5451,7 +5644,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_u64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u64</span>) -&gt; <span class="ident">uint64x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_u64</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u64</span>) -&gt; <span class="ident">uint64x2_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5459,7 +5652,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_p8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p8</span>) -&gt; <span class="ident">poly8x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_p8</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p8</span>) -&gt; <span class="ident">poly8x8_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5467,7 +5660,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_p8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p8</span>) -&gt; <span class="ident">poly8x16_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_p8</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p8</span>) -&gt; <span class="ident">poly8x16_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5475,7 +5668,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_p16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p16</span>) -&gt; <span class="ident">poly16x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_p16</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p16</span>) -&gt; <span class="ident">poly16x4_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5483,7 +5676,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_p16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p16</span>) -&gt; <span class="ident">poly16x8_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_p16</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p16</span>) -&gt; <span class="ident">poly16x8_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5491,7 +5684,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,aes&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_p64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p64</span>) -&gt; <span class="ident">poly64x1_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_p64</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p64</span>) -&gt; <span class="ident">poly64x1_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5499,7 +5692,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,aes&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_p64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">p64</span>) -&gt; <span class="ident">poly64x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_p64</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">p64</span>) -&gt; <span class="ident">poly64x2_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5507,7 +5700,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_f32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>) -&gt; <span class="ident">float32x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_f32</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">f32</span>) -&gt; <span class="ident">float32x2_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5515,7 +5708,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_f32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span>) -&gt; <span class="ident">float32x4_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_f32</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">f32</span>) -&gt; <span class="ident">float32x4_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5523,7 +5716,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_f64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f64</span>) -&gt; <span class="ident">float64x1_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_f64</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">f64</span>) -&gt; <span class="ident">float64x1_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5531,7 +5724,7 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_f64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f64</span>) -&gt; <span class="ident">float64x2_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_f64</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">f64</span>) -&gt; <span class="ident">float64x2_t</span> {
     <span class="ident">read_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>())
 }
 
@@ -5539,15 +5732,15 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_f64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f64</span>) -&gt; <span class="ident">float64x1_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_dup_f64</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">f64</span>) -&gt; <span class="ident">float64x1_t</span> {
     <span class="ident">vld1_f64</span>(<span class="ident">ptr</span>)
 }
 
 <span class="doccomment">/// Load multiple single-element structures to one, two, three, or four registers</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_f64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f64</span>) -&gt; <span class="ident">float64x2_t</span> {
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ld1r</span>))]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_dup_f64</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">f64</span>) -&gt; <span class="ident">float64x2_t</span> {
     <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">vld1q_lane_f64</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">ptr</span>, <span class="ident">transmute</span>(<span class="ident">f64x2::splat</span>(<span class="number">0.</span>)));
     <span class="macro">simd_shuffle2!</span>(<span class="ident">x</span>, <span class="ident">x</span>, [<span class="number">0</span>, <span class="number">0</span>])
 }
@@ -5557,7 +5750,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">0</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_f64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f64</span>, <span class="ident">src</span>: <span class="ident">float64x1_t</span>) -&gt; <span class="ident">float64x1_t</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1_lane_f64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">f64</span>, <span class="ident">src</span>: <span class="ident">float64x1_t</span>) -&gt; <span class="ident">float64x1_t</span> {
     <span class="macro">static_assert!</span>(<span class="ident">LANE</span> : <span class="ident">i32</span> <span class="kw">where</span> <span class="ident">LANE</span> <span class="op">==</span> <span class="number">0</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -5566,8 +5759,8 @@
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ldr</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">1</span>))]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_f64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f64</span>, <span class="ident">src</span>: <span class="ident">float64x2_t</span>) -&gt; <span class="ident">float64x2_t</span> {
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">ld1</span>, <span class="ident">LANE</span> <span class="op">=</span> <span class="number">1</span>))]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vld1q_lane_f64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANE</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">f64</span>, <span class="ident">src</span>: <span class="ident">float64x2_t</span>) -&gt; <span class="ident">float64x2_t</span> {
     <span class="macro">static_assert_imm1!</span>(<span class="ident">LANE</span>);
     <span class="ident">simd_insert</span>(<span class="ident">src</span>, <span class="ident">LANE</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="kw-2">*</span><span class="ident">ptr</span>)
 }
@@ -5577,7 +5770,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_s8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">int8x8_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_s8</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">int8x8_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5586,7 +5779,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_s8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">int8x16_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_s8</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">a</span>: <span class="ident">int8x16_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5595,7 +5788,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_s16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i16</span>, <span class="ident">a</span>: <span class="ident">int16x4_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_s16</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">i16</span>, <span class="ident">a</span>: <span class="ident">int16x4_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5604,7 +5797,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_s16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i16</span>, <span class="ident">a</span>: <span class="ident">int16x8_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_s16</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">i16</span>, <span class="ident">a</span>: <span class="ident">int16x8_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5613,7 +5806,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_s32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i32</span>, <span class="ident">a</span>: <span class="ident">int32x2_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_s32</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">i32</span>, <span class="ident">a</span>: <span class="ident">int32x2_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5622,7 +5815,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_s32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i32</span>, <span class="ident">a</span>: <span class="ident">int32x4_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_s32</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">i32</span>, <span class="ident">a</span>: <span class="ident">int32x4_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5631,7 +5824,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_s64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i64</span>, <span class="ident">a</span>: <span class="ident">int64x1_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_s64</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">i64</span>, <span class="ident">a</span>: <span class="ident">int64x1_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5640,7 +5833,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_s64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i64</span>, <span class="ident">a</span>: <span class="ident">int64x2_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_s64</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">i64</span>, <span class="ident">a</span>: <span class="ident">int64x2_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5649,7 +5842,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_u8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">a</span>: <span class="ident">uint8x8_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_u8</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">a</span>: <span class="ident">uint8x8_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5658,7 +5851,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_u8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">a</span>: <span class="ident">uint8x16_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_u8</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">a</span>: <span class="ident">uint8x16_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5667,7 +5860,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_u16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u16</span>, <span class="ident">a</span>: <span class="ident">uint16x4_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_u16</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u16</span>, <span class="ident">a</span>: <span class="ident">uint16x4_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5676,7 +5869,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_u16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u16</span>, <span class="ident">a</span>: <span class="ident">uint16x8_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_u16</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u16</span>, <span class="ident">a</span>: <span class="ident">uint16x8_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5685,7 +5878,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_u32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u32</span>, <span class="ident">a</span>: <span class="ident">uint32x2_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_u32</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u32</span>, <span class="ident">a</span>: <span class="ident">uint32x2_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5694,7 +5887,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_u32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u32</span>, <span class="ident">a</span>: <span class="ident">uint32x4_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_u32</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u32</span>, <span class="ident">a</span>: <span class="ident">uint32x4_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5703,7 +5896,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_u64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u64</span>, <span class="ident">a</span>: <span class="ident">uint64x1_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_u64</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u64</span>, <span class="ident">a</span>: <span class="ident">uint64x1_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5712,7 +5905,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_u64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u64</span>, <span class="ident">a</span>: <span class="ident">uint64x2_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_u64</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u64</span>, <span class="ident">a</span>: <span class="ident">uint64x2_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5721,7 +5914,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_p8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">p8</span>, <span class="ident">a</span>: <span class="ident">poly8x8_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_p8</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">p8</span>, <span class="ident">a</span>: <span class="ident">poly8x8_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5730,7 +5923,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_p8</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">p8</span>, <span class="ident">a</span>: <span class="ident">poly8x16_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_p8</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">p8</span>, <span class="ident">a</span>: <span class="ident">poly8x16_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5739,7 +5932,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_p16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">p16</span>, <span class="ident">a</span>: <span class="ident">poly16x4_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_p16</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">p16</span>, <span class="ident">a</span>: <span class="ident">poly16x4_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5748,7 +5941,25 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_p16</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">p16</span>, <span class="ident">a</span>: <span class="ident">poly16x8_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_p16</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">p16</span>, <span class="ident">a</span>: <span class="ident">poly16x8_t</span>) {
+    <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
+}
+
+<span class="comment">// Store multiple single-element structures from one, two, three, or four registers.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,aes&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_p64</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">p64</span>, <span class="ident">a</span>: <span class="ident">poly64x1_t</span>) {
+    <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
+}
+
+<span class="comment">// Store multiple single-element structures from one, two, three, or four registers.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,aes&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_p64</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">p64</span>, <span class="ident">a</span>: <span class="ident">poly64x2_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5757,7 +5968,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_p64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">p64</span>, <span class="ident">a</span>: <span class="ident">poly64x1_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_f32</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">f32</span>, <span class="ident">a</span>: <span class="ident">float32x2_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5766,7 +5977,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_p64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">p64</span>, <span class="ident">a</span>: <span class="ident">poly64x2_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_f32</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">f32</span>, <span class="ident">a</span>: <span class="ident">float32x4_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5775,7 +5986,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_f32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">f32</span>, <span class="ident">a</span>: <span class="ident">float32x2_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_f64</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">f64</span>, <span class="ident">a</span>: <span class="ident">float64x1_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -5784,25 +5995,7 @@
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_f32</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">f32</span>, <span class="ident">a</span>: <span class="ident">float32x4_t</span>) {
-    <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
-}
-
-<span class="comment">// Store multiple single-element structures from one, two, three, or four registers.</span>
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1_f64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">f64</span>, <span class="ident">a</span>: <span class="ident">float64x1_t</span>) {
-    <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
-}
-
-<span class="comment">// Store multiple single-element structures from one, two, three, or four registers.</span>
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">str</span>))]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_f64</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">f64</span>, <span class="ident">a</span>: <span class="ident">float64x2_t</span>) {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vst1q_f64</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">f64</span>, <span class="ident">a</span>: <span class="ident">float64x2_t</span>) {
     <span class="ident">write_unaligned</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>(), <span class="ident">a</span>);
 }
 
@@ -6000,6 +6193,20 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">addp</span>))]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vpaddq_u32</span>(<span class="ident">a</span>: <span class="ident">uint32x4_t</span>, <span class="ident">b</span>: <span class="ident">uint32x4_t</span>) -&gt; <span class="ident">uint32x4_t</span> {
     <span class="ident">transmute</span>(<span class="ident">vpaddq_s32_</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>)))
+}
+<span class="doccomment">/// Add pairwise</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">addp</span>))]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vpaddq_s64</span>(<span class="ident">a</span>: <span class="ident">int64x2_t</span>, <span class="ident">b</span>: <span class="ident">int64x2_t</span>) -&gt; <span class="ident">int64x2_t</span> {
+    <span class="ident">vpaddq_s64_</span>(<span class="ident">a</span>, <span class="ident">b</span>)
+}
+<span class="doccomment">/// Add pairwise</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">addp</span>))]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vpaddq_u64</span>(<span class="ident">a</span>: <span class="ident">uint64x2_t</span>, <span class="ident">b</span>: <span class="ident">uint64x2_t</span>) -&gt; <span class="ident">uint64x2_t</span> {
+    <span class="ident">transmute</span>(<span class="ident">vpaddq_s64_</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>)))
 }
 <span class="doccomment">/// Add pairwise</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -7640,7 +7847,8 @@ pub unsafe fn vcombine_f16 ( low: float16x4_t,  high: float16x4_t) -&gt; float16
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">1</span>)]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vshrd_n_s64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">i64</span>) -&gt; <span class="ident">i64</span> {
     <span class="macro">static_assert!</span>(<span class="ident">N</span> : <span class="ident">i32</span> <span class="kw">where</span> <span class="ident">N</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">1</span> <span class="op">&amp;&amp;</span> <span class="ident">N</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">64</span>);
-    <span class="ident">a</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">N</span>
+    <span class="kw">let</span> <span class="ident">n</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">N</span> <span class="op">==</span> <span class="number">64</span> { <span class="number">63</span> } <span class="kw">else</span> { <span class="ident">N</span> };
+    <span class="ident">a</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">n</span>
 }
 
 <span class="doccomment">/// Unsigned shift right</span>
@@ -7650,7 +7858,12 @@ pub unsafe fn vcombine_f16 ( low: float16x4_t,  high: float16x4_t) -&gt; float16
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">1</span>)]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vshrd_n_u64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">u64</span>) -&gt; <span class="ident">u64</span> {
     <span class="macro">static_assert!</span>(<span class="ident">N</span> : <span class="ident">i32</span> <span class="kw">where</span> <span class="ident">N</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">1</span> <span class="op">&amp;&amp;</span> <span class="ident">N</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">64</span>);
-    <span class="ident">a</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">N</span>
+    <span class="kw">let</span> <span class="ident">n</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">N</span> <span class="op">==</span> <span class="number">64</span> {
+        <span class="kw">return</span> <span class="number">0</span>;
+    } <span class="kw">else</span> {
+        <span class="ident">N</span>
+    };
+    <span class="ident">a</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">n</span>
 }
 
 <span class="doccomment">/// Signed shift right and accumulate</span>
@@ -7660,7 +7873,7 @@ pub unsafe fn vcombine_f16 ( low: float16x4_t,  high: float16x4_t) -&gt; float16
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vsrad_n_s64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">i64</span>, <span class="ident">b</span>: <span class="ident">i64</span>) -&gt; <span class="ident">i64</span> {
     <span class="macro">static_assert!</span>(<span class="ident">N</span> : <span class="ident">i32</span> <span class="kw">where</span> <span class="ident">N</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">1</span> <span class="op">&amp;&amp;</span> <span class="ident">N</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">64</span>);
-    <span class="ident">a</span> <span class="op">+</span> (<span class="ident">b</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">N</span>)
+    <span class="ident">a</span> <span class="op">+</span> <span class="ident">vshrd_n_s64</span>::<span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>(<span class="ident">b</span>)
 }
 
 <span class="doccomment">/// Unsigned shift right and accumulate</span>
@@ -7670,7 +7883,7 @@ pub unsafe fn vcombine_f16 ( low: float16x4_t,  high: float16x4_t) -&gt; float16
 <span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vsrad_n_u64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">u64</span>, <span class="ident">b</span>: <span class="ident">u64</span>) -&gt; <span class="ident">u64</span> {
     <span class="macro">static_assert!</span>(<span class="ident">N</span> : <span class="ident">i32</span> <span class="kw">where</span> <span class="ident">N</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">1</span> <span class="op">&amp;&amp;</span> <span class="ident">N</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">64</span>);
-    <span class="ident">a</span> <span class="op">+</span> (<span class="ident">b</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">N</span>)
+    <span class="ident">a</span> <span class="op">+</span> <span class="ident">vshrd_n_u64</span>::<span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span>(<span class="ident">b</span>)
 }
 
 <span class="doccomment">/// Shift Left and Insert (immediate)</span>
@@ -7853,7 +8066,24 @@ pub unsafe fn vcombine_f16 ( low: float16x4_t,  high: float16x4_t) -&gt; float16
     <span class="macro">static_assert_imm4!</span>(<span class="ident">N</span>);
     <span class="ident">transmute</span>(<span class="ident">vsliq_n_s16_</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">N</span>))
 }
-
+<span class="doccomment">/// Shift Left and Insert (immediate)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,aes&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">sli</span>, <span class="ident">N</span> <span class="op">=</span> <span class="number">1</span>))]</span>
+<span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vsli_n_p64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">poly64x1_t</span>, <span class="ident">b</span>: <span class="ident">poly64x1_t</span>) -&gt; <span class="ident">poly64x1_t</span> {
+    <span class="macro">static_assert!</span>(<span class="ident">N</span>: <span class="ident">i32</span> <span class="kw">where</span> <span class="ident">N</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="ident">N</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">63</span>);
+    <span class="ident">transmute</span>(<span class="ident">vsli_n_s64_</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">N</span>))
+}
+<span class="doccomment">/// Shift Left and Insert (immediate)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,aes&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">sli</span>, <span class="ident">N</span> <span class="op">=</span> <span class="number">1</span>))]</span>
+<span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vsliq_n_p64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">poly64x2_t</span>, <span class="ident">b</span>: <span class="ident">poly64x2_t</span>) -&gt; <span class="ident">poly64x2_t</span> {
+    <span class="macro">static_assert!</span>(<span class="ident">N</span>: <span class="ident">i32</span> <span class="kw">where</span> <span class="ident">N</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="ident">N</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">63</span>);
+    <span class="ident">transmute</span>(<span class="ident">vsliq_n_s64_</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">N</span>))
+}
 <span class="doccomment">/// Shift Right and Insert (immediate)</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
@@ -8033,6 +8263,115 @@ pub unsafe fn vcombine_f16 ( low: float16x4_t,  high: float16x4_t) -&gt; float16
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vsriq_n_p16</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">poly16x8_t</span>, <span class="ident">b</span>: <span class="ident">poly16x8_t</span>) -&gt; <span class="ident">poly16x8_t</span> {
     <span class="macro">static_assert!</span>(<span class="ident">N</span>: <span class="ident">i32</span> <span class="kw">where</span> <span class="ident">N</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">1</span> <span class="op">&amp;&amp;</span> <span class="ident">N</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">16</span>);
     <span class="ident">transmute</span>(<span class="ident">vsriq_n_s16_</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">N</span>))
+}
+<span class="doccomment">/// Shift Right and Insert (immediate)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,aes&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">sri</span>, <span class="ident">N</span> <span class="op">=</span> <span class="number">1</span>))]</span>
+<span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vsri_n_p64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">poly64x1_t</span>, <span class="ident">b</span>: <span class="ident">poly64x1_t</span>) -&gt; <span class="ident">poly64x1_t</span> {
+    <span class="macro">static_assert!</span>(<span class="ident">N</span>: <span class="ident">i32</span> <span class="kw">where</span> <span class="ident">N</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">1</span> <span class="op">&amp;&amp;</span> <span class="ident">N</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">64</span>);
+    <span class="ident">transmute</span>(<span class="ident">vsri_n_s64_</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">N</span>))
+}
+<span class="doccomment">/// Shift Right and Insert (immediate)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,aes&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">sri</span>, <span class="ident">N</span> <span class="op">=</span> <span class="number">1</span>))]</span>
+<span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vsriq_n_p64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">poly64x2_t</span>, <span class="ident">b</span>: <span class="ident">poly64x2_t</span>) -&gt; <span class="ident">poly64x2_t</span> {
+    <span class="macro">static_assert!</span>(<span class="ident">N</span>: <span class="ident">i32</span> <span class="kw">where</span> <span class="ident">N</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">1</span> <span class="op">&amp;&amp;</span> <span class="ident">N</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">64</span>);
+    <span class="ident">transmute</span>(<span class="ident">vsriq_n_s64_</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">N</span>))
+}
+
+<span class="doccomment">/// SM3TT1A</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,sm4&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">sm3tt1a</span>, <span class="ident">IMM2</span> <span class="op">=</span> <span class="number">0</span>))]</span>
+<span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">3</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vsm3tt1aq_u32</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">IMM2</span>: <span class="ident">i32</span><span class="op">&gt;</span>(
+    <span class="ident">a</span>: <span class="ident">uint32x4_t</span>,
+    <span class="ident">b</span>: <span class="ident">uint32x4_t</span>,
+    <span class="ident">c</span>: <span class="ident">uint32x4_t</span>,
+) -&gt; <span class="ident">uint32x4_t</span> {
+    <span class="macro">static_assert_imm2!</span>(<span class="ident">IMM2</span>);
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">improper_ctypes</span>)]</span>
+    <span class="kw">extern</span> <span class="string">&quot;unadjusted&quot;</span> {
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>, <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.aarch64.crypto.sm3tt1a&quot;</span>)]</span>
+        <span class="kw">fn</span> <span class="ident">vsm3tt1aq_u32_</span>(<span class="ident">a</span>: <span class="ident">uint32x4_t</span>, <span class="ident">b</span>: <span class="ident">uint32x4_t</span>, <span class="ident">c</span>: <span class="ident">uint32x4_t</span>, <span class="ident">imm2</span>: <span class="ident">i64</span>) -&gt; <span class="ident">uint32x4_t</span>;
+    }
+    <span class="ident">vsm3tt1aq_u32_</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">IMM2</span> <span class="kw">as</span> <span class="ident">i64</span>)
+}
+
+<span class="doccomment">/// SM3TT1B</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,sm4&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">sm3tt1b</span>, <span class="ident">IMM2</span> <span class="op">=</span> <span class="number">0</span>))]</span>
+<span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">3</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vsm3tt1bq_u32</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">IMM2</span>: <span class="ident">i32</span><span class="op">&gt;</span>(
+    <span class="ident">a</span>: <span class="ident">uint32x4_t</span>,
+    <span class="ident">b</span>: <span class="ident">uint32x4_t</span>,
+    <span class="ident">c</span>: <span class="ident">uint32x4_t</span>,
+) -&gt; <span class="ident">uint32x4_t</span> {
+    <span class="macro">static_assert_imm2!</span>(<span class="ident">IMM2</span>);
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">improper_ctypes</span>)]</span>
+    <span class="kw">extern</span> <span class="string">&quot;unadjusted&quot;</span> {
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>, <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.aarch64.crypto.sm3tt1b&quot;</span>)]</span>
+        <span class="kw">fn</span> <span class="ident">vsm3tt1bq_u32_</span>(<span class="ident">a</span>: <span class="ident">uint32x4_t</span>, <span class="ident">b</span>: <span class="ident">uint32x4_t</span>, <span class="ident">c</span>: <span class="ident">uint32x4_t</span>, <span class="ident">imm2</span>: <span class="ident">i64</span>) -&gt; <span class="ident">uint32x4_t</span>;
+    }
+    <span class="ident">vsm3tt1bq_u32_</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">IMM2</span> <span class="kw">as</span> <span class="ident">i64</span>)
+}
+
+<span class="doccomment">/// SM3TT2A</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,sm4&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">sm3tt2a</span>, <span class="ident">IMM2</span> <span class="op">=</span> <span class="number">0</span>))]</span>
+<span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">3</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vsm3tt2aq_u32</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">IMM2</span>: <span class="ident">i32</span><span class="op">&gt;</span>(
+    <span class="ident">a</span>: <span class="ident">uint32x4_t</span>,
+    <span class="ident">b</span>: <span class="ident">uint32x4_t</span>,
+    <span class="ident">c</span>: <span class="ident">uint32x4_t</span>,
+) -&gt; <span class="ident">uint32x4_t</span> {
+    <span class="macro">static_assert_imm2!</span>(<span class="ident">IMM2</span>);
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">improper_ctypes</span>)]</span>
+    <span class="kw">extern</span> <span class="string">&quot;unadjusted&quot;</span> {
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>, <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.aarch64.crypto.sm3tt2a&quot;</span>)]</span>
+        <span class="kw">fn</span> <span class="ident">vsm3tt2aq_u32_</span>(<span class="ident">a</span>: <span class="ident">uint32x4_t</span>, <span class="ident">b</span>: <span class="ident">uint32x4_t</span>, <span class="ident">c</span>: <span class="ident">uint32x4_t</span>, <span class="ident">imm2</span>: <span class="ident">i64</span>) -&gt; <span class="ident">uint32x4_t</span>;
+    }
+    <span class="ident">vsm3tt2aq_u32_</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">IMM2</span> <span class="kw">as</span> <span class="ident">i64</span>)
+}
+
+<span class="doccomment">/// SM3TT2B</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,sm4&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">sm3tt2b</span>, <span class="ident">IMM2</span> <span class="op">=</span> <span class="number">0</span>))]</span>
+<span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">3</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vsm3tt2bq_u32</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">IMM2</span>: <span class="ident">i32</span><span class="op">&gt;</span>(
+    <span class="ident">a</span>: <span class="ident">uint32x4_t</span>,
+    <span class="ident">b</span>: <span class="ident">uint32x4_t</span>,
+    <span class="ident">c</span>: <span class="ident">uint32x4_t</span>,
+) -&gt; <span class="ident">uint32x4_t</span> {
+    <span class="macro">static_assert_imm2!</span>(<span class="ident">IMM2</span>);
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">improper_ctypes</span>)]</span>
+    <span class="kw">extern</span> <span class="string">&quot;unadjusted&quot;</span> {
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>, <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.aarch64.crypto.sm3tt2b&quot;</span>)]</span>
+        <span class="kw">fn</span> <span class="ident">vsm3tt2bq_u32_</span>(<span class="ident">a</span>: <span class="ident">uint32x4_t</span>, <span class="ident">b</span>: <span class="ident">uint32x4_t</span>, <span class="ident">c</span>: <span class="ident">uint32x4_t</span>, <span class="ident">imm2</span>: <span class="ident">i64</span>) -&gt; <span class="ident">uint32x4_t</span>;
+    }
+    <span class="ident">vsm3tt2bq_u32_</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">c</span>, <span class="ident">IMM2</span> <span class="kw">as</span> <span class="ident">i64</span>)
+}
+
+<span class="doccomment">/// Exclusive OR and rotate</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,sha3&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">xar</span>, <span class="ident">IMM6</span> <span class="op">=</span> <span class="number">0</span>))]</span>
+<span class="attribute">#[<span class="ident">rustc_legacy_const_generics</span>(<span class="number">2</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">vxarq_u64</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">IMM6</span>: <span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">uint64x2_t</span>, <span class="ident">b</span>: <span class="ident">uint64x2_t</span>) -&gt; <span class="ident">uint64x2_t</span> {
+    <span class="macro">static_assert_imm6!</span>(<span class="ident">IMM6</span>);
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">improper_ctypes</span>)]</span>
+    <span class="kw">extern</span> <span class="string">&quot;unadjusted&quot;</span> {
+        <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;aarch64&quot;</span>, <span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.aarch64.crypto.xar&quot;</span>)]</span>
+        <span class="kw">fn</span> <span class="ident">vxarq_u64_</span>(<span class="ident">a</span>: <span class="ident">uint64x2_t</span>, <span class="ident">b</span>: <span class="ident">uint64x2_t</span>, <span class="ident">n</span>: <span class="ident">i64</span>) -&gt; <span class="ident">uint64x2_t</span>;
+    }
+    <span class="ident">vxarq_u64_</span>(<span class="ident">a</span>, <span class="ident">b</span>, <span class="ident">IMM6</span> <span class="kw">as</span> <span class="ident">i64</span>)
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
@@ -8224,6 +8563,14 @@ pub unsafe fn vcombine_f16 ( low: float16x4_t,  high: float16x4_t) -&gt; float16
         <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">e</span>);
     }
     <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_vpaddq_s64</span>() {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">i64x2::new</span>(<span class="number">1</span>, <span class="number">2</span>);
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">i64x2::new</span>(<span class="number">0</span>, <span class="op">-</span><span class="number">1</span>);
+        <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">i64x2</span> <span class="op">=</span> <span class="ident">transmute</span>(<span class="ident">vpaddq_s64</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>)));
+        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">i64x2::new</span>(<span class="number">3</span>, <span class="op">-</span><span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_vpaddq_s8</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">i8x16::new</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>);
         <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">i8x16::new</span>(
@@ -8249,6 +8596,14 @@ pub unsafe fn vcombine_f16 ( low: float16x4_t,  high: float16x4_t) -&gt; float16
         <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">17</span>, <span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>);
         <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">transmute</span>(<span class="ident">vpaddq_u32</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>)));
         <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">1</span>, <span class="number">5</span>, <span class="number">35</span>, <span class="number">39</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_vpaddq_u64</span>() {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">u64x2::new</span>(<span class="number">0</span>, <span class="number">1</span>);
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">u64x2::new</span>(<span class="number">17</span>, <span class="number">18</span>);
+        <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">u64x2</span> <span class="op">=</span> <span class="ident">transmute</span>(<span class="ident">vpaddq_u64</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>)));
+        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">u64x2::new</span>(<span class="number">1</span>, <span class="number">35</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">e</span>);
     }
     <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
@@ -9672,29 +10027,6 @@ pub unsafe fn vcombine_f16 ( low: float16x4_t,  high: float16x4_t) -&gt; float16
     }
 
     <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_vst1_p64</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">vals</span> <span class="op">=</span> [<span class="number">0_u64</span>; <span class="number">2</span>];
-        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">u64x1::new</span>(<span class="number">1</span>);
-
-        <span class="ident">vst1_p64</span>(<span class="ident">vals</span>[<span class="number">1</span>..].<span class="ident">as_mut_ptr</span>(), <span class="ident">transmute</span>(<span class="ident">a</span>));
-
-        <span class="macro">assert_eq!</span>(<span class="ident">vals</span>[<span class="number">0</span>], <span class="number">0</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">vals</span>[<span class="number">1</span>], <span class="number">1</span>);
-    }
-
-    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_vst1q_p64</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">vals</span> <span class="op">=</span> [<span class="number">0_u64</span>; <span class="number">3</span>];
-        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">u64x2::new</span>(<span class="number">1</span>, <span class="number">2</span>);
-
-        <span class="ident">vst1q_p64</span>(<span class="ident">vals</span>[<span class="number">1</span>..].<span class="ident">as_mut_ptr</span>(), <span class="ident">transmute</span>(<span class="ident">a</span>));
-
-        <span class="macro">assert_eq!</span>(<span class="ident">vals</span>[<span class="number">0</span>], <span class="number">0</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">vals</span>[<span class="number">1</span>], <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">vals</span>[<span class="number">2</span>], <span class="number">2</span>);
-    }
-
-    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon&quot;</span>)]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_vst1_f64</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">vals</span> <span class="op">=</span> [<span class="number">0_f64</span>; <span class="number">2</span>];
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">f64x1::new</span>(<span class="number">1.</span>);
@@ -9716,6 +10048,55 @@ pub unsafe fn vcombine_f16 ( low: float16x4_t,  high: float16x4_t) -&gt; float16
         <span class="macro">assert_eq!</span>(<span class="ident">vals</span>[<span class="number">1</span>], <span class="number">1.</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">vals</span>[<span class="number">2</span>], <span class="number">2.</span>);
     }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,sm4&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_vsm3tt1aq_u32</span>() {
+        <span class="kw">let</span> <span class="ident">a</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">b</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">c</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">e</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">2</span>, <span class="number">1536</span>, <span class="number">4</span>, <span class="number">16395</span>);
+        <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">transmute</span>(<span class="ident">vsm3tt1aq_u32</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">transmute</span>(<span class="ident">c</span>)));
+        <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,sm4&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_vsm3tt1bq_u32</span>() {
+        <span class="kw">let</span> <span class="ident">a</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">b</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">c</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">e</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">2</span>, <span class="number">1536</span>, <span class="number">4</span>, <span class="number">16392</span>);
+        <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">transmute</span>(<span class="ident">vsm3tt1bq_u32</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">transmute</span>(<span class="ident">c</span>)));
+        <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,sm4&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_vsm3tt2aq_u32</span>() {
+        <span class="kw">let</span> <span class="ident">a</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">b</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">c</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">e</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">2</span>, <span class="number">1572864</span>, <span class="number">4</span>, <span class="number">1447435</span>);
+        <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">transmute</span>(<span class="ident">vsm3tt2aq_u32</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">transmute</span>(<span class="ident">c</span>)));
+        <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,sm4&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_vsm3tt2bq_u32</span>() {
+        <span class="kw">let</span> <span class="ident">a</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">b</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">c</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">e</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">u32x4::new</span>(<span class="number">2</span>, <span class="number">1572864</span>, <span class="number">4</span>, <span class="number">1052680</span>);
+        <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">u32x4</span> <span class="op">=</span> <span class="ident">transmute</span>(<span class="ident">vsm3tt2bq_u32</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>), <span class="ident">transmute</span>(<span class="ident">c</span>)));
+        <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;neon,sha3&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_vxarq_u64</span>() {
+        <span class="kw">let</span> <span class="ident">a</span>: <span class="ident">u64x2</span> <span class="op">=</span> <span class="ident">u64x2::new</span>(<span class="number">1</span>, <span class="number">2</span>);
+        <span class="kw">let</span> <span class="ident">b</span>: <span class="ident">u64x2</span> <span class="op">=</span> <span class="ident">u64x2::new</span>(<span class="number">3</span>, <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">e</span>: <span class="ident">u64x2</span> <span class="op">=</span> <span class="ident">u64x2::new</span>(<span class="number">2</span>, <span class="number">6</span>);
+        <span class="kw">let</span> <span class="ident">r</span>: <span class="ident">u64x2</span> <span class="op">=</span> <span class="ident">transmute</span>(<span class="ident">vxarq_u64</span>::<span class="op">&lt;</span><span class="number">0</span><span class="op">&gt;</span>(<span class="ident">transmute</span>(<span class="ident">a</span>), <span class="ident">transmute</span>(<span class="ident">b</span>)));
+        <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
@@ -9736,5 +10117,4 @@ pub unsafe fn vcombine_f16 ( low: float16x4_t,  high: float16x4_t) -&gt; float16
 <span class="kw">mod</span> <span class="ident">store_tests</span>;
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../../../../../../" data-current-crate="core" data-search-index-js="../../../../../../../../../../search-index.js" data-search-js="../../../../../../../../../../search.js"></div>
-    <script src="../../../../../../../../../../main.js"></script><script src="../../../../../../../../../../source-script.js"></script><script src="../../../../../../../../../../source-files.js"></script>
 </body></html>

@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;irq.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>irq.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;irq.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>irq.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -406,6 +407,7 @@
 <span id="406">406</span>
 <span id="407">407</span>
 <span id="408">408</span>
+<span id="409">409</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! Interrupts and interrupt chips.</span>
@@ -420,7 +422,8 @@
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bindings</span>, <span class="ident">c_types</span>, <span class="ident">error::from_kernel_result</span>, <span class="ident">types::PointerWrapper</span>, <span class="ident">Error</span>, <span class="prelude-ty">Result</span>};
 <span class="kw">use</span> <span class="ident">core::ops::Deref</span>;
 
-<span class="kw">type</span> <span class="ident">IrqHwNumber</span> <span class="op">=</span> <span class="ident">bindings::irq_hw_number_t</span>;
+<span class="doccomment">/// The type of irq hardware numbers.</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">HwNumber</span> <span class="op">=</span> <span class="ident">bindings::irq_hw_number_t</span>;
 
 <span class="doccomment">/// Wraps the kernel&#39;s `struct irq_data`.</span>
 <span class="doccomment">///</span>
@@ -428,7 +431,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// The pointer `IrqData::ptr` is non-null and valid.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IrqData</span> {
-    <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::irq_data</span>,
+    <span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::irq_data</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">IrqData</span> {
@@ -438,14 +441,14 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Callers must ensure that `ptr` is non-null and valid when the function is called, and that</span>
     <span class="doccomment">/// it remains valid for the lifetime of the return [`IrqData`] instance.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_ptr</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::irq_data</span>) -&gt; <span class="self">Self</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_ptr</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::irq_data</span>) -&gt; <span class="self">Self</span> {
         <span class="comment">// INVARIANTS: By the safety requirements, the instance we&#39;re creating satisfies the type</span>
         <span class="comment">// invariants.</span>
         <span class="self">Self</span> { <span class="ident">ptr</span> }
     }
 
     <span class="doccomment">/// Returns the hardware irq number.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hwirq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">IrqHwNumber</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">hwirq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">HwNumber</span> {
         <span class="comment">// SAFETY: By the type invariants, it&#39;s ok to dereference `ptr`.</span>
         <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">ptr</span>).<span class="ident">hwirq</span> }
     }
@@ -458,19 +461,19 @@
 
 <span class="kw">impl</span> <span class="ident">LockedIrqData</span> {
     <span class="doccomment">/// Sets the high-level irq flow handler to the builtin one for level-triggered irqs.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_level_handler</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_level_handler</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="comment">// SAFETY: By the type invariants of `self.0`, we know `self.0.ptr` is valid.</span>
         <span class="kw">unsafe</span> { <span class="ident">bindings::irq_set_handler_locked</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">ptr</span>, <span class="prelude-val">Some</span>(<span class="ident">bindings::handle_level_irq</span>)) };
     }
 
     <span class="doccomment">/// Sets the high-level irq flow handler to the builtin one for edge-triggered irqs.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_edge_handler</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_edge_handler</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="comment">// SAFETY: By the type invariants of `self.0`, we know `self.0.ptr` is valid.</span>
         <span class="kw">unsafe</span> { <span class="ident">bindings::irq_set_handler_locked</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">ptr</span>, <span class="prelude-val">Some</span>(<span class="ident">bindings::handle_edge_irq</span>)) };
     }
 
     <span class="doccomment">/// Sets the high-level irq flow handler to the builtin one for bad irqs.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_bad_handler</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_bad_handler</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="comment">// SAFETY: By the type invariants of `self.0`, we know `self.0.ptr` is valid.</span>
         <span class="kw">unsafe</span> { <span class="ident">bindings::irq_set_handler_locked</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">ptr</span>, <span class="prelude-val">Some</span>(<span class="ident">bindings::handle_bad_irq</span>)) };
     }
@@ -524,7 +527,7 @@
     <span class="doccomment">/// The flow type is a combination of the constants in [`Type`].</span>
     <span class="kw">fn</span> <span class="ident">set_type</span>(
         <span class="ident">_data</span>: <span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Data</span> <span class="kw">as</span> <span class="ident">PointerWrapper</span><span class="op">&gt;</span><span class="ident">::Borrowed</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
-        <span class="ident">_irq_data</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">LockedIrqData</span>,
+        <span class="ident">_irq_data</span>: <span class="kw-2">&amp;mut</span> <span class="ident">LockedIrqData</span>,
         <span class="ident">_flow_type</span>: <span class="ident">u32</span>,
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ExtraResult</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="ident">ExtraResult::None</span>)
@@ -546,7 +549,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// The caller must ensure that the value stored in the irq chip data is the result of calling</span>
 <span class="doccomment">/// [`PointerWrapper::into_pointer] for the [`T::Data`] type.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">init_chip</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(<span class="ident">chip</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">bindings::irq_chip</span>) {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">init_chip</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(<span class="ident">chip</span>: <span class="kw-2">&amp;mut</span> <span class="ident">bindings::irq_chip</span>) {
     <span class="ident">chip</span>.<span class="ident">irq_ack</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">irq_ack_callback</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
     <span class="ident">chip</span>.<span class="ident">irq_mask</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">irq_mask_callback</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
     <span class="ident">chip</span>.<span class="ident">irq_unmask</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">irq_unmask_callback</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
@@ -605,7 +608,7 @@
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">irq_ack_callback</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(<span class="ident">irq_data</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::irq_data</span>) {
+<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">irq_ack_callback</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(<span class="ident">irq_data</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::irq_data</span>) {
     <span class="comment">// SAFETY: The safety requirements of `init_chip`, which is the only place that uses this</span>
     <span class="comment">// callback, ensure that the value stored as irq chip data comes from a previous call to</span>
     <span class="comment">// `PointerWrapper::into_pointer`.</span>
@@ -616,7 +619,7 @@
     <span class="ident">T::ack</span>(<span class="ident">data</span>, <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="ident">IrqData::from_ptr</span>(<span class="ident">irq_data</span>) })
 }
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">irq_mask_callback</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(<span class="ident">irq_data</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::irq_data</span>) {
+<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">irq_mask_callback</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(<span class="ident">irq_data</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::irq_data</span>) {
     <span class="comment">// SAFETY: The safety requirements of `init_chip`, which is the only place that uses this</span>
     <span class="comment">// callback, ensure that the value stored as irq chip data comes from a previous call to</span>
     <span class="comment">// `PointerWrapper::into_pointer`.</span>
@@ -627,7 +630,7 @@
     <span class="ident">T::mask</span>(<span class="ident">data</span>, <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="ident">IrqData::from_ptr</span>(<span class="ident">irq_data</span>) })
 }
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">irq_unmask_callback</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(<span class="ident">irq_data</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::irq_data</span>) {
+<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">irq_unmask_callback</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(<span class="ident">irq_data</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::irq_data</span>) {
     <span class="comment">// SAFETY: The safety requirements of `init_chip`, which is the only place that uses this</span>
     <span class="comment">// callback, ensure that the value stored as irq chip data comes from a previous call to</span>
     <span class="comment">// `PointerWrapper::into_pointer`.</span>
@@ -639,7 +642,7 @@
 }
 
 <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">irq_set_type_callback</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(
-    <span class="ident">irq_data</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::irq_data</span>,
+    <span class="ident">irq_data</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::irq_data</span>,
     <span class="ident">flow_type</span>: <span class="ident">c_types::c_uint</span>,
 ) -&gt; <span class="ident">c_types::c_int</span> {
     <span class="macro">from_kernel_result!</span> {
@@ -650,13 +653,13 @@
 
         <span class="comment">// SAFETY: The value returned by `IrqData` is only valid until the end of this function, and</span>
         <span class="comment">// `irq_data` is guaranteed to be valid until then (by the contract with C code).</span>
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">T::set_type</span>(<span class="ident">data</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">LockedIrqData</span>(<span class="kw">unsafe</span> { <span class="ident">IrqData::from_ptr</span>(<span class="ident">irq_data</span>) }), <span class="ident">flow_type</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">T::set_type</span>(<span class="ident">data</span>, <span class="kw-2">&amp;mut</span> <span class="ident">LockedIrqData</span>(<span class="kw">unsafe</span> { <span class="ident">IrqData::from_ptr</span>(<span class="ident">irq_data</span>) }), <span class="ident">flow_type</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">ret</span> <span class="kw">as</span> <span class="kw">_</span>)
     }
 }
 
 <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">irq_set_wake_callback</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(
-    <span class="ident">irq_data</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::irq_data</span>,
+    <span class="ident">irq_data</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::irq_data</span>,
     <span class="ident">on</span>: <span class="ident">c_types::c_uint</span>,
 ) -&gt; <span class="ident">c_types::c_int</span> {
     <span class="macro">from_kernel_result!</span> {
@@ -705,7 +708,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// The pointer `Descriptor::ptr` is non-null and valid.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Descriptor</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::irq_desc</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::irq_desc</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Descriptor</span> {
@@ -714,7 +717,7 @@
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The pointer `ptr` must be non-null and valid for the lifetime of the returned object.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_ptr</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::irq_desc</span>) -&gt; <span class="self">Self</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_ptr</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::irq_desc</span>) -&gt; <span class="self">Self</span> {
         <span class="comment">// INVARIANT: The safety requirements ensure the invariant.</span>
         <span class="self">Self</span> { <span class="ident">ptr</span> }
     }
@@ -742,11 +745,11 @@
 <span class="doccomment">/// public constructors and it is only created after indeed calling `chained_irq_enter`.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChainedGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="ident">desc</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Descriptor</span>,
-    <span class="ident">irq_chip</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::irq_chip</span>,
+    <span class="ident">irq_chip</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::irq_chip</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">ChainedGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="comment">// SAFETY: The lifetime of `ChainedGuard` guarantees that `self.desc` remains valid, so it</span>
         <span class="comment">// also guarantess `irq_chip` (which was returned from it) and `self.desc.ptr` (guaranteed</span>
         <span class="comment">// by the type invariants).</span>
@@ -760,7 +763,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// The pointer `Domain::ptr` is non-null and valid.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Domain</span> {
-    <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::irq_domain</span>,
+    <span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::irq_domain</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Domain</span> {
@@ -769,7 +772,7 @@
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The pointer `ptr` must be non-null and valid for the lifetime of the returned object.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_ptr</span>(<span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::irq_domain</span>) -&gt; <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_ptr</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::irq_domain</span>) -&gt; <span class="self">Self</span> {
         <span class="comment">// INVARIANT: The safety requirements ensure the invariant.</span>
         <span class="self">Self</span> { <span class="ident">ptr</span> }
     }
@@ -804,7 +807,7 @@
     <span class="prelude-val">Some</span>(<span class="ident">irq_flow_handler</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>)
 }
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">irq_flow_handler</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FlowHandler</span><span class="op">&gt;</span>(<span class="ident">desc</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::irq_desc</span>) {
+<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">irq_flow_handler</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FlowHandler</span><span class="op">&gt;</span>(<span class="ident">desc</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::irq_desc</span>) {
     <span class="comment">// SAFETY: By the safety requirements of `new_flow_handler`, we know that the value returned by</span>
     <span class="comment">// `irq_desc_get_handler_data` comes from calling `T::Data::into_pointer`. `desc` is valid by</span>
     <span class="comment">// the C API contract.</span>
@@ -816,5 +819,4 @@
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
 </body></html>

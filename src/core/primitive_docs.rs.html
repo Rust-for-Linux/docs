@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;primitive_docs.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>primitive_docs.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../core/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;primitive_docs.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>primitive_docs.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../core/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1303,8 +1304,6 @@
 <span id="1303">1303</span>
 <span id="1304">1304</span>
 <span id="1305">1305</span>
-<span id="1306">1306</span>
-<span id="1307">1307</span>
 </pre><pre class="rust"><code><span class="comment">// `library/{std,core}/src/primitive_docs.rs` should have the same contents.</span>
 <span class="comment">// These are different files so that relative links work properly without</span>
 <span class="comment">// having to have `CARGO_PKG_NAME` set, but conceptually they should always be the same.</span>
@@ -2411,11 +2410,10 @@
 <span class="doccomment">/// * [`Clone`] \(Note that this will not defer to `T`&#39;s `Clone` implementation if it exists!)</span>
 <span class="doccomment">/// * [`Deref`]</span>
 <span class="doccomment">/// * [`Borrow`]</span>
-<span class="doccomment">/// * [`Pointer`]</span>
+<span class="doccomment">/// * [`fmt::Pointer`]</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`Deref`]: ops::Deref</span>
 <span class="doccomment">/// [`Borrow`]: borrow::Borrow</span>
-<span class="doccomment">/// [`Pointer`]: fmt::Pointer</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// `&amp;mut T` references get all of the above except `Copy` and `Clone` (to prevent creating</span>
 <span class="doccomment">/// multiple simultaneous mutable borrows), plus the following, regardless of the type of its</span>
@@ -2431,7 +2429,7 @@
 <span class="doccomment">/// The following traits are implemented on `&amp;T` references if the underlying `T` also implements</span>
 <span class="doccomment">/// that trait:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// * All the traits in [`std::fmt`] except [`Pointer`] and [`fmt::Write`]</span>
+<span class="doccomment">/// * All the traits in [`std::fmt`] except [`fmt::Pointer`] (which is implemented regardless of the type of its referent) and [`fmt::Write`]</span>
 <span class="doccomment">/// * [`PartialOrd`]</span>
 <span class="doccomment">/// * [`Ord`]</span>
 <span class="doccomment">/// * [`PartialEq`]</span>
@@ -2440,9 +2438,9 @@
 <span class="doccomment">/// * [`Fn`] \(in addition, `&amp;T` references get [`FnMut`] and [`FnOnce`] if `T: Fn`)</span>
 <span class="doccomment">/// * [`Hash`]</span>
 <span class="doccomment">/// * [`ToSocketAddrs`]</span>
+<span class="doccomment">/// * [`Send`] \(`&amp;T` references also require &lt;code&gt;T: [Sync]&lt;/code&gt;)</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`std::fmt`]: fmt</span>
-<span class="doccomment">/// [&#39;Pointer`]: fmt::Pointer</span>
 <span class="doccomment">/// [`Hash`]: hash::Hash</span>
 <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;[`ToSocketAddrs`]: &quot;</span>, <span class="macro">include_str!</span>(<span class="string">&quot;../primitive_docs/net_tosocketaddrs.md&quot;</span>))]</span>
 <span class="doccomment">///</span>
@@ -2457,7 +2455,6 @@
 <span class="doccomment">/// * [`ExactSizeIterator`]</span>
 <span class="doccomment">/// * [`FusedIterator`]</span>
 <span class="doccomment">/// * [`TrustedLen`]</span>
-<span class="doccomment">/// * [`Send`] \(note that `&amp;T` references only get `Send` if &lt;code&gt;T: [Sync]&lt;/code&gt;)</span>
 <span class="doccomment">/// * [`io::Write`]</span>
 <span class="doccomment">/// * [`Read`]</span>
 <span class="doccomment">/// * [`Seek`]</span>
@@ -2614,5 +2611,4 @@
 <span class="kw">mod</span> <span class="ident">prim_fn</span> {}
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
 </body></html>

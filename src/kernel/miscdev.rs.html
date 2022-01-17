@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;miscdev.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>miscdev.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;miscdev.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>miscdev.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -164,6 +165,36 @@
 <span id="164">164</span>
 <span id="165">165</span>
 <span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! Miscellaneous devices.</span>
@@ -174,46 +205,51 @@
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bindings</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::error</span>::{<span class="ident">Error</span>, <span class="prelude-ty">Result</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::file_operations</span>::{<span class="ident">FileOpenAdapter</span>, <span class="ident">FileOpener</span>, <span class="ident">FileOperationsVtable</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::file_operations</span>::{<span class="ident">FileOpenAdapter</span>, <span class="ident">FileOperations</span>, <span class="ident">FileOperationsVtable</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">str::CStr</span>, <span class="ident">KernelModule</span>, <span class="ident">ThisModule</span>};
 <span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
-<span class="kw">use</span> <span class="ident">core::marker</span>::{<span class="ident">PhantomData</span>, <span class="ident">PhantomPinned</span>};
-<span class="kw">use</span> <span class="ident">core::pin::Pin</span>;
+<span class="kw">use</span> <span class="ident">core::marker::PhantomPinned</span>;
+<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">mem::MaybeUninit</span>, <span class="ident">pin::Pin</span>};
 
 <span class="doccomment">/// A registration of a miscellaneous device.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Sync</span> <span class="op">=</span> ()<span class="op">&gt;</span> {
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Invariants</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// `Context` is always initialised when `registered` is `true`, and not initialised otherwise.</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FileOperations</span><span class="op">&gt;</span> {
     <span class="ident">registered</span>: <span class="ident">bool</span>,
     <span class="ident">mdev</span>: <span class="ident">bindings::miscdevice</span>,
     <span class="ident">_pin</span>: <span class="ident">PhantomPinned</span>,
 
     <span class="doccomment">/// Context initialised on construction and made available to all file instances on</span>
-    <span class="doccomment">/// [`FileOpener::open`].</span>
-    <span class="kw">pub</span> <span class="ident">context</span>: <span class="ident">T</span>,
+    <span class="doccomment">/// [`FileOperations::open`].</span>
+    <span class="ident">open_data</span>: <span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T::OpenData</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Sync</span><span class="op">&gt;</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FileOperations</span><span class="op">&gt;</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Creates a new [`Registration`] but does not register it yet.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// It is allowed to move.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">context</span>: <span class="ident">T</span>) -&gt; <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
+        <span class="comment">// INVARIANT: `registered` is `false` and `open_data` is not initialised.</span>
         <span class="self">Self</span> {
             <span class="ident">registered</span>: <span class="bool-val">false</span>,
             <span class="ident">mdev</span>: <span class="ident">bindings::miscdevice::default</span>(),
             <span class="ident">_pin</span>: <span class="ident">PhantomPinned</span>,
-            <span class="ident">context</span>,
+            <span class="ident">open_data</span>: <span class="ident">MaybeUninit::uninit</span>(),
         }
     }
 
     <span class="doccomment">/// Registers a miscellaneous device.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns a pinned heap-allocated representation of the registration.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_pinned</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">FileOpener</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_pinned</span>(
         <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">CStr</span>,
         <span class="ident">minor</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
-        <span class="ident">context</span>: <span class="ident">T</span>,
+        <span class="ident">open_data</span>: <span class="ident">T::OpenData</span>,
     ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Pin::from</span>(<span class="ident">Box::try_new</span>(<span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">context</span>))<span class="question-mark">?</span>);
-        <span class="ident">r</span>.<span class="ident">as_mut</span>().<span class="ident">register</span>::<span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">name</span>, <span class="ident">minor</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Pin::from</span>(<span class="ident">Box::try_new</span>(<span class="ident"><span class="self">Self</span>::new</span>())<span class="question-mark">?</span>);
+        <span class="ident">r</span>.<span class="ident">as_mut</span>().<span class="ident">register</span>(<span class="ident">name</span>, <span class="ident">minor</span>, <span class="ident">open_data</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">r</span>)
     }
 
@@ -221,10 +257,11 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// It must be pinned because the memory block that represents the registration is</span>
     <span class="doccomment">/// self-referential. If a minor is not given, the kernel allocates a new one if possible.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">register</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">FileOpener</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">register</span>(
+        <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="self">Self</span><span class="op">&gt;</span>,
         <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">CStr</span>,
         <span class="ident">minor</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
+        <span class="ident">open_data</span>: <span class="ident">T::OpenData</span>,
     ) -&gt; <span class="prelude-ty">Result</span> {
         <span class="comment">// SAFETY: We must ensure that we never move out of `this`.</span>
         <span class="kw">let</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">get_unchecked_mut</span>() };
@@ -234,59 +271,83 @@
         }
 
         <span class="comment">// SAFETY: The adapter is compatible with `misc_register`.</span>
-        <span class="ident">this</span>.<span class="ident">mdev</span>.<span class="ident">fops</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FileOperationsVtable</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="ident">::build</span>() };
+        <span class="ident">this</span>.<span class="ident">mdev</span>.<span class="ident">fops</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FileOperationsVtable</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span><span class="op">&gt;</span><span class="ident">::build</span>() };
         <span class="ident">this</span>.<span class="ident">mdev</span>.<span class="ident">name</span> <span class="op">=</span> <span class="ident">name</span>.<span class="ident">as_char_ptr</span>();
         <span class="ident">this</span>.<span class="ident">mdev</span>.<span class="ident">minor</span> <span class="op">=</span> <span class="ident">minor</span>.<span class="ident">unwrap_or</span>(<span class="ident">bindings::MISC_DYNAMIC_MINOR</span> <span class="kw">as</span> <span class="ident">i32</span>);
 
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bindings::misc_register</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>.<span class="ident">mdev</span>) };
+        <span class="comment">// We write to `open_data` here because as soon as `misc_register` succeeds, the file can be</span>
+        <span class="comment">// opened, so we need `open_data` configured ahead of time.</span>
+        <span class="comment">//</span>
+        <span class="comment">// INVARIANT: `registered` is set to `true`, but `open_data` is also initialised.</span>
+        <span class="ident">this</span>.<span class="ident">registered</span> <span class="op">=</span> <span class="bool-val">true</span>;
+        <span class="ident">this</span>.<span class="ident">open_data</span>.<span class="ident">write</span>(<span class="ident">open_data</span>);
+
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bindings::misc_register</span>(<span class="kw-2">&amp;mut</span> <span class="ident">this</span>.<span class="ident">mdev</span>) };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {
+            <span class="comment">// INVARIANT: `registered` is set back to `false` and the `open_data` is destructued.</span>
+            <span class="ident">this</span>.<span class="ident">registered</span> <span class="op">=</span> <span class="bool-val">false</span>;
+            <span class="comment">// SAFETY: `open_data` was initialised a few lines above.</span>
+            <span class="kw">unsafe</span> { <span class="ident">this</span>.<span class="ident">open_data</span>.<span class="ident">assume_init_drop</span>() };
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::from_kernel_errno</span>(<span class="ident">ret</span>));
         }
-        <span class="ident">this</span>.<span class="ident">registered</span> <span class="op">=</span> <span class="bool-val">true</span>;
+
         <span class="prelude-val">Ok</span>(())
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Sync</span><span class="op">&gt;</span> <span class="ident">FileOpenAdapter</span> <span class="kw">for</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Arg</span> <span class="op">=</span> <span class="ident">T</span>;
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FileOperations</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::new</span>()
+    }
+}
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">convert</span>(<span class="ident">_inode</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::inode</span>, <span class="ident">file</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">bindings::file</span>) -&gt; <span class="kw-2">*</span><span class="kw">const</span> <span class="ident"><span class="self">Self</span>::Arg</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FileOperations</span><span class="op">&gt;</span> <span class="ident">FileOpenAdapter</span><span class="op">&lt;</span><span class="ident">T::OpenData</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">convert</span>(
+        <span class="ident">_inode</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::inode</span>,
+        <span class="ident">file</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::file</span>,
+    ) -&gt; <span class="kw-2">*const</span> <span class="ident">T::OpenData</span> {
         <span class="comment">// SAFETY: the caller must guarantee that `file` is valid.</span>
         <span class="kw">let</span> <span class="ident">reg</span> <span class="op">=</span> <span class="macro">crate::container_of!</span>(<span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">file</span>).<span class="ident">private_data</span> }, <span class="self">Self</span>, <span class="ident">mdev</span>);
-        <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span>(<span class="kw-2">*</span><span class="ident">reg</span>).<span class="ident">context</span> }
+
+        <span class="comment">// SAFETY: This function is only called while the misc device is still registered, so the</span>
+        <span class="comment">// registration must be valid. Additionally, the type invariants guarantee that while the</span>
+        <span class="comment">// miscdev is registered, `open_data` is initialised.</span>
+        <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">reg</span>).<span class="ident">open_data</span>.<span class="ident">as_ptr</span>() }
     }
 }
 
 <span class="comment">// SAFETY: The only method is `register()`, which requires a (pinned) mutable `Registration`, so it</span>
-<span class="comment">// is safe to pass `&amp;Registration` to multiple threads because it offers no interior mutability,</span>
-<span class="comment">// except maybe through `Registration::context`, but it is itself `Sync`.</span>
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Sync</span><span class="op">&gt;</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {}
+<span class="comment">// is safe to pass `&amp;Registration` to multiple threads because it offers no interior mutability.</span>
+<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FileOperations</span><span class="op">&gt;</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {}
 
-<span class="comment">// SAFETY: All functions work from any thread. So as long as the `Registration::context` is</span>
-<span class="comment">// `Send`, so is `Registration&lt;T&gt;`. `T` needs to be `Sync` because it&#39;s a requirement of</span>
-<span class="comment">// `Registration&lt;T&gt;`.</span>
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {}
+<span class="comment">// SAFETY: All functions work from any thread. So as long as the `Registration::open_data` is</span>
+<span class="comment">// `Send`, so is `Registration&lt;T&gt;`.</span>
+<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FileOperations</span><span class="op">&gt;</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">T::OpenData</span>: <span class="ident">Send</span> {}
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Sync</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FileOperations</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Removes the registration from the kernel if it has completed successfully before.</span>
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">registered</span> {
-            <span class="kw">unsafe</span> { <span class="ident">bindings::misc_deregister</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">mdev</span>) }
+            <span class="comment">// SAFETY: `registered` being `true` indicates that a previous call to  `misc_register`</span>
+            <span class="comment">// succeeded.</span>
+            <span class="kw">unsafe</span> { <span class="ident">bindings::misc_deregister</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">mdev</span>) };
+
+            <span class="comment">// SAFETY: The type invariant guarantees that `open_data` is initialised when</span>
+            <span class="comment">// `registered` is `true`.</span>
+            <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">open_data</span>.<span class="ident">assume_init_drop</span>() };
         }
     }
 }
 
-<span class="doccomment">/// Kernel module that exposes a single miscdev device implemented by `F`.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Module</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">FileOpener</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="ident">_dev</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Registration</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">_p</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>,
+<span class="doccomment">/// Kernel module that exposes a single miscdev device implemented by `T`.</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Module</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FileOperations</span><span class="op">&lt;</span><span class="ident">OpenData</span> <span class="op">=</span> ()<span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="ident">_dev</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">FileOpener</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">KernelModule</span> <span class="kw">for</span> <span class="ident">Module</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FileOperations</span><span class="op">&lt;</span><span class="ident">OpenData</span> <span class="op">=</span> ()<span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">KernelModule</span> <span class="kw">for</span> <span class="ident">Module</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">init</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">CStr</span>, <span class="ident">_module</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">ThisModule</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
-            <span class="ident">_p</span>: <span class="ident">PhantomData</span>,
-            <span class="ident">_dev</span>: <span class="ident">Registration::new_pinned</span>::<span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">name</span>, <span class="prelude-val">None</span>, ())<span class="question-mark">?</span>,
+            <span class="ident">_dev</span>: <span class="ident">Registration::new_pinned</span>(<span class="ident">name</span>, <span class="prelude-val">None</span>, ())<span class="question-mark">?</span>,
         })
     }
 }
@@ -332,5 +393,4 @@
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
 </body></html>
