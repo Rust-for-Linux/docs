@@ -1,5 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;alloc&#x2F;boxed.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>boxed.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../alloc/index.html'><div class='logo-container rust-logo'><img src='../../logo.svg' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;alloc&#x2F;boxed.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>boxed.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../alloc/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../alloc/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1846,6 +1847,167 @@
 <span id="1845">1845</span>
 <span id="1846">1846</span>
 <span id="1847">1847</span>
+<span id="1848">1848</span>
+<span id="1849">1849</span>
+<span id="1850">1850</span>
+<span id="1851">1851</span>
+<span id="1852">1852</span>
+<span id="1853">1853</span>
+<span id="1854">1854</span>
+<span id="1855">1855</span>
+<span id="1856">1856</span>
+<span id="1857">1857</span>
+<span id="1858">1858</span>
+<span id="1859">1859</span>
+<span id="1860">1860</span>
+<span id="1861">1861</span>
+<span id="1862">1862</span>
+<span id="1863">1863</span>
+<span id="1864">1864</span>
+<span id="1865">1865</span>
+<span id="1866">1866</span>
+<span id="1867">1867</span>
+<span id="1868">1868</span>
+<span id="1869">1869</span>
+<span id="1870">1870</span>
+<span id="1871">1871</span>
+<span id="1872">1872</span>
+<span id="1873">1873</span>
+<span id="1874">1874</span>
+<span id="1875">1875</span>
+<span id="1876">1876</span>
+<span id="1877">1877</span>
+<span id="1878">1878</span>
+<span id="1879">1879</span>
+<span id="1880">1880</span>
+<span id="1881">1881</span>
+<span id="1882">1882</span>
+<span id="1883">1883</span>
+<span id="1884">1884</span>
+<span id="1885">1885</span>
+<span id="1886">1886</span>
+<span id="1887">1887</span>
+<span id="1888">1888</span>
+<span id="1889">1889</span>
+<span id="1890">1890</span>
+<span id="1891">1891</span>
+<span id="1892">1892</span>
+<span id="1893">1893</span>
+<span id="1894">1894</span>
+<span id="1895">1895</span>
+<span id="1896">1896</span>
+<span id="1897">1897</span>
+<span id="1898">1898</span>
+<span id="1899">1899</span>
+<span id="1900">1900</span>
+<span id="1901">1901</span>
+<span id="1902">1902</span>
+<span id="1903">1903</span>
+<span id="1904">1904</span>
+<span id="1905">1905</span>
+<span id="1906">1906</span>
+<span id="1907">1907</span>
+<span id="1908">1908</span>
+<span id="1909">1909</span>
+<span id="1910">1910</span>
+<span id="1911">1911</span>
+<span id="1912">1912</span>
+<span id="1913">1913</span>
+<span id="1914">1914</span>
+<span id="1915">1915</span>
+<span id="1916">1916</span>
+<span id="1917">1917</span>
+<span id="1918">1918</span>
+<span id="1919">1919</span>
+<span id="1920">1920</span>
+<span id="1921">1921</span>
+<span id="1922">1922</span>
+<span id="1923">1923</span>
+<span id="1924">1924</span>
+<span id="1925">1925</span>
+<span id="1926">1926</span>
+<span id="1927">1927</span>
+<span id="1928">1928</span>
+<span id="1929">1929</span>
+<span id="1930">1930</span>
+<span id="1931">1931</span>
+<span id="1932">1932</span>
+<span id="1933">1933</span>
+<span id="1934">1934</span>
+<span id="1935">1935</span>
+<span id="1936">1936</span>
+<span id="1937">1937</span>
+<span id="1938">1938</span>
+<span id="1939">1939</span>
+<span id="1940">1940</span>
+<span id="1941">1941</span>
+<span id="1942">1942</span>
+<span id="1943">1943</span>
+<span id="1944">1944</span>
+<span id="1945">1945</span>
+<span id="1946">1946</span>
+<span id="1947">1947</span>
+<span id="1948">1948</span>
+<span id="1949">1949</span>
+<span id="1950">1950</span>
+<span id="1951">1951</span>
+<span id="1952">1952</span>
+<span id="1953">1953</span>
+<span id="1954">1954</span>
+<span id="1955">1955</span>
+<span id="1956">1956</span>
+<span id="1957">1957</span>
+<span id="1958">1958</span>
+<span id="1959">1959</span>
+<span id="1960">1960</span>
+<span id="1961">1961</span>
+<span id="1962">1962</span>
+<span id="1963">1963</span>
+<span id="1964">1964</span>
+<span id="1965">1965</span>
+<span id="1966">1966</span>
+<span id="1967">1967</span>
+<span id="1968">1968</span>
+<span id="1969">1969</span>
+<span id="1970">1970</span>
+<span id="1971">1971</span>
+<span id="1972">1972</span>
+<span id="1973">1973</span>
+<span id="1974">1974</span>
+<span id="1975">1975</span>
+<span id="1976">1976</span>
+<span id="1977">1977</span>
+<span id="1978">1978</span>
+<span id="1979">1979</span>
+<span id="1980">1980</span>
+<span id="1981">1981</span>
+<span id="1982">1982</span>
+<span id="1983">1983</span>
+<span id="1984">1984</span>
+<span id="1985">1985</span>
+<span id="1986">1986</span>
+<span id="1987">1987</span>
+<span id="1988">1988</span>
+<span id="1989">1989</span>
+<span id="1990">1990</span>
+<span id="1991">1991</span>
+<span id="1992">1992</span>
+<span id="1993">1993</span>
+<span id="1994">1994</span>
+<span id="1995">1995</span>
+<span id="1996">1996</span>
+<span id="1997">1997</span>
+<span id="1998">1998</span>
+<span id="1999">1999</span>
+<span id="2000">2000</span>
+<span id="2001">2001</span>
+<span id="2002">2002</span>
+<span id="2003">2003</span>
+<span id="2004">2004</span>
+<span id="2005">2005</span>
+<span id="2006">2006</span>
+<span id="2007">2007</span>
+<span id="2008">2008</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
 
 <span class="doccomment">//! A pointer type for heap allocation.</span>
@@ -2196,9 +2358,13 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_in</span>(<span class="ident">x</span>: <span class="ident">T</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new_in</span>(<span class="ident">x</span>: <span class="ident">T</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="self">Self</span>
+    <span class="kw">where</span>
+        <span class="ident">A</span>: ~<span class="kw">const</span> <span class="ident">Allocator</span> <span class="op">+</span> ~<span class="kw">const</span> <span class="ident">Drop</span>,
+    {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">boxed</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new_uninit_in</span>(<span class="ident">alloc</span>);
         <span class="kw">unsafe</span> {
             <span class="ident">boxed</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">write</span>(<span class="ident">x</span>);
@@ -2222,8 +2388,13 @@
     <span class="doccomment">/// # Ok::&lt;(), std::alloc::AllocError&gt;(())</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_new_in</span>(<span class="ident">x</span>: <span class="ident">T</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">try_new_in</span>(<span class="ident">x</span>: <span class="ident">T</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">AllocError</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: ~<span class="kw">const</span> <span class="ident">Drop</span>,
+        <span class="ident">A</span>: ~<span class="kw">const</span> <span class="ident">Allocator</span> <span class="op">+</span> ~<span class="kw">const</span> <span class="ident">Drop</span>,
+    {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">boxed</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::try_new_uninit_in</span>(<span class="ident">alloc</span>)<span class="question-mark">?</span>;
         <span class="kw">unsafe</span> {
             <span class="ident">boxed</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">write</span>(<span class="ident">x</span>);
@@ -2252,10 +2423,14 @@
     <span class="doccomment">/// assert_eq!(*five, 5)</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="comment">// #[unstable(feature = &quot;new_uninit&quot;, issue = &quot;63291&quot;)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_uninit_in</span>(<span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">mem::MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new_uninit_in</span>(<span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">mem::MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">A</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">A</span>: ~<span class="kw">const</span> <span class="ident">Allocator</span> <span class="op">+</span> ~<span class="kw">const</span> <span class="ident">Drop</span>,
+    {
         <span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="ident">Layout::new</span>::<span class="op">&lt;</span><span class="ident">mem::MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>();
         <span class="comment">// NOTE: Prefer match over unwrap_or_else since closure sometimes not inlineable.</span>
         <span class="comment">// That would make code size bigger.</span>
@@ -2289,7 +2464,11 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
     <span class="comment">// #[unstable(feature = &quot;new_uninit&quot;, issue = &quot;63291&quot;)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_new_uninit_in</span>(<span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">mem::MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">A</span><span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">try_new_uninit_in</span>(<span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">mem::MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">A</span><span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">A</span>: ~<span class="kw">const</span> <span class="ident">Allocator</span> <span class="op">+</span> ~<span class="kw">const</span> <span class="ident">Drop</span>,
+    {
         <span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="ident">Layout::new</span>::<span class="op">&lt;</span><span class="ident">mem::MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>();
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">alloc</span>.<span class="ident">allocate</span>(<span class="ident">layout</span>)<span class="question-mark">?</span>.<span class="ident">cast</span>();
         <span class="kw">unsafe</span> { <span class="prelude-val">Ok</span>(<span class="ident">Box::from_raw_in</span>(<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="ident">alloc</span>)) }
@@ -2316,10 +2495,14 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [zeroed]: mem::MaybeUninit::zeroed</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
     <span class="comment">// #[unstable(feature = &quot;new_uninit&quot;, issue = &quot;63291&quot;)]</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_zeroed_in</span>(<span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">mem::MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new_zeroed_in</span>(<span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">mem::MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">A</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">A</span>: ~<span class="kw">const</span> <span class="ident">Allocator</span> <span class="op">+</span> ~<span class="kw">const</span> <span class="ident">Drop</span>,
+    {
         <span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="ident">Layout::new</span>::<span class="op">&lt;</span><span class="ident">mem::MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>();
         <span class="comment">// NOTE: Prefer match over unwrap_or_else since closure sometimes not inlineable.</span>
         <span class="comment">// That would make code size bigger.</span>
@@ -2353,7 +2536,11 @@
     <span class="doccomment">/// [zeroed]: mem::MaybeUninit::zeroed</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
     <span class="comment">// #[unstable(feature = &quot;new_uninit&quot;, issue = &quot;63291&quot;)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_new_zeroed_in</span>(<span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">mem::MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">A</span><span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">try_new_zeroed_in</span>(<span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">mem::MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">A</span><span class="op">&gt;</span>, <span class="ident">AllocError</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">A</span>: ~<span class="kw">const</span> <span class="ident">Allocator</span> <span class="op">+</span> ~<span class="kw">const</span> <span class="ident">Drop</span>,
+    {
         <span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="ident">Layout::new</span>::<span class="op">&lt;</span><span class="ident">mem::MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>();
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">alloc</span>.<span class="ident">allocate_zeroed</span>(<span class="ident">layout</span>)<span class="question-mark">?</span>.<span class="ident">cast</span>();
         <span class="kw">unsafe</span> { <span class="prelude-val">Ok</span>(<span class="ident">Box::from_raw_in</span>(<span class="ident">ptr</span>.<span class="ident">as_ptr</span>(), <span class="ident">alloc</span>)) }
@@ -2363,20 +2550,22 @@
     <span class="doccomment">/// `x` will be pinned in memory and unable to be moved.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">must_use</span>]</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pin_in</span>(<span class="ident">x</span>: <span class="ident">T</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">pin_in</span>(<span class="ident">x</span>: <span class="ident">T</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">A</span>: <span class="lifetime">&#39;static</span>,
+        <span class="ident">A</span>: <span class="lifetime">&#39;static</span> <span class="op">+</span> ~<span class="kw">const</span> <span class="ident">Allocator</span> <span class="op">+</span> ~<span class="kw">const</span> <span class="ident">Drop</span>,
     {
-        <span class="ident"><span class="self">Self</span>::new_in</span>(<span class="ident">x</span>, <span class="ident">alloc</span>).<span class="ident">into</span>()
+        <span class="ident"><span class="self">Self</span>::into_pin</span>(<span class="ident"><span class="self">Self</span>::new_in</span>(<span class="ident">x</span>, <span class="ident">alloc</span>))
     }
 
     <span class="doccomment">/// Converts a `Box&lt;T&gt;` into a `Box&lt;[T]&gt;`</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This conversion does not allocate on the heap and happens in place.</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;box_into_boxed_slice&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;71582&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_boxed_slice</span>(<span class="ident">boxed</span>: <span class="self">Self</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">T</span>], <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">into_boxed_slice</span>(<span class="ident">boxed</span>: <span class="self">Self</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">T</span>], <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>) <span class="op">=</span> <span class="ident">Box::into_raw_with_allocator</span>(<span class="ident">boxed</span>);
         <span class="kw">unsafe</span> { <span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> [<span class="ident">T</span>; <span class="number">1</span>], <span class="ident">alloc</span>) }
     }
@@ -2393,8 +2582,12 @@
     <span class="doccomment">/// assert_eq!(Box::into_inner(c), 5);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;box_into_inner&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;80437&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="ident">boxed</span>: <span class="self">Self</span>) -&gt; <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="ident">boxed</span>: <span class="self">Self</span>) -&gt; <span class="ident">T</span>
+    <span class="kw">where</span>
+        <span class="self">Self</span>: ~<span class="kw">const</span> <span class="ident">Drop</span>,
+    {
         <span class="kw-2">*</span><span class="ident">boxed</span>
     }
 }
@@ -2608,10 +2801,48 @@
     <span class="doccomment">/// assert_eq!(*five, 5)</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;new_uninit&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;63291&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">assume_init</span>(<span class="self">self</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">assume_init</span>(<span class="self">self</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>) <span class="op">=</span> <span class="ident">Box::into_raw_with_allocator</span>(<span class="self">self</span>);
         <span class="kw">unsafe</span> { <span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>) }
+    }
+
+    <span class="doccomment">/// Writes the value and converts to `Box&lt;T, A&gt;`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This method converts the box similarly to [`Box::assume_init`] but</span>
+    <span class="doccomment">/// writes `value` into it before conversion thus guaranteeing safety.</span>
+    <span class="doccomment">/// In some scenarios use of this method may improve performance because</span>
+    <span class="doccomment">/// the compiler may be able to optimize copying from stack.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(new_uninit)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let big_box = Box::&lt;[usize; 1024]&gt;::new_uninit();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut array = [0; 1024];</span>
+    <span class="doccomment">/// for (i, place) in array.iter_mut().enumerate() {</span>
+    <span class="doccomment">///     *place = i;</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// // The optimizer may be able to elide this copy, so previous code writes</span>
+    <span class="doccomment">/// // to heap directly.</span>
+    <span class="doccomment">/// let big_box = Box::write(big_box, array);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// for (i, x) in big_box.iter().enumerate() {</span>
+    <span class="doccomment">///     assert_eq!(*x, i);</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;new_uninit&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;63291&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">mut</span> <span class="ident">boxed</span>: <span class="self">Self</span>, <span class="ident">value</span>: <span class="ident">T</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+        <span class="kw">unsafe</span> {
+            (<span class="kw-2">*</span><span class="ident">boxed</span>).<span class="ident">write</span>(<span class="ident">value</span>);
+            <span class="ident">boxed</span>.<span class="ident">assume_init</span>()
+        }
     }
 }
 
@@ -2752,8 +2983,9 @@
     <span class="doccomment">/// [memory layout]: self#memory-layout</span>
     <span class="doccomment">/// [`Layout`]: crate::Layout</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_in</span>(<span class="ident">raw</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_in</span>(<span class="ident">raw</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>: <span class="ident">A</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">Box</span>(<span class="kw">unsafe</span> { <span class="ident">Unique::new_unchecked</span>(<span class="ident">raw</span>) }, <span class="ident">alloc</span>)
     }
 
@@ -2849,8 +3081,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [memory layout]: self#memory-layout</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_raw_with_allocator</span>(<span class="ident">b</span>: <span class="self">Self</span>) -&gt; (<span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">A</span>) {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">into_raw_with_allocator</span>(<span class="ident">b</span>: <span class="self">Self</span>) -&gt; (<span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">A</span>) {
         <span class="kw">let</span> (<span class="ident">leaked</span>, <span class="ident">alloc</span>) <span class="op">=</span> <span class="ident">Box::into_unique</span>(<span class="ident">b</span>);
         (<span class="ident">leaked</span>.<span class="ident">as_ptr</span>(), <span class="ident">alloc</span>)
     }
@@ -2860,9 +3093,10 @@
         <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>,
         <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;use `Box::leak(b).into()` or `Unique::from(Box::leak(b))` instead&quot;</span>
     )]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_unique</span>(<span class="ident">b</span>: <span class="self">Self</span>) -&gt; (<span class="ident">Unique</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">A</span>) {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">into_unique</span>(<span class="ident">b</span>: <span class="self">Self</span>) -&gt; (<span class="ident">Unique</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">A</span>) {
         <span class="comment">// Box is recognized as a &quot;unique pointer&quot; by Stacked Borrows, but internally it is a</span>
         <span class="comment">// raw pointer for the type system. Turning it directly into a raw pointer would not be</span>
         <span class="comment">// recognized as &quot;releasing&quot; the unique pointer to permit aliased raw accesses,</span>
@@ -2878,8 +3112,9 @@
     <span class="doccomment">/// to call it as `Box::allocator(&amp;b)` instead of `b.allocator()`. This</span>
     <span class="doccomment">/// is so that there is no conflict with a method on the inner type.</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;allocator_api&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;32838&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allocator</span>(<span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">A</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">allocator</span>(<span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">A</span> {
         <span class="kw-2">&amp;</span><span class="ident">b</span>.<span class="number">1</span>
     }
 
@@ -2919,8 +3154,9 @@
     <span class="doccomment">/// assert_eq!(*static_ref, [4, 2, 3]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;box_leak&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.26.0&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">leak</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">b</span>: <span class="self">Self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">leak</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">b</span>: <span class="self">Self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span>
     <span class="kw">where</span>
         <span class="ident">A</span>: <span class="lifetime">&#39;a</span>,
     {
@@ -2933,7 +3169,8 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This is also available via [`From`].</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;box_into_pin&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;62370&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_pin</span>(<span class="ident">boxed</span>: <span class="self">Self</span>) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">into_pin</span>(<span class="ident">boxed</span>: <span class="self">Self</span>) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">A</span>: <span class="lifetime">&#39;static</span>,
     {
@@ -2945,7 +3182,8 @@
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="attribute">#[<span class="ident">may_dangle</span>]</span> <span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
+<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="attribute">#[<span class="ident">may_dangle</span>]</span> <span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="kw">const</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="comment">// FIXME: Do nothing, drop is currently performed by compiler.</span>
     }
@@ -3155,7 +3393,8 @@
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="kw">const</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">A</span>: <span class="lifetime">&#39;static</span>,
 {
@@ -3332,8 +3571,6 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Any</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="doccomment">/// Attempt to downcast the box to a concrete type.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
@@ -3351,21 +3588,48 @@
     <span class="doccomment">/// print_if_string(Box::new(my_string));</span>
     <span class="doccomment">/// print_if_string(Box::new(0i8));</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">downcast</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Any</span><span class="op">&gt;</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>, <span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() {
-            <span class="kw">unsafe</span> {
-                <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>): (<span class="kw-2">*mut</span> <span class="kw">dyn</span> <span class="ident">Any</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">Box::into_raw_with_allocator</span>(<span class="self">self</span>);
-                <span class="prelude-val">Ok</span>(<span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>))
-            }
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Err</span>(<span class="self">self</span>)
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() { <span class="kw">unsafe</span> { <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">downcast_unchecked</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>()) } } <span class="kw">else</span> { <span class="prelude-val">Err</span>(<span class="self">self</span>) }
+    }
+
+    <span class="doccomment">/// Downcasts the box to a concrete type.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// For a safe alternative see [`downcast`].</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(downcast_unchecked)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// use std::any::Any;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let x: Box&lt;dyn Any&gt; = Box::new(1_usize);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// unsafe {</span>
+    <span class="doccomment">///     assert_eq!(*x.downcast_unchecked::&lt;usize&gt;(), 1);</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Safety</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The contained value must be of type `T`. Calling this method</span>
+    <span class="doccomment">/// with the incorrect type is *undefined behavior*.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`downcast`]: Self::downcast</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;downcast_unchecked&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;90850&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">downcast_unchecked</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Any</span><span class="op">&gt;</span>(<span class="self">self</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+        <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">is</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>());
+        <span class="kw">unsafe</span> {
+            <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>): (<span class="kw-2">*mut</span> <span class="kw">dyn</span> <span class="ident">Any</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">Box::into_raw_with_allocator</span>(<span class="self">self</span>);
+            <span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>)
         }
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="ident">Send</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="doccomment">/// Attempt to downcast the box to a concrete type.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
@@ -3383,21 +3647,48 @@
     <span class="doccomment">/// print_if_string(Box::new(my_string));</span>
     <span class="doccomment">/// print_if_string(Box::new(0i8));</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">downcast</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Any</span><span class="op">&gt;</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>, <span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() {
-            <span class="kw">unsafe</span> {
-                <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>): (<span class="kw-2">*mut</span> (<span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="ident">Send</span>), <span class="kw">_</span>) <span class="op">=</span> <span class="ident">Box::into_raw_with_allocator</span>(<span class="self">self</span>);
-                <span class="prelude-val">Ok</span>(<span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>))
-            }
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Err</span>(<span class="self">self</span>)
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() { <span class="kw">unsafe</span> { <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">downcast_unchecked</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>()) } } <span class="kw">else</span> { <span class="prelude-val">Err</span>(<span class="self">self</span>) }
+    }
+
+    <span class="doccomment">/// Downcasts the box to a concrete type.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// For a safe alternative see [`downcast`].</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(downcast_unchecked)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// use std::any::Any;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let x: Box&lt;dyn Any + Send&gt; = Box::new(1_usize);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// unsafe {</span>
+    <span class="doccomment">///     assert_eq!(*x.downcast_unchecked::&lt;usize&gt;(), 1);</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Safety</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The contained value must be of type `T`. Calling this method</span>
+    <span class="doccomment">/// with the incorrect type is *undefined behavior*.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`downcast`]: Self::downcast</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;downcast_unchecked&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;90850&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">downcast_unchecked</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Any</span><span class="op">&gt;</span>(<span class="self">self</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+        <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">is</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>());
+        <span class="kw">unsafe</span> {
+            <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>): (<span class="kw-2">*mut</span> (<span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="ident">Send</span>), <span class="kw">_</span>) <span class="op">=</span> <span class="ident">Box::into_raw_with_allocator</span>(<span class="self">self</span>);
+            <span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>)
         }
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>, <span class="ident">A</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;box_send_sync_any_downcast&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.51.0&quot;</span>)]</span>
     <span class="doccomment">/// Attempt to downcast the box to a concrete type.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
@@ -3415,15 +3706,44 @@
     <span class="doccomment">/// print_if_string(Box::new(my_string));</span>
     <span class="doccomment">/// print_if_string(Box::new(0i8));</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;box_send_sync_any_downcast&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.51.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">downcast</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Any</span><span class="op">&gt;</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>, <span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() {
-            <span class="kw">unsafe</span> {
-                <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>): (<span class="kw-2">*mut</span> (<span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>), <span class="kw">_</span>) <span class="op">=</span>
-                    <span class="ident">Box::into_raw_with_allocator</span>(<span class="self">self</span>);
-                <span class="prelude-val">Ok</span>(<span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>))
-            }
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Err</span>(<span class="self">self</span>)
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() { <span class="kw">unsafe</span> { <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">downcast_unchecked</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>()) } } <span class="kw">else</span> { <span class="prelude-val">Err</span>(<span class="self">self</span>) }
+    }
+
+    <span class="doccomment">/// Downcasts the box to a concrete type.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// For a safe alternative see [`downcast`].</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(downcast_unchecked)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// use std::any::Any;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let x: Box&lt;dyn Any + Send + Sync&gt; = Box::new(1_usize);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// unsafe {</span>
+    <span class="doccomment">///     assert_eq!(*x.downcast_unchecked::&lt;usize&gt;(), 1);</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Safety</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The contained value must be of type `T`. Calling this method</span>
+    <span class="doccomment">/// with the incorrect type is *undefined behavior*.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`downcast`]: Self::downcast</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;downcast_unchecked&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;90850&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">downcast_unchecked</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Any</span><span class="op">&gt;</span>(<span class="self">self</span>) -&gt; <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+        <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">is</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>());
+        <span class="kw">unsafe</span> {
+            <span class="kw">let</span> (<span class="ident">raw</span>, <span class="ident">alloc</span>): (<span class="kw-2">*mut</span> (<span class="kw">dyn</span> <span class="ident">Any</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>), <span class="kw">_</span>) <span class="op">=</span>
+                <span class="ident">Box::into_raw_with_allocator</span>(<span class="self">self</span>);
+            <span class="ident">Box::from_raw_in</span>(<span class="ident">raw</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">alloc</span>)
         }
     }
 }
@@ -3453,7 +3773,8 @@
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="kw">const</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">T</span>;
 
     <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">T</span> {
@@ -3462,7 +3783,8 @@
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
+<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="kw">const</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">T</span> {
         <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>
     }
@@ -3641,7 +3963,8 @@
  *  could have a method to project a Pin&lt;T&gt; from it.
  */</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pin&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.33.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">Unpin</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">A</span>: <span class="lifetime">&#39;static</span> {}
+<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;92521&quot;</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="kw">const</span> <span class="ident">Unpin</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">A</span>: <span class="lifetime">&#39;static</span> {}
 
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;generator_trait&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;43122&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">G</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Generator</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Unpin</span>, <span class="ident">R</span>, <span class="ident">A</span>: <span class="ident">Allocator</span><span class="op">&gt;</span> <span class="ident">Generator</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">G</span>, <span class="ident">A</span><span class="op">&gt;</span>
@@ -3694,5 +4017,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="alloc" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="alloc" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
 </body></html>

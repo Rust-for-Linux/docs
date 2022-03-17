@@ -1,5 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;intrinsics.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>intrinsics.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../core/index.html'><div class='logo-container rust-logo'><img src='../../logo.svg' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;intrinsics.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>intrinsics.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../core/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -2323,6 +2324,47 @@
 <span id="2322">2322</span>
 <span id="2323">2323</span>
 <span id="2324">2324</span>
+<span id="2325">2325</span>
+<span id="2326">2326</span>
+<span id="2327">2327</span>
+<span id="2328">2328</span>
+<span id="2329">2329</span>
+<span id="2330">2330</span>
+<span id="2331">2331</span>
+<span id="2332">2332</span>
+<span id="2333">2333</span>
+<span id="2334">2334</span>
+<span id="2335">2335</span>
+<span id="2336">2336</span>
+<span id="2337">2337</span>
+<span id="2338">2338</span>
+<span id="2339">2339</span>
+<span id="2340">2340</span>
+<span id="2341">2341</span>
+<span id="2342">2342</span>
+<span id="2343">2343</span>
+<span id="2344">2344</span>
+<span id="2345">2345</span>
+<span id="2346">2346</span>
+<span id="2347">2347</span>
+<span id="2348">2348</span>
+<span id="2349">2349</span>
+<span id="2350">2350</span>
+<span id="2351">2351</span>
+<span id="2352">2352</span>
+<span id="2353">2353</span>
+<span id="2354">2354</span>
+<span id="2355">2355</span>
+<span id="2356">2356</span>
+<span id="2357">2357</span>
+<span id="2358">2358</span>
+<span id="2359">2359</span>
+<span id="2360">2360</span>
+<span id="2361">2361</span>
+<span id="2362">2362</span>
+<span id="2363">2363</span>
+<span id="2364">2364</span>
+<span id="2365">2365</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Compiler intrinsics.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! The corresponding definitions are in `compiler/rustc_codegen_llvm/src/intrinsic.rs`.</span>
@@ -3136,7 +3178,8 @@
     <span class="doccomment">/// The preferred alignment of a type.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This intrinsic does not have a stable counterpart.</span>
-    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_pref_align_of&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
+    <span class="doccomment">/// It&#39;s &quot;tracking issue&quot; is [#91971](https://github.com/rust-lang/rust/issues/91971).</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_pref_align_of&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;91971&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pref_align_of</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() -&gt; <span class="ident">usize</span>;
 
     <span class="doccomment">/// The size of the referenced value in bytes.</span>
@@ -3178,19 +3221,21 @@
     <span class="doccomment">/// This will statically either panic, or do nothing.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This intrinsic does not have a stable counterpart.</span>
-    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_assert_type&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_assert_type&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.59.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">assert_inhabited</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
 
     <span class="doccomment">/// A guard for unsafe functions that cannot ever be executed if `T` does not permit</span>
     <span class="doccomment">/// zero-initialization: This will statically either panic, or do nothing.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This intrinsic does not have a stable counterpart.</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_assert_type2&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">assert_zero_valid</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
 
     <span class="doccomment">/// A guard for unsafe functions that cannot ever be executed if `T` has invalid</span>
     <span class="doccomment">/// bit patterns: This will statically either panic, or do nothing.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This intrinsic does not have a stable counterpart.</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_assert_type2&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">assert_uninit_valid</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
 
     <span class="doccomment">/// Gets a reference to a static `Location` indicating where it was called.</span>
@@ -4242,7 +4287,7 @@
 
     <span class="doccomment">/// Determines whether the raw bytes of the two values are equal.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The is particularly handy for arrays, since it allows things like just</span>
+    <span class="doccomment">/// This is particularly handy for arrays, since it allows things like just</span>
     <span class="doccomment">/// comparing `i96`s instead of forcing `alloca`s for `[6 x i16]`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Above some backend-decided threshold this will emit calls to `memcmp`,</span>
@@ -4262,6 +4307,7 @@
     <span class="doccomment">/// See documentation of [`std::hint::black_box`] for details.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`std::hint::black_box`]: crate::hint::black_box</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_black_box&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">black_box</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">dummy</span>: <span class="ident">T</span>) -&gt; <span class="ident">T</span>;
 }
 
@@ -4393,8 +4439,8 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
     <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">compiletime_check</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">_src</span>: <span class="kw-2">*const</span> <span class="ident">T</span>, <span class="ident">_dst</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">_count</span>: <span class="ident">usize</span>) {}
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
-    <span class="comment">// SAFETY: runtime debug-assertions are a best-effort basis; it&#39;s fine to</span>
-    <span class="comment">// not do them during compile time</span>
+    <span class="comment">// SAFETY: As per our safety precondition, we may assume that the `abort` above is never reached.</span>
+    <span class="comment">// Therefore, compiletime_check and runtime_check are observably equivalent.</span>
     <span class="kw">unsafe</span> {
         <span class="ident">const_eval_select</span>((<span class="ident">src</span>, <span class="ident">dst</span>, <span class="ident">count</span>), <span class="ident">compiletime_check</span>, <span class="ident">runtime_check</span>);
     }
@@ -4484,8 +4530,8 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
     <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">compiletime_check</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">_src</span>: <span class="kw-2">*const</span> <span class="ident">T</span>, <span class="ident">_dst</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>) {}
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
-    <span class="comment">// SAFETY: runtime debug-assertions are a best-effort basis; it&#39;s fine to</span>
-    <span class="comment">// not do them during compile time</span>
+    <span class="comment">// SAFETY: As per our safety precondition, we may assume that the `abort` above is never reached.</span>
+    <span class="comment">// Therefore, compiletime_check and runtime_check are observably equivalent.</span>
     <span class="kw">unsafe</span> {
         <span class="ident">const_eval_select</span>((<span class="ident">src</span>, <span class="ident">dst</span>), <span class="ident">compiletime_check</span>, <span class="ident">runtime_check</span>);
     }
@@ -4567,13 +4613,29 @@
 <span class="doccomment">/// assert_eq!(*v, 42);</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ptr_write&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;86302&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write_bytes</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">u8</span>, <span class="ident">count</span>: <span class="ident">usize</span>) {
+<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write_bytes</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">u8</span>, <span class="ident">count</span>: <span class="ident">usize</span>) {
     <span class="kw">extern</span> <span class="string">&quot;rust-intrinsic&quot;</span> {
+        <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_ptr_write&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;86302&quot;</span>)]</span>
         <span class="kw">fn</span> <span class="ident">write_bytes</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">dst</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">val</span>: <span class="ident">u8</span>, <span class="ident">count</span>: <span class="ident">usize</span>);
     }
 
-    <span class="macro">debug_assert!</span>(<span class="ident">is_aligned_and_not_null</span>(<span class="ident">dst</span>), <span class="string">&quot;attempt to write to unaligned or null pointer&quot;</span>);
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">runtime_check</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>) {
+        <span class="macro">debug_assert!</span>(
+            <span class="ident">is_aligned_and_not_null</span>(<span class="ident">ptr</span>),
+            <span class="string">&quot;attempt to write to unaligned or null pointer&quot;</span>
+        );
+    }
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
+    <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">compiletime_check</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">_ptr</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>) {}
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">debug_assertions</span>)]</span>
+    <span class="comment">// SAFETY: runtime debug-assertions are a best-effort basis; it&#39;s fine to</span>
+    <span class="comment">// not do them during compile time</span>
+    <span class="kw">unsafe</span> {
+        <span class="ident">const_eval_select</span>((<span class="ident">dst</span>,), <span class="ident">compiletime_check</span>, <span class="ident">runtime_check</span>);
+    }
 
     <span class="comment">// SAFETY: the safety contract for `write_bytes` must be upheld by the caller.</span>
     <span class="kw">unsafe</span> { <span class="ident">write_bytes</span>(<span class="ident">dst</span>, <span class="ident">val</span>, <span class="ident">count</span>) }
@@ -4596,19 +4658,40 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Safety</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// This intrinsic allows breaking [referential transparency] in `const fn`</span>
-<span class="doccomment">/// and is therefore `unsafe`.</span>
+<span class="doccomment">/// The two functions must behave observably equivalent. Safe code in other</span>
+<span class="doccomment">/// crates may assume that calling a `const fn` at compile-time and at run-time</span>
+<span class="doccomment">/// produces the same result. A function that produces a different result when</span>
+<span class="doccomment">/// evaluated at run-time, or has any other observable side-effects, is</span>
+<span class="doccomment">/// *unsound*.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Code that uses this intrinsic must be extremely careful to ensure that</span>
-<span class="doccomment">/// `const fn`s remain referentially-transparent independently of when they</span>
-<span class="doccomment">/// are evaluated.</span>
+<span class="doccomment">/// Here is an example of how this could cause a problem:</span>
+<span class="doccomment">/// ```no_run</span>
+<span class="doccomment">/// #![feature(const_eval_select)]</span>
+<span class="doccomment">/// use std::hint::unreachable_unchecked;</span>
+<span class="doccomment">/// use std::intrinsics::const_eval_select;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// The Rust compiler assumes that it is sound to replace a call to a `const</span>
-<span class="doccomment">/// fn` with the result produced by evaluating it at compile-time. If</span>
-<span class="doccomment">/// evaluating the function at run-time were to produce a different result,</span>
-<span class="doccomment">/// or have any other observable side-effects, the behavior is undefined.</span>
+<span class="doccomment">/// // Crate A</span>
+<span class="doccomment">/// pub const fn inconsistent() -&gt; i32 {</span>
+<span class="doccomment">///     fn runtime() -&gt; i32 { 1 }</span>
+<span class="doccomment">///     const fn compiletime() -&gt; i32 { 2 }</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [referential transparency]: https://en.wikipedia.org/wiki/Referential_transparency</span>
+<span class="doccomment">///     unsafe {</span>
+<span class="comment">//          // ⚠ This code violates the required equivalence of `compiletime`</span>
+<span class="doccomment">///         // and `runtime`.</span>
+<span class="doccomment">///         const_eval_select((), compiletime, runtime)</span>
+<span class="doccomment">///     }</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// // Crate B</span>
+<span class="doccomment">/// const X: i32 = inconsistent();</span>
+<span class="doccomment">/// let x = inconsistent();</span>
+<span class="doccomment">/// if x != X { unsafe { unreachable_unchecked(); }}</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This code causes Undefined Behavior when being run, since the</span>
+<span class="doccomment">/// `unreachable_unchecked` is actually being reached. The bug is in *crate A*,</span>
+<span class="doccomment">/// which violates the principle that a `const fn` must behave the same at</span>
+<span class="doccomment">/// compile-time and at run-time. The unsafe code in crate B is fine.</span>
 <span class="attribute">#[<span class="ident">unstable</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_eval_select&quot;</span>,
     <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>,
@@ -4648,5 +4731,5 @@
     <span class="ident">called_in_const</span>.<span class="ident">call_once</span>(<span class="ident">arg</span>)
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
 </body></html>

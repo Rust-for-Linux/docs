@@ -1,5 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;result.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>result.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../core/index.html'><div class='logo-container rust-logo'><img src='../../logo.svg' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;result.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>result.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../core/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1913,6 +1914,105 @@
 <span id="1912">1912</span>
 <span id="1913">1913</span>
 <span id="1914">1914</span>
+<span id="1915">1915</span>
+<span id="1916">1916</span>
+<span id="1917">1917</span>
+<span id="1918">1918</span>
+<span id="1919">1919</span>
+<span id="1920">1920</span>
+<span id="1921">1921</span>
+<span id="1922">1922</span>
+<span id="1923">1923</span>
+<span id="1924">1924</span>
+<span id="1925">1925</span>
+<span id="1926">1926</span>
+<span id="1927">1927</span>
+<span id="1928">1928</span>
+<span id="1929">1929</span>
+<span id="1930">1930</span>
+<span id="1931">1931</span>
+<span id="1932">1932</span>
+<span id="1933">1933</span>
+<span id="1934">1934</span>
+<span id="1935">1935</span>
+<span id="1936">1936</span>
+<span id="1937">1937</span>
+<span id="1938">1938</span>
+<span id="1939">1939</span>
+<span id="1940">1940</span>
+<span id="1941">1941</span>
+<span id="1942">1942</span>
+<span id="1943">1943</span>
+<span id="1944">1944</span>
+<span id="1945">1945</span>
+<span id="1946">1946</span>
+<span id="1947">1947</span>
+<span id="1948">1948</span>
+<span id="1949">1949</span>
+<span id="1950">1950</span>
+<span id="1951">1951</span>
+<span id="1952">1952</span>
+<span id="1953">1953</span>
+<span id="1954">1954</span>
+<span id="1955">1955</span>
+<span id="1956">1956</span>
+<span id="1957">1957</span>
+<span id="1958">1958</span>
+<span id="1959">1959</span>
+<span id="1960">1960</span>
+<span id="1961">1961</span>
+<span id="1962">1962</span>
+<span id="1963">1963</span>
+<span id="1964">1964</span>
+<span id="1965">1965</span>
+<span id="1966">1966</span>
+<span id="1967">1967</span>
+<span id="1968">1968</span>
+<span id="1969">1969</span>
+<span id="1970">1970</span>
+<span id="1971">1971</span>
+<span id="1972">1972</span>
+<span id="1973">1973</span>
+<span id="1974">1974</span>
+<span id="1975">1975</span>
+<span id="1976">1976</span>
+<span id="1977">1977</span>
+<span id="1978">1978</span>
+<span id="1979">1979</span>
+<span id="1980">1980</span>
+<span id="1981">1981</span>
+<span id="1982">1982</span>
+<span id="1983">1983</span>
+<span id="1984">1984</span>
+<span id="1985">1985</span>
+<span id="1986">1986</span>
+<span id="1987">1987</span>
+<span id="1988">1988</span>
+<span id="1989">1989</span>
+<span id="1990">1990</span>
+<span id="1991">1991</span>
+<span id="1992">1992</span>
+<span id="1993">1993</span>
+<span id="1994">1994</span>
+<span id="1995">1995</span>
+<span id="1996">1996</span>
+<span id="1997">1997</span>
+<span id="1998">1998</span>
+<span id="1999">1999</span>
+<span id="2000">2000</span>
+<span id="2001">2001</span>
+<span id="2002">2002</span>
+<span id="2003">2003</span>
+<span id="2004">2004</span>
+<span id="2005">2005</span>
+<span id="2006">2006</span>
+<span id="2007">2007</span>
+<span id="2008">2008</span>
+<span id="2009">2009</span>
+<span id="2010">2010</span>
+<span id="2011">2011</span>
+<span id="2012">2012</span>
+<span id="2013">2013</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Error handling with the `Result` type.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! [`Result&lt;T, E&gt;`][`Result`] is the type used for returning and propagating</span>
@@ -2478,64 +2578,6 @@
         <span class="op">!</span><span class="self">self</span>.<span class="ident">is_ok</span>()
     }
 
-    <span class="doccomment">/// Returns `true` if the result is an [`Ok`] value containing the given value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(option_result_contains)]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Ok(2);</span>
-    <span class="doccomment">/// assert_eq!(x.contains(&amp;2), true);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Ok(3);</span>
-    <span class="doccomment">/// assert_eq!(x.contains(&amp;2), false);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Err(&quot;Some error message&quot;);</span>
-    <span class="doccomment">/// assert_eq!(x.contains(&amp;2), false);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;option_result_contains&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;62358&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">x</span>: <span class="kw-2">&amp;</span><span class="ident">U</span>) -&gt; <span class="ident">bool</span>
-    <span class="kw">where</span>
-        <span class="ident">U</span>: <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
-    {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">y</span>) =&gt; <span class="ident">x</span> <span class="op">==</span> <span class="ident">y</span>,
-            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="bool-val">false</span>,
-        }
-    }
-
-    <span class="doccomment">/// Returns `true` if the result is an [`Err`] value containing the given value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(result_contains_err)]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Ok(2);</span>
-    <span class="doccomment">/// assert_eq!(x.contains_err(&amp;&quot;Some error message&quot;), false);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Err(&quot;Some error message&quot;);</span>
-    <span class="doccomment">/// assert_eq!(x.contains_err(&amp;&quot;Some error message&quot;), true);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Err(&quot;Some other error message&quot;);</span>
-    <span class="doccomment">/// assert_eq!(x.contains_err(&amp;&quot;Some error message&quot;), false);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_contains_err&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;62358&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains_err</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span>) -&gt; <span class="ident">bool</span>
-    <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>,
-    {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="bool-val">false</span>,
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">f</span> <span class="op">==</span> <span class="ident">e</span>,
-        }
-    }
-
     <span class="comment">/////////////////////////////////////////////////////////////////////////</span>
     <span class="comment">// Adapter for each variant</span>
     <span class="comment">/////////////////////////////////////////////////////////////////////////</span>
@@ -2769,6 +2811,103 @@
         }
     }
 
+    <span class="doccomment">/// Calls the provided closure with a reference to the contained value (if [`Ok`]).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(result_option_inspect)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let x: u8 = &quot;4&quot;</span>
+    <span class="doccomment">///     .parse::&lt;u8&gt;()</span>
+    <span class="doccomment">///     .inspect(|x| println!(&quot;original: {}&quot;, x))</span>
+    <span class="doccomment">///     .map(|x| x.pow(3))</span>
+    <span class="doccomment">///     .expect(&quot;failed to parse number&quot;);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_option_inspect&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;91345&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inspect</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>)<span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="self">Self</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="kw-2">ref</span> <span class="ident">t</span>) <span class="op">=</span> <span class="self">self</span> {
+            <span class="ident">f</span>(<span class="ident">t</span>);
+        }
+
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Calls the provided closure with a reference to the contained error (if [`Err`]).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(result_option_inspect)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// use std::{fs, io};</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// fn read() -&gt; io::Result&lt;String&gt; {</span>
+    <span class="doccomment">///     fs::read_to_string(&quot;address.txt&quot;)</span>
+    <span class="doccomment">///         .inspect_err(|e| eprintln!(&quot;failed to read file: {}&quot;, e))</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_option_inspect&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;91345&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inspect_err</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="ident">E</span>)<span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="self">Self</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span> <span class="self">self</span> {
+            <span class="ident">f</span>(<span class="ident">e</span>);
+        }
+
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Converts from `Result&lt;T, E&gt;` (or `&amp;Result&lt;T, E&gt;`) to `Result&lt;&amp;&lt;T as Deref&gt;::Target, &amp;E&gt;`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Coerces the [`Ok`] variant of the original [`Result`] via [`Deref`](crate::ops::Deref)</span>
+    <span class="doccomment">/// and returns the new [`Result`].</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// let x: Result&lt;String, u32&gt; = Ok(&quot;hello&quot;.to_string());</span>
+    <span class="doccomment">/// let y: Result&lt;&amp;str, &amp;u32&gt; = Ok(&quot;hello&quot;);</span>
+    <span class="doccomment">/// assert_eq!(x.as_deref(), y);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let x: Result&lt;String, u32&gt; = Err(42);</span>
+    <span class="doccomment">/// let y: Result&lt;&amp;str, &amp;u32&gt; = Err(&amp;42);</span>
+    <span class="doccomment">/// assert_eq!(x.as_deref(), y);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inner_deref&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.47.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">T::Target</span>, <span class="kw-2">&amp;</span><span class="ident">E</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">Deref</span>,
+    {
+        <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">deref</span>())
+    }
+
+    <span class="doccomment">/// Converts from `Result&lt;T, E&gt;` (or `&amp;mut Result&lt;T, E&gt;`) to `Result&lt;&amp;mut &lt;T as DerefMut&gt;::Target, &amp;mut E&gt;`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Coerces the [`Ok`] variant of the original [`Result`] via [`DerefMut`](crate::ops::DerefMut)</span>
+    <span class="doccomment">/// and returns the new [`Result`].</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// let mut s = &quot;HELLO&quot;.to_string();</span>
+    <span class="doccomment">/// let mut x: Result&lt;String, u32&gt; = Ok(&quot;hello&quot;.to_string());</span>
+    <span class="doccomment">/// let y: Result&lt;&amp;mut str, &amp;mut u32&gt; = Ok(&amp;mut s);</span>
+    <span class="doccomment">/// assert_eq!(x.as_deref_mut().map(|x| { x.make_ascii_uppercase(); x }), y);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut i = 42;</span>
+    <span class="doccomment">/// let mut x: Result&lt;String, u32&gt; = Err(42);</span>
+    <span class="doccomment">/// let y: Result&lt;&amp;mut str, &amp;mut u32&gt; = Err(&amp;mut i);</span>
+    <span class="doccomment">/// assert_eq!(x.as_deref_mut().map(|x| { x.make_ascii_uppercase(); x }), y);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inner_deref&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.47.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_deref_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">T::Target</span>, <span class="kw-2">&amp;mut</span> <span class="ident">E</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">DerefMut</span>,
+    {
+        <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">deref_mut</span>())
+    }
+
     <span class="comment">/////////////////////////////////////////////////////////////////////////</span>
     <span class="comment">// Iterator constructors</span>
     <span class="comment">/////////////////////////////////////////////////////////////////////////</span>
@@ -2817,6 +2956,253 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">iter_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">IterMut</span> { <span class="ident">inner</span>: <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">ok</span>() }
+    }
+
+    <span class="comment">/////////////////////////////////////////////////////////////////////////</span>
+    <span class="comment">// Extract a value</span>
+    <span class="comment">/////////////////////////////////////////////////////////////////////////</span>
+
+    <span class="doccomment">/// Returns the contained [`Ok`] value, consuming the `self` value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Panics if the value is an [`Err`], with a panic message including the</span>
+    <span class="doccomment">/// passed message, and the content of the [`Err`].</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Basic usage:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```should_panic</span>
+    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Err(&quot;emergency failure&quot;);</span>
+    <span class="doccomment">/// x.expect(&quot;Testing expect&quot;); // panics with `Testing expect: emergency failure`</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_expect&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.4.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">expect</span>(<span class="self">self</span>, <span class="ident">msg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">T</span>
+    <span class="kw">where</span>
+        <span class="ident">E</span>: <span class="ident">fmt::Debug</span>,
+    {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>,
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">unwrap_failed</span>(<span class="ident">msg</span>, <span class="kw-2">&amp;</span><span class="ident">e</span>),
+        }
+    }
+
+    <span class="doccomment">/// Returns the contained [`Ok`] value, consuming the `self` value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Because this function may panic, its use is generally discouraged.</span>
+    <span class="doccomment">/// Instead, prefer to use pattern matching and handle the [`Err`]</span>
+    <span class="doccomment">/// case explicitly, or call [`unwrap_or`], [`unwrap_or_else`], or</span>
+    <span class="doccomment">/// [`unwrap_or_default`].</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`unwrap_or`]: Result::unwrap_or</span>
+    <span class="doccomment">/// [`unwrap_or_else`]: Result::unwrap_or_else</span>
+    <span class="doccomment">/// [`unwrap_or_default`]: Result::unwrap_or_default</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Panics if the value is an [`Err`], with a panic message provided by the</span>
+    <span class="doccomment">/// [`Err`]&#39;s value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Basic usage:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Ok(2);</span>
+    <span class="doccomment">/// assert_eq!(x.unwrap(), 2);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```should_panic</span>
+    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Err(&quot;emergency failure&quot;);</span>
+    <span class="doccomment">/// x.unwrap(); // panics with `emergency failure`</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unwrap</span>(<span class="self">self</span>) -&gt; <span class="ident">T</span>
+    <span class="kw">where</span>
+        <span class="ident">E</span>: <span class="ident">fmt::Debug</span>,
+    {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>,
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">unwrap_failed</span>(<span class="string">&quot;called `Result::unwrap()` on an `Err` value&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">e</span>),
+        }
+    }
+
+    <span class="doccomment">/// Returns the contained [`Ok`] value or a default</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Consumes the `self` argument then, if [`Ok`], returns the contained</span>
+    <span class="doccomment">/// value, otherwise if [`Err`], returns the default value for that</span>
+    <span class="doccomment">/// type.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Converts a string to an integer, turning poorly-formed strings</span>
+    <span class="doccomment">/// into 0 (the default value for integers). [`parse`] converts</span>
+    <span class="doccomment">/// a string to any other type that implements [`FromStr`], returning an</span>
+    <span class="doccomment">/// [`Err`] on error.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// let good_year_from_input = &quot;1909&quot;;</span>
+    <span class="doccomment">/// let bad_year_from_input = &quot;190blarg&quot;;</span>
+    <span class="doccomment">/// let good_year = good_year_from_input.parse().unwrap_or_default();</span>
+    <span class="doccomment">/// let bad_year = bad_year_from_input.parse().unwrap_or_default();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(1909, good_year);</span>
+    <span class="doccomment">/// assert_eq!(0, bad_year);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`parse`]: str::parse</span>
+    <span class="doccomment">/// [`FromStr`]: crate::str::FromStr</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_unwrap_or_default&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.16.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unwrap_or_default</span>(<span class="self">self</span>) -&gt; <span class="ident">T</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">Default</span>,
+    {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">x</span>) =&gt; <span class="ident">x</span>,
+            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="ident">Default::default</span>(),
+        }
+    }
+
+    <span class="doccomment">/// Returns the contained [`Err`] value, consuming the `self` value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Panics if the value is an [`Ok`], with a panic message including the</span>
+    <span class="doccomment">/// passed message, and the content of the [`Ok`].</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Basic usage:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```should_panic</span>
+    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Ok(10);</span>
+    <span class="doccomment">/// x.expect_err(&quot;Testing expect_err&quot;); // panics with `Testing expect_err: 10`</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_expect_err&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.17.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">expect_err</span>(<span class="self">self</span>, <span class="ident">msg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">E</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">fmt::Debug</span>,
+    {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">t</span>) =&gt; <span class="ident">unwrap_failed</span>(<span class="ident">msg</span>, <span class="kw-2">&amp;</span><span class="ident">t</span>),
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">e</span>,
+        }
+    }
+
+    <span class="doccomment">/// Returns the contained [`Err`] value, consuming the `self` value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Panics if the value is an [`Ok`], with a custom panic message provided</span>
+    <span class="doccomment">/// by the [`Ok`]&#39;s value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```should_panic</span>
+    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Ok(2);</span>
+    <span class="doccomment">/// x.unwrap_err(); // panics with `2`</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Err(&quot;emergency failure&quot;);</span>
+    <span class="doccomment">/// assert_eq!(x.unwrap_err(), &quot;emergency failure&quot;);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unwrap_err</span>(<span class="self">self</span>) -&gt; <span class="ident">E</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">fmt::Debug</span>,
+    {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">t</span>) =&gt; <span class="ident">unwrap_failed</span>(<span class="string">&quot;called `Result::unwrap_err()` on an `Ok` value&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">t</span>),
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">e</span>,
+        }
+    }
+
+    <span class="doccomment">/// Returns the contained [`Ok`] value, but never panics.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Unlike [`unwrap`], this method is known to never panic on the</span>
+    <span class="doccomment">/// result types it is implemented for. Therefore, it can be used</span>
+    <span class="doccomment">/// instead of `unwrap` as a maintainability safeguard that will fail</span>
+    <span class="doccomment">/// to compile if the error type of the `Result` is later changed</span>
+    <span class="doccomment">/// to an error that can actually occur.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`unwrap`]: Result::unwrap</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Basic usage:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// # #![feature(never_type)]</span>
+    <span class="doccomment">/// # #![feature(unwrap_infallible)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// fn only_good_news() -&gt; Result&lt;String, !&gt; {</span>
+    <span class="doccomment">///     Ok(&quot;this is fine&quot;.into())</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let s: String = only_good_news().into_ok();</span>
+    <span class="doccomment">/// println!(&quot;{}&quot;, s);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unwrap_infallible&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;newly added&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;61695&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_ok</span>(<span class="self">self</span>) -&gt; <span class="ident">T</span>
+    <span class="kw">where</span>
+        <span class="ident">E</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="op">!</span><span class="op">&gt;</span>,
+    {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">x</span>) =&gt; <span class="ident">x</span>,
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">e</span>.<span class="ident">into</span>(),
+        }
+    }
+
+    <span class="doccomment">/// Returns the contained [`Err`] value, but never panics.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Unlike [`unwrap_err`], this method is known to never panic on the</span>
+    <span class="doccomment">/// result types it is implemented for. Therefore, it can be used</span>
+    <span class="doccomment">/// instead of `unwrap_err` as a maintainability safeguard that will fail</span>
+    <span class="doccomment">/// to compile if the ok type of the `Result` is later changed</span>
+    <span class="doccomment">/// to a type that can actually occur.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`unwrap_err`]: Result::unwrap_err</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Basic usage:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// # #![feature(never_type)]</span>
+    <span class="doccomment">/// # #![feature(unwrap_infallible)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// fn only_bad_news() -&gt; Result&lt;!, String&gt; {</span>
+    <span class="doccomment">///     Err(&quot;Oops, it failed&quot;.into())</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let error: String = only_bad_news().into_err();</span>
+    <span class="doccomment">/// println!(&quot;{}&quot;, error);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unwrap_infallible&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;newly added&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;61695&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_err</span>(<span class="self">self</span>) -&gt; <span class="ident">E</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="op">!</span><span class="op">&gt;</span>,
+    {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">x</span>) =&gt; <span class="ident">x</span>.<span class="ident">into</span>(),
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">e</span>,
+        }
     }
 
     <span class="comment">////////////////////////////////////////////////////////////////////////</span>
@@ -3062,365 +3448,155 @@
             <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">e</span>,
         }
     }
+
+    <span class="comment">/////////////////////////////////////////////////////////////////////////</span>
+    <span class="comment">// Misc or niche</span>
+    <span class="comment">/////////////////////////////////////////////////////////////////////////</span>
+
+    <span class="doccomment">/// Returns `true` if the result is an [`Ok`] value containing the given value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(option_result_contains)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Ok(2);</span>
+    <span class="doccomment">/// assert_eq!(x.contains(&amp;2), true);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Ok(3);</span>
+    <span class="doccomment">/// assert_eq!(x.contains(&amp;2), false);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Err(&quot;Some error message&quot;);</span>
+    <span class="doccomment">/// assert_eq!(x.contains(&amp;2), false);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;option_result_contains&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;62358&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">x</span>: <span class="kw-2">&amp;</span><span class="ident">U</span>) -&gt; <span class="ident">bool</span>
+    <span class="kw">where</span>
+        <span class="ident">U</span>: <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+    {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">y</span>) =&gt; <span class="ident">x</span> <span class="op">==</span> <span class="ident">y</span>,
+            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="bool-val">false</span>,
+        }
+    }
+
+    <span class="doccomment">/// Returns `true` if the result is an [`Err`] value containing the given value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(result_contains_err)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Ok(2);</span>
+    <span class="doccomment">/// assert_eq!(x.contains_err(&amp;&quot;Some error message&quot;), false);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Err(&quot;Some error message&quot;);</span>
+    <span class="doccomment">/// assert_eq!(x.contains_err(&amp;&quot;Some error message&quot;), true);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Err(&quot;Some other error message&quot;);</span>
+    <span class="doccomment">/// assert_eq!(x.contains_err(&amp;&quot;Some error message&quot;), false);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">must_use</span>]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_contains_err&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;62358&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains_err</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span>) -&gt; <span class="ident">bool</span>
+    <span class="kw">where</span>
+        <span class="ident">F</span>: <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>,
+    {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="bool-val">false</span>,
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">f</span> <span class="op">==</span> <span class="ident">e</span>,
+        }
+    }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Maps a `Result&lt;&amp;T, E&gt;` to a `Result&lt;T, E&gt;` by copying the contents of the</span>
     <span class="doccomment">/// `Ok` part.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(result_copied)]</span>
     <span class="doccomment">/// let val = 12;</span>
     <span class="doccomment">/// let x: Result&lt;&amp;i32, i32&gt; = Ok(&amp;val);</span>
     <span class="doccomment">/// assert_eq!(x, Ok(&amp;12));</span>
     <span class="doccomment">/// let copied = x.copied();</span>
     <span class="doccomment">/// assert_eq!(copied, Ok(12));</span>
     <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_copied&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;newly added&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;63168&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">copied</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_copied&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.59.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">copied</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">Copy</span>,
+    {
         <span class="self">self</span>.<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>)
     }
-}
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Maps a `Result&lt;&amp;mut T, E&gt;` to a `Result&lt;T, E&gt;` by copying the contents of the</span>
-    <span class="doccomment">/// `Ok` part.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(result_copied)]</span>
-    <span class="doccomment">/// let mut val = 12;</span>
-    <span class="doccomment">/// let x: Result&lt;&amp;mut i32, i32&gt; = Ok(&amp;mut val);</span>
-    <span class="doccomment">/// assert_eq!(x, Ok(&amp;mut 12));</span>
-    <span class="doccomment">/// let copied = x.copied();</span>
-    <span class="doccomment">/// assert_eq!(copied, Ok(12));</span>
-    <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_copied&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;newly added&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;63168&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">copied</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">&amp;mut</span> <span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>)
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Clone</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Maps a `Result&lt;&amp;T, E&gt;` to a `Result&lt;T, E&gt;` by cloning the contents of the</span>
     <span class="doccomment">/// `Ok` part.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(result_cloned)]</span>
     <span class="doccomment">/// let val = 12;</span>
     <span class="doccomment">/// let x: Result&lt;&amp;i32, i32&gt; = Ok(&amp;val);</span>
     <span class="doccomment">/// assert_eq!(x, Ok(&amp;12));</span>
     <span class="doccomment">/// let cloned = x.cloned();</span>
     <span class="doccomment">/// assert_eq!(cloned, Ok(12));</span>
     <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_cloned&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;newly added&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;63168&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cloned</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_cloned&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.59.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cloned</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">Clone</span>,
+    {
         <span class="self">self</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">clone</span>())
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Clone</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Maps a `Result&lt;&amp;mut T, E&gt;` to a `Result&lt;T, E&gt;` by copying the contents of the</span>
+    <span class="doccomment">/// `Ok` part.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// let mut val = 12;</span>
+    <span class="doccomment">/// let x: Result&lt;&amp;mut i32, i32&gt; = Ok(&amp;mut val);</span>
+    <span class="doccomment">/// assert_eq!(x, Ok(&amp;mut 12));</span>
+    <span class="doccomment">/// let copied = x.copied();</span>
+    <span class="doccomment">/// assert_eq!(copied, Ok(12));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_copied&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.59.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">copied</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">Copy</span>,
+    {
+        <span class="self">self</span>.<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">&amp;mut</span> <span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>)
+    }
+
     <span class="doccomment">/// Maps a `Result&lt;&amp;mut T, E&gt;` to a `Result&lt;T, E&gt;` by cloning the contents of the</span>
     <span class="doccomment">/// `Ok` part.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(result_cloned)]</span>
     <span class="doccomment">/// let mut val = 12;</span>
     <span class="doccomment">/// let x: Result&lt;&amp;mut i32, i32&gt; = Ok(&amp;mut val);</span>
     <span class="doccomment">/// assert_eq!(x, Ok(&amp;mut 12));</span>
     <span class="doccomment">/// let cloned = x.cloned();</span>
     <span class="doccomment">/// assert_eq!(cloned, Ok(12));</span>
     <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_cloned&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;newly added&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;63168&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cloned</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_cloned&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.59.0&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cloned</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">Clone</span>,
+    {
         <span class="self">self</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">clone</span>())
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span>: <span class="ident">fmt::Debug</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Returns the contained [`Ok`] value, consuming the `self` value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Panics if the value is an [`Err`], with a panic message including the</span>
-    <span class="doccomment">/// passed message, and the content of the [`Err`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Basic usage:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```should_panic</span>
-    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Err(&quot;emergency failure&quot;);</span>
-    <span class="doccomment">/// x.expect(&quot;Testing expect&quot;); // panics with `Testing expect: emergency failure`</span>
-    <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
-    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_expect&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.4.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">expect</span>(<span class="self">self</span>, <span class="ident">msg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">T</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>,
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">unwrap_failed</span>(<span class="ident">msg</span>, <span class="kw-2">&amp;</span><span class="ident">e</span>),
-        }
-    }
-
-    <span class="doccomment">/// Returns the contained [`Ok`] value, consuming the `self` value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Because this function may panic, its use is generally discouraged.</span>
-    <span class="doccomment">/// Instead, prefer to use pattern matching and handle the [`Err`]</span>
-    <span class="doccomment">/// case explicitly, or call [`unwrap_or`], [`unwrap_or_else`], or</span>
-    <span class="doccomment">/// [`unwrap_or_default`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`unwrap_or`]: Result::unwrap_or</span>
-    <span class="doccomment">/// [`unwrap_or_else`]: Result::unwrap_or_else</span>
-    <span class="doccomment">/// [`unwrap_or_default`]: Result::unwrap_or_default</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Panics if the value is an [`Err`], with a panic message provided by the</span>
-    <span class="doccomment">/// [`Err`]&#39;s value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Basic usage:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Ok(2);</span>
-    <span class="doccomment">/// assert_eq!(x.unwrap(), 2);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```should_panic</span>
-    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Err(&quot;emergency failure&quot;);</span>
-    <span class="doccomment">/// x.unwrap(); // panics with `emergency failure`</span>
-    <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
-    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unwrap</span>(<span class="self">self</span>) -&gt; <span class="ident">T</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">t</span>) =&gt; <span class="ident">t</span>,
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">unwrap_failed</span>(<span class="string">&quot;called `Result::unwrap()` on an `Err` value&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">e</span>),
-        }
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">fmt::Debug</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Returns the contained [`Err`] value, consuming the `self` value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Panics if the value is an [`Ok`], with a panic message including the</span>
-    <span class="doccomment">/// passed message, and the content of the [`Ok`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Basic usage:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```should_panic</span>
-    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Ok(10);</span>
-    <span class="doccomment">/// x.expect_err(&quot;Testing expect_err&quot;); // panics with `Testing expect_err: 10`</span>
-    <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
-    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_expect_err&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.17.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">expect_err</span>(<span class="self">self</span>, <span class="ident">msg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">E</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">t</span>) =&gt; <span class="ident">unwrap_failed</span>(<span class="ident">msg</span>, <span class="kw-2">&amp;</span><span class="ident">t</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">e</span>,
-        }
-    }
-
-    <span class="doccomment">/// Returns the contained [`Err`] value, consuming the `self` value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Panics if the value is an [`Ok`], with a custom panic message provided</span>
-    <span class="doccomment">/// by the [`Ok`]&#39;s value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```should_panic</span>
-    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Ok(2);</span>
-    <span class="doccomment">/// x.unwrap_err(); // panics with `2`</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// let x: Result&lt;u32, &amp;str&gt; = Err(&quot;emergency failure&quot;);</span>
-    <span class="doccomment">/// assert_eq!(x.unwrap_err(), &quot;emergency failure&quot;);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
-    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unwrap_err</span>(<span class="self">self</span>) -&gt; <span class="ident">E</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">t</span>) =&gt; <span class="ident">unwrap_failed</span>(<span class="string">&quot;called `Result::unwrap_err()` on an `Ok` value&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">t</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">e</span>,
-        }
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Default</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Returns the contained [`Ok`] value or a default</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Consumes the `self` argument then, if [`Ok`], returns the contained</span>
-    <span class="doccomment">/// value, otherwise if [`Err`], returns the default value for that</span>
-    <span class="doccomment">/// type.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Converts a string to an integer, turning poorly-formed strings</span>
-    <span class="doccomment">/// into 0 (the default value for integers). [`parse`] converts</span>
-    <span class="doccomment">/// a string to any other type that implements [`FromStr`], returning an</span>
-    <span class="doccomment">/// [`Err`] on error.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// let good_year_from_input = &quot;1909&quot;;</span>
-    <span class="doccomment">/// let bad_year_from_input = &quot;190blarg&quot;;</span>
-    <span class="doccomment">/// let good_year = good_year_from_input.parse().unwrap_or_default();</span>
-    <span class="doccomment">/// let bad_year = bad_year_from_input.parse().unwrap_or_default();</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// assert_eq!(1909, good_year);</span>
-    <span class="doccomment">/// assert_eq!(0, bad_year);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`parse`]: str::parse</span>
-    <span class="doccomment">/// [`FromStr`]: crate::str::FromStr</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;result_unwrap_or_default&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.16.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unwrap_or_default</span>(<span class="self">self</span>) -&gt; <span class="ident">T</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">x</span>) =&gt; <span class="ident">x</span>,
-            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="ident">Default::default</span>(),
-        }
-    }
-}
-
-<span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unwrap_infallible&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;newly added&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;61695&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="op">!</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Returns the contained [`Ok`] value, but never panics.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Unlike [`unwrap`], this method is known to never panic on the</span>
-    <span class="doccomment">/// result types it is implemented for. Therefore, it can be used</span>
-    <span class="doccomment">/// instead of `unwrap` as a maintainability safeguard that will fail</span>
-    <span class="doccomment">/// to compile if the error type of the `Result` is later changed</span>
-    <span class="doccomment">/// to an error that can actually occur.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`unwrap`]: Result::unwrap</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Basic usage:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # #![feature(never_type)]</span>
-    <span class="doccomment">/// # #![feature(unwrap_infallible)]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// fn only_good_news() -&gt; Result&lt;String, !&gt; {</span>
-    <span class="doccomment">///     Ok(&quot;this is fine&quot;.into())</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let s: String = only_good_news().into_ok();</span>
-    <span class="doccomment">/// println!(&quot;{}&quot;, s);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_ok</span>(<span class="self">self</span>) -&gt; <span class="ident">T</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">x</span>) =&gt; <span class="ident">x</span>,
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">e</span>.<span class="ident">into</span>(),
-        }
-    }
-}
-
-<span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unwrap_infallible&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;newly added&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;61695&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="op">!</span><span class="op">&gt;</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Returns the contained [`Err`] value, but never panics.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Unlike [`unwrap_err`], this method is known to never panic on the</span>
-    <span class="doccomment">/// result types it is implemented for. Therefore, it can be used</span>
-    <span class="doccomment">/// instead of `unwrap_err` as a maintainability safeguard that will fail</span>
-    <span class="doccomment">/// to compile if the ok type of the `Result` is later changed</span>
-    <span class="doccomment">/// to a type that can actually occur.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`unwrap_err`]: Result::unwrap_err</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Basic usage:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # #![feature(never_type)]</span>
-    <span class="doccomment">/// # #![feature(unwrap_infallible)]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// fn only_bad_news() -&gt; Result&lt;!, String&gt; {</span>
-    <span class="doccomment">///     Err(&quot;Oops, it failed&quot;.into())</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let error: String = only_bad_news().into_err();</span>
-    <span class="doccomment">/// println!(&quot;{}&quot;, error);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_err</span>(<span class="self">self</span>) -&gt; <span class="ident">E</span> {
-        <span class="kw">match</span> <span class="self">self</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">x</span>) =&gt; <span class="ident">x</span>.<span class="ident">into</span>(),
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">e</span>,
-        }
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Deref</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Converts from `Result&lt;T, E&gt;` (or `&amp;Result&lt;T, E&gt;`) to `Result&lt;&amp;&lt;T as Deref&gt;::Target, &amp;E&gt;`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Coerces the [`Ok`] variant of the original [`Result`] via [`Deref`](crate::ops::Deref)</span>
-    <span class="doccomment">/// and returns the new [`Result`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// let x: Result&lt;String, u32&gt; = Ok(&quot;hello&quot;.to_string());</span>
-    <span class="doccomment">/// let y: Result&lt;&amp;str, &amp;u32&gt; = Ok(&quot;hello&quot;);</span>
-    <span class="doccomment">/// assert_eq!(x.as_deref(), y);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let x: Result&lt;String, u32&gt; = Err(42);</span>
-    <span class="doccomment">/// let y: Result&lt;&amp;str, &amp;u32&gt; = Err(&amp;42);</span>
-    <span class="doccomment">/// assert_eq!(x.as_deref(), y);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inner_deref&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.47.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">T::Target</span>, <span class="kw-2">&amp;</span><span class="ident">E</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">deref</span>())
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">DerefMut</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Converts from `Result&lt;T, E&gt;` (or `&amp;mut Result&lt;T, E&gt;`) to `Result&lt;&amp;mut &lt;T as DerefMut&gt;::Target, &amp;mut E&gt;`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Coerces the [`Ok`] variant of the original [`Result`] via [`DerefMut`](crate::ops::DerefMut)</span>
-    <span class="doccomment">/// and returns the new [`Result`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// let mut s = &quot;HELLO&quot;.to_string();</span>
-    <span class="doccomment">/// let mut x: Result&lt;String, u32&gt; = Ok(&quot;hello&quot;.to_string());</span>
-    <span class="doccomment">/// let y: Result&lt;&amp;mut str, &amp;mut u32&gt; = Ok(&amp;mut s);</span>
-    <span class="doccomment">/// assert_eq!(x.as_deref_mut().map(|x| { x.make_ascii_uppercase(); x }), y);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut i = 42;</span>
-    <span class="doccomment">/// let mut x: Result&lt;String, u32&gt; = Err(42);</span>
-    <span class="doccomment">/// let y: Result&lt;&amp;mut str, &amp;mut u32&gt; = Err(&amp;mut i);</span>
-    <span class="doccomment">/// assert_eq!(x.as_deref_mut().map(|x| { x.make_ascii_uppercase(); x }), y);</span>
-    <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inner_deref&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.47.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_deref_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">T::Target</span>, <span class="kw-2">&amp;mut</span> <span class="ident">E</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">deref_mut</span>())
     }
 }
 
@@ -3521,11 +3697,24 @@
 }
 
 <span class="comment">// This is a separate function to reduce the code size of the methods</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;panic_immediate_abort&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">never</span>)]</span>
 <span class="attribute">#[<span class="ident">cold</span>]</span>
 <span class="attribute">#[<span class="ident">track_caller</span>]</span>
 <span class="kw">fn</span> <span class="ident">unwrap_failed</span>(<span class="ident">msg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">error</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">fmt::Debug</span>) -&gt; <span class="op">!</span> {
     <span class="macro">panic!</span>(<span class="string">&quot;{}: {:?}&quot;</span>, <span class="ident">msg</span>, <span class="ident">error</span>)
+}
+
+<span class="comment">// This is a separate function to avoid constructing a `dyn Debug`</span>
+<span class="comment">// that gets immediately thrown away, since vtables don&#39;t get cleaned up</span>
+<span class="comment">// by dead code elimination if a trait object is constructed even if it goes</span>
+<span class="comment">// unused</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;panic_immediate_abort&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">cold</span>]</span>
+<span class="attribute">#[<span class="ident">track_caller</span>]</span>
+<span class="kw">fn</span> <span class="ident">unwrap_failed</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">_msg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">_error</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="op">!</span> {
+    <span class="macro">panic!</span>()
 }
 
 <span class="comment">/////////////////////////////////////////////////////////////////////////////</span>
@@ -3800,7 +3989,8 @@
 }
 
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_trait_v2&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;84277&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">ops::Try</span> <span class="kw">for</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
+<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_convert&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;88674&quot;</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="kw">const</span> <span class="ident">ops::Try</span> <span class="kw">for</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">T</span>;
     <span class="kw">type</span> <span class="ident">Residual</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">convert::Infallible</span>, <span class="ident">E</span><span class="op">&gt;</span>;
 
@@ -3819,14 +4009,23 @@
 }
 
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_trait_v2&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;84277&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span>, <span class="ident">F</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">ops::FromResidual</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">convert::Infallible</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span> {
+<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_convert&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;88674&quot;</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span>, <span class="ident">F</span>: ~<span class="kw">const</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">const</span> <span class="ident">ops::FromResidual</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">convert::Infallible</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">for</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span>
+{
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
     <span class="kw">fn</span> <span class="ident">from_residual</span>(<span class="ident">residual</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">convert::Infallible</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">residual</span> {
             <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="prelude-val">Err</span>(<span class="ident">From::from</span>(<span class="ident">e</span>)),
         }
     }
 }
+
+<span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_trait_v2_residual&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;91285&quot;</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">ops::Residual</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">convert::Infallible</span>, <span class="ident">E</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">TryType</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>;
+}
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
 </body></html>

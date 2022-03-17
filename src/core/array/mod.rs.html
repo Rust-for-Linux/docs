@@ -1,5 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;array&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../logo.svg' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;array&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -738,6 +739,124 @@
 <span id="737">737</span>
 <span id="738">738</span>
 <span id="739">739</span>
+<span id="740">740</span>
+<span id="741">741</span>
+<span id="742">742</span>
+<span id="743">743</span>
+<span id="744">744</span>
+<span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+<span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Helper functions and types for fixed-length arrays.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! *[See also the array primitive type](array).*</span>
@@ -751,7 +870,9 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::hash</span>::{<span class="self">self</span>, <span class="ident">Hash</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::iter::TrustedLen</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem</span>::{<span class="self">self</span>, <span class="ident">MaybeUninit</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ops</span>::{<span class="ident">Index</span>, <span class="ident">IndexMut</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ops</span>::{
+    <span class="ident">ChangeOutputType</span>, <span class="ident">ControlFlow</span>, <span class="ident">FromResidual</span>, <span class="ident">Index</span>, <span class="ident">IndexMut</span>, <span class="ident">NeverShortCircuit</span>, <span class="ident">Residual</span>, <span class="ident">Try</span>,
+};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::slice</span>::{<span class="ident">Iter</span>, <span class="ident">IterMut</span>};
 
 <span class="kw">mod</span> <span class="ident">equality</span>;
@@ -789,8 +910,12 @@
 }
 
 <span class="doccomment">/// Creates an array `[T; N]` where each fallible array element `T` is returned by the `cb` call.</span>
-<span class="doccomment">/// Unlike `core::array::from_fn`, where the element creation can&#39;t fail, this version will return an error</span>
+<span class="doccomment">/// Unlike [`from_fn`], where the element creation can&#39;t fail, this version will return an error</span>
 <span class="doccomment">/// if any element creation was unsuccessful.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The return type of this function depends on the return type of the closure.</span>
+<span class="doccomment">/// If you return `Result&lt;T, E&gt;` from the closure, you&#39;ll get a `Result&lt;[T; N]; E&gt;`.</span>
+<span class="doccomment">/// If you return `Option&lt;T&gt;` from the closure, you&#39;ll get an `Option&lt;[T; N]&gt;`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Arguments</span>
 <span class="doccomment">///</span>
@@ -800,27 +925,32 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
 <span class="doccomment">/// #![feature(array_from_fn)]</span>
+<span class="doccomment">/// # // Apparently these doc tests are still on edition2018</span>
+<span class="doccomment">/// # use std::convert::TryInto;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// #[derive(Debug, PartialEq)]</span>
-<span class="doccomment">/// enum SomeError {</span>
-<span class="doccomment">///     Foo,</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let array = core::array::try_from_fn(|i| Ok::&lt;_, SomeError&gt;(i));</span>
+<span class="doccomment">/// let array: Result&lt;[u8; 5], _&gt; = std::array::try_from_fn(|i| i.try_into());</span>
 <span class="doccomment">/// assert_eq!(array, Ok([0, 1, 2, 3, 4]));</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// let another_array = core::array::try_from_fn::&lt;SomeError, _, (), 2&gt;(|_| Err(SomeError::Foo));</span>
-<span class="doccomment">/// assert_eq!(another_array, Err(SomeError::Foo));</span>
+<span class="doccomment">/// let array: Result&lt;[i8; 200], _&gt; = std::array::try_from_fn(|i| i.try_into());</span>
+<span class="doccomment">/// assert!(array.is_err());</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// let array: Option&lt;[_; 4]&gt; = std::array::try_from_fn(|i| i.checked_add(100));</span>
+<span class="doccomment">/// assert_eq!(array, Some([100, 101, 102, 103]));</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// let array: Option&lt;[_; 4]&gt; = std::array::try_from_fn(|i| i.checked_sub(100));</span>
+<span class="doccomment">/// assert_eq!(array, None);</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_from_fn&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;89379&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_from_fn</span><span class="op">&lt;</span><span class="ident">E</span>, <span class="ident">F</span>, <span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="ident">cb</span>: <span class="ident">F</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>], <span class="ident">E</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_from_fn</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">R</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="ident">cb</span>: <span class="ident">F</span>) -&gt; <span class="ident">ChangeOutputType</span><span class="op">&lt;</span><span class="ident">R</span>, [<span class="ident">R::Output</span>; <span class="ident">N</span>]<span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>,
+    <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">usize</span>) -&gt; <span class="ident">R</span>,
+    <span class="ident">R</span>: <span class="ident">Try</span>,
+    <span class="ident">R::Residual</span>: <span class="ident">Residual</span><span class="op">&lt;</span>[<span class="ident">R::Output</span>; <span class="ident">N</span>]<span class="op">&gt;</span>,
 {
     <span class="comment">// SAFETY: we know for certain that this iterator will yield exactly `N`</span>
     <span class="comment">// items.</span>
-    <span class="kw">unsafe</span> { <span class="ident">collect_into_array_rslt_unchecked</span>(<span class="kw-2">&amp;mut</span> (<span class="number">0</span>..<span class="ident">N</span>).<span class="ident">map</span>(<span class="ident">cb</span>)) }
+    <span class="kw">unsafe</span> { <span class="ident">try_collect_into_array_unchecked</span>(<span class="kw-2">&amp;mut</span> (<span class="number">0</span>..<span class="ident">N</span>).<span class="ident">map</span>(<span class="ident">cb</span>)) }
 }
 
 <span class="doccomment">/// Converts a reference to `T` into a reference to an array of length 1 (without copying).</span>
@@ -891,14 +1021,16 @@
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_borrow&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.4.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Borrow</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
+<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_borrow&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;91522&quot;</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">const</span> <span class="ident">Borrow</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
     <span class="kw">fn</span> <span class="ident">borrow</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">T</span>] {
         <span class="self">self</span>
     }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_borrow&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.4.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">BorrowMut</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
+<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_borrow&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;91522&quot;</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">const</span> <span class="ident">BorrowMut</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
     <span class="kw">fn</span> <span class="ident">borrow_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>] {
         <span class="self">self</span>
     }
@@ -913,6 +1045,18 @@
 
     <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>], <span class="ident">TryFromSliceError</span><span class="op">&gt;</span> {
         <span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="self">Self</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">slice</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">r</span>)
+    }
+}
+
+<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_from_mut_slice_to_array&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.59.0&quot;</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> [<span class="ident">T</span>]<span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>]
+<span class="kw">where</span>
+    <span class="ident">T</span>: <span class="ident">Copy</span>,
+{
+    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">TryFromSliceError</span>;
+
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>], <span class="ident">TryFromSliceError</span><span class="op">&gt;</span> {
+        <span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">slice</span>)
     }
 }
 
@@ -969,27 +1113,6 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">fmt::Debug</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">fmt::Debug::fmt</span>(<span class="op">&amp;&amp;</span><span class="self">self</span>[..], <span class="ident">f</span>)
-    }
-}
-
-<span class="comment">// Note: the `#[rustc_skip_array_during_method_dispatch]` on `trait IntoIterator`</span>
-<span class="comment">// hides this implementation from explicit `.into_iter()` calls on editions &lt; 2021,</span>
-<span class="comment">// so those calls will still resolve to the slice implementation, by reference.</span>
-<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_into_iter_impl&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.53.0&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">IntoIterator</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span>;
-    <span class="kw">type</span> <span class="ident">IntoIter</span> <span class="op">=</span> <span class="ident">IntoIter</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>;
-
-    <span class="doccomment">/// Creates a consuming iterator, that is, one that moves each value out of</span>
-    <span class="doccomment">/// the array (from start to end). The array cannot be used after calling</span>
-    <span class="doccomment">/// this unless `T` implements `Copy`, so the whole array is copied.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Arrays have special behavior when calling `.into_iter()` prior to the</span>
-    <span class="doccomment">/// 2021 edition -- see the [array] Editions section for more information.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [array]: prim@array</span>
-    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::IntoIter</span> {
-        <span class="ident">IntoIter::new</span>(<span class="self">self</span>)
     }
 }
 
@@ -1070,11 +1193,9 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;copy_clone_array_lib&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.58.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Copy</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {}
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;copy_clone_array_lib&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.58.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Clone</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -1088,12 +1209,10 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>))]</span>
 <span class="kw">trait</span> <span class="ident">SpecArrayClone</span>: <span class="ident">Clone</span> {
     <span class="kw">fn</span> <span class="ident">clone</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="ident">array</span>: <span class="kw-2">&amp;</span>[<span class="self">Self</span>; <span class="ident">N</span>]) -&gt; [<span class="self">Self</span>; <span class="ident">N</span>];
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>))]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">SpecArrayClone</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">clone</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="ident">array</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>]) -&gt; [<span class="ident">T</span>; <span class="ident">N</span>] {
@@ -1103,7 +1222,6 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>))]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span> <span class="ident">SpecArrayClone</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">clone</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="ident">array</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>]) -&gt; [<span class="ident">T</span>; <span class="ident">N</span>] {
@@ -1187,6 +1305,45 @@
         <span class="comment">// SAFETY: we know for certain that this iterator will yield exactly `N`</span>
         <span class="comment">// items.</span>
         <span class="kw">unsafe</span> { <span class="ident">collect_into_array_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="ident">IntoIterator::into_iter</span>(<span class="self">self</span>).<span class="ident">map</span>(<span class="ident">f</span>)) }
+    }
+
+    <span class="doccomment">/// A fallible function `f` applied to each element on array `self` in order to</span>
+    <span class="doccomment">/// return an array the same size as `self` or the first error encountered.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The return type of this function depends on the return type of the closure.</span>
+    <span class="doccomment">/// If you return `Result&lt;T, E&gt;` from the closure, you&#39;ll get a `Result&lt;[T; N]; E&gt;`.</span>
+    <span class="doccomment">/// If you return `Option&lt;T&gt;` from the closure, you&#39;ll get an `Option&lt;[T; N]&gt;`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(array_try_map)]</span>
+    <span class="doccomment">/// let a = [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;];</span>
+    <span class="doccomment">/// let b = a.try_map(|v| v.parse::&lt;u32&gt;()).unwrap().map(|v| v + 1);</span>
+    <span class="doccomment">/// assert_eq!(b, [2, 3, 4]);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let a = [&quot;1&quot;, &quot;2a&quot;, &quot;3&quot;];</span>
+    <span class="doccomment">/// let b = a.try_map(|v| v.parse::&lt;u32&gt;());</span>
+    <span class="doccomment">/// assert!(b.is_err());</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// use std::num::NonZeroU32;</span>
+    <span class="doccomment">/// let z = [1, 2, 0, 3, 4];</span>
+    <span class="doccomment">/// assert_eq!(z.try_map(NonZeroU32::new), None);</span>
+    <span class="doccomment">/// let a = [1, 2, 3];</span>
+    <span class="doccomment">/// let b = a.try_map(NonZeroU32::new);</span>
+    <span class="doccomment">/// let c = b.map(|x| x.map(NonZeroU32::get));</span>
+    <span class="doccomment">/// assert_eq!(c, Some(a));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_try_map&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;79711&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_map</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">ChangeOutputType</span><span class="op">&lt;</span><span class="ident">R</span>, [<span class="ident">R::Output</span>; <span class="ident">N</span>]<span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">T</span>) -&gt; <span class="ident">R</span>,
+        <span class="ident">R</span>: <span class="ident">Try</span>,
+        <span class="ident">R::Residual</span>: <span class="ident">Residual</span><span class="op">&lt;</span>[<span class="ident">R::Output</span>; <span class="ident">N</span>]<span class="op">&gt;</span>,
+    {
+        <span class="comment">// SAFETY: we know for certain that this iterator will yield exactly `N`</span>
+        <span class="comment">// items.</span>
+        <span class="kw">unsafe</span> { <span class="ident">try_collect_into_array_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="ident">IntoIterator::into_iter</span>(<span class="self">self</span>).<span class="ident">map</span>(<span class="ident">f</span>)) }
     }
 
     <span class="doccomment">/// &#39;Zips up&#39; two arrays into a single array of pairs.</span>
@@ -1361,47 +1518,125 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_array_mut</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">M</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>; <span class="ident">M</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>]) {
         (<span class="kw-2">&amp;mut</span> <span class="self">self</span>[..]).<span class="ident">split_array_mut</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>()
     }
+
+    <span class="doccomment">/// Divides one array reference into two at an index from the end.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The first will contain all indices from `[0, N - M)` (excluding</span>
+    <span class="doccomment">/// the index `N - M` itself) and the second will contain all</span>
+    <span class="doccomment">/// indices from `[N - M, N)` (excluding the index `N` itself).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Panics if `M &gt; N`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(split_array)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let v = [1, 2, 3, 4, 5, 6];</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///    let (left, right) = v.rsplit_array_ref::&lt;0&gt;();</span>
+    <span class="doccomment">///    assert_eq!(left, &amp;[1, 2, 3, 4, 5, 6]);</span>
+    <span class="doccomment">///    assert_eq!(right, &amp;[]);</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let (left, right) = v.rsplit_array_ref::&lt;2&gt;();</span>
+    <span class="doccomment">///     assert_eq!(left, &amp;[1, 2, 3, 4]);</span>
+    <span class="doccomment">///     assert_eq!(right, &amp;[5, 6]);</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let (left, right) = v.rsplit_array_ref::&lt;6&gt;();</span>
+    <span class="doccomment">///     assert_eq!(left, &amp;[]);</span>
+    <span class="doccomment">///     assert_eq!(right, &amp;[1, 2, 3, 4, 5, 6]);</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(
+        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;split_array&quot;</span>,
+        <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;return type should have array as 2nd element&quot;</span>,
+        <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;90091&quot;</span>
+    )]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rsplit_array_ref</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">M</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="kw-2">&amp;</span>[<span class="ident">T</span>], <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">M</span>]) {
+        (<span class="kw-2">&amp;</span><span class="self">self</span>[..]).<span class="ident">rsplit_array_ref</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>()
+    }
+
+    <span class="doccomment">/// Divides one mutable array reference into two at an index from the end.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The first will contain all indices from `[0, N - M)` (excluding</span>
+    <span class="doccomment">/// the index `N - M` itself) and the second will contain all</span>
+    <span class="doccomment">/// indices from `[N - M, N)` (excluding the index `N` itself).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Panics if `M &gt; N`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(split_array)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut v = [1, 0, 3, 0, 5, 6];</span>
+    <span class="doccomment">/// let (left, right) = v.rsplit_array_mut::&lt;4&gt;();</span>
+    <span class="doccomment">/// assert_eq!(left, &amp;mut [1, 0]);</span>
+    <span class="doccomment">/// assert_eq!(right, &amp;mut [3, 0, 5, 6][..]);</span>
+    <span class="doccomment">/// left[1] = 2;</span>
+    <span class="doccomment">/// right[1] = 4;</span>
+    <span class="doccomment">/// assert_eq!(v, [1, 2, 3, 4, 5, 6]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(
+        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;split_array&quot;</span>,
+        <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;return type should have array as 2nd element&quot;</span>,
+        <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;90091&quot;</span>
+    )]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rsplit_array_mut</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">M</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>; <span class="ident">M</span>]) {
+        (<span class="kw-2">&amp;mut</span> <span class="self">self</span>[..]).<span class="ident">rsplit_array_mut</span>::<span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span>()
+    }
 }
 
 <span class="doccomment">/// Pulls `N` items from `iter` and returns them as an array. If the iterator</span>
 <span class="doccomment">/// yields fewer than `N` items, this function exhibits undefined behavior.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// See [`collect_into_array`] for more information.</span>
+<span class="doccomment">/// See [`try_collect_into_array`] for more information.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Safety</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// It is up to the caller to guarantee that `iter` yields at least `N` items.</span>
 <span class="doccomment">/// Violating this condition causes undefined behavior.</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">collect_into_array_rslt_unchecked</span><span class="op">&lt;</span><span class="ident">E</span>, <span class="ident">I</span>, <span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(
-    <span class="ident">iter</span>: <span class="kw-2">&amp;mut</span> <span class="ident">I</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>], <span class="ident">E</span><span class="op">&gt;</span>
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_collect_into_array_unchecked</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">T</span>, <span class="ident">R</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="kw-2">&amp;mut</span> <span class="ident">I</span>) -&gt; <span class="ident">R::TryType</span>
 <span class="kw">where</span>
     <span class="comment">// Note: `TrustedLen` here is somewhat of an experiment. This is just an</span>
     <span class="comment">// internal function, so feel free to remove if this bound turns out to be a</span>
     <span class="comment">// bad idea. In that case, remember to also remove the lower bound</span>
     <span class="comment">// `debug_assert!` below!</span>
-    <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">TrustedLen</span>,
+    <span class="ident">I</span>: <span class="ident">Iterator</span> <span class="op">+</span> <span class="ident">TrustedLen</span>,
+    <span class="ident">I::Item</span>: <span class="ident">Try</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">T</span>, <span class="ident">Residual</span> <span class="op">=</span> <span class="ident">R</span><span class="op">&gt;</span>,
+    <span class="ident">R</span>: <span class="ident">Residual</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span>,
 {
     <span class="macro">debug_assert!</span>(<span class="ident">N</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">iter</span>.<span class="ident">size_hint</span>().<span class="number">1</span>.<span class="ident">unwrap_or</span>(<span class="ident">usize::MAX</span>));
     <span class="macro">debug_assert!</span>(<span class="ident">N</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">iter</span>.<span class="ident">size_hint</span>().<span class="number">0</span>);
 
     <span class="comment">// SAFETY: covered by the function contract.</span>
-    <span class="kw">unsafe</span> { <span class="ident">collect_into_array</span>(<span class="ident">iter</span>).<span class="ident">unwrap_unchecked</span>() }
+    <span class="kw">unsafe</span> { <span class="ident">try_collect_into_array</span>(<span class="ident">iter</span>).<span class="ident">unwrap_unchecked</span>() }
 }
 
-<span class="comment">// Infallible version of `collect_into_array_rslt_unchecked`.</span>
+<span class="comment">// Infallible version of `try_collect_into_array_unchecked`.</span>
 <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">collect_into_array_unchecked</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="kw-2">&amp;mut</span> <span class="ident">I</span>) -&gt; [<span class="ident">I::Item</span>; <span class="ident">N</span>]
 <span class="kw">where</span>
     <span class="ident">I</span>: <span class="ident">Iterator</span> <span class="op">+</span> <span class="ident">TrustedLen</span>,
 {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">map</span>(<span class="prelude-val">Ok</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Infallible</span><span class="op">&gt;</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">map</span>(<span class="ident">NeverShortCircuit</span>);
 
     <span class="comment">// SAFETY: The same safety considerations w.r.t. the iterator length</span>
-    <span class="comment">// apply for `collect_into_array_rslt_unchecked` as for</span>
+    <span class="comment">// apply for `try_collect_into_array_unchecked` as for</span>
     <span class="comment">// `collect_into_array_unchecked`</span>
-    <span class="kw">match</span> <span class="kw">unsafe</span> { <span class="ident">collect_into_array_rslt_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="ident">map</span>) } {
-        <span class="prelude-val">Ok</span>(<span class="ident">array</span>) =&gt; <span class="ident">array</span>,
+    <span class="kw">match</span> <span class="kw">unsafe</span> { <span class="ident">try_collect_into_array_unchecked</span>(<span class="kw-2">&amp;mut</span> <span class="ident">map</span>) } {
+        <span class="ident">NeverShortCircuit</span>(<span class="ident">array</span>) =&gt; <span class="ident">array</span>,
     }
 }
 
@@ -1415,13 +1650,15 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// If `iter.next()` panicks, all items already yielded by the iterator are</span>
 <span class="doccomment">/// dropped.</span>
-<span class="kw">fn</span> <span class="ident">collect_into_array</span><span class="op">&lt;</span><span class="ident">E</span>, <span class="ident">I</span>, <span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="kw-2">&amp;mut</span> <span class="ident">I</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>], <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="kw">fn</span> <span class="ident">try_collect_into_array</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">T</span>, <span class="ident">R</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="kw-2">&amp;mut</span> <span class="ident">I</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">R::TryType</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">I</span>: <span class="ident">Iterator</span>,
+    <span class="ident">I::Item</span>: <span class="ident">Try</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">T</span>, <span class="ident">Residual</span> <span class="op">=</span> <span class="ident">R</span><span class="op">&gt;</span>,
+    <span class="ident">R</span>: <span class="ident">Residual</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span>,
 {
     <span class="kw">if</span> <span class="ident">N</span> <span class="op">==</span> <span class="number">0</span> {
         <span class="comment">// SAFETY: An empty array is always inhabited and has no validity invariants.</span>
-        <span class="kw">return</span> <span class="kw">unsafe</span> { <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">mem::zeroed</span>())) };
+        <span class="kw">return</span> <span class="kw">unsafe</span> { <span class="prelude-val">Some</span>(<span class="ident">Try::from_output</span>(<span class="ident">mem::zeroed</span>())) };
     }
 
     <span class="kw">struct</span> <span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> {
@@ -1446,11 +1683,11 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">guard</span> <span class="op">=</span> <span class="ident">Guard</span> { <span class="ident">array_mut</span>: <span class="kw-2">&amp;mut</span> <span class="ident">array</span>, <span class="ident">initialized</span>: <span class="number">0</span> };
 
     <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">item_rslt</span>) <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">next</span>() {
-        <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">item_rslt</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
-                <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(<span class="ident">err</span>));
+        <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">item_rslt</span>.<span class="ident">branch</span>() {
+            <span class="ident">ControlFlow::Break</span>(<span class="ident">r</span>) =&gt; {
+                <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">FromResidual::from_residual</span>(<span class="ident">r</span>));
             }
-            <span class="prelude-val">Ok</span>(<span class="ident">elem</span>) =&gt; <span class="ident">elem</span>,
+            <span class="ident">ControlFlow::Continue</span>(<span class="ident">elem</span>) =&gt; <span class="ident">elem</span>,
         };
 
         <span class="comment">// SAFETY: `guard.initialized` starts at 0, is increased by one in the</span>
@@ -1468,7 +1705,7 @@
             <span class="comment">// SAFETY: the condition above asserts that all elements are</span>
             <span class="comment">// initialized.</span>
             <span class="kw">let</span> <span class="ident">out</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">MaybeUninit::array_assume_init</span>(<span class="ident">array</span>) };
-            <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">out</span>));
+            <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">Try::from_output</span>(<span class="ident">out</span>));
         }
     }
 
@@ -1478,5 +1715,5 @@
     <span class="prelude-val">None</span>
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
 </body></html>

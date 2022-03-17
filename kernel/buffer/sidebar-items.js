@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["Buffer","A pre-allocated buffer that implements [`core::fmt::Write`]."]]});

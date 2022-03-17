@@ -1,5 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;alloc&#x2F;vec&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../alloc/index.html'><div class='logo-container rust-logo'><img src='../../../logo.svg' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;alloc&#x2F;vec&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../../alloc/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../alloc/index.html"><img class="rust-logo" src="../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -3352,12 +3353,6 @@
 <span id="3351">3351</span>
 <span id="3352">3352</span>
 <span id="3353">3353</span>
-<span id="3354">3354</span>
-<span id="3355">3355</span>
-<span id="3356">3356</span>
-<span id="3357">3357</span>
-<span id="3358">3358</span>
-<span id="3359">3359</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
 
 <span class="doccomment">//! A contiguous growable array type with heap-allocated contents, written</span>
@@ -3509,7 +3504,7 @@
 
 <span class="kw">mod</span> <span class="ident">spec_extend</span>;
 
-<span class="doccomment">/// A contiguous growable array type, written as `Vec&lt;T&gt;` and pronounced &#39;vector&#39;.</span>
+<span class="doccomment">/// A contiguous growable array type, written as `Vec&lt;T&gt;`, short for &#39;vector&#39;.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">///</span>
@@ -4273,7 +4268,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Panics if the new capacity overflows `usize`.</span>
+    <span class="doccomment">/// Panics if the new capacity exceeds `isize::MAX` bytes.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -4332,9 +4327,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that the allocator may give the collection more space than it</span>
     <span class="doccomment">/// requests. Therefore, capacity can not be relied upon to be precisely</span>
-    <span class="doccomment">/// minimal. Prefer [`reserve`] if future insertions are expected.</span>
+    <span class="doccomment">/// minimal. Prefer [`try_reserve`] if future insertions are expected.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [`reserve`]: Vec::reserve</span>
+    <span class="doccomment">/// [`try_reserve`]: Vec::try_reserve</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">///</span>
@@ -5033,49 +5028,46 @@
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">g</span> <span class="op">=</span> <span class="ident">BackshiftOnDrop</span> { <span class="ident">v</span>: <span class="self">self</span>, <span class="ident">processed_len</span>: <span class="number">0</span>, <span class="ident">deleted_cnt</span>: <span class="number">0</span>, <span class="ident">original_len</span> };
 
-        <span class="comment">// process_one return a bool indicates whether the processing element should be retained.</span>
-        <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-        <span class="kw">fn</span> <span class="ident">process_one</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">T</span>, <span class="ident">A</span>: <span class="ident">Allocator</span>, <span class="kw">const</span> <span class="ident">DELETED</span>: <span class="ident">bool</span><span class="op">&gt;</span>(
+        <span class="kw">fn</span> <span class="ident">process_loop</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">T</span>, <span class="ident">A</span>: <span class="ident">Allocator</span>, <span class="kw">const</span> <span class="ident">DELETED</span>: <span class="ident">bool</span><span class="op">&gt;</span>(
+            <span class="ident">original_len</span>: <span class="ident">usize</span>,
             <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">F</span>,
             <span class="ident">g</span>: <span class="kw-2">&amp;mut</span> <span class="ident">BackshiftOnDrop</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">T</span>, <span class="ident">A</span><span class="op">&gt;</span>,
-        ) -&gt; <span class="ident">bool</span>
-        <span class="kw">where</span>
+        ) <span class="kw">where</span>
             <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;mut</span> <span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
         {
-            <span class="comment">// SAFETY: Unchecked element must be valid.</span>
-            <span class="kw">let</span> <span class="ident">cur</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">g</span>.<span class="ident">v</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">add</span>(<span class="ident">g</span>.<span class="ident">processed_len</span>) };
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">f</span>(<span class="ident">cur</span>) {
-                <span class="comment">// Advance early to avoid double drop if `drop_in_place` panicked.</span>
-                <span class="ident">g</span>.<span class="ident">processed_len</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
-                <span class="ident">g</span>.<span class="ident">deleted_cnt</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
-                <span class="comment">// SAFETY: We never touch this element again after dropped.</span>
-                <span class="kw">unsafe</span> { <span class="ident">ptr::drop_in_place</span>(<span class="ident">cur</span>) };
-                <span class="comment">// We already advanced the counter.</span>
-                <span class="kw">return</span> <span class="bool-val">false</span>;
-            }
-            <span class="kw">if</span> <span class="ident">DELETED</span> {
-                <span class="comment">// SAFETY: `deleted_cnt` &gt; 0, so the hole slot must not overlap with current element.</span>
-                <span class="comment">// We use copy for move, and never touch this element again.</span>
-                <span class="kw">unsafe</span> {
-                    <span class="kw">let</span> <span class="ident">hole_slot</span> <span class="op">=</span> <span class="ident">g</span>.<span class="ident">v</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">add</span>(<span class="ident">g</span>.<span class="ident">processed_len</span> <span class="op">-</span> <span class="ident">g</span>.<span class="ident">deleted_cnt</span>);
-                    <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">cur</span>, <span class="ident">hole_slot</span>, <span class="number">1</span>);
+            <span class="kw">while</span> <span class="ident">g</span>.<span class="ident">processed_len</span> <span class="op">!</span><span class="op">=</span> <span class="ident">original_len</span> {
+                <span class="comment">// SAFETY: Unchecked element must be valid.</span>
+                <span class="kw">let</span> <span class="ident">cur</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">g</span>.<span class="ident">v</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">add</span>(<span class="ident">g</span>.<span class="ident">processed_len</span>) };
+                <span class="kw">if</span> <span class="op">!</span><span class="ident">f</span>(<span class="ident">cur</span>) {
+                    <span class="comment">// Advance early to avoid double drop if `drop_in_place` panicked.</span>
+                    <span class="ident">g</span>.<span class="ident">processed_len</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+                    <span class="ident">g</span>.<span class="ident">deleted_cnt</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+                    <span class="comment">// SAFETY: We never touch this element again after dropped.</span>
+                    <span class="kw">unsafe</span> { <span class="ident">ptr::drop_in_place</span>(<span class="ident">cur</span>) };
+                    <span class="comment">// We already advanced the counter.</span>
+                    <span class="kw">if</span> <span class="ident">DELETED</span> {
+                        <span class="kw">continue</span>;
+                    } <span class="kw">else</span> {
+                        <span class="kw">break</span>;
+                    }
                 }
+                <span class="kw">if</span> <span class="ident">DELETED</span> {
+                    <span class="comment">// SAFETY: `deleted_cnt` &gt; 0, so the hole slot must not overlap with current element.</span>
+                    <span class="comment">// We use copy for move, and never touch this element again.</span>
+                    <span class="kw">unsafe</span> {
+                        <span class="kw">let</span> <span class="ident">hole_slot</span> <span class="op">=</span> <span class="ident">g</span>.<span class="ident">v</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">add</span>(<span class="ident">g</span>.<span class="ident">processed_len</span> <span class="op">-</span> <span class="ident">g</span>.<span class="ident">deleted_cnt</span>);
+                        <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">cur</span>, <span class="ident">hole_slot</span>, <span class="number">1</span>);
+                    }
+                }
+                <span class="ident">g</span>.<span class="ident">processed_len</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             }
-            <span class="ident">g</span>.<span class="ident">processed_len</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
-            <span class="kw">return</span> <span class="bool-val">true</span>;
         }
 
         <span class="comment">// Stage 1: Nothing was deleted.</span>
-        <span class="kw">while</span> <span class="ident">g</span>.<span class="ident">processed_len</span> <span class="op">!</span><span class="op">=</span> <span class="ident">original_len</span> {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">process_one</span>::<span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">T</span>, <span class="ident">A</span>, <span class="bool-val">false</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="ident">f</span>, <span class="kw-2">&amp;mut</span> <span class="ident">g</span>) {
-                <span class="kw">break</span>;
-            }
-        }
+        <span class="ident">process_loop</span>::<span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">T</span>, <span class="ident">A</span>, <span class="bool-val">false</span><span class="op">&gt;</span>(<span class="ident">original_len</span>, <span class="kw-2">&amp;mut</span> <span class="ident">f</span>, <span class="kw-2">&amp;mut</span> <span class="ident">g</span>);
 
         <span class="comment">// Stage 2: Some elements were deleted.</span>
-        <span class="kw">while</span> <span class="ident">g</span>.<span class="ident">processed_len</span> <span class="op">!</span><span class="op">=</span> <span class="ident">original_len</span> {
-            <span class="ident">process_one</span>::<span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">T</span>, <span class="ident">A</span>, <span class="bool-val">true</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="ident">f</span>, <span class="kw-2">&amp;mut</span> <span class="ident">g</span>);
-        }
+        <span class="ident">process_loop</span>::<span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">T</span>, <span class="ident">A</span>, <span class="bool-val">true</span><span class="op">&gt;</span>(<span class="ident">original_len</span>, <span class="kw-2">&amp;mut</span> <span class="ident">f</span>, <span class="kw-2">&amp;mut</span> <span class="ident">g</span>);
 
         <span class="comment">// All item are processed. This can be optimized to `set_len` by LLVM.</span>
         <span class="ident">drop</span>(<span class="ident">g</span>);
@@ -5157,7 +5149,7 @@
                     <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">as_mut_ptr</span>();
                     <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">vec</span>.<span class="ident">len</span>();
 
-                    <span class="comment">/* How many items were left when `same_bucket` paniced.
+                    <span class="comment">/* How many items were left when `same_bucket` panicked.
                      * Basically vec[read..].len() */</span>
                     <span class="kw">let</span> <span class="ident">items_left</span> <span class="op">=</span> <span class="ident">len</span>.<span class="ident">wrapping_sub</span>(<span class="self">self</span>.<span class="ident">read</span>);
 
@@ -5239,7 +5231,7 @@
         <span class="comment">// This will panic or abort if we would allocate &gt; isize::MAX bytes</span>
         <span class="comment">// or if the length increment would overflow for zero-sized types.</span>
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">len</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">capacity</span>() {
-            <span class="self">self</span>.<span class="ident">reserve</span>(<span class="number">1</span>);
+            <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">reserve_for_push</span>(<span class="self">self</span>.<span class="ident">len</span>);
         }
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">add</span>(<span class="self">self</span>.<span class="ident">len</span>);
@@ -5593,7 +5585,7 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(vec_spare_capacity, maybe_uninit_extra)]</span>
+    <span class="doccomment">/// #![feature(vec_spare_capacity)]</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// // Allocate vector big enough for 10 elements.</span>
     <span class="doccomment">/// let mut v = Vec::with_capacity(10);</span>
@@ -5652,7 +5644,7 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(vec_split_at_spare, maybe_uninit_extra)]</span>
+    <span class="doccomment">/// #![feature(vec_split_at_spare)]</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// let mut v = vec![1, 1, 2];</span>
     <span class="doccomment">///</span>
@@ -5691,12 +5683,17 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">split_at_spare_mut_with_len</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
     ) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>], <span class="kw-2">&amp;mut</span> <span class="ident">usize</span>) {
-        <span class="kw">let</span> <span class="ident">Range</span> { <span class="ident">start</span>: <span class="ident">ptr</span>, <span class="ident">end</span>: <span class="ident">spare_ptr</span> } <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut_ptr_range</span>();
+        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut_ptr</span>();
+        <span class="comment">// SAFETY:</span>
+        <span class="comment">// - `ptr` is guaranteed to be valid for `self.len` elements</span>
+        <span class="comment">// - but the allocation extends out to `self.buf.capacity()` elements, possibly</span>
+        <span class="comment">// uninitialized</span>
+        <span class="kw">let</span> <span class="ident">spare_ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">ptr</span>.<span class="ident">add</span>(<span class="self">self</span>.<span class="ident">len</span>) };
         <span class="kw">let</span> <span class="ident">spare_ptr</span> <span class="op">=</span> <span class="ident">spare_ptr</span>.<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>();
         <span class="kw">let</span> <span class="ident">spare_len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">capacity</span>() <span class="op">-</span> <span class="self">self</span>.<span class="ident">len</span>;
 
         <span class="comment">// SAFETY:</span>
-        <span class="comment">// - `ptr` is guaranteed to be valid for `len` elements</span>
+        <span class="comment">// - `ptr` is guaranteed to be valid for `self.len` elements</span>
         <span class="comment">// - `spare_ptr` is pointing one element past the buffer, so it doesn&#39;t overlap with `initialized`</span>
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">initialized</span> <span class="op">=</span> <span class="ident">slice::from_raw_parts_mut</span>(<span class="ident">ptr</span>, <span class="self">self</span>.<span class="ident">len</span>);
@@ -5784,7 +5781,7 @@
     <span class="doccomment">/// Clones and appends all elements in a slice to the `Vec`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Iterates over the slice `other`, clones each element, and then appends</span>
-    <span class="doccomment">/// it to this `Vec`. The `other` vector is traversed in-order.</span>
+    <span class="doccomment">/// it to this `Vec`. The `other` slice is traversed in-order.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that this function is same as [`extend`] except that it is</span>
     <span class="doccomment">/// specialized to work with slices instead. If and when Rust gets</span>
@@ -5881,16 +5878,6 @@
     }
     <span class="kw">fn</span> <span class="ident">last</span>(<span class="self">self</span>) -&gt; <span class="ident">T</span> {
         <span class="self">self</span>.<span class="number">0</span>
-    }
-}
-
-<span class="kw">struct</span> <span class="ident">ExtendDefault</span>;
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Default</span><span class="op">&gt;</span> <span class="ident">ExtendWith</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ExtendDefault</span> {
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">T</span> {
-        <span class="ident">Default::default</span>()
-    }
-    <span class="kw">fn</span> <span class="ident">last</span>(<span class="self">self</span>) -&gt; <span class="ident">T</span> {
-        <span class="ident">Default::default</span>()
     }
 }
 
@@ -6316,6 +6303,8 @@
             }
             <span class="kw">unsafe</span> {
                 <span class="ident">ptr::write</span>(<span class="self">self</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">add</span>(<span class="ident">len</span>), <span class="ident">element</span>);
+                <span class="comment">// Since next() executes user code which can panic we have to bump the length</span>
+                <span class="comment">// after each step.</span>
                 <span class="comment">// NB can&#39;t overflow since we would have had to alloc the address space</span>
                 <span class="self">self</span>.<span class="ident">set_len</span>(<span class="ident">len</span> <span class="op">+</span> <span class="number">1</span>);
             }
@@ -6351,11 +6340,11 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// let mut v = vec![1, 2, 3];</span>
-    <span class="doccomment">/// let new = [7, 8];</span>
-    <span class="doccomment">/// let u: Vec&lt;_&gt; = v.splice(..2, new).collect();</span>
-    <span class="doccomment">/// assert_eq!(v, &amp;[7, 8, 3]);</span>
-    <span class="doccomment">/// assert_eq!(u, &amp;[1, 2]);</span>
+    <span class="doccomment">/// let mut v = vec![1, 2, 3, 4];</span>
+    <span class="doccomment">/// let new = [7, 8, 9];</span>
+    <span class="doccomment">/// let u: Vec&lt;_&gt; = v.splice(1..3, new).collect();</span>
+    <span class="doccomment">/// assert_eq!(v, &amp;[1, 7, 8, 9, 4]);</span>
+    <span class="doccomment">/// assert_eq!(u, &amp;[2, 3]);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
@@ -6718,5 +6707,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="alloc" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="alloc" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
 </body></html>

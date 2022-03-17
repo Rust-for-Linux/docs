@@ -1,5 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;alloc&#x2F;raw_vec.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>raw_vec.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../alloc/index.html'><div class='logo-container rust-logo'><img src='../../logo.svg' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;alloc&#x2F;raw_vec.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>raw_vec.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../alloc/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../alloc/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -548,6 +549,18 @@
 <span id="547">547</span>
 <span id="548">548</span>
 <span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
 
 <span class="attribute">#![<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;raw_vec_internals&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;unstable const warnings&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
@@ -749,9 +762,12 @@
                 <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="ident">handle_alloc_error</span>(<span class="ident">layout</span>),
             };
 
+            <span class="comment">// Allocators currently return a `NonNull&lt;[u8]&gt;` whose length</span>
+            <span class="comment">// matches the size requested. If that ever changes, the capacity</span>
+            <span class="comment">// here should change to `ptr.len() / mem::size_of::&lt;T&gt;()`.</span>
             <span class="self">Self</span> {
                 <span class="ident">ptr</span>: <span class="kw">unsafe</span> { <span class="ident">Unique::new_unchecked</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>().<span class="ident">as_ptr</span>()) },
-                <span class="ident">cap</span>: <span class="ident"><span class="self">Self</span>::capacity_from_bytes</span>(<span class="ident">ptr</span>.<span class="ident">len</span>()),
+                <span class="ident">cap</span>: <span class="ident">capacity</span>,
                 <span class="ident">alloc</span>,
             }
         }
@@ -770,9 +786,12 @@
         };
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">result</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">AllocError</span> { <span class="ident">layout</span>, <span class="ident">non_exhaustive</span>: () })<span class="question-mark">?</span>;
 
+        <span class="comment">// Allocators currently return a `NonNull&lt;[u8]&gt;` whose length</span>
+        <span class="comment">// matches the size requested. If that ever changes, the capacity</span>
+        <span class="comment">// here should change to `ptr.len() / mem::size_of::&lt;T&gt;()`.</span>
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
             <span class="ident">ptr</span>: <span class="kw">unsafe</span> { <span class="ident">Unique::new_unchecked</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>().<span class="ident">as_ptr</span>()) },
-            <span class="ident">cap</span>: <span class="ident"><span class="self">Self</span>::capacity_from_bytes</span>(<span class="ident">ptr</span>.<span class="ident">len</span>()),
+            <span class="ident">cap</span>: <span class="ident">capacity</span>,
             <span class="ident">alloc</span>,
         })
     }
@@ -868,6 +887,14 @@
         }
     }
 
+    <span class="doccomment">/// A specialized version of `reserve()` used only by the hot and</span>
+    <span class="doccomment">/// oft-instantiated `Vec::push()`, which does its own capacity check.</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
+    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">never</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_for_push</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">len</span>: <span class="ident">usize</span>) {
+        <span class="ident">handle_reserve</span>(<span class="self">self</span>.<span class="ident">grow_amortized</span>(<span class="ident">len</span>, <span class="number">1</span>));
+    }
+
     <span class="doccomment">/// The same as `reserve`, but returns on errors instead of panicking or aborting.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_reserve</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">len</span>: <span class="ident">usize</span>, <span class="ident">additional</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">needs_to_grow</span>(<span class="ident">len</span>, <span class="ident">additional</span>) {
@@ -908,7 +935,7 @@
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">needs_to_grow</span>(<span class="ident">len</span>, <span class="ident">additional</span>) { <span class="self">self</span>.<span class="ident">grow_exact</span>(<span class="ident">len</span>, <span class="ident">additional</span>) } <span class="kw">else</span> { <span class="prelude-val">Ok</span>(()) }
     }
 
-    <span class="doccomment">/// Shrinks the allocation down to the specified amount. If the given amount</span>
+    <span class="doccomment">/// Shrinks the buffer down to the specified capacity. If the given amount</span>
     <span class="doccomment">/// is 0, actually completely deallocates.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Panics</span>
@@ -919,18 +946,18 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Aborts on OOM.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shrink_to_fit</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">amount</span>: <span class="ident">usize</span>) {
-        <span class="ident">handle_reserve</span>(<span class="self">self</span>.<span class="ident">shrink</span>(<span class="ident">amount</span>));
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shrink_to_fit</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">cap</span>: <span class="ident">usize</span>) {
+        <span class="ident">handle_reserve</span>(<span class="self">self</span>.<span class="ident">shrink</span>(<span class="ident">cap</span>));
     }
 
-    <span class="doccomment">/// Tries to shrink the allocation down to the specified amount. If the given amount</span>
+    <span class="doccomment">/// Tries to shrink the buffer down to the specified capacity. If the given amount</span>
     <span class="doccomment">/// is 0, actually completely deallocates.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Panics if the given amount is *larger* than the current capacity.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_shrink_to_fit</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">amount</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">shrink</span>(<span class="ident">amount</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_shrink_to_fit</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">cap</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">shrink</span>(<span class="ident">cap</span>)
     }
 }
 
@@ -941,14 +968,12 @@
         <span class="ident">additional</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">capacity</span>().<span class="ident">wrapping_sub</span>(<span class="ident">len</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">capacity_from_bytes</span>(<span class="ident">excess</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span> {
-        <span class="macro">debug_assert_ne!</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(), <span class="number">0</span>);
-        <span class="ident">excess</span> <span class="op">/</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>()
-    }
-
-    <span class="kw">fn</span> <span class="ident">set_ptr</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>) {
+    <span class="kw">fn</span> <span class="ident">set_ptr_and_cap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ptr</span>: <span class="ident">NonNull</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>, <span class="ident">cap</span>: <span class="ident">usize</span>) {
+        <span class="comment">// Allocators currently return a `NonNull&lt;[u8]&gt;` whose length matches</span>
+        <span class="comment">// the size requested. If that ever changes, the capacity here should</span>
+        <span class="comment">// change to `ptr.len() / mem::size_of::&lt;T&gt;()`.</span>
         <span class="self">self</span>.<span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Unique::new_unchecked</span>(<span class="ident">ptr</span>.<span class="ident">cast</span>().<span class="ident">as_ptr</span>()) };
-        <span class="self">self</span>.<span class="ident">cap</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::capacity_from_bytes</span>(<span class="ident">ptr</span>.<span class="ident">len</span>());
+        <span class="self">self</span>.<span class="ident">cap</span> <span class="op">=</span> <span class="ident">cap</span>;
     }
 
     <span class="comment">// This method is usually instantiated many times. So we want it to be as</span>
@@ -980,7 +1005,7 @@
 
         <span class="comment">// `finish_grow` is non-generic over `T`.</span>
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">finish_grow</span>(<span class="ident">new_layout</span>, <span class="self">self</span>.<span class="ident">current_memory</span>(), <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">alloc</span>)<span class="question-mark">?</span>;
-        <span class="self">self</span>.<span class="ident">set_ptr</span>(<span class="ident">ptr</span>);
+        <span class="self">self</span>.<span class="ident">set_ptr_and_cap</span>(<span class="ident">ptr</span>, <span class="ident">cap</span>);
         <span class="prelude-val">Ok</span>(())
     }
 
@@ -999,15 +1024,15 @@
 
         <span class="comment">// `finish_grow` is non-generic over `T`.</span>
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">finish_grow</span>(<span class="ident">new_layout</span>, <span class="self">self</span>.<span class="ident">current_memory</span>(), <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">alloc</span>)<span class="question-mark">?</span>;
-        <span class="self">self</span>.<span class="ident">set_ptr</span>(<span class="ident">ptr</span>);
+        <span class="self">self</span>.<span class="ident">set_ptr_and_cap</span>(<span class="ident">ptr</span>, <span class="ident">cap</span>);
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn</span> <span class="ident">shrink</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">amount</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
-        <span class="macro">assert!</span>(<span class="ident">amount</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">capacity</span>(), <span class="string">&quot;Tried to shrink to a larger capacity&quot;</span>);
+    <span class="kw">fn</span> <span class="ident">shrink</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">cap</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
+        <span class="macro">assert!</span>(<span class="ident">cap</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">capacity</span>(), <span class="string">&quot;Tried to shrink to a larger capacity&quot;</span>);
 
         <span class="kw">let</span> (<span class="ident">ptr</span>, <span class="ident">layout</span>) <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">mem</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">current_memory</span>() { <span class="ident">mem</span> } <span class="kw">else</span> { <span class="kw">return</span> <span class="prelude-val">Ok</span>(()) };
-        <span class="kw">let</span> <span class="ident">new_size</span> <span class="op">=</span> <span class="ident">amount</span> <span class="op">*</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
+        <span class="kw">let</span> <span class="ident">new_size</span> <span class="op">=</span> <span class="ident">cap</span> <span class="op">*</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>();
 
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">new_layout</span> <span class="op">=</span> <span class="ident">Layout::from_size_align_unchecked</span>(<span class="ident">new_size</span>, <span class="ident">layout</span>.<span class="ident">align</span>());
@@ -1015,7 +1040,7 @@
                 .<span class="ident">shrink</span>(<span class="ident">ptr</span>, <span class="ident">layout</span>, <span class="ident">new_layout</span>)
                 .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">AllocError</span> { <span class="ident">layout</span>: <span class="ident">new_layout</span>, <span class="ident">non_exhaustive</span>: () })<span class="question-mark">?</span>
         };
-        <span class="self">self</span>.<span class="ident">set_ptr</span>(<span class="ident">ptr</span>);
+        <span class="self">self</span>.<span class="ident">set_ptr_and_cap</span>(<span class="ident">ptr</span>, <span class="ident">cap</span>);
         <span class="prelude-val">Ok</span>(())
     }
 }
@@ -1098,5 +1123,5 @@
     <span class="macro">panic!</span>(<span class="string">&quot;capacity overflow&quot;</span>);
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="alloc" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="alloc" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
 </body></html>

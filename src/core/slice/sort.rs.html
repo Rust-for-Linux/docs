@@ -1,5 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;slice&#x2F;sort.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sort.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../logo.svg' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;slice&#x2F;sort.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>sort.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -920,6 +921,9 @@
 <span id="919">919</span>
 <span id="920">920</span>
 <span id="921">921</span>
+<span id="922">922</span>
+<span id="923">923</span>
+<span id="924">924</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Slice sorting</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! This module contains a sorting algorithm based on Orson Peters&#39; pattern-defeating quicksort,</span>
@@ -934,7 +938,7 @@
 
 <span class="doccomment">/// When dropped, copies from `src` into `dest`.</span>
 <span class="kw">struct</span> <span class="ident">CopyOnDrop</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="ident">src</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>,
+    <span class="ident">src</span>: <span class="kw-2">*const</span> <span class="ident">T</span>,
     <span class="ident">dest</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>,
 }
 
@@ -955,8 +959,8 @@
     <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
     <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">len</span>();
-    <span class="comment">// SAFETY: The unsafe operations below involves indexing without a bound check (`get_unchecked` and `get_unchecked_mut`)</span>
-    <span class="comment">// and copying memory (`ptr::copy_nonoverlapping`).</span>
+    <span class="comment">// SAFETY: The unsafe operations below involves indexing without a bounds check (by offsetting a</span>
+    <span class="comment">// pointer) and copying memory (`ptr::copy_nonoverlapping`).</span>
     <span class="comment">//</span>
     <span class="comment">// a. Indexing:</span>
     <span class="comment">//  1. We checked the size of the array to &gt;=2.</span>
@@ -976,18 +980,19 @@
             <span class="comment">// Read the first element into a stack-allocated variable. If a following comparison</span>
             <span class="comment">// operation panics, `hole` will get dropped and automatically write the element back</span>
             <span class="comment">// into the slice.</span>
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::ManuallyDrop::new</span>(<span class="ident">ptr::read</span>(<span class="ident">v</span>.<span class="ident">get_unchecked</span>(<span class="number">0</span>)));
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hole</span> <span class="op">=</span> <span class="ident">CopyOnDrop</span> { <span class="ident">src</span>: <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">tmp</span>, <span class="ident">dest</span>: <span class="ident">v</span>.<span class="ident">get_unchecked_mut</span>(<span class="number">1</span>) };
-            <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">v</span>.<span class="ident">get_unchecked</span>(<span class="number">1</span>), <span class="ident">v</span>.<span class="ident">get_unchecked_mut</span>(<span class="number">0</span>), <span class="number">1</span>);
+            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::ManuallyDrop::new</span>(<span class="ident">ptr::read</span>(<span class="ident">v</span>.<span class="ident">get_unchecked</span>(<span class="number">0</span>)));
+            <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">as_mut_ptr</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hole</span> <span class="op">=</span> <span class="ident">CopyOnDrop</span> { <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">tmp</span>, <span class="ident">dest</span>: <span class="ident">v</span>.<span class="ident">add</span>(<span class="number">1</span>) };
+            <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">v</span>.<span class="ident">add</span>(<span class="number">1</span>), <span class="ident">v</span>.<span class="ident">add</span>(<span class="number">0</span>), <span class="number">1</span>);
 
             <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">2</span>..<span class="ident">len</span> {
-                <span class="kw">if</span> <span class="op">!</span><span class="ident">is_less</span>(<span class="ident">v</span>.<span class="ident">get_unchecked</span>(<span class="ident">i</span>), <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">tmp</span>) {
+                <span class="kw">if</span> <span class="op">!</span><span class="ident">is_less</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">v</span>.<span class="ident">add</span>(<span class="ident">i</span>), <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">tmp</span>) {
                     <span class="kw">break</span>;
                 }
 
                 <span class="comment">// Move `i`-th element one place to the left, thus shifting the hole to the right.</span>
-                <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">v</span>.<span class="ident">get_unchecked</span>(<span class="ident">i</span>), <span class="ident">v</span>.<span class="ident">get_unchecked_mut</span>(<span class="ident">i</span> <span class="op">-</span> <span class="number">1</span>), <span class="number">1</span>);
-                <span class="ident">hole</span>.<span class="ident">dest</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">get_unchecked_mut</span>(<span class="ident">i</span>);
+                <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">v</span>.<span class="ident">add</span>(<span class="ident">i</span>), <span class="ident">v</span>.<span class="ident">add</span>(<span class="ident">i</span> <span class="op">-</span> <span class="number">1</span>), <span class="number">1</span>);
+                <span class="ident">hole</span>.<span class="ident">dest</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">add</span>(<span class="ident">i</span>);
             }
             <span class="comment">// `hole` gets dropped and thus copies `tmp` into the remaining hole in `v`.</span>
         }
@@ -1000,8 +1005,8 @@
     <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
 {
     <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">len</span>();
-    <span class="comment">// SAFETY: The unsafe operations below involves indexing without a bound check (`get_unchecked` and `get_unchecked_mut`)</span>
-    <span class="comment">// and copying memory (`ptr::copy_nonoverlapping`).</span>
+    <span class="comment">// SAFETY: The unsafe operations below involves indexing without a bound check (by offsetting a</span>
+    <span class="comment">// pointer) and copying memory (`ptr::copy_nonoverlapping`).</span>
     <span class="comment">//</span>
     <span class="comment">// a. Indexing:</span>
     <span class="comment">//  1. We checked the size of the array to &gt;= 2.</span>
@@ -1021,18 +1026,19 @@
             <span class="comment">// Read the last element into a stack-allocated variable. If a following comparison</span>
             <span class="comment">// operation panics, `hole` will get dropped and automatically write the element back</span>
             <span class="comment">// into the slice.</span>
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::ManuallyDrop::new</span>(<span class="ident">ptr::read</span>(<span class="ident">v</span>.<span class="ident">get_unchecked</span>(<span class="ident">len</span> <span class="op">-</span> <span class="number">1</span>)));
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hole</span> <span class="op">=</span> <span class="ident">CopyOnDrop</span> { <span class="ident">src</span>: <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">tmp</span>, <span class="ident">dest</span>: <span class="ident">v</span>.<span class="ident">get_unchecked_mut</span>(<span class="ident">len</span> <span class="op">-</span> <span class="number">2</span>) };
-            <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">v</span>.<span class="ident">get_unchecked</span>(<span class="ident">len</span> <span class="op">-</span> <span class="number">2</span>), <span class="ident">v</span>.<span class="ident">get_unchecked_mut</span>(<span class="ident">len</span> <span class="op">-</span> <span class="number">1</span>), <span class="number">1</span>);
+            <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::ManuallyDrop::new</span>(<span class="ident">ptr::read</span>(<span class="ident">v</span>.<span class="ident">get_unchecked</span>(<span class="ident">len</span> <span class="op">-</span> <span class="number">1</span>)));
+            <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">as_mut_ptr</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hole</span> <span class="op">=</span> <span class="ident">CopyOnDrop</span> { <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">tmp</span>, <span class="ident">dest</span>: <span class="ident">v</span>.<span class="ident">add</span>(<span class="ident">len</span> <span class="op">-</span> <span class="number">2</span>) };
+            <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">v</span>.<span class="ident">add</span>(<span class="ident">len</span> <span class="op">-</span> <span class="number">2</span>), <span class="ident">v</span>.<span class="ident">add</span>(<span class="ident">len</span> <span class="op">-</span> <span class="number">1</span>), <span class="number">1</span>);
 
             <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> (<span class="number">0</span>..<span class="ident">len</span> <span class="op">-</span> <span class="number">2</span>).<span class="ident">rev</span>() {
-                <span class="kw">if</span> <span class="op">!</span><span class="ident">is_less</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">tmp</span>, <span class="ident">v</span>.<span class="ident">get_unchecked</span>(<span class="ident">i</span>)) {
+                <span class="kw">if</span> <span class="op">!</span><span class="ident">is_less</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">tmp</span>, <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">v</span>.<span class="ident">add</span>(<span class="ident">i</span>)) {
                     <span class="kw">break</span>;
                 }
 
                 <span class="comment">// Move `i`-th element one place to the right, thus shifting the hole to the left.</span>
-                <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">v</span>.<span class="ident">get_unchecked</span>(<span class="ident">i</span>), <span class="ident">v</span>.<span class="ident">get_unchecked_mut</span>(<span class="ident">i</span> <span class="op">+</span> <span class="number">1</span>), <span class="number">1</span>);
-                <span class="ident">hole</span>.<span class="ident">dest</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">get_unchecked_mut</span>(<span class="ident">i</span>);
+                <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">v</span>.<span class="ident">add</span>(<span class="ident">i</span>), <span class="ident">v</span>.<span class="ident">add</span>(<span class="ident">i</span> <span class="op">+</span> <span class="number">1</span>), <span class="number">1</span>);
+                <span class="ident">hole</span>.<span class="ident">dest</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">add</span>(<span class="ident">i</span>);
             }
             <span class="comment">// `hole` gets dropped and thus copies `tmp` into the remaining hole in `v`.</span>
         }
@@ -1224,7 +1230,7 @@
         <span class="kw">if</span> <span class="ident">start_l</span> <span class="op">==</span> <span class="ident">end_l</span> {
             <span class="comment">// Trace `block_l` elements from the left side.</span>
             <span class="ident">start_l</span> <span class="op">=</span> <span class="ident">MaybeUninit::slice_as_mut_ptr</span>(<span class="kw-2">&amp;mut</span> <span class="ident">offsets_l</span>);
-            <span class="ident">end_l</span> <span class="op">=</span> <span class="ident">MaybeUninit::slice_as_mut_ptr</span>(<span class="kw-2">&amp;mut</span> <span class="ident">offsets_l</span>);
+            <span class="ident">end_l</span> <span class="op">=</span> <span class="ident">start_l</span>;
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">elem</span> <span class="op">=</span> <span class="ident">l</span>;
 
             <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">block_l</span> {
@@ -1250,7 +1256,7 @@
         <span class="kw">if</span> <span class="ident">start_r</span> <span class="op">==</span> <span class="ident">end_r</span> {
             <span class="comment">// Trace `block_r` elements from the right side.</span>
             <span class="ident">start_r</span> <span class="op">=</span> <span class="ident">MaybeUninit::slice_as_mut_ptr</span>(<span class="kw-2">&amp;mut</span> <span class="ident">offsets_r</span>);
-            <span class="ident">end_r</span> <span class="op">=</span> <span class="ident">MaybeUninit::slice_as_mut_ptr</span>(<span class="kw-2">&amp;mut</span> <span class="ident">offsets_r</span>);
+            <span class="ident">end_r</span> <span class="op">=</span> <span class="ident">start_r</span>;
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">elem</span> <span class="op">=</span> <span class="ident">r</span>;
 
             <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">block_r</span> {
@@ -1418,8 +1424,8 @@
         <span class="comment">// operation panics, the pivot will be automatically written back into the slice.</span>
 
         <span class="comment">// SAFETY: `pivot` is a reference to the first element of `v`, so `ptr::read` is safe.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::ManuallyDrop::new</span>(<span class="kw">unsafe</span> { <span class="ident">ptr::read</span>(<span class="ident">pivot</span>) });
-        <span class="kw">let</span> <span class="ident">_pivot_guard</span> <span class="op">=</span> <span class="ident">CopyOnDrop</span> { <span class="ident">src</span>: <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">tmp</span>, <span class="ident">dest</span>: <span class="ident">pivot</span> };
+        <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::ManuallyDrop::new</span>(<span class="kw">unsafe</span> { <span class="ident">ptr::read</span>(<span class="ident">pivot</span>) });
+        <span class="kw">let</span> <span class="ident">_pivot_guard</span> <span class="op">=</span> <span class="ident">CopyOnDrop</span> { <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">tmp</span>, <span class="ident">dest</span>: <span class="ident">pivot</span> };
         <span class="kw">let</span> <span class="ident">pivot</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">tmp</span>;
 
         <span class="comment">// Find the first pair of out-of-order elements.</span>
@@ -1471,8 +1477,8 @@
     <span class="comment">// Read the pivot into a stack-allocated variable for efficiency. If a following comparison</span>
     <span class="comment">// operation panics, the pivot will be automatically written back into the slice.</span>
     <span class="comment">// SAFETY: The pointer here is valid because it is obtained from a reference to a slice.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::ManuallyDrop::new</span>(<span class="kw">unsafe</span> { <span class="ident">ptr::read</span>(<span class="ident">pivot</span>) });
-    <span class="kw">let</span> <span class="ident">_pivot_guard</span> <span class="op">=</span> <span class="ident">CopyOnDrop</span> { <span class="ident">src</span>: <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">tmp</span>, <span class="ident">dest</span>: <span class="ident">pivot</span> };
+    <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">mem::ManuallyDrop::new</span>(<span class="kw">unsafe</span> { <span class="ident">ptr::read</span>(<span class="ident">pivot</span>) });
+    <span class="kw">let</span> <span class="ident">_pivot_guard</span> <span class="op">=</span> <span class="ident">CopyOnDrop</span> { <span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">tmp</span>, <span class="ident">dest</span>: <span class="ident">pivot</span> };
     <span class="kw">let</span> <span class="ident">pivot</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">tmp</span>;
 
     <span class="comment">// Now partition the slice.</span>
@@ -1501,7 +1507,8 @@
 
             <span class="comment">// Swap the found pair of out-of-order elements.</span>
             <span class="ident">r</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
-            <span class="ident">ptr::swap</span>(<span class="ident">v</span>.<span class="ident">get_unchecked_mut</span>(<span class="ident">l</span>), <span class="ident">v</span>.<span class="ident">get_unchecked_mut</span>(<span class="ident">r</span>));
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">as_mut_ptr</span>();
+            <span class="ident">ptr::swap</span>(<span class="ident">ptr</span>.<span class="ident">add</span>(<span class="ident">l</span>), <span class="ident">ptr</span>.<span class="ident">add</span>(<span class="ident">r</span>));
             <span class="ident">l</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
         }
     }
@@ -1842,5 +1849,5 @@
     (<span class="ident">left</span>, <span class="ident">pivot</span>, <span class="ident">right</span>)
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
 </body></html>

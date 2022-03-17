@@ -1,5 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;iter&#x2F;traits&#x2F;iterator.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>iterator.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><script defer src="../../../../main.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../logo.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../../logo.svg' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;iter&#x2F;traits&#x2F;iterator.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>iterator.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><script defer src="../../../../main.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../core/index.html"><img class="rust-logo" src="../../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -3475,8 +3476,109 @@
 <span id="3474">3474</span>
 <span id="3475">3475</span>
 <span id="3476">3476</span>
+<span id="3477">3477</span>
+<span id="3478">3478</span>
+<span id="3479">3479</span>
+<span id="3480">3480</span>
+<span id="3481">3481</span>
+<span id="3482">3482</span>
+<span id="3483">3483</span>
+<span id="3484">3484</span>
+<span id="3485">3485</span>
+<span id="3486">3486</span>
+<span id="3487">3487</span>
+<span id="3488">3488</span>
+<span id="3489">3489</span>
+<span id="3490">3490</span>
+<span id="3491">3491</span>
+<span id="3492">3492</span>
+<span id="3493">3493</span>
+<span id="3494">3494</span>
+<span id="3495">3495</span>
+<span id="3496">3496</span>
+<span id="3497">3497</span>
+<span id="3498">3498</span>
+<span id="3499">3499</span>
+<span id="3500">3500</span>
+<span id="3501">3501</span>
+<span id="3502">3502</span>
+<span id="3503">3503</span>
+<span id="3504">3504</span>
+<span id="3505">3505</span>
+<span id="3506">3506</span>
+<span id="3507">3507</span>
+<span id="3508">3508</span>
+<span id="3509">3509</span>
+<span id="3510">3510</span>
+<span id="3511">3511</span>
+<span id="3512">3512</span>
+<span id="3513">3513</span>
+<span id="3514">3514</span>
+<span id="3515">3515</span>
+<span id="3516">3516</span>
+<span id="3517">3517</span>
+<span id="3518">3518</span>
+<span id="3519">3519</span>
+<span id="3520">3520</span>
+<span id="3521">3521</span>
+<span id="3522">3522</span>
+<span id="3523">3523</span>
+<span id="3524">3524</span>
+<span id="3525">3525</span>
+<span id="3526">3526</span>
+<span id="3527">3527</span>
+<span id="3528">3528</span>
+<span id="3529">3529</span>
+<span id="3530">3530</span>
+<span id="3531">3531</span>
+<span id="3532">3532</span>
+<span id="3533">3533</span>
+<span id="3534">3534</span>
+<span id="3535">3535</span>
+<span id="3536">3536</span>
+<span id="3537">3537</span>
+<span id="3538">3538</span>
+<span id="3539">3539</span>
+<span id="3540">3540</span>
+<span id="3541">3541</span>
+<span id="3542">3542</span>
+<span id="3543">3543</span>
+<span id="3544">3544</span>
+<span id="3545">3545</span>
+<span id="3546">3546</span>
+<span id="3547">3547</span>
+<span id="3548">3548</span>
+<span id="3549">3549</span>
+<span id="3550">3550</span>
+<span id="3551">3551</span>
+<span id="3552">3552</span>
+<span id="3553">3553</span>
+<span id="3554">3554</span>
+<span id="3555">3555</span>
+<span id="3556">3556</span>
+<span id="3557">3557</span>
+<span id="3558">3558</span>
+<span id="3559">3559</span>
+<span id="3560">3560</span>
+<span id="3561">3561</span>
+<span id="3562">3562</span>
+<span id="3563">3563</span>
+<span id="3564">3564</span>
+<span id="3565">3565</span>
+<span id="3566">3566</span>
+<span id="3567">3567</span>
+<span id="3568">3568</span>
+<span id="3569">3569</span>
+<span id="3570">3570</span>
+<span id="3571">3571</span>
+<span id="3572">3572</span>
+<span id="3573">3573</span>
+<span id="3574">3574</span>
+<span id="3575">3575</span>
+<span id="3576">3576</span>
+<span id="3577">3577</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cmp</span>::{<span class="self">self</span>, <span class="ident">Ordering</span>};
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ops</span>::{<span class="ident">ControlFlow</span>, <span class="ident">Try</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ops</span>::{<span class="ident">ChangeOutputType</span>, <span class="ident">ControlFlow</span>, <span class="ident">FromResidual</span>, <span class="ident">Residual</span>, <span class="ident">Try</span>};
 
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::TrustedRandomAccessNoCoerce</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span></span>::{<span class="ident">Chain</span>, <span class="ident">Cloned</span>, <span class="ident">Copied</span>, <span class="ident">Cycle</span>, <span class="ident">Enumerate</span>, <span class="ident">Filter</span>, <span class="ident">FilterMap</span>, <span class="ident">Fuse</span>};
@@ -3726,9 +3828,6 @@
     <span class="doccomment">/// Calling `advance_by(0)` can do meaningful work, for example [`Flatten`]</span>
     <span class="doccomment">/// can advance its outer iterator until it finds an inner iterator that is not empty, which</span>
     <span class="doccomment">/// then often allows it to return a more accurate `size_hint()` than in its initial state.</span>
-    <span class="doccomment">/// `advance_by(0)` may either return `Ok()` or `Err(0)`. The former conveys no information</span>
-    <span class="doccomment">/// whether the iterator is or is not exhausted, the latter can be treated as if [`next`]</span>
-    <span class="doccomment">/// had returned `None`. Replacing a `Err(0)` with `Ok` is only correct for `n = 0`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Flatten`]: crate::iter::Flatten</span>
     <span class="doccomment">/// [`next`]: Iterator::next</span>
@@ -3938,8 +4037,10 @@
     <span class="doccomment">/// In other words, it zips two iterators together, into a single one.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If either iterator returns [`None`], [`next`] from the zipped iterator</span>
-    <span class="doccomment">/// will return [`None`]. If the first iterator returns [`None`], `zip` will</span>
-    <span class="doccomment">/// short-circuit and `next` will not be called on the second iterator.</span>
+    <span class="doccomment">/// will return [`None`].</span>
+    <span class="doccomment">/// If the zipped iterator has no more elements to return then each further attempt to advance</span>
+    <span class="doccomment">/// it will first try to advance the first iterator at most one time and if it still yielded an item</span>
+    <span class="doccomment">/// try to advance the second iterator at most one time.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -4501,6 +4602,7 @@
     <span class="doccomment">/// assert_eq!(iter.next(), None);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;drop_while&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">skip_while</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">P</span>) -&gt; <span class="ident">SkipWhile</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">P</span><span class="op">&gt;</span>
     <span class="kw">where</span>
@@ -5693,6 +5795,86 @@
         <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">fold</span>(<span class="ident">first</span>, <span class="ident">f</span>))
     }
 
+    <span class="doccomment">/// Reduces the elements to a single one by repeatedly applying a reducing operation. If the</span>
+    <span class="doccomment">/// closure returns a failure, the failure is propagated back to the caller immediately.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The return type of this method depends on the return type of the closure. If the closure</span>
+    <span class="doccomment">/// returns `Result&lt;Self::Item, E&gt;`, then this function will return `Result&lt;Option&lt;Self::Item&gt;,</span>
+    <span class="doccomment">/// E&gt;`. If the closure returns `Option&lt;Self::Item&gt;`, then this function will return</span>
+    <span class="doccomment">/// `Option&lt;Option&lt;Self::Item&gt;&gt;`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// When called on an empty iterator, this function will return either `Some(None)` or</span>
+    <span class="doccomment">/// `Ok(None)` depending on the type of the provided closure.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// For iterators with at least one element, this is essentially the same as calling</span>
+    <span class="doccomment">/// [`try_fold()`] with the first element of the iterator as the initial accumulator value.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`try_fold()`]: Iterator::try_fold</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Safely calculate the sum of a series of numbers:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(iterator_try_reduce)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let numbers: Vec&lt;usize&gt; = vec![10, 20, 5, 23, 0];</span>
+    <span class="doccomment">/// let sum = numbers.into_iter().try_reduce(|x, y| x.checked_add(y));</span>
+    <span class="doccomment">/// assert_eq!(sum, Some(Some(58)));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Determine when a reduction short circuited:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(iterator_try_reduce)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let numbers = vec![1, 2, 3, usize::MAX, 4, 5];</span>
+    <span class="doccomment">/// let sum = numbers.into_iter().try_reduce(|x, y| x.checked_add(y));</span>
+    <span class="doccomment">/// assert_eq!(sum, None);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Determine when a reduction was not performed because there are no elements:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(iterator_try_reduce)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let numbers: Vec&lt;usize&gt; = Vec::new();</span>
+    <span class="doccomment">/// let sum = numbers.into_iter().try_reduce(|x, y| x.checked_add(y));</span>
+    <span class="doccomment">/// assert_eq!(sum, Some(None));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Use a [`Result`] instead of an [`Option`]:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(iterator_try_reduce)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let numbers = vec![&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;];</span>
+    <span class="doccomment">/// let max: Result&lt;Option&lt;_&gt;, &lt;usize as std::str::FromStr&gt;::Err&gt; =</span>
+    <span class="doccomment">///     numbers.into_iter().try_reduce(|x, y| {</span>
+    <span class="doccomment">///         if x.parse::&lt;usize&gt;()? &gt; y.parse::&lt;usize&gt;()? { Ok(x) } else { Ok(y) }</span>
+    <span class="doccomment">///     });</span>
+    <span class="doccomment">/// assert_eq!(max, Ok(Some(&quot;5&quot;)));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iterator_try_reduce&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;87053&quot;</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">try_reduce</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">ChangeOutputType</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">R::Output</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="self">Self</span>: <span class="ident">Sized</span>,
+        <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident"><span class="self">Self</span>::Item</span>, <span class="ident"><span class="self">Self</span>::Item</span>) -&gt; <span class="ident">R</span>,
+        <span class="ident">R</span>: <span class="ident">Try</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span>,
+        <span class="ident">R::Residual</span>: <span class="ident">Residual</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    {
+        <span class="kw">let</span> <span class="ident">first</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">next</span>() {
+            <span class="prelude-val">Some</span>(<span class="ident">i</span>) =&gt; <span class="ident">i</span>,
+            <span class="prelude-val">None</span> =&gt; <span class="kw">return</span> <span class="ident">Try::from_output</span>(<span class="prelude-val">None</span>),
+        };
+
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">try_fold</span>(<span class="ident">first</span>, <span class="ident">f</span>).<span class="ident">branch</span>() {
+            <span class="ident">ControlFlow::Break</span>(<span class="ident">r</span>) =&gt; <span class="ident">FromResidual::from_residual</span>(<span class="ident">r</span>),
+            <span class="ident">ControlFlow::Continue</span>(<span class="ident">i</span>) =&gt; <span class="ident">Try::from_output</span>(<span class="prelude-val">Some</span>(<span class="ident">i</span>)),
+        }
+    }
+
     <span class="doccomment">/// Tests if every element of the iterator matches a predicate.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// `all()` takes a closure that returns `true` or `false`. It applies</span>
@@ -5895,6 +6077,10 @@
     <span class="doccomment">/// Applies function to the elements of iterator and returns</span>
     <span class="doccomment">/// the first true result or the first error.</span>
     <span class="doccomment">///</span>
+    <span class="doccomment">/// The return type of this method depends on the return type of the closure.</span>
+    <span class="doccomment">/// If you return `Result&lt;bool, E&gt;` from the closure, you&#39;ll get a `Result&lt;Option&lt;Self::Item&gt;; E&gt;`.</span>
+    <span class="doccomment">/// If you return `Option&lt;bool&gt;` from the closure, you&#39;ll get an `Option&lt;Option&lt;Self::Item&gt;&gt;`.</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
@@ -5912,32 +6098,48 @@
     <span class="doccomment">/// let result = a.iter().try_find(|&amp;&amp;s| is_my_num(s, 5));</span>
     <span class="doccomment">/// assert!(result.is_err());</span>
     <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This also supports other types which implement `Try`, not just `Result`.</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(try_find)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// use std::num::NonZeroU32;</span>
+    <span class="doccomment">/// let a = [3, 5, 7, 4, 9, 0, 11];</span>
+    <span class="doccomment">/// let result = a.iter().try_find(|&amp;&amp;x| NonZeroU32::new(x).map(|y| y.is_power_of_two()));</span>
+    <span class="doccomment">/// assert_eq!(result, Some(Some(&amp;4)));</span>
+    <span class="doccomment">/// let result = a.iter().take(3).try_find(|&amp;&amp;x| NonZeroU32::new(x).map(|y| y.is_power_of_two()));</span>
+    <span class="doccomment">/// assert_eq!(result, Some(None));</span>
+    <span class="doccomment">/// let result = a.iter().rev().try_find(|&amp;&amp;x| NonZeroU32::new(x).map(|y| y.is_power_of_two()));</span>
+    <span class="doccomment">/// assert_eq!(result, None);</span>
+    <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_find&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;63178&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">try_find</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">R</span>, <span class="ident">E</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span>, <span class="ident">E</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">try_find</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">ChangeOutputType</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">Sized</span>,
         <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Item</span>) -&gt; <span class="ident">R</span>,
         <span class="ident">R</span>: <span class="ident">Try</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">bool</span><span class="op">&gt;</span>,
-        <span class="comment">// FIXME: This bound is rather strange, but means minimal breakage on nightly.</span>
-        <span class="comment">// See #85115 for the issue tracking a holistic solution for this and try_map.</span>
-        <span class="ident">R</span>: <span class="ident">Try</span><span class="op">&lt;</span><span class="ident">Residual</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::convert::Infallible</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="ident">R::Residual</span>: <span class="ident">Residual</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     {
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">fn</span> <span class="ident">check</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">T</span>, <span class="ident">R</span>, <span class="ident">E</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="kw">impl</span> <span class="ident">FnMut</span>((), <span class="ident">T</span>) -&gt; <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>
+        <span class="kw">fn</span> <span class="ident">check</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">V</span>, <span class="ident">R</span><span class="op">&gt;</span>(
+            <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="kw">impl</span> <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">I</span>) -&gt; <span class="ident">V</span>,
+        ) -&gt; <span class="kw">impl</span> <span class="ident">FnMut</span>((), <span class="ident">I</span>) -&gt; <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident">R::TryType</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">R</span>,
-            <span class="ident">R</span>: <span class="ident">Try</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">bool</span><span class="op">&gt;</span>,
-            <span class="ident">R</span>: <span class="ident">Try</span><span class="op">&lt;</span><span class="ident">Residual</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::convert::Infallible</span>, <span class="ident">E</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">V</span>: <span class="ident">Try</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">bool</span>, <span class="ident">Residual</span> <span class="op">=</span> <span class="ident">R</span><span class="op">&gt;</span>,
+            <span class="ident">R</span>: <span class="ident">Residual</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         {
             <span class="kw">move</span> <span class="op">|</span>(), <span class="ident">x</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">f</span>(<span class="kw-2">&amp;</span><span class="ident">x</span>).<span class="ident">branch</span>() {
                 <span class="ident">ControlFlow::Continue</span>(<span class="bool-val">false</span>) =&gt; <span class="ident">ControlFlow::CONTINUE</span>,
-                <span class="ident">ControlFlow::Continue</span>(<span class="bool-val">true</span>) =&gt; <span class="ident">ControlFlow::Break</span>(<span class="prelude-val">Ok</span>(<span class="ident">x</span>)),
-                <span class="ident">ControlFlow::Break</span>(<span class="prelude-val">Err</span>(<span class="ident">x</span>)) =&gt; <span class="ident">ControlFlow::Break</span>(<span class="prelude-val">Err</span>(<span class="ident">x</span>)),
+                <span class="ident">ControlFlow::Continue</span>(<span class="bool-val">true</span>) =&gt; <span class="ident">ControlFlow::Break</span>(<span class="ident">Try::from_output</span>(<span class="prelude-val">Some</span>(<span class="ident">x</span>))),
+                <span class="ident">ControlFlow::Break</span>(<span class="ident">r</span>) =&gt; <span class="ident">ControlFlow::Break</span>(<span class="ident">FromResidual::from_residual</span>(<span class="ident">r</span>)),
             }
         }
 
-        <span class="self">self</span>.<span class="ident">try_fold</span>((), <span class="ident">check</span>(<span class="ident">f</span>)).<span class="ident">break_value</span>().<span class="ident">transpose</span>()
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">try_fold</span>((), <span class="ident">check</span>(<span class="ident">f</span>)) {
+            <span class="ident">ControlFlow::Break</span>(<span class="ident">x</span>) =&gt; <span class="ident">x</span>,
+            <span class="ident">ControlFlow::Continue</span>(()) =&gt; <span class="ident">Try::from_output</span>(<span class="prelude-val">None</span>),
+        }
     }
 
     <span class="doccomment">/// Searches for an element in an iterator, returning its index.</span>
@@ -6405,7 +6607,8 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Instead of stopping at [`None`], the iterator will instead start again,</span>
     <span class="doccomment">/// from the beginning. After iterating again, it will start at the</span>
-    <span class="doccomment">/// beginning again. And again. And again. Forever.</span>
+    <span class="doccomment">/// beginning again. And again. And again. Forever. Note that in case the</span>
+    <span class="doccomment">/// original iterator is empty, the resulting iterator will also be empty.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -6952,5 +7155,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="core" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
 </body></html>

@@ -1,5 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;ops&#x2F;try_trait.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>try_trait.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../logo.svg' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;ops&#x2F;try_trait.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>try_trait.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -339,6 +340,54 @@
 <span id="338">338</span>
 <span id="339">339</span>
 <span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ops::ControlFlow</span>;
 
 <span class="doccomment">/// The `?` operator and `try {}` blocks.</span>
@@ -456,15 +505,14 @@
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_trait_v2&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;84277&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">rustc_on_unimplemented</span>(
     <span class="ident">on</span>(
-        <span class="ident">all</span>(<span class="ident">from_method</span> <span class="op">=</span> <span class="string">&quot;from_output&quot;</span>, <span class="ident">from_desugaring</span> <span class="op">=</span> <span class="string">&quot;TryBlock&quot;</span>),
+        <span class="ident">all</span>(<span class="ident">from_desugaring</span> <span class="op">=</span> <span class="string">&quot;TryBlock&quot;</span>),
         <span class="ident">message</span> <span class="op">=</span> <span class="string">&quot;a `try` block must return `Result` or `Option` \
                     (or another type that implements `{Try}`)&quot;</span>,
         <span class="ident">label</span> <span class="op">=</span> <span class="string">&quot;could not wrap the final value of the block as `{Self}` doesn&#39;t implement `Try`&quot;</span>,
     ),
     <span class="ident">on</span>(
-        <span class="ident">all</span>(<span class="ident">from_method</span> <span class="op">=</span> <span class="string">&quot;branch&quot;</span>, <span class="ident">from_desugaring</span> <span class="op">=</span> <span class="string">&quot;QuestionMark&quot;</span>),
-        <span class="ident">message</span> <span class="op">=</span> <span class="string">&quot;the `?` operator can only be applied to values \
-                    that implement `{Try}`&quot;</span>,
+        <span class="ident">all</span>(<span class="ident">from_desugaring</span> <span class="op">=</span> <span class="string">&quot;QuestionMark&quot;</span>),
+        <span class="ident">message</span> <span class="op">=</span> <span class="string">&quot;the `?` operator can only be applied to values that implement `{Try}`&quot;</span>,
         <span class="ident">label</span> <span class="op">=</span> <span class="string">&quot;the `?` operator cannot be applied to type `{Self}`&quot;</span>
     )
 )]</span>
@@ -567,7 +615,6 @@
 <span class="attribute">#[<span class="ident">rustc_on_unimplemented</span>(
     <span class="ident">on</span>(
         <span class="ident">all</span>(
-            <span class="ident">from_method</span> <span class="op">=</span> <span class="string">&quot;from_residual&quot;</span>,
             <span class="ident">from_desugaring</span> <span class="op">=</span> <span class="string">&quot;QuestionMark&quot;</span>,
             <span class="ident">_Self</span> <span class="op">=</span> <span class="string">&quot;std::result::Result&lt;T, E&gt;&quot;</span>,
             <span class="ident">R</span> <span class="op">=</span> <span class="string">&quot;std::option::Option&lt;std::convert::Infallible&gt;&quot;</span>
@@ -579,7 +626,6 @@
     ),
     <span class="ident">on</span>(
         <span class="ident">all</span>(
-            <span class="ident">from_method</span> <span class="op">=</span> <span class="string">&quot;from_residual&quot;</span>,
             <span class="ident">from_desugaring</span> <span class="op">=</span> <span class="string">&quot;QuestionMark&quot;</span>,
             <span class="ident">_Self</span> <span class="op">=</span> <span class="string">&quot;std::result::Result&lt;T, E&gt;&quot;</span>,
         ),
@@ -593,7 +639,6 @@
     ),
     <span class="ident">on</span>(
         <span class="ident">all</span>(
-            <span class="ident">from_method</span> <span class="op">=</span> <span class="string">&quot;from_residual&quot;</span>,
             <span class="ident">from_desugaring</span> <span class="op">=</span> <span class="string">&quot;QuestionMark&quot;</span>,
             <span class="ident">_Self</span> <span class="op">=</span> <span class="string">&quot;std::option::Option&lt;T&gt;&quot;</span>,
             <span class="ident">R</span> <span class="op">=</span> <span class="string">&quot;std::result::Result&lt;T, E&gt;&quot;</span>,
@@ -605,7 +650,6 @@
     ),
     <span class="ident">on</span>(
         <span class="ident">all</span>(
-            <span class="ident">from_method</span> <span class="op">=</span> <span class="string">&quot;from_residual&quot;</span>,
             <span class="ident">from_desugaring</span> <span class="op">=</span> <span class="string">&quot;QuestionMark&quot;</span>,
             <span class="ident">_Self</span> <span class="op">=</span> <span class="string">&quot;std::option::Option&lt;T&gt;&quot;</span>,
         ),
@@ -618,7 +662,6 @@
     ),
     <span class="ident">on</span>(
         <span class="ident">all</span>(
-            <span class="ident">from_method</span> <span class="op">=</span> <span class="string">&quot;from_residual&quot;</span>,
             <span class="ident">from_desugaring</span> <span class="op">=</span> <span class="string">&quot;QuestionMark&quot;</span>,
             <span class="ident">_Self</span> <span class="op">=</span> <span class="string">&quot;std::ops::ControlFlow&lt;B, C&gt;&quot;</span>,
             <span class="ident">R</span> <span class="op">=</span> <span class="string">&quot;std::ops::ControlFlow&lt;B, C&gt;&quot;</span>,
@@ -631,7 +674,6 @@
     ),
     <span class="ident">on</span>(
         <span class="ident">all</span>(
-            <span class="ident">from_method</span> <span class="op">=</span> <span class="string">&quot;from_residual&quot;</span>,
             <span class="ident">from_desugaring</span> <span class="op">=</span> <span class="string">&quot;QuestionMark&quot;</span>,
             <span class="ident">_Self</span> <span class="op">=</span> <span class="string">&quot;std::ops::ControlFlow&lt;B, C&gt;&quot;</span>,
             <span class="comment">// `R` is not a `ControlFlow`, as that case was matched previously</span>
@@ -642,10 +684,7 @@
         <span class="ident">enclosing_scope</span> <span class="op">=</span> <span class="string">&quot;this function returns a `ControlFlow`&quot;</span>,
     ),
     <span class="ident">on</span>(
-        <span class="ident">all</span>(
-            <span class="ident">from_method</span> <span class="op">=</span> <span class="string">&quot;from_residual&quot;</span>,
-            <span class="ident">from_desugaring</span> <span class="op">=</span> <span class="string">&quot;QuestionMark&quot;</span>
-        ),
+        <span class="ident">all</span>(<span class="ident">from_desugaring</span> <span class="op">=</span> <span class="string">&quot;QuestionMark&quot;</span>),
         <span class="ident">message</span> <span class="op">=</span> <span class="string">&quot;the `?` operator can only be used in {ItemContext} \
                     that returns `Result` or `Option` \
                     (or another type that implements `{FromResidual}`)&quot;</span>,
@@ -679,6 +718,64 @@
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_trait_v2&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;84277&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">from_residual</span>(<span class="ident">residual</span>: <span class="ident">R</span>) -&gt; <span class="self">Self</span>;
 }
+
+<span class="doccomment">/// Allows retrieving the canonical type implementing [`Try`] that has this type</span>
+<span class="doccomment">/// as its residual and allows it to hold an `O` as its output.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// If you think of the `Try` trait as splitting a type into its [`Try::Output`]</span>
+<span class="doccomment">/// and [`Try::Residual`] components, this allows putting them back together.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// For example,</span>
+<span class="doccomment">/// `Result&lt;T, E&gt;: Try&lt;Output = T, Residual = Result&lt;Infallible, E&gt;&gt;`,</span>
+<span class="doccomment">/// and in the other direction,</span>
+<span class="doccomment">/// `&lt;Result&lt;Infallible, E&gt; as Residual&lt;T&gt;&gt;::TryType = Result&lt;T, E&gt;`.</span>
+<span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_trait_v2_residual&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;91285&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Residual</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// The &quot;return&quot; type of this meta-function.</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_trait_v2_residual&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;91285&quot;</span>)]</span>
+    <span class="kw">type</span> <span class="ident">TryType</span>: <span class="ident">Try</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">O</span>, <span class="ident">Residual</span> <span class="op">=</span> <span class="self">Self</span><span class="op">&gt;</span>;
+}
+
+<span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pub_crate_should_not_need_unstable_attr&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;none&quot;</span>)]</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">ChangeOutputType</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">V</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">Try</span><span class="op">&gt;</span><span class="ident">::Residual</span> <span class="kw">as</span> <span class="ident">Residual</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::TryType</span>;
+
+<span class="doccomment">/// An adapter for implementing non-try methods via the `Try` implementation.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Conceptually the same as `Result&lt;T, !&gt;`, but requiring less work in trait</span>
+<span class="doccomment">/// solving and inhabited-ness checking and such, by being an obvious newtype</span>
+<span class="doccomment">/// and not having `From` bounds lying around.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Not currently planned to be exposed publicly, so just `pub(crate)`.</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">NeverShortCircuit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">T</span>);
+
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum</span> <span class="ident">NeverShortCircuitResidual</span> {}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Try</span> <span class="kw">for</span> <span class="ident">NeverShortCircuit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">T</span>;
+    <span class="kw">type</span> <span class="ident">Residual</span> <span class="op">=</span> <span class="ident">NeverShortCircuitResidual</span>;
+
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">fn</span> <span class="ident">branch</span>(<span class="self">self</span>) -&gt; <span class="ident">ControlFlow</span><span class="op">&lt;</span><span class="ident">NeverShortCircuitResidual</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="ident">ControlFlow::Continue</span>(<span class="self">self</span>.<span class="number">0</span>)
+    }
+
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">fn</span> <span class="ident">from_output</span>(<span class="ident">x</span>: <span class="ident">T</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident">NeverShortCircuit</span>(<span class="ident">x</span>)
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">FromResidual</span> <span class="kw">for</span> <span class="ident">NeverShortCircuit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">fn</span> <span class="ident">from_residual</span>(<span class="ident">never</span>: <span class="ident">NeverShortCircuitResidual</span>) -&gt; <span class="self">Self</span> {
+        <span class="kw">match</span> <span class="ident">never</span> {}
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Residual</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">NeverShortCircuitResidual</span> {
+    <span class="kw">type</span> <span class="ident">TryType</span> <span class="op">=</span> <span class="ident">NeverShortCircuit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>;
+}
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
 </body></html>

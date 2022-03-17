@@ -1,5 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;slice&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../logo.svg' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;slice&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -3601,6 +3602,470 @@
 <span id="3600">3600</span>
 <span id="3601">3601</span>
 <span id="3602">3602</span>
+<span id="3603">3603</span>
+<span id="3604">3604</span>
+<span id="3605">3605</span>
+<span id="3606">3606</span>
+<span id="3607">3607</span>
+<span id="3608">3608</span>
+<span id="3609">3609</span>
+<span id="3610">3610</span>
+<span id="3611">3611</span>
+<span id="3612">3612</span>
+<span id="3613">3613</span>
+<span id="3614">3614</span>
+<span id="3615">3615</span>
+<span id="3616">3616</span>
+<span id="3617">3617</span>
+<span id="3618">3618</span>
+<span id="3619">3619</span>
+<span id="3620">3620</span>
+<span id="3621">3621</span>
+<span id="3622">3622</span>
+<span id="3623">3623</span>
+<span id="3624">3624</span>
+<span id="3625">3625</span>
+<span id="3626">3626</span>
+<span id="3627">3627</span>
+<span id="3628">3628</span>
+<span id="3629">3629</span>
+<span id="3630">3630</span>
+<span id="3631">3631</span>
+<span id="3632">3632</span>
+<span id="3633">3633</span>
+<span id="3634">3634</span>
+<span id="3635">3635</span>
+<span id="3636">3636</span>
+<span id="3637">3637</span>
+<span id="3638">3638</span>
+<span id="3639">3639</span>
+<span id="3640">3640</span>
+<span id="3641">3641</span>
+<span id="3642">3642</span>
+<span id="3643">3643</span>
+<span id="3644">3644</span>
+<span id="3645">3645</span>
+<span id="3646">3646</span>
+<span id="3647">3647</span>
+<span id="3648">3648</span>
+<span id="3649">3649</span>
+<span id="3650">3650</span>
+<span id="3651">3651</span>
+<span id="3652">3652</span>
+<span id="3653">3653</span>
+<span id="3654">3654</span>
+<span id="3655">3655</span>
+<span id="3656">3656</span>
+<span id="3657">3657</span>
+<span id="3658">3658</span>
+<span id="3659">3659</span>
+<span id="3660">3660</span>
+<span id="3661">3661</span>
+<span id="3662">3662</span>
+<span id="3663">3663</span>
+<span id="3664">3664</span>
+<span id="3665">3665</span>
+<span id="3666">3666</span>
+<span id="3667">3667</span>
+<span id="3668">3668</span>
+<span id="3669">3669</span>
+<span id="3670">3670</span>
+<span id="3671">3671</span>
+<span id="3672">3672</span>
+<span id="3673">3673</span>
+<span id="3674">3674</span>
+<span id="3675">3675</span>
+<span id="3676">3676</span>
+<span id="3677">3677</span>
+<span id="3678">3678</span>
+<span id="3679">3679</span>
+<span id="3680">3680</span>
+<span id="3681">3681</span>
+<span id="3682">3682</span>
+<span id="3683">3683</span>
+<span id="3684">3684</span>
+<span id="3685">3685</span>
+<span id="3686">3686</span>
+<span id="3687">3687</span>
+<span id="3688">3688</span>
+<span id="3689">3689</span>
+<span id="3690">3690</span>
+<span id="3691">3691</span>
+<span id="3692">3692</span>
+<span id="3693">3693</span>
+<span id="3694">3694</span>
+<span id="3695">3695</span>
+<span id="3696">3696</span>
+<span id="3697">3697</span>
+<span id="3698">3698</span>
+<span id="3699">3699</span>
+<span id="3700">3700</span>
+<span id="3701">3701</span>
+<span id="3702">3702</span>
+<span id="3703">3703</span>
+<span id="3704">3704</span>
+<span id="3705">3705</span>
+<span id="3706">3706</span>
+<span id="3707">3707</span>
+<span id="3708">3708</span>
+<span id="3709">3709</span>
+<span id="3710">3710</span>
+<span id="3711">3711</span>
+<span id="3712">3712</span>
+<span id="3713">3713</span>
+<span id="3714">3714</span>
+<span id="3715">3715</span>
+<span id="3716">3716</span>
+<span id="3717">3717</span>
+<span id="3718">3718</span>
+<span id="3719">3719</span>
+<span id="3720">3720</span>
+<span id="3721">3721</span>
+<span id="3722">3722</span>
+<span id="3723">3723</span>
+<span id="3724">3724</span>
+<span id="3725">3725</span>
+<span id="3726">3726</span>
+<span id="3727">3727</span>
+<span id="3728">3728</span>
+<span id="3729">3729</span>
+<span id="3730">3730</span>
+<span id="3731">3731</span>
+<span id="3732">3732</span>
+<span id="3733">3733</span>
+<span id="3734">3734</span>
+<span id="3735">3735</span>
+<span id="3736">3736</span>
+<span id="3737">3737</span>
+<span id="3738">3738</span>
+<span id="3739">3739</span>
+<span id="3740">3740</span>
+<span id="3741">3741</span>
+<span id="3742">3742</span>
+<span id="3743">3743</span>
+<span id="3744">3744</span>
+<span id="3745">3745</span>
+<span id="3746">3746</span>
+<span id="3747">3747</span>
+<span id="3748">3748</span>
+<span id="3749">3749</span>
+<span id="3750">3750</span>
+<span id="3751">3751</span>
+<span id="3752">3752</span>
+<span id="3753">3753</span>
+<span id="3754">3754</span>
+<span id="3755">3755</span>
+<span id="3756">3756</span>
+<span id="3757">3757</span>
+<span id="3758">3758</span>
+<span id="3759">3759</span>
+<span id="3760">3760</span>
+<span id="3761">3761</span>
+<span id="3762">3762</span>
+<span id="3763">3763</span>
+<span id="3764">3764</span>
+<span id="3765">3765</span>
+<span id="3766">3766</span>
+<span id="3767">3767</span>
+<span id="3768">3768</span>
+<span id="3769">3769</span>
+<span id="3770">3770</span>
+<span id="3771">3771</span>
+<span id="3772">3772</span>
+<span id="3773">3773</span>
+<span id="3774">3774</span>
+<span id="3775">3775</span>
+<span id="3776">3776</span>
+<span id="3777">3777</span>
+<span id="3778">3778</span>
+<span id="3779">3779</span>
+<span id="3780">3780</span>
+<span id="3781">3781</span>
+<span id="3782">3782</span>
+<span id="3783">3783</span>
+<span id="3784">3784</span>
+<span id="3785">3785</span>
+<span id="3786">3786</span>
+<span id="3787">3787</span>
+<span id="3788">3788</span>
+<span id="3789">3789</span>
+<span id="3790">3790</span>
+<span id="3791">3791</span>
+<span id="3792">3792</span>
+<span id="3793">3793</span>
+<span id="3794">3794</span>
+<span id="3795">3795</span>
+<span id="3796">3796</span>
+<span id="3797">3797</span>
+<span id="3798">3798</span>
+<span id="3799">3799</span>
+<span id="3800">3800</span>
+<span id="3801">3801</span>
+<span id="3802">3802</span>
+<span id="3803">3803</span>
+<span id="3804">3804</span>
+<span id="3805">3805</span>
+<span id="3806">3806</span>
+<span id="3807">3807</span>
+<span id="3808">3808</span>
+<span id="3809">3809</span>
+<span id="3810">3810</span>
+<span id="3811">3811</span>
+<span id="3812">3812</span>
+<span id="3813">3813</span>
+<span id="3814">3814</span>
+<span id="3815">3815</span>
+<span id="3816">3816</span>
+<span id="3817">3817</span>
+<span id="3818">3818</span>
+<span id="3819">3819</span>
+<span id="3820">3820</span>
+<span id="3821">3821</span>
+<span id="3822">3822</span>
+<span id="3823">3823</span>
+<span id="3824">3824</span>
+<span id="3825">3825</span>
+<span id="3826">3826</span>
+<span id="3827">3827</span>
+<span id="3828">3828</span>
+<span id="3829">3829</span>
+<span id="3830">3830</span>
+<span id="3831">3831</span>
+<span id="3832">3832</span>
+<span id="3833">3833</span>
+<span id="3834">3834</span>
+<span id="3835">3835</span>
+<span id="3836">3836</span>
+<span id="3837">3837</span>
+<span id="3838">3838</span>
+<span id="3839">3839</span>
+<span id="3840">3840</span>
+<span id="3841">3841</span>
+<span id="3842">3842</span>
+<span id="3843">3843</span>
+<span id="3844">3844</span>
+<span id="3845">3845</span>
+<span id="3846">3846</span>
+<span id="3847">3847</span>
+<span id="3848">3848</span>
+<span id="3849">3849</span>
+<span id="3850">3850</span>
+<span id="3851">3851</span>
+<span id="3852">3852</span>
+<span id="3853">3853</span>
+<span id="3854">3854</span>
+<span id="3855">3855</span>
+<span id="3856">3856</span>
+<span id="3857">3857</span>
+<span id="3858">3858</span>
+<span id="3859">3859</span>
+<span id="3860">3860</span>
+<span id="3861">3861</span>
+<span id="3862">3862</span>
+<span id="3863">3863</span>
+<span id="3864">3864</span>
+<span id="3865">3865</span>
+<span id="3866">3866</span>
+<span id="3867">3867</span>
+<span id="3868">3868</span>
+<span id="3869">3869</span>
+<span id="3870">3870</span>
+<span id="3871">3871</span>
+<span id="3872">3872</span>
+<span id="3873">3873</span>
+<span id="3874">3874</span>
+<span id="3875">3875</span>
+<span id="3876">3876</span>
+<span id="3877">3877</span>
+<span id="3878">3878</span>
+<span id="3879">3879</span>
+<span id="3880">3880</span>
+<span id="3881">3881</span>
+<span id="3882">3882</span>
+<span id="3883">3883</span>
+<span id="3884">3884</span>
+<span id="3885">3885</span>
+<span id="3886">3886</span>
+<span id="3887">3887</span>
+<span id="3888">3888</span>
+<span id="3889">3889</span>
+<span id="3890">3890</span>
+<span id="3891">3891</span>
+<span id="3892">3892</span>
+<span id="3893">3893</span>
+<span id="3894">3894</span>
+<span id="3895">3895</span>
+<span id="3896">3896</span>
+<span id="3897">3897</span>
+<span id="3898">3898</span>
+<span id="3899">3899</span>
+<span id="3900">3900</span>
+<span id="3901">3901</span>
+<span id="3902">3902</span>
+<span id="3903">3903</span>
+<span id="3904">3904</span>
+<span id="3905">3905</span>
+<span id="3906">3906</span>
+<span id="3907">3907</span>
+<span id="3908">3908</span>
+<span id="3909">3909</span>
+<span id="3910">3910</span>
+<span id="3911">3911</span>
+<span id="3912">3912</span>
+<span id="3913">3913</span>
+<span id="3914">3914</span>
+<span id="3915">3915</span>
+<span id="3916">3916</span>
+<span id="3917">3917</span>
+<span id="3918">3918</span>
+<span id="3919">3919</span>
+<span id="3920">3920</span>
+<span id="3921">3921</span>
+<span id="3922">3922</span>
+<span id="3923">3923</span>
+<span id="3924">3924</span>
+<span id="3925">3925</span>
+<span id="3926">3926</span>
+<span id="3927">3927</span>
+<span id="3928">3928</span>
+<span id="3929">3929</span>
+<span id="3930">3930</span>
+<span id="3931">3931</span>
+<span id="3932">3932</span>
+<span id="3933">3933</span>
+<span id="3934">3934</span>
+<span id="3935">3935</span>
+<span id="3936">3936</span>
+<span id="3937">3937</span>
+<span id="3938">3938</span>
+<span id="3939">3939</span>
+<span id="3940">3940</span>
+<span id="3941">3941</span>
+<span id="3942">3942</span>
+<span id="3943">3943</span>
+<span id="3944">3944</span>
+<span id="3945">3945</span>
+<span id="3946">3946</span>
+<span id="3947">3947</span>
+<span id="3948">3948</span>
+<span id="3949">3949</span>
+<span id="3950">3950</span>
+<span id="3951">3951</span>
+<span id="3952">3952</span>
+<span id="3953">3953</span>
+<span id="3954">3954</span>
+<span id="3955">3955</span>
+<span id="3956">3956</span>
+<span id="3957">3957</span>
+<span id="3958">3958</span>
+<span id="3959">3959</span>
+<span id="3960">3960</span>
+<span id="3961">3961</span>
+<span id="3962">3962</span>
+<span id="3963">3963</span>
+<span id="3964">3964</span>
+<span id="3965">3965</span>
+<span id="3966">3966</span>
+<span id="3967">3967</span>
+<span id="3968">3968</span>
+<span id="3969">3969</span>
+<span id="3970">3970</span>
+<span id="3971">3971</span>
+<span id="3972">3972</span>
+<span id="3973">3973</span>
+<span id="3974">3974</span>
+<span id="3975">3975</span>
+<span id="3976">3976</span>
+<span id="3977">3977</span>
+<span id="3978">3978</span>
+<span id="3979">3979</span>
+<span id="3980">3980</span>
+<span id="3981">3981</span>
+<span id="3982">3982</span>
+<span id="3983">3983</span>
+<span id="3984">3984</span>
+<span id="3985">3985</span>
+<span id="3986">3986</span>
+<span id="3987">3987</span>
+<span id="3988">3988</span>
+<span id="3989">3989</span>
+<span id="3990">3990</span>
+<span id="3991">3991</span>
+<span id="3992">3992</span>
+<span id="3993">3993</span>
+<span id="3994">3994</span>
+<span id="3995">3995</span>
+<span id="3996">3996</span>
+<span id="3997">3997</span>
+<span id="3998">3998</span>
+<span id="3999">3999</span>
+<span id="4000">4000</span>
+<span id="4001">4001</span>
+<span id="4002">4002</span>
+<span id="4003">4003</span>
+<span id="4004">4004</span>
+<span id="4005">4005</span>
+<span id="4006">4006</span>
+<span id="4007">4007</span>
+<span id="4008">4008</span>
+<span id="4009">4009</span>
+<span id="4010">4010</span>
+<span id="4011">4011</span>
+<span id="4012">4012</span>
+<span id="4013">4013</span>
+<span id="4014">4014</span>
+<span id="4015">4015</span>
+<span id="4016">4016</span>
+<span id="4017">4017</span>
+<span id="4018">4018</span>
+<span id="4019">4019</span>
+<span id="4020">4020</span>
+<span id="4021">4021</span>
+<span id="4022">4022</span>
+<span id="4023">4023</span>
+<span id="4024">4024</span>
+<span id="4025">4025</span>
+<span id="4026">4026</span>
+<span id="4027">4027</span>
+<span id="4028">4028</span>
+<span id="4029">4029</span>
+<span id="4030">4030</span>
+<span id="4031">4031</span>
+<span id="4032">4032</span>
+<span id="4033">4033</span>
+<span id="4034">4034</span>
+<span id="4035">4035</span>
+<span id="4036">4036</span>
+<span id="4037">4037</span>
+<span id="4038">4038</span>
+<span id="4039">4039</span>
+<span id="4040">4040</span>
+<span id="4041">4041</span>
+<span id="4042">4042</span>
+<span id="4043">4043</span>
+<span id="4044">4044</span>
+<span id="4045">4045</span>
+<span id="4046">4046</span>
+<span id="4047">4047</span>
+<span id="4048">4048</span>
+<span id="4049">4049</span>
+<span id="4050">4050</span>
+<span id="4051">4051</span>
+<span id="4052">4052</span>
+<span id="4053">4053</span>
+<span id="4054">4054</span>
+<span id="4055">4055</span>
+<span id="4056">4056</span>
+<span id="4057">4057</span>
+<span id="4058">4058</span>
+<span id="4059">4059</span>
+<span id="4060">4060</span>
+<span id="4061">4061</span>
+<span id="4062">4062</span>
+<span id="4063">4063</span>
+<span id="4064">4064</span>
+<span id="4065">4065</span>
+<span id="4066">4066</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Slice management and manipulation.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! For more details see [`std::slice`].</span>
@@ -3613,12 +4078,14 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::marker::Copy</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::num::NonZeroUsize</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ops</span>::{<span class="ident">FnMut</span>, <span class="ident">Range</span>, <span class="ident">RangeBounds</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ops</span>::{<span class="ident">Bound</span>, <span class="ident">FnMut</span>, <span class="ident">OneSidedRange</span>, <span class="ident">Range</span>, <span class="ident">RangeBounds</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::option::Option</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::option::Option</span>::{<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ptr</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::result::Result</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::result::Result</span>::{<span class="prelude-val">Err</span>, <span class="prelude-val">Ok</span>};
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">miri</span>))]</span> <span class="comment">// Miri does not support all SIMD intrinsics</span>
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::simd</span>::{<span class="self">self</span>, <span class="ident">Simd</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::slice</span>;
 
 <span class="attribute">#[<span class="ident">unstable</span>(
@@ -3684,6 +4151,29 @@
 
 <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;inherent_ascii_escape&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;77174&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ascii::EscapeAscii</span>;
+
+<span class="doccomment">/// Calculates the direction and split point of a one-sided range.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This is a helper function for `take` and `take_mut` that returns</span>
+<span class="doccomment">/// the direction of the split (front or back) as well as the index at</span>
+<span class="doccomment">/// which to split. Returns `None` if the split index would overflow.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">fn</span> <span class="ident">split_point_of</span>(<span class="ident">range</span>: <span class="kw">impl</span> <span class="ident">OneSidedRange</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">Direction</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+    <span class="kw">use</span> <span class="ident">Bound</span>::<span class="kw-2">*</span>;
+
+    <span class="prelude-val">Some</span>(<span class="kw">match</span> (<span class="ident">range</span>.<span class="ident">start_bound</span>(), <span class="ident">range</span>.<span class="ident">end_bound</span>()) {
+        (<span class="ident">Unbounded</span>, <span class="ident">Excluded</span>(<span class="ident">i</span>)) =&gt; (<span class="ident">Direction::Front</span>, <span class="kw-2">*</span><span class="ident">i</span>),
+        (<span class="ident">Unbounded</span>, <span class="ident">Included</span>(<span class="ident">i</span>)) =&gt; (<span class="ident">Direction::Front</span>, <span class="ident">i</span>.<span class="ident">checked_add</span>(<span class="number">1</span>)<span class="question-mark">?</span>),
+        (<span class="ident">Excluded</span>(<span class="ident">i</span>), <span class="ident">Unbounded</span>) =&gt; (<span class="ident">Direction::Back</span>, <span class="ident">i</span>.<span class="ident">checked_add</span>(<span class="number">1</span>)<span class="question-mark">?</span>),
+        (<span class="ident">Included</span>(<span class="ident">i</span>), <span class="ident">Unbounded</span>) =&gt; (<span class="ident">Direction::Back</span>, <span class="kw-2">*</span><span class="ident">i</span>),
+        <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
+    })
+}
+
+<span class="kw">enum</span> <span class="ident">Direction</span> {
+    <span class="ident">Front</span>,
+    <span class="ident">Back</span>,
+}
 
 <span class="attribute">#[<span class="ident">lang</span> <span class="op">=</span> <span class="string">&quot;slice&quot;</span>]</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
@@ -3960,7 +4450,7 @@
         <span class="ident">I</span>: <span class="ident">SliceIndex</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
     {
         <span class="comment">// SAFETY: the caller must uphold most of the safety requirements for `get_unchecked`;</span>
-        <span class="comment">// the slice is dereferencable because `self` is a safe reference.</span>
+        <span class="comment">// the slice is dereferenceable because `self` is a safe reference.</span>
         <span class="comment">// The returned pointer is safe because impls of `SliceIndex` have to guarantee that it is.</span>
         <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">index</span>.<span class="ident">get_unchecked</span>(<span class="self">self</span>) }
     }
@@ -3996,7 +4486,7 @@
         <span class="ident">I</span>: <span class="ident">SliceIndex</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
     {
         <span class="comment">// SAFETY: the caller must uphold the safety requirements for `get_unchecked_mut`;</span>
-        <span class="comment">// the slice is dereferencable because `self` is a safe reference.</span>
+        <span class="comment">// the slice is dereferenceable because `self` is a safe reference.</span>
         <span class="comment">// The returned pointer is safe because impls of `SliceIndex` have to guarantee that it is.</span>
         <span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span><span class="ident">index</span>.<span class="ident">get_unchecked_mut</span>(<span class="self">self</span>) }
     }
@@ -4163,6 +4653,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_swap&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;83163&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">a</span>: <span class="ident">usize</span>, <span class="ident">b</span>: <span class="ident">usize</span>) {
         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>[<span class="ident">a</span>];
         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>[<span class="ident">b</span>];
@@ -5079,6 +5570,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">mid</span>: <span class="ident">usize</span>) -&gt; (<span class="kw-2">&amp;</span>[<span class="ident">T</span>], <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) {
         <span class="macro">assert!</span>(<span class="ident">mid</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>());
         <span class="comment">// SAFETY: `[ptr; mid]` and `[mid; len]` are inside `self`, which</span>
@@ -5109,6 +5601,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_at_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">mid</span>: <span class="ident">usize</span>) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>]) {
         <span class="macro">assert!</span>(<span class="ident">mid</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>());
         <span class="comment">// SAFETY: `[ptr; mid]` and `[mid; len]` are inside `self`, which</span>
@@ -5248,6 +5741,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;split_array&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;90091&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_array_ref</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>], <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) {
         <span class="kw">let</span> (<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">split_at</span>(<span class="ident">N</span>);
         <span class="comment">// SAFETY: a points to [T; N]? Yes it&#39;s [T] of length N (checked by split_at)</span>
@@ -5279,10 +5773,89 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;split_array&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;90091&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">track_caller</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">split_array_mut</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>; <span class="ident">N</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>]) {
         <span class="kw">let</span> (<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">split_at_mut</span>(<span class="ident">N</span>);
         <span class="comment">// SAFETY: a points to [T; N]? Yes it&#39;s [T] of length N (checked by split_at_mut)</span>
         <span class="kw">unsafe</span> { (<span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>(<span class="ident">a</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> [<span class="ident">T</span>; <span class="ident">N</span>]), <span class="ident">b</span>) }
+    }
+
+    <span class="doccomment">/// Divides one slice into an array and a remainder slice at an index from</span>
+    <span class="doccomment">/// the end.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The slice will contain all indices from `[0, len - N)` (excluding</span>
+    <span class="doccomment">/// the index `len - N` itself) and the array will contain all</span>
+    <span class="doccomment">/// indices from `[len - N, len)` (excluding the index `len` itself).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Panics if `N &gt; len`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(split_array)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let v = &amp;[1, 2, 3, 4, 5, 6][..];</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///    let (left, right) = v.rsplit_array_ref::&lt;0&gt;();</span>
+    <span class="doccomment">///    assert_eq!(left, [1, 2, 3, 4, 5, 6]);</span>
+    <span class="doccomment">///    assert_eq!(right, &amp;[]);</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let (left, right) = v.rsplit_array_ref::&lt;2&gt;();</span>
+    <span class="doccomment">///     assert_eq!(left, [1, 2, 3, 4]);</span>
+    <span class="doccomment">///     assert_eq!(right, &amp;[5, 6]);</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// {</span>
+    <span class="doccomment">///     let (left, right) = v.rsplit_array_ref::&lt;6&gt;();</span>
+    <span class="doccomment">///     assert_eq!(left, []);</span>
+    <span class="doccomment">///     assert_eq!(right, &amp;[1, 2, 3, 4, 5, 6]);</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;split_array&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;90091&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rsplit_array_ref</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="kw-2">&amp;</span>[<span class="ident">T</span>], <span class="kw-2">&amp;</span>[<span class="ident">T</span>; <span class="ident">N</span>]) {
+        <span class="macro">assert!</span>(<span class="ident">N</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>());
+        <span class="kw">let</span> (<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">split_at</span>(<span class="self">self</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">N</span>);
+        <span class="comment">// SAFETY: b points to [T; N]? Yes it&#39;s [T] of length N (checked by split_at)</span>
+        <span class="kw">unsafe</span> { (<span class="ident">a</span>, <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">b</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> [<span class="ident">T</span>; <span class="ident">N</span>])) }
+    }
+
+    <span class="doccomment">/// Divides one mutable slice into an array and a remainder slice at an</span>
+    <span class="doccomment">/// index from the end.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The slice will contain all indices from `[0, len - N)` (excluding</span>
+    <span class="doccomment">/// the index `N` itself) and the array will contain all</span>
+    <span class="doccomment">/// indices from `[len - N, len)` (excluding the index `len` itself).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Panics if `N &gt; len`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(split_array)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut v = &amp;mut [1, 0, 3, 0, 5, 6][..];</span>
+    <span class="doccomment">/// let (left, right) = v.rsplit_array_mut::&lt;4&gt;();</span>
+    <span class="doccomment">/// assert_eq!(left, [1, 0]);</span>
+    <span class="doccomment">/// assert_eq!(right, &amp;mut [3, 0, 5, 6]);</span>
+    <span class="doccomment">/// left[1] = 2;</span>
+    <span class="doccomment">/// right[1] = 4;</span>
+    <span class="doccomment">/// assert_eq!(v, [1, 2, 3, 4, 5, 6]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;split_array&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;new API&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;90091&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rsplit_array_mut</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>; <span class="ident">N</span>]) {
+        <span class="macro">assert!</span>(<span class="ident">N</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>());
+        <span class="kw">let</span> (<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">split_at_mut</span>(<span class="self">self</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">N</span>);
+        <span class="comment">// SAFETY: b points to [T; N]? Yes it&#39;s [T] of length N (checked by split_at_mut)</span>
+        <span class="kw">unsafe</span> { (<span class="ident">a</span>, <span class="kw-2">&amp;mut</span> <span class="kw-2">*</span>(<span class="ident">b</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> [<span class="ident">T</span>; <span class="ident">N</span>])) }
     }
 
     <span class="doccomment">/// Returns an iterator over subslices separated by elements that match</span>
@@ -7014,6 +7587,123 @@
         }
     }
 
+    <span class="doccomment">/// Split a slice into a prefix, a middle of aligned SIMD types, and a suffix.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This is a safe wrapper around [`slice::align_to`], so has the same weak</span>
+    <span class="doccomment">/// postconditions as that method.  You&#39;re only assured that</span>
+    <span class="doccomment">/// `self.len() == prefix.len() + middle.len() * LANES + suffix.len()`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Notably, all of the following are possible:</span>
+    <span class="doccomment">/// - `prefix.len() &gt;= LANES`.</span>
+    <span class="doccomment">/// - `middle.is_empty()` despite `self.len() &gt;= 3 * LANES`.</span>
+    <span class="doccomment">/// - `suffix.len() &gt;= LANES`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// That said, this is a safe method, so if you&#39;re only writing safe code,</span>
+    <span class="doccomment">/// then this can at most cause incorrect logic, not unsoundness.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This will panic if the size of the SIMD type is different from</span>
+    <span class="doccomment">/// `LANES` times that of the scalar.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// At the time of writing, the trait restrictions on `Simd&lt;T, LANES&gt;` keeps</span>
+    <span class="doccomment">/// that from ever happening, as only power-of-two numbers of lanes are</span>
+    <span class="doccomment">/// supported.  It&#39;s possible that, in the future, those restrictions might</span>
+    <span class="doccomment">/// be lifted in a way that would make it possible to see panics from this</span>
+    <span class="doccomment">/// method for something like `LANES == 3`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(portable_simd)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let short = &amp;[1, 2, 3];</span>
+    <span class="doccomment">/// let (prefix, middle, suffix) = short.as_simd::&lt;4&gt;();</span>
+    <span class="doccomment">/// assert_eq!(middle, []); // Not enough elements for anything in the middle</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// // They might be split in any possible way between prefix and suffix</span>
+    <span class="doccomment">/// let it = prefix.iter().chain(suffix).copied();</span>
+    <span class="doccomment">/// assert_eq!(it.collect::&lt;Vec&lt;_&gt;&gt;(), vec![1, 2, 3]);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// fn basic_simd_sum(x: &amp;[f32]) -&gt; f32 {</span>
+    <span class="doccomment">///     use std::ops::Add;</span>
+    <span class="doccomment">///     use std::simd::f32x4;</span>
+    <span class="doccomment">///     let (prefix, middle, suffix) = x.as_simd();</span>
+    <span class="doccomment">///     let sums = f32x4::from_array([</span>
+    <span class="doccomment">///         prefix.iter().copied().sum(),</span>
+    <span class="doccomment">///         0.0,</span>
+    <span class="doccomment">///         0.0,</span>
+    <span class="doccomment">///         suffix.iter().copied().sum(),</span>
+    <span class="doccomment">///     ]);</span>
+    <span class="doccomment">///     let sums = middle.iter().copied().fold(sums, f32x4::add);</span>
+    <span class="doccomment">///     sums.horizontal_sum()</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let numbers: Vec&lt;f32&gt; = (1..101).map(|x| x as _).collect();</span>
+    <span class="doccomment">/// assert_eq!(basic_simd_sum(&amp;numbers[1..99]), 4949.0);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;portable_simd&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;86656&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">miri</span>))]</span> <span class="comment">// Miri does not support all SIMD intrinsics</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_simd</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANES</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="kw-2">&amp;</span>[<span class="ident">T</span>], <span class="kw-2">&amp;</span>[<span class="ident">Simd</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">LANES</span><span class="op">&gt;</span>], <span class="kw-2">&amp;</span>[<span class="ident">T</span>])
+    <span class="kw">where</span>
+        <span class="ident">Simd</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">LANES</span><span class="op">&gt;</span>: <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">LANES</span>]<span class="op">&gt;</span>,
+        <span class="ident">T</span>: <span class="ident">simd::SimdElement</span>,
+        <span class="ident">simd::LaneCount</span><span class="op">&lt;</span><span class="ident">LANES</span><span class="op">&gt;</span>: <span class="ident">simd::SupportedLaneCount</span>,
+    {
+        <span class="comment">// These are expected to always match, as vector types are laid out like</span>
+        <span class="comment">// arrays per &lt;https://llvm.org/docs/LangRef.html#vector-type&gt;, but we</span>
+        <span class="comment">// might as well double-check since it&#39;ll optimize away anyhow.</span>
+        <span class="macro">assert_eq!</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">Simd</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">LANES</span><span class="op">&gt;</span><span class="op">&gt;</span>(), <span class="ident">mem::size_of</span>::<span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">LANES</span>]<span class="op">&gt;</span>());
+
+        <span class="comment">// SAFETY: The simd types have the same layout as arrays, just with</span>
+        <span class="comment">// potentially-higher alignment, so the de-facto transmutes are sound.</span>
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">align_to</span>() }
+    }
+
+    <span class="doccomment">/// Split a slice into a prefix, a middle of aligned SIMD types, and a suffix.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This is a safe wrapper around [`slice::align_to_mut`], so has the same weak</span>
+    <span class="doccomment">/// postconditions as that method.  You&#39;re only assured that</span>
+    <span class="doccomment">/// `self.len() == prefix.len() + middle.len() * LANES + suffix.len()`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Notably, all of the following are possible:</span>
+    <span class="doccomment">/// - `prefix.len() &gt;= LANES`.</span>
+    <span class="doccomment">/// - `middle.is_empty()` despite `self.len() &gt;= 3 * LANES`.</span>
+    <span class="doccomment">/// - `suffix.len() &gt;= LANES`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// That said, this is a safe method, so if you&#39;re only writing safe code,</span>
+    <span class="doccomment">/// then this can at most cause incorrect logic, not unsoundness.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This is the mutable version of [`slice::as_simd`]; see that for examples.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Panics</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This will panic if the size of the SIMD type is different from</span>
+    <span class="doccomment">/// `LANES` times that of the scalar.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// At the time of writing, the trait restrictions on `Simd&lt;T, LANES&gt;` keeps</span>
+    <span class="doccomment">/// that from ever happening, as only power-of-two numbers of lanes are</span>
+    <span class="doccomment">/// supported.  It&#39;s possible that, in the future, those restrictions might</span>
+    <span class="doccomment">/// be lifted in a way that would make it possible to see panics from this</span>
+    <span class="doccomment">/// method for something like `LANES == 3`.</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;portable_simd&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;86656&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">miri</span>))]</span> <span class="comment">// Miri does not support all SIMD intrinsics</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_simd_mut</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">LANES</span>: <span class="ident">usize</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; (<span class="kw-2">&amp;mut</span> [<span class="ident">T</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">Simd</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">LANES</span><span class="op">&gt;</span>], <span class="kw-2">&amp;mut</span> [<span class="ident">T</span>])
+    <span class="kw">where</span>
+        <span class="ident">Simd</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">LANES</span><span class="op">&gt;</span>: <span class="ident">AsMut</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">LANES</span>]<span class="op">&gt;</span>,
+        <span class="ident">T</span>: <span class="ident">simd::SimdElement</span>,
+        <span class="ident">simd::LaneCount</span><span class="op">&lt;</span><span class="ident">LANES</span><span class="op">&gt;</span>: <span class="ident">simd::SupportedLaneCount</span>,
+    {
+        <span class="comment">// These are expected to always match, as vector types are laid out like</span>
+        <span class="comment">// arrays per &lt;https://llvm.org/docs/LangRef.html#vector-type&gt;, but we</span>
+        <span class="comment">// might as well double-check since it&#39;ll optimize away anyhow.</span>
+        <span class="macro">assert_eq!</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">Simd</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">LANES</span><span class="op">&gt;</span><span class="op">&gt;</span>(), <span class="ident">mem::size_of</span>::<span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">LANES</span>]<span class="op">&gt;</span>());
+
+        <span class="comment">// SAFETY: The simd types have the same layout as arrays, just with</span>
+        <span class="comment">// potentially-higher alignment, so the de-facto transmutes are sound.</span>
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">align_to_mut</span>() }
+    }
+
     <span class="doccomment">/// Checks if the elements of this slice are sorted.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// That is, for each element `a` and its following element `b`, `a &lt;= b` must hold. If the</span>
@@ -7120,6 +7810,245 @@
     {
         <span class="self">self</span>.<span class="ident">binary_search_by</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw">if</span> <span class="ident">pred</span>(<span class="ident">x</span>) { <span class="ident">Less</span> } <span class="kw">else</span> { <span class="ident">Greater</span> }).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">i</span>)
     }
+
+    <span class="doccomment">/// Removes the subslice corresponding to the given range</span>
+    <span class="doccomment">/// and returns a reference to it.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `None` and does not modify the slice if the given</span>
+    <span class="doccomment">/// range is out of bounds.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Note that this method only accepts one-sided ranges such as</span>
+    <span class="doccomment">/// `2..` or `..6`, but not `2..6`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Taking the first three elements of a slice:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(slice_take)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut slice: &amp;[_] = &amp;[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;];</span>
+    <span class="doccomment">/// let mut first_three = slice.take(..3).unwrap();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(slice, &amp;[&#39;d&#39;]);</span>
+    <span class="doccomment">/// assert_eq!(first_three, &amp;[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Taking the last two elements of a slice:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(slice_take)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut slice: &amp;[_] = &amp;[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;];</span>
+    <span class="doccomment">/// let mut tail = slice.take(2..).unwrap();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(slice, &amp;[&#39;a&#39;, &#39;b&#39;]);</span>
+    <span class="doccomment">/// assert_eq!(tail, &amp;[&#39;c&#39;, &#39;d&#39;]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Getting `None` when `range` is out of bounds:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(slice_take)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut slice: &amp;[_] = &amp;[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;];</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(None, slice.take(5..));</span>
+    <span class="doccomment">/// assert_eq!(None, slice.take(..5));</span>
+    <span class="doccomment">/// assert_eq!(None, slice.take(..=4));</span>
+    <span class="doccomment">/// let expected: &amp;[char] = &amp;[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;];</span>
+    <span class="doccomment">/// assert_eq!(Some(expected), slice.take(..4));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;method does not modify the slice if the range is out of bounds&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_take&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;62280&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">R</span>: <span class="ident">OneSidedRange</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>: <span class="kw-2">&amp;mut</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">Self</span>, <span class="ident">range</span>: <span class="ident">R</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> (<span class="ident">direction</span>, <span class="ident">split_index</span>) <span class="op">=</span> <span class="ident">split_point_of</span>(<span class="ident">range</span>)<span class="question-mark">?</span>;
+        <span class="kw">if</span> <span class="ident">split_index</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">len</span>() {
+            <span class="kw">return</span> <span class="prelude-val">None</span>;
+        }
+        <span class="kw">let</span> (<span class="ident">front</span>, <span class="ident">back</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">split_at</span>(<span class="ident">split_index</span>);
+        <span class="kw">match</span> <span class="ident">direction</span> {
+            <span class="ident">Direction::Front</span> =&gt; {
+                <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">back</span>;
+                <span class="prelude-val">Some</span>(<span class="ident">front</span>)
+            }
+            <span class="ident">Direction::Back</span> =&gt; {
+                <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">front</span>;
+                <span class="prelude-val">Some</span>(<span class="ident">back</span>)
+            }
+        }
+    }
+
+    <span class="doccomment">/// Removes the subslice corresponding to the given range</span>
+    <span class="doccomment">/// and returns a mutable reference to it.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `None` and does not modify the slice if the given</span>
+    <span class="doccomment">/// range is out of bounds.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Note that this method only accepts one-sided ranges such as</span>
+    <span class="doccomment">/// `2..` or `..6`, but not `2..6`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Taking the first three elements of a slice:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(slice_take)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut slice: &amp;mut [_] = &amp;mut [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;];</span>
+    <span class="doccomment">/// let mut first_three = slice.take_mut(..3).unwrap();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(slice, &amp;mut [&#39;d&#39;]);</span>
+    <span class="doccomment">/// assert_eq!(first_three, &amp;mut [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Taking the last two elements of a slice:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(slice_take)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut slice: &amp;mut [_] = &amp;mut [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;];</span>
+    <span class="doccomment">/// let mut tail = slice.take_mut(2..).unwrap();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(slice, &amp;mut [&#39;a&#39;, &#39;b&#39;]);</span>
+    <span class="doccomment">/// assert_eq!(tail, &amp;mut [&#39;c&#39;, &#39;d&#39;]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Getting `None` when `range` is out of bounds:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(slice_take)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut slice: &amp;mut [_] = &amp;mut [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;];</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(None, slice.take_mut(5..));</span>
+    <span class="doccomment">/// assert_eq!(None, slice.take_mut(..5));</span>
+    <span class="doccomment">/// assert_eq!(None, slice.take_mut(..=4));</span>
+    <span class="doccomment">/// let expected: &amp;mut [_] = &amp;mut [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;];</span>
+    <span class="doccomment">/// assert_eq!(Some(expected), slice.take_mut(..4));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;method does not modify the slice if the range is out of bounds&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_take&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;62280&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_mut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">R</span>: <span class="ident">OneSidedRange</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+        <span class="self">self</span>: <span class="kw-2">&amp;mut</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="self">Self</span>,
+        <span class="ident">range</span>: <span class="ident">R</span>,
+    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> (<span class="ident">direction</span>, <span class="ident">split_index</span>) <span class="op">=</span> <span class="ident">split_point_of</span>(<span class="ident">range</span>)<span class="question-mark">?</span>;
+        <span class="kw">if</span> <span class="ident">split_index</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">len</span>() {
+            <span class="kw">return</span> <span class="prelude-val">None</span>;
+        }
+        <span class="kw">let</span> (<span class="ident">front</span>, <span class="ident">back</span>) <span class="op">=</span> <span class="ident">mem::take</span>(<span class="self">self</span>).<span class="ident">split_at_mut</span>(<span class="ident">split_index</span>);
+        <span class="kw">match</span> <span class="ident">direction</span> {
+            <span class="ident">Direction::Front</span> =&gt; {
+                <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">back</span>;
+                <span class="prelude-val">Some</span>(<span class="ident">front</span>)
+            }
+            <span class="ident">Direction::Back</span> =&gt; {
+                <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">front</span>;
+                <span class="prelude-val">Some</span>(<span class="ident">back</span>)
+            }
+        }
+    }
+
+    <span class="doccomment">/// Removes the first element of the slice and returns a reference</span>
+    <span class="doccomment">/// to it.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `None` if the slice is empty.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(slice_take)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut slice: &amp;[_] = &amp;[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;];</span>
+    <span class="doccomment">/// let first = slice.take_first().unwrap();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(slice, &amp;[&#39;b&#39;, &#39;c&#39;]);</span>
+    <span class="doccomment">/// assert_eq!(first, &amp;&#39;a&#39;);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_take&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;62280&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_first</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="self">self</span>: <span class="kw-2">&amp;mut</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> (<span class="ident">first</span>, <span class="ident">rem</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">split_first</span>()<span class="question-mark">?</span>;
+        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">rem</span>;
+        <span class="prelude-val">Some</span>(<span class="ident">first</span>)
+    }
+
+    <span class="doccomment">/// Removes the first element of the slice and returns a mutable</span>
+    <span class="doccomment">/// reference to it.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `None` if the slice is empty.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(slice_take)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut slice: &amp;mut [_] = &amp;mut [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;];</span>
+    <span class="doccomment">/// let first = slice.take_first_mut().unwrap();</span>
+    <span class="doccomment">/// *first = &#39;d&#39;;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(slice, &amp;[&#39;b&#39;, &#39;c&#39;]);</span>
+    <span class="doccomment">/// assert_eq!(first, &amp;&#39;d&#39;);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_take&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;62280&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_first_mut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="self">self</span>: <span class="kw-2">&amp;mut</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> (<span class="ident">first</span>, <span class="ident">rem</span>) <span class="op">=</span> <span class="ident">mem::take</span>(<span class="self">self</span>).<span class="ident">split_first_mut</span>()<span class="question-mark">?</span>;
+        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">rem</span>;
+        <span class="prelude-val">Some</span>(<span class="ident">first</span>)
+    }
+
+    <span class="doccomment">/// Removes the last element of the slice and returns a reference</span>
+    <span class="doccomment">/// to it.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `None` if the slice is empty.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(slice_take)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut slice: &amp;[_] = &amp;[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;];</span>
+    <span class="doccomment">/// let last = slice.take_last().unwrap();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(slice, &amp;[&#39;a&#39;, &#39;b&#39;]);</span>
+    <span class="doccomment">/// assert_eq!(last, &amp;&#39;c&#39;);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_take&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;62280&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_last</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="self">self</span>: <span class="kw-2">&amp;mut</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> (<span class="ident">last</span>, <span class="ident">rem</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">split_last</span>()<span class="question-mark">?</span>;
+        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">rem</span>;
+        <span class="prelude-val">Some</span>(<span class="ident">last</span>)
+    }
+
+    <span class="doccomment">/// Removes the last element of the slice and returns a mutable</span>
+    <span class="doccomment">/// reference to it.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns `None` if the slice is empty.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(slice_take)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut slice: &amp;mut [_] = &amp;mut [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;];</span>
+    <span class="doccomment">/// let last = slice.take_last_mut().unwrap();</span>
+    <span class="doccomment">/// *last = &#39;d&#39;;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(slice, &amp;[&#39;a&#39;, &#39;b&#39;]);</span>
+    <span class="doccomment">/// assert_eq!(last, &amp;&#39;d&#39;);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;slice_take&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;62280&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_last_mut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="self">self</span>: <span class="kw-2">&amp;mut</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> (<span class="ident">last</span>, <span class="ident">rem</span>) <span class="op">=</span> <span class="ident">mem::take</span>(<span class="self">self</span>).<span class="ident">split_last_mut</span>()<span class="question-mark">?</span>;
+        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">rem</span>;
+        <span class="prelude-val">Some</span>(<span class="ident">last</span>)
+    }
 }
 
 <span class="kw">trait</span> <span class="ident">CloneFromSpec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
@@ -7204,5 +8133,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
 </body></html>

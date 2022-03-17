@@ -1,5 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;str.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>str.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../logo.svg' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;str.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>str.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -400,15 +401,206 @@
 <span id="399">399</span>
 <span id="400">400</span>
 <span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! String representations.</span>
 
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 <span class="kw">use</span> <span class="ident">core::fmt</span>::{<span class="self">self</span>, <span class="ident">Write</span>};
 <span class="kw">use</span> <span class="ident">core::ops</span>::{<span class="self">self</span>, <span class="ident">Deref</span>, <span class="ident">Index</span>};
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bindings</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::c_types</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bindings</span>, <span class="ident">c_types</span>, <span class="ident">error::code</span>::<span class="kw-2">*</span>, <span class="ident">Error</span>};
 
 <span class="doccomment">/// Byte string without UTF-8 validity guarantee.</span>
 <span class="doccomment">///</span>
@@ -446,10 +638,10 @@
     <span class="ident">NotNulTerminated</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">CStrConvertError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident"><span class="kw">crate</span>::Error</span> {
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">CStrConvertError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw">_</span>: <span class="ident">CStrConvertError</span>) -&gt; <span class="ident"><span class="kw">crate</span>::Error</span> {
-        <span class="ident"><span class="kw">crate</span>::Error::EINVAL</span>
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw">_</span>: <span class="ident">CStrConvertError</span>) -&gt; <span class="ident">Error</span> {
+        <span class="ident">EINVAL</span>
     }
 }
 
@@ -776,31 +968,222 @@
     }
 }
 
-<span class="comment">// Use `usize` to use `saturating_*` functions.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">Formatter</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">buf</span>: <span class="ident">usize</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">end</span>: <span class="ident">usize</span>,
+<span class="doccomment">/// Allows formatting of [`fmt::Arguments`] into a raw buffer.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// It does not fail if callers write past the end of the buffer so that they can calculate the</span>
+<span class="doccomment">/// size required to fit everything.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Invariants</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The memory region between `pos` (inclusive) and `end` (exclusive) is valid for writes if `pos`</span>
+<span class="doccomment">/// is less than `end`.</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">RawFormatter</span> {
+    <span class="comment">// Use `usize` to use `saturating_*` functions.</span>
+    <span class="ident">beg</span>: <span class="ident">usize</span>,
+    <span class="ident">pos</span>: <span class="ident">usize</span>,
+    <span class="ident">end</span>: <span class="ident">usize</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">RawFormatter</span> {
+    <span class="doccomment">/// Creates a new instance of [`RawFormatter`] with an empty buffer.</span>
+    <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
+        <span class="comment">// INVARIANT: The buffer is empty, so the region that needs to be writable is empty.</span>
+        <span class="self">Self</span> {
+            <span class="ident">beg</span>: <span class="number">0</span>,
+            <span class="ident">pos</span>: <span class="number">0</span>,
+            <span class="ident">end</span>: <span class="number">0</span>,
+        }
+    }
+
+    <span class="doccomment">/// Creates a new instance of [`RawFormatter`] with the given buffer pointers.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Safety</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If `pos` is less than `end`, then the region between `pos` (inclusive) and `end`</span>
+    <span class="doccomment">/// (exclusive) must be valid for writes for the lifetime of the returned [`RawFormatter`].</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_ptrs</span>(<span class="ident">pos</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">end</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
+        <span class="comment">// INVARIANT: The safety requierments guarantee the type invariants.</span>
+        <span class="self">Self</span> {
+            <span class="ident">beg</span>: <span class="ident">pos</span> <span class="kw">as</span> <span class="kw">_</span>,
+            <span class="ident">pos</span>: <span class="ident">pos</span> <span class="kw">as</span> <span class="kw">_</span>,
+            <span class="ident">end</span>: <span class="ident">end</span> <span class="kw">as</span> <span class="kw">_</span>,
+        }
+    }
+
+    <span class="doccomment">/// Creates a new instance of [`RawFormatter`] with the given buffer.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Safety</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The memory region starting at `buf` and extending for `len` bytes must be valid for writes</span>
+    <span class="doccomment">/// for the lifetime of the returned [`RawFormatter`].</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_buffer</span>(<span class="ident">buf</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">buf</span> <span class="kw">as</span> <span class="ident">usize</span>;
+        <span class="comment">// INVARIANT: We ensure that `end` is never less then `buf`, and the safety requirements</span>
+        <span class="comment">// guarantees that the memory region is valid for writes.</span>
+        <span class="self">Self</span> {
+            <span class="ident">pos</span>,
+            <span class="ident">beg</span>: <span class="ident">pos</span>,
+            <span class="ident">end</span>: <span class="ident">pos</span>.<span class="ident">saturating_add</span>(<span class="ident">len</span>),
+        }
+    }
+
+    <span class="doccomment">/// Returns the current insert position.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// N.B. It may point to invalid memory.</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">pos</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">u8</span> {
+        <span class="self">self</span>.<span class="ident">pos</span> <span class="kw">as</span> <span class="kw">_</span>
+    }
+
+    <span class="doccomment">/// Return the number of bytes written to the formatter.</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">bytes_written</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
+        <span class="self">self</span>.<span class="ident">pos</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">beg</span>
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">fmt::Write</span> <span class="kw">for</span> <span class="ident">RawFormatter</span> {
+    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">fmt::Result</span> {
+        <span class="comment">// `pos` value after writing `len` bytes. This does not have to be bounded by `end`, but we</span>
+        <span class="comment">// don&#39;t want it to wrap around to 0.</span>
+        <span class="kw">let</span> <span class="ident">pos_new</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pos</span>.<span class="ident">saturating_add</span>(<span class="ident">s</span>.<span class="ident">len</span>());
+
+        <span class="comment">// Amount that we can copy. `saturating_sub` ensures we get 0 if `pos` goes past `end`.</span>
+        <span class="kw">let</span> <span class="ident">len_to_copy</span> <span class="op">=</span> <span class="ident">core::cmp::min</span>(<span class="ident">pos_new</span>, <span class="self">self</span>.<span class="ident">end</span>).<span class="ident">saturating_sub</span>(<span class="self">self</span>.<span class="ident">pos</span>);
+
+        <span class="kw">if</span> <span class="ident">len_to_copy</span> <span class="op">&gt;</span> <span class="number">0</span> {
+            <span class="comment">// SAFETY: If `len_to_copy` is non-zero, then we know `pos` has not gone past `end`</span>
+            <span class="comment">// yet, so it is valid for write per the type invariants.</span>
+            <span class="kw">unsafe</span> {
+                <span class="ident">core::ptr::copy_nonoverlapping</span>(
+                    <span class="ident">s</span>.<span class="ident">as_bytes</span>().<span class="ident">as_ptr</span>(),
+                    <span class="self">self</span>.<span class="ident">pos</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>,
+                    <span class="ident">len_to_copy</span>,
+                )
+            };
+        }
+
+        <span class="self">self</span>.<span class="ident">pos</span> <span class="op">=</span> <span class="ident">pos_new</span>;
+        <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="doccomment">/// Allows formatting of [`fmt::Arguments`] into a raw buffer.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Fails if callers attempt to write more than will fit in the buffer.</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">Formatter</span>(<span class="ident">RawFormatter</span>);
+
+<span class="kw">impl</span> <span class="ident">Formatter</span> {
+    <span class="doccomment">/// Creates a new instance of [`Formatter`] with the given buffer.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Safety</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The memory region starting at `buf` and extending for `len` bytes must be valid for writes</span>
+    <span class="doccomment">/// for the lifetime of the returned [`Formatter`].</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_buffer</span>(<span class="ident">buf</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">len</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
+        <span class="comment">// SAFETY: The safety requirements of this function satisfy those of the callee.</span>
+        <span class="self">Self</span>(<span class="kw">unsafe</span> { <span class="ident">RawFormatter::from_buffer</span>(<span class="ident">buf</span>, <span class="ident">len</span>) })
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">Formatter</span> {
+    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">RawFormatter</span>;
+
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Target</span> {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
+    }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Write</span> <span class="kw">for</span> <span class="ident">Formatter</span> {
     <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="comment">// `buf` value after writing `len` bytes. This does not have to be bounded by `end`, but we</span>
-        <span class="comment">// don&#39;t want it to wrap around to 0.</span>
-        <span class="kw">let</span> <span class="ident">buf_new</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">saturating_add</span>(<span class="ident">s</span>.<span class="ident">len</span>());
+        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">write_str</span>(<span class="ident">s</span>)<span class="question-mark">?</span>;
 
-        <span class="comment">// Amount that we can copy. `saturating_sub` ensures we get 0 if `buf` goes past `end`.</span>
-        <span class="kw">let</span> <span class="ident">len_to_copy</span> <span class="op">=</span> <span class="ident">core::cmp::min</span>(<span class="ident">buf_new</span>, <span class="self">self</span>.<span class="ident">end</span>).<span class="ident">saturating_sub</span>(<span class="self">self</span>.<span class="ident">buf</span>);
-
-        <span class="comment">// SAFETY: In any case, `buf` is non-null and properly aligned.  If `len_to_copy` is</span>
-        <span class="comment">// non-zero, then we know `buf` has not past `end` yet and so is valid.</span>
-        <span class="kw">unsafe</span> {
-            <span class="ident">core::ptr::copy_nonoverlapping</span>(<span class="ident">s</span>.<span class="ident">as_bytes</span>().<span class="ident">as_ptr</span>(), <span class="self">self</span>.<span class="ident">buf</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">len_to_copy</span>)
-        };
-
-        <span class="self">self</span>.<span class="ident">buf</span> <span class="op">=</span> <span class="ident">buf_new</span>;
-        <span class="prelude-val">Ok</span>(())
+        <span class="comment">// Fail the request if we go past the end of the buffer.</span>
+        <span class="kw">if</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">pos</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">end</span> {
+            <span class="prelude-val">Err</span>(<span class="ident">fmt::Error</span>)
+        } <span class="kw">else</span> {
+            <span class="prelude-val">Ok</span>(())
+        }
     }
 }
+
+<span class="doccomment">/// An owned string that is guaranteed to have exactly one `NUL` byte, which is at the end.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Used for interoperability with kernel APIs that take C strings.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Invariants</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The string is always `NUL`-terminated and contains no other `NUL` bytes.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use kernel::prelude::*;</span>
+<span class="doccomment">/// use kernel::str::CString;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// let s = CString::try_from_fmt(fmt!(&quot;{}{}{}&quot;, &quot;abc&quot;, 10, 20)).unwrap();</span>
+<span class="doccomment">/// assert_eq!(s.as_bytes_with_nul(), &quot;abc1020\0&quot;.as_bytes());</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// let tmp = &quot;testing&quot;;</span>
+<span class="doccomment">/// let s = CString::try_from_fmt(fmt!(&quot;{tmp}{}&quot;, 123)).unwrap();</span>
+<span class="doccomment">/// assert_eq!(s.as_bytes_with_nul(), &quot;testing123\0&quot;.as_bytes());</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// // This fails because it has an embedded `NUL` byte.</span>
+<span class="doccomment">/// let s = CString::try_from_fmt(fmt!(&quot;a\0b{}&quot;, 123));</span>
+<span class="doccomment">/// assert_eq!(s.is_ok(), false);</span>
+<span class="doccomment">/// ```</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CString</span> {
+    <span class="ident">buf</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">CString</span> {
+    <span class="doccomment">/// Creates an instance of [`CString`] from the given formatted arguments.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_from_fmt</span>(<span class="ident">args</span>: <span class="ident">fmt::Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="comment">// Calculate the size needed (formatted string plus `NUL` terminator).</span>
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">RawFormatter::new</span>();
+        <span class="ident">f</span>.<span class="ident">write_fmt</span>(<span class="ident">args</span>)<span class="question-mark">?</span>;
+        <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;\0&quot;</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">bytes_written</span>();
+
+        <span class="comment">// Allocate a vector with the required number of bytes, and write to it.</span>
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">Vec::try_with_capacity</span>(<span class="ident">size</span>)<span class="question-mark">?</span>;
+        <span class="comment">// SAFETY: The buffer stored in `buf` is at least of size `size` and is valid for writes.</span>
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Formatter::from_buffer</span>(<span class="ident">buf</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">size</span>) };
+        <span class="ident">f</span>.<span class="ident">write_fmt</span>(<span class="ident">args</span>)<span class="question-mark">?</span>;
+        <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;\0&quot;</span>)<span class="question-mark">?</span>;
+
+        <span class="comment">// SAFETY: The number of bytes that can be written to `f` is bounded by `size`, which is</span>
+        <span class="comment">// `buf`&#39;s capacity. The contents of the buffer have been initialised by writes to `f`.</span>
+        <span class="kw">unsafe</span> { <span class="ident">buf</span>.<span class="ident">set_len</span>(<span class="ident">f</span>.<span class="ident">bytes_written</span>()) };
+
+        <span class="comment">// Check that there are no `NUL` bytes before the end.</span>
+        <span class="comment">// SAFETY: The buffer is valid for read because `f.bytes_written()` is bounded by `size`</span>
+        <span class="comment">// (which the minimum buffer size) and is non-zero (we wrote at least the `NUL` terminator)</span>
+        <span class="comment">// so `f.bytes_written() - 1` doesn&#39;t underflow.</span>
+        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bindings::memchr</span>(<span class="ident">buf</span>.<span class="ident">as_ptr</span>().<span class="ident">cast</span>(), <span class="number">0</span>, (<span class="ident">f</span>.<span class="ident">bytes_written</span>() <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="kw">_</span>) };
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>() {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">EINVAL</span>);
+        }
+
+        <span class="comment">// INVARIANT: We wrote the `NUL` terminator and checked above that no other `NUL` bytes</span>
+        <span class="comment">// exist in the buffer.</span>
+        <span class="prelude-val">Ok</span>(<span class="self">Self</span> { <span class="ident">buf</span> })
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">CString</span> {
+    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">CStr</span>;
+
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Target</span> {
+        <span class="comment">// SAFETY: The type invariants guarantee that the string is `NUL`-terminated and that no</span>
+        <span class="comment">// other `NUL` bytes exist.</span>
+        <span class="kw">unsafe</span> { <span class="ident">CStr::from_bytes_with_nul_unchecked</span>(<span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">as_slice</span>()) }
+    }
+}
+
+<span class="doccomment">/// A convenience alias for [`core::format_args`].</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">fmt</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; ( <span class="macro">core::format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>) )
+}
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
 </body></html>

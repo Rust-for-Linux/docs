@@ -1,5 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;array&#x2F;iter.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>iter.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../logo.svg' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;array&#x2F;iter.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>iter.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -232,10 +233,183 @@
 <span id="231">231</span>
 <span id="232">232</span>
 <span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Defines the `IntoIter` owned iterator for arrays.</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">fmt</span>,
+    <span class="ident">cmp</span>, <span class="ident">fmt</span>,
     <span class="ident">iter</span>::{<span class="self">self</span>, <span class="ident">ExactSizeIterator</span>, <span class="ident">FusedIterator</span>, <span class="ident">TrustedLen</span>},
     <span class="ident">mem</span>::{<span class="self">self</span>, <span class="ident">MaybeUninit</span>},
     <span class="ident">ops::Range</span>,
@@ -268,30 +442,23 @@
     <span class="ident">alive</span>: <span class="ident">Range</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">IntoIter</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Creates a new iterator over the given `array`.</span>
+<span class="comment">// Note: the `#[rustc_skip_array_during_method_dispatch]` on `trait IntoIterator`</span>
+<span class="comment">// hides this implementation from explicit `.into_iter()` calls on editions &lt; 2021,</span>
+<span class="comment">// so those calls will still resolve to the slice implementation, by reference.</span>
+<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_into_iter_impl&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.53.0&quot;</span>)]</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">IntoIterator</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
+    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span>;
+    <span class="kw">type</span> <span class="ident">IntoIter</span> <span class="op">=</span> <span class="ident">IntoIter</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>;
+
+    <span class="doccomment">/// Creates a consuming iterator, that is, one that moves each value out of</span>
+    <span class="doccomment">/// the array (from start to end). The array cannot be used after calling</span>
+    <span class="doccomment">/// this unless `T` implements `Copy`, so the whole array is copied.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// *Note*: this method might be deprecated in the future,</span>
-    <span class="doccomment">/// since [`IntoIterator`] is now implemented for arrays.</span>
+    <span class="doccomment">/// Arrays have special behavior when calling `.into_iter()` prior to the</span>
+    <span class="doccomment">/// 2021 edition -- see the [array] Editions section for more information.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// use std::array;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// for value in array::IntoIter::new([1, 2, 3, 4, 5]) {</span>
-    <span class="doccomment">///     // The type of `value` is an `i32` here, instead of `&amp;i32`</span>
-    <span class="doccomment">///     let _: i32 = value;</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// // Since Rust 1.53, arrays implement IntoIterator directly:</span>
-    <span class="doccomment">/// for value in [1, 2, 3, 4, 5] {</span>
-    <span class="doccomment">///     // The type of `value` is an `i32` here, instead of `&amp;i32`</span>
-    <span class="doccomment">///     let _: i32 = value;</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_value_iter&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.51.0&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">array</span>: [<span class="ident">T</span>; <span class="ident">N</span>]) -&gt; <span class="self">Self</span> {
+    <span class="doccomment">/// [array]: prim@array</span>
+    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::IntoIter</span> {
         <span class="comment">// SAFETY: The transmute here is actually safe. The docs of `MaybeUninit`</span>
         <span class="comment">// promise:</span>
         <span class="comment">//</span>
@@ -310,10 +477,148 @@
         <span class="comment">// Until then, we can use `mem::transmute_copy` to create a bitwise copy</span>
         <span class="comment">// as a different type, then forget `array` so that it is not dropped.</span>
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">iter</span> <span class="op">=</span> <span class="self">Self</span> { <span class="ident">data</span>: <span class="ident">mem::transmute_copy</span>(<span class="kw-2">&amp;</span><span class="ident">array</span>), <span class="ident">alive</span>: <span class="number">0</span>..<span class="ident">N</span> };
-            <span class="ident">mem::forget</span>(<span class="ident">array</span>);
+            <span class="kw">let</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">IntoIter</span> { <span class="ident">data</span>: <span class="ident">mem::transmute_copy</span>(<span class="kw-2">&amp;</span><span class="self">self</span>), <span class="ident">alive</span>: <span class="number">0</span>..<span class="ident">N</span> };
+            <span class="ident">mem::forget</span>(<span class="self">self</span>);
             <span class="ident">iter</span>
         }
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">IntoIter</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Creates a new iterator over the given `array`.</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_value_iter&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.51.0&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.59.0&quot;</span>, <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;use `IntoIterator::into_iter` instead&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">array</span>: [<span class="ident">T</span>; <span class="ident">N</span>]) -&gt; <span class="self">Self</span> {
+        <span class="ident">IntoIterator::into_iter</span>(<span class="ident">array</span>)
+    }
+
+    <span class="doccomment">/// Creates an iterator over the elements in a partially-initialized buffer.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If you have a fully-initialized array, then use [`IntoIterator`].</span>
+    <span class="doccomment">/// But this is useful for returning partial results from unsafe code.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Safety</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// - The `buffer[initialized]` elements must all be initialized.</span>
+    <span class="doccomment">/// - The range must be canonical, with `initialized.start &lt;= initialized.end`.</span>
+    <span class="doccomment">/// - The range must in in-bounds for the buffer, with `initialized.end &lt;= N`.</span>
+    <span class="doccomment">///   (Like how indexing `[0][100..100]` fails despite the range being empty.)</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// It&#39;s sound to have more elements initialized than mentioned, though that</span>
+    <span class="doccomment">/// will most likely result in them being leaked.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(array_into_iter_constructors)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// #![feature(maybe_uninit_array_assume_init)]</span>
+    <span class="doccomment">/// #![feature(maybe_uninit_uninit_array)]</span>
+    <span class="doccomment">/// use std::array::IntoIter;</span>
+    <span class="doccomment">/// use std::mem::MaybeUninit;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # // Hi!  Thanks for reading the code.  This is restricted to `Copy` because</span>
+    <span class="doccomment">/// # // otherwise it could leak.  A fully-general version this would need a drop</span>
+    <span class="doccomment">/// # // guard to handle panics from the iterator, but this works for an example.</span>
+    <span class="doccomment">/// fn next_chunk&lt;T: Copy, const N: usize&gt;(</span>
+    <span class="doccomment">///     it: &amp;mut impl Iterator&lt;Item = T&gt;,</span>
+    <span class="doccomment">/// ) -&gt; Result&lt;[T; N], IntoIter&lt;T, N&gt;&gt; {</span>
+    <span class="doccomment">///     let mut buffer = MaybeUninit::uninit_array();</span>
+    <span class="doccomment">///     let mut i = 0;</span>
+    <span class="doccomment">///     while i &lt; N {</span>
+    <span class="doccomment">///         match it.next() {</span>
+    <span class="doccomment">///             Some(x) =&gt; {</span>
+    <span class="doccomment">///                 buffer[i].write(x);</span>
+    <span class="doccomment">///                 i += 1;</span>
+    <span class="doccomment">///             }</span>
+    <span class="doccomment">///             None =&gt; {</span>
+    <span class="doccomment">///                 // SAFETY: We&#39;ve initialized the first `i` items</span>
+    <span class="doccomment">///                 unsafe {</span>
+    <span class="doccomment">///                     return Err(IntoIter::new_unchecked(buffer, 0..i));</span>
+    <span class="doccomment">///                 }</span>
+    <span class="doccomment">///             }</span>
+    <span class="doccomment">///         }</span>
+    <span class="doccomment">///     }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///     // SAFETY: We&#39;ve initialized all N items</span>
+    <span class="doccomment">///     unsafe { Ok(MaybeUninit::array_assume_init(buffer)) }</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let r: [_; 4] = next_chunk(&amp;mut (10..16)).unwrap();</span>
+    <span class="doccomment">/// assert_eq!(r, [10, 11, 12, 13]);</span>
+    <span class="doccomment">/// let r: IntoIter&lt;_, 40&gt; = next_chunk(&amp;mut (10..16)).unwrap_err();</span>
+    <span class="doccomment">/// assert_eq!(r.collect::&lt;Vec&lt;_&gt;&gt;(), vec![10, 11, 12, 13, 14, 15]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_into_iter_constructors&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;91583&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_array_into_iter_constructors&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;91583&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new_unchecked</span>(
+        <span class="ident">buffer</span>: [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>; <span class="ident">N</span>],
+        <span class="ident">initialized</span>: <span class="ident">Range</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">data</span>: <span class="ident">buffer</span>, <span class="ident">alive</span>: <span class="ident">initialized</span> }
+    }
+
+    <span class="doccomment">/// Creates an iterator over `T` which returns no elements.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If you just need an empty iterator, then use</span>
+    <span class="doccomment">/// [`iter::empty()`](crate::iter::empty) instead.</span>
+    <span class="doccomment">/// And if you need an empty array, use `[]`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// But this is useful when you need an `array::IntoIter&lt;T, N&gt;` *specifically*.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(array_into_iter_constructors)]</span>
+    <span class="doccomment">/// use std::array::IntoIter;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let empty = IntoIter::&lt;i32, 3&gt;::empty();</span>
+    <span class="doccomment">/// assert_eq!(empty.len(), 0);</span>
+    <span class="doccomment">/// assert_eq!(empty.as_slice(), &amp;[]);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let empty = IntoIter::&lt;std::convert::Infallible, 200&gt;::empty();</span>
+    <span class="doccomment">/// assert_eq!(empty.len(), 0);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// `[1, 2].into_iter()` and `[].into_iter()` have different types</span>
+    <span class="doccomment">/// ```should_fail,edition2021</span>
+    <span class="doccomment">/// #![feature(array_into_iter_constructors)]</span>
+    <span class="doccomment">/// use std::array::IntoIter;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// pub fn get_bytes(b: bool) -&gt; IntoIter&lt;i8, 4&gt; {</span>
+    <span class="doccomment">///     if b {</span>
+    <span class="doccomment">///         [1, 2, 3, 4].into_iter()</span>
+    <span class="doccomment">///     } else {</span>
+    <span class="doccomment">///         [].into_iter() // error[E0308]: mismatched types</span>
+    <span class="doccomment">///     }</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// But using this method you can get an empty iterator of appropriate size:</span>
+    <span class="doccomment">/// ```edition2021</span>
+    <span class="doccomment">/// #![feature(array_into_iter_constructors)]</span>
+    <span class="doccomment">/// use std::array::IntoIter;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// pub fn get_bytes(b: bool) -&gt; IntoIter&lt;i8, 4&gt; {</span>
+    <span class="doccomment">///     if b {</span>
+    <span class="doccomment">///         [1, 2, 3, 4].into_iter()</span>
+    <span class="doccomment">///     } else {</span>
+    <span class="doccomment">///         IntoIter::empty()</span>
+    <span class="doccomment">///     }</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(get_bytes(true).collect::&lt;Vec&lt;_&gt;&gt;(), vec![1, 2, 3, 4]);</span>
+    <span class="doccomment">/// assert_eq!(get_bytes(false).collect::&lt;Vec&lt;_&gt;&gt;(), vec![]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_into_iter_constructors&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;91583&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_array_into_iter_constructors&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;91583&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">empty</span>() -&gt; <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">MaybeUninit::uninit_array</span>();
+        <span class="kw">let</span> <span class="ident">initialized</span> <span class="op">=</span> <span class="number">0</span>..<span class="number">0</span>;
+
+        <span class="comment">// SAFETY: We&#39;re telling it that none of the elements are initialized,</span>
+        <span class="comment">// which is trivially true.  And ∀N: usize, 0 &lt;= N.</span>
+        <span class="kw">unsafe</span> { <span class="ident"><span class="self">Self</span>::new_unchecked</span>(<span class="ident">buffer</span>, <span class="ident">initialized</span>) }
     }
 
     <span class="doccomment">/// Returns an immutable slice of all elements that have not been yielded</span>
@@ -384,6 +689,27 @@
     <span class="kw">fn</span> <span class="ident">last</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">next_back</span>()
     }
+
+    <span class="kw">fn</span> <span class="ident">advance_by</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
+
+        <span class="comment">// The number of elements to drop.  Always in-bounds by construction.</span>
+        <span class="kw">let</span> <span class="ident">delta</span> <span class="op">=</span> <span class="ident">cmp::min</span>(<span class="ident">n</span>, <span class="ident">len</span>);
+
+        <span class="kw">let</span> <span class="ident">range_to_drop</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">alive</span>.<span class="ident">start</span>..(<span class="self">self</span>.<span class="ident">alive</span>.<span class="ident">start</span> <span class="op">+</span> <span class="ident">delta</span>);
+
+        <span class="comment">// Moving the start marks them as conceptually &quot;dropped&quot;, so if anything</span>
+        <span class="comment">// goes bad then our drop impl won&#39;t double-free them.</span>
+        <span class="self">self</span>.<span class="ident">alive</span>.<span class="ident">start</span> <span class="op">+</span><span class="op">=</span> <span class="ident">delta</span>;
+
+        <span class="comment">// SAFETY: These elements are currently initialized, so it&#39;s fine to drop them.</span>
+        <span class="kw">unsafe</span> {
+            <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">get_unchecked_mut</span>(<span class="ident">range_to_drop</span>);
+            <span class="ident">ptr::drop_in_place</span>(<span class="ident">MaybeUninit::slice_assume_init_mut</span>(<span class="ident">slice</span>));
+        }
+
+        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&gt;</span> <span class="ident">len</span> { <span class="prelude-val">Err</span>(<span class="ident">len</span>) } <span class="kw">else</span> { <span class="prelude-val">Ok</span>(()) }
+    }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;array_value_iter_impls&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.40.0&quot;</span>)]</span>
@@ -403,6 +729,27 @@
             <span class="comment">// all invariants.</span>
             <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">get_unchecked</span>(<span class="ident">idx</span>).<span class="ident">assume_init_read</span>() }
         })
+    }
+
+    <span class="kw">fn</span> <span class="ident">advance_back_by</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span>();
+
+        <span class="comment">// The number of elements to drop.  Always in-bounds by construction.</span>
+        <span class="kw">let</span> <span class="ident">delta</span> <span class="op">=</span> <span class="ident">cmp::min</span>(<span class="ident">n</span>, <span class="ident">len</span>);
+
+        <span class="kw">let</span> <span class="ident">range_to_drop</span> <span class="op">=</span> (<span class="self">self</span>.<span class="ident">alive</span>.<span class="ident">end</span> <span class="op">-</span> <span class="ident">delta</span>)..<span class="self">self</span>.<span class="ident">alive</span>.<span class="ident">end</span>;
+
+        <span class="comment">// Moving the end marks them as conceptually &quot;dropped&quot;, so if anything</span>
+        <span class="comment">// goes bad then our drop impl won&#39;t double-free them.</span>
+        <span class="self">self</span>.<span class="ident">alive</span>.<span class="ident">end</span> <span class="op">-</span><span class="op">=</span> <span class="ident">delta</span>;
+
+        <span class="comment">// SAFETY: These elements are currently initialized, so it&#39;s fine to drop them.</span>
+        <span class="kw">unsafe</span> {
+            <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">get_unchecked_mut</span>(<span class="ident">range_to_drop</span>);
+            <span class="ident">ptr::drop_in_place</span>(<span class="ident">MaybeUninit::slice_assume_init_mut</span>(<span class="ident">slice</span>));
+        }
+
+        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&gt;</span> <span class="ident">len</span> { <span class="prelude-val">Err</span>(<span class="ident">len</span>) } <span class="kw">else</span> { <span class="prelude-val">Ok</span>(()) }
     }
 }
 
@@ -466,5 +813,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
 </body></html>

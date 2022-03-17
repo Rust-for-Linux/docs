@@ -1,5 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;macros&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../core/index.html'><div class='logo-container rust-logo'><img src='../../../logo.svg' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;macros&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1481,6 +1482,74 @@
 <span id="1480">1480</span>
 <span id="1481">1481</span>
 <span id="1482">1482</span>
+<span id="1483">1483</span>
+<span id="1484">1484</span>
+<span id="1485">1485</span>
+<span id="1486">1486</span>
+<span id="1487">1487</span>
+<span id="1488">1488</span>
+<span id="1489">1489</span>
+<span id="1490">1490</span>
+<span id="1491">1491</span>
+<span id="1492">1492</span>
+<span id="1493">1493</span>
+<span id="1494">1494</span>
+<span id="1495">1495</span>
+<span id="1496">1496</span>
+<span id="1497">1497</span>
+<span id="1498">1498</span>
+<span id="1499">1499</span>
+<span id="1500">1500</span>
+<span id="1501">1501</span>
+<span id="1502">1502</span>
+<span id="1503">1503</span>
+<span id="1504">1504</span>
+<span id="1505">1505</span>
+<span id="1506">1506</span>
+<span id="1507">1507</span>
+<span id="1508">1508</span>
+<span id="1509">1509</span>
+<span id="1510">1510</span>
+<span id="1511">1511</span>
+<span id="1512">1512</span>
+<span id="1513">1513</span>
+<span id="1514">1514</span>
+<span id="1515">1515</span>
+<span id="1516">1516</span>
+<span id="1517">1517</span>
+<span id="1518">1518</span>
+<span id="1519">1519</span>
+<span id="1520">1520</span>
+<span id="1521">1521</span>
+<span id="1522">1522</span>
+<span id="1523">1523</span>
+<span id="1524">1524</span>
+<span id="1525">1525</span>
+<span id="1526">1526</span>
+<span id="1527">1527</span>
+<span id="1528">1528</span>
+<span id="1529">1529</span>
+<span id="1530">1530</span>
+<span id="1531">1531</span>
+<span id="1532">1532</span>
+<span id="1533">1533</span>
+<span id="1534">1534</span>
+<span id="1535">1535</span>
+<span id="1536">1536</span>
+<span id="1537">1537</span>
+<span id="1538">1538</span>
+<span id="1539">1539</span>
+<span id="1540">1540</span>
+<span id="1541">1541</span>
+<span id="1542">1542</span>
+<span id="1543">1543</span>
+<span id="1544">1544</span>
+<span id="1545">1545</span>
+<span id="1546">1546</span>
+<span id="1547">1547</span>
+<span id="1548">1548</span>
+<span id="1549">1549</span>
+<span id="1550">1550</span>
 </pre><pre class="rust"><code><span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">include_str!</span>(<span class="string">&quot;panic.md&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="attribute">#[<span class="ident">rustc_builtin_macro</span>(<span class="ident">core_panic</span>)]</span>
@@ -2070,11 +2139,28 @@
 <span class="doccomment">///     unreachable!(&quot;The loop should always return&quot;);</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>))]</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="attribute">#[<span class="ident">rustc_builtin_macro</span>(<span class="ident">unreachable</span>)]</span>
+<span class="attribute">#[<span class="ident">allow_internal_unstable</span>(<span class="ident">edition_panic</span>)]</span>
+<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">test</span>), <span class="ident">rustc_diagnostic_item</span> <span class="op">=</span> <span class="string">&quot;unreachable_macro&quot;</span>)]</span>
+<span class="macro">macro_rules!</span> <span class="ident">unreachable</span> {
+    <span class="comment">// Expands to either `$crate::panic::unreachable_2015` or `$crate::panic::unreachable_2021`</span>
+    <span class="comment">// depending on the edition of the caller.</span>
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {
+        <span class="comment">/* compiler built-in */</span>
+    };
+}
+
+<span class="doccomment">/// unreachable!() macro</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">bootstrap</span>)]</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">allow_internal_unstable</span>(<span class="ident">core_panic</span>)]</span>
 <span class="macro">macro_rules!</span> <span class="ident">unreachable</span> {
     () =&gt; ({
-        <span class="macro-nonterminal">$</span><span class="macro">crate::panic!</span>(<span class="string">&quot;internal error: entered unreachable code&quot;</span>)
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::panicking::panic</span>(<span class="string">&quot;internal error: entered unreachable code&quot;</span>)
     });
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">msg</span>:<span class="ident">expr</span> $(,)<span class="question-mark">?</span>) =&gt; ({
         <span class="macro-nonterminal">$</span><span class="macro">crate::unreachable!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">msg</span>)
@@ -2157,8 +2243,9 @@
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">allow_internal_unstable</span>(<span class="ident">core_panic</span>)]</span>
 <span class="macro">macro_rules!</span> <span class="ident">unimplemented</span> {
-    () =&gt; (<span class="macro-nonterminal">$</span><span class="macro">crate::panic!</span>(<span class="string">&quot;not implemented&quot;</span>));
+    () =&gt; (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::panicking::panic</span>(<span class="string">&quot;not implemented&quot;</span>));
     ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="op">+</span>) =&gt; (<span class="macro-nonterminal">$</span><span class="macro">crate::panic!</span>(<span class="string">&quot;not implemented: {}&quot;</span>, <span class="macro-nonterminal">$</span><span class="macro">crate::format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="op">+</span>)));
 }
 
@@ -2218,8 +2305,9 @@
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;todo_macro&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.40.0&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">allow_internal_unstable</span>(<span class="ident">core_panic</span>)]</span>
 <span class="macro">macro_rules!</span> <span class="ident">todo</span> {
-    () =&gt; (<span class="macro-nonterminal">$</span><span class="macro">crate::panic!</span>(<span class="string">&quot;not yet implemented&quot;</span>));
+    () =&gt; (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::panicking::panic</span>(<span class="string">&quot;not yet implemented&quot;</span>));
     ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="op">+</span>) =&gt; (<span class="macro-nonterminal">$</span><span class="macro">crate::panic!</span>(<span class="string">&quot;not yet implemented: {}&quot;</span>, <span class="macro-nonterminal">$</span><span class="macro">crate::format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="op">+</span>)));
 }
 
@@ -2346,7 +2434,6 @@
                   language use and is subject to change&quot;</span>
     )]</span>
     <span class="attribute">#[<span class="ident">allow_internal_unstable</span>(<span class="ident">fmt_internals</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_builtin_macro</span>]</span>
     <span class="attribute">#[<span class="ident">macro_export</span>]</span>
     <span class="macro">macro_rules!</span> <span class="ident">format_args_nl</span> {
@@ -2450,6 +2537,34 @@
         ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">ident</span>),<span class="op">+</span> $(,)<span class="question-mark">?</span>) =&gt; {{ <span class="comment">/* compiler built-in */</span> }};
     }
 
+    <span class="doccomment">/// Concatenates literals into a byte slice.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This macro takes any number of comma-separated literals, and concatenates them all into</span>
+    <span class="doccomment">/// one, yielding an expression of type `&amp;[u8, _]`, which represents all of the literals</span>
+    <span class="doccomment">/// concatenated left-to-right. The literals passed can be any combination of:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// - byte literals (`b&#39;r&#39;`)</span>
+    <span class="doccomment">/// - byte strings (`b&quot;Rust&quot;`)</span>
+    <span class="doccomment">/// - arrays of bytes/numbers (`[b&#39;A&#39;, 66, b&#39;C&#39;]`)</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(concat_bytes)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # fn main() {</span>
+    <span class="doccomment">/// let s: &amp;[u8; 6] = concat_bytes!(b&#39;A&#39;, b&quot;BC&quot;, [68, b&#39;E&#39;, 70]);</span>
+    <span class="doccomment">/// assert_eq!(s, b&quot;ABCDEF&quot;);</span>
+    <span class="doccomment">/// # }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">bootstrap</span>))]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;concat_bytes&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;87555&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">rustc_builtin_macro</span>]</span>
+    <span class="attribute">#[<span class="ident">macro_export</span>]</span>
+    <span class="macro">macro_rules!</span> <span class="ident">concat_bytes</span> {
+        ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">literal</span>),<span class="op">+</span> $(,)<span class="question-mark">?</span>) =&gt; {{ <span class="comment">/* compiler built-in */</span> }};
+    }
+
     <span class="doccomment">/// Concatenates literals into a static string slice.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This macro takes any number of comma-separated literals, yielding an</span>
@@ -2516,6 +2631,18 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// let current_col = column!();</span>
     <span class="doccomment">/// println!(&quot;defined on column: {}&quot;, current_col);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// `column!` counts Unicode code points, not bytes or graphemes. As a result, the first two</span>
+    <span class="doccomment">/// invocations return the same value, but the third does not.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// let a = (&quot;foobar&quot;, column!()).1;</span>
+    <span class="doccomment">/// let b = (&quot;人之初性本善&quot;, column!()).1;</span>
+    <span class="doccomment">/// let c = (&quot;f̅o̅o̅b̅a̅r̅&quot;, column!()).1; // Uses combining overline (U+0305)</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(a, b);</span>
+    <span class="doccomment">/// assert_ne!(b, c);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_builtin_macro</span>]</span>
@@ -2868,6 +2995,10 @@
     }
 
     <span class="doccomment">/// Attribute macro used to apply derive macros.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// See [the reference] for more info.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [the reference]: ../../../reference/attributes/derive.html</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_builtin_macro</span>]</span>
     <span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">derive</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">item</span>:<span class="ident">item</span>) {
@@ -2875,6 +3006,10 @@
     }
 
     <span class="doccomment">/// Attribute macro applied to a function to turn it into a unit test.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// See [the reference] for more info.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [the reference]: ../../../reference/attributes/testing.html#the-test-attribute</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">allow_internal_unstable</span>(<span class="ident">test</span>, <span class="ident">rustc_attrs</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_builtin_macro</span>]</span>
@@ -2909,7 +3044,7 @@
 
     <span class="doccomment">/// Attribute macro applied to a static to register it as a global allocator.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See also [`std::alloc::GlobalAlloc`](../std/alloc/trait.GlobalAlloc.html).</span>
+    <span class="doccomment">/// See also [`std::alloc::GlobalAlloc`](../../../std/alloc/trait.GlobalAlloc.html).</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;global_allocator&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.28.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">allow_internal_unstable</span>(<span class="ident">rustc_attrs</span>)]</span>
     <span class="attribute">#[<span class="ident">rustc_builtin_macro</span>]</span>
@@ -2947,6 +3082,7 @@
         <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.52.0&quot;</span>,
         <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;rustc-serialize is deprecated and no longer supported&quot;</span>
     )]</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span> <span class="comment">// While technically stable, using it is unstable, and deprecated. Hide it.</span>
     <span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">RustcDecodable</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">item</span>:<span class="ident">item</span>) {
         <span class="comment">/* compiler built-in */</span>
     }
@@ -2959,10 +3095,11 @@
         <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.52.0&quot;</span>,
         <span class="ident">reason</span> <span class="op">=</span> <span class="string">&quot;rustc-serialize is deprecated and no longer supported&quot;</span>
     )]</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span> <span class="comment">// While technically stable, using it is unstable, and deprecated. Hide it.</span>
     <span class="kw">pub</span> <span class="kw">macro</span> <span class="ident">RustcEncodable</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">item</span>:<span class="ident">item</span>) {
         <span class="comment">/* compiler built-in */</span>
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
 </body></html>

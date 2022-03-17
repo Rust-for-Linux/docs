@@ -1,5 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;error.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>error.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../kernel/index.html'><div class='logo-container rust-logo'><img src='../../logo.svg' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;error.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>error.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -541,6 +542,24 @@
 <span id="540">540</span>
 <span id="541">541</span>
 <span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! Kernel errors.</span>
@@ -558,30 +577,17 @@
 <span class="kw">use</span> <span class="ident">core::num::TryFromIntError</span>;
 <span class="kw">use</span> <span class="ident">core::str</span>::{<span class="self">self</span>, <span class="ident">Utf8Error</span>};
 
-<span class="macro">macro_rules!</span> <span class="ident">declare_err</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span>:<span class="ident">tt</span>) =&gt; {
-        <span class="kw">pub</span> <span class="kw">const</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Error</span>(<span class="op">-</span>(<span class="ident">bindings</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span> <span class="kw">as</span> <span class="ident">i32</span>));
-    };
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span>:<span class="ident">tt</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">doc</span>:<span class="ident">expr</span>),<span class="op">+</span>) =&gt; {
-        $(
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">doc</span>]</span>
-        )<span class="op">*</span>
-        <span class="kw">pub</span> <span class="kw">const</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Error</span>(<span class="op">-</span>(<span class="ident">bindings</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span> <span class="kw">as</span> <span class="ident">i32</span>));
-    };
-}
+<span class="doccomment">/// Contains the C-compatible error codes.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">code</span> {
+    <span class="macro">macro_rules!</span> <span class="ident">declare_err</span> {
+        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span>:<span class="ident">tt</span> $(,)<span class="question-mark">?</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">doc</span>:<span class="ident">expr</span>),<span class="op">+</span>) =&gt; {
+            $(
+            <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">doc</span>]</span>
+            )<span class="op">*</span>
+            <span class="kw">pub</span> <span class="kw">const</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span>: <span class="ident"><span class="kw">super</span>::Error</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::Error</span>(<span class="op">-</span>(<span class="ident"><span class="kw">crate</span>::bindings</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span> <span class="kw">as</span> <span class="ident">i32</span>));
+        };
+    }
 
-<span class="doccomment">/// Generic integer kernel error.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The kernel defines a set of integer generic error codes based on C and</span>
-<span class="doccomment">/// POSIX ones. These codes may have a more specific meaning in some contexts.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Invariants</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The value is a valid `errno` (i.e. `&gt;= -MAX_ERRNO &amp;&amp; &lt; 0`).</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Error</span>(<span class="ident">c_types::c_int</span>);
-
-<span class="kw">impl</span> <span class="ident">Error</span> {
     <span class="macro">declare_err!</span>(<span class="ident">EPERM</span>, <span class="string">&quot;Operation not permitted.&quot;</span>);
 
     <span class="macro">declare_err!</span>(<span class="ident">ENOENT</span>, <span class="string">&quot;No such file or directory.&quot;</span>);
@@ -661,10 +667,10 @@
         <span class="string">&quot;Invalid system call number.&quot;</span>,
         <span class="string">&quot;&quot;</span>,
         <span class="string">&quot;This error code is special: arch syscall entry code will return&quot;</span>,
-        <span class="string">&quot;[`Self::ENOSYS`] if users try to call a syscall that doesn&#39;t exist.&quot;</span>,
+        <span class="string">&quot;[`ENOSYS`] if users try to call a syscall that doesn&#39;t exist.&quot;</span>,
         <span class="string">&quot;To keep failures of syscalls that really do exist distinguishable from&quot;</span>,
         <span class="string">&quot;failures due to attempts to use a nonexistent syscall, syscall&quot;</span>,
-        <span class="string">&quot;implementations should refrain from returning [`Self::ENOSYS`].&quot;</span>
+        <span class="string">&quot;implementations should refrain from returning [`ENOSYS`].&quot;</span>
     );
 
     <span class="macro">declare_err!</span>(<span class="ident">ENOTEMPTY</span>, <span class="string">&quot;Directory not empty.&quot;</span>);
@@ -860,7 +866,20 @@
     <span class="macro">declare_err!</span>(<span class="ident">ERESTARTSYS</span>, <span class="string">&quot;Restart the system call.&quot;</span>);
 
     <span class="macro">declare_err!</span>(<span class="ident">ENOTSUPP</span>, <span class="string">&quot;Operation is not supported.&quot;</span>);
+}
 
+<span class="doccomment">/// Generic integer kernel error.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The kernel defines a set of integer generic error codes based on C and</span>
+<span class="doccomment">/// POSIX ones. These codes may have a more specific meaning in some contexts.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Invariants</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The value is a valid `errno` (i.e. `&gt;= -MAX_ERRNO &amp;&amp; &lt; 0`).</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Error</span>(<span class="ident">c_types::c_int</span>);
+
+<span class="kw">impl</span> <span class="ident">Error</span> {
     <span class="doccomment">/// Creates an [`Error`] from a kernel error code.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// It is a bug to pass an out-of-range `errno`. `EINVAL` would</span>
@@ -872,7 +891,7 @@
                 <span class="string">&quot;attempted to create `Error` with out of range `errno`: {}&quot;</span>,
                 <span class="ident">errno</span>
             );
-            <span class="kw">return</span> <span class="ident">Error::EINVAL</span>;
+            <span class="kw">return</span> <span class="ident">code::EINVAL</span>;
         }
 
         <span class="comment">// INVARIANT: The check above ensures the type invariant</span>
@@ -895,53 +914,71 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_kernel_errno</span>(<span class="self">self</span>) -&gt; <span class="ident">c_types::c_int</span> {
         <span class="self">self</span>.<span class="number">0</span>
     }
+
+    <span class="doccomment">/// Returns a string representing the error, if one exists.</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">testlib</span>))]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">CStr</span><span class="op">&gt;</span> {
+        <span class="comment">// SAFETY: Just an FFI call, there are no extra safety requirements.</span>
+        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bindings::errname</span>(<span class="op">-</span><span class="self">self</span>.<span class="number">0</span>) };
+        <span class="kw">if</span> <span class="ident">ptr</span>.<span class="ident">is_null</span>() {
+            <span class="prelude-val">None</span>
+        } <span class="kw">else</span> {
+            <span class="comment">// SAFETY: The string returned by `errname` is static and `NUL`-terminated.</span>
+            <span class="prelude-val">Some</span>(<span class="kw">unsafe</span> { <span class="ident">CStr::from_char_ptr</span>(<span class="ident">ptr</span>) })
+        }
+    }
+
+    <span class="doccomment">/// Returns a string representing the error, if one exists.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// When `testlib` is configured, this always returns `None` to avoid the dependency on a</span>
+    <span class="doccomment">/// kernel function so that tests that use this (e.g., by calling [`Result::unwrap`]) can still</span>
+    <span class="doccomment">/// run in userspace.</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">testlib</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">CStr</span><span class="op">&gt;</span> {
+        <span class="prelude-val">None</span>
+    }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Error</span> {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="comment">// SAFETY: FFI call.</span>
-        <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bindings::errname</span>(<span class="op">-</span><span class="self">self</span>.<span class="number">0</span>) };
-
-        <span class="kw">if</span> <span class="ident">name</span>.<span class="ident">is_null</span>() {
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">name</span>() {
             <span class="comment">// Print out number if no name can be found.</span>
-            <span class="kw">return</span> <span class="ident">f</span>.<span class="ident">debug_tuple</span>(<span class="string">&quot;Error&quot;</span>).<span class="ident">field</span>(<span class="kw-2">&amp;</span><span class="op">-</span><span class="self">self</span>.<span class="number">0</span>).<span class="ident">finish</span>();
+            <span class="prelude-val">None</span> =&gt; <span class="ident">f</span>.<span class="ident">debug_tuple</span>(<span class="string">&quot;Error&quot;</span>).<span class="ident">field</span>(<span class="kw-2">&amp;</span><span class="op">-</span><span class="self">self</span>.<span class="number">0</span>).<span class="ident">finish</span>(),
+            <span class="comment">// SAFETY: These strings are ASCII-only.</span>
+            <span class="prelude-val">Some</span>(<span class="ident">name</span>) =&gt; <span class="ident">f</span>
+                .<span class="ident">debug_tuple</span>(<span class="kw">unsafe</span> { <span class="ident">str::from_utf8_unchecked</span>(<span class="ident">name</span>) })
+                .<span class="ident">finish</span>(),
         }
-
-        <span class="comment">// SAFETY: `&#39;static` string from C, and is not NULL.</span>
-        <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_char_ptr</span>(<span class="ident">name</span>) };
-        <span class="comment">// SAFETY: These strings are ASCII-only.</span>
-        <span class="kw">let</span> <span class="ident">str</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">str::from_utf8_unchecked</span>(<span class="ident">cstr</span>) };
-        <span class="ident">f</span>.<span class="ident">debug_tuple</span>(<span class="ident">str</span>).<span class="ident">finish</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">TryFromIntError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw">_</span>: <span class="ident">TryFromIntError</span>) -&gt; <span class="ident">Error</span> {
-        <span class="ident">Error::EINVAL</span>
+        <span class="ident">code::EINVAL</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Utf8Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw">_</span>: <span class="ident">Utf8Error</span>) -&gt; <span class="ident">Error</span> {
-        <span class="ident">Error::EINVAL</span>
+        <span class="ident">code::EINVAL</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">TryReserveError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw">_</span>: <span class="ident">TryReserveError</span>) -&gt; <span class="ident">Error</span> {
-        <span class="ident">Error::ENOMEM</span>
+        <span class="ident">code::ENOMEM</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">LayoutError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw">_</span>: <span class="ident">LayoutError</span>) -&gt; <span class="ident">Error</span> {
-        <span class="ident">Error::ENOMEM</span>
+        <span class="ident">code::ENOMEM</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">core::fmt::Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw">_</span>: <span class="ident">core::fmt::Error</span>) -&gt; <span class="ident">Error</span> {
-        <span class="ident">Error::EINVAL</span>
+        <span class="ident">code::EINVAL</span>
     }
 }
 
@@ -969,7 +1006,7 @@
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">AllocError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw">_</span>: <span class="ident">AllocError</span>) -&gt; <span class="ident">Error</span> {
-        <span class="ident">Error::ENOMEM</span>
+        <span class="ident">code::ENOMEM</span>
     }
 }
 
@@ -1084,5 +1121,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
 </body></html>
