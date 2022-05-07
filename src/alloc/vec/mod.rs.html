@@ -1,6 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;alloc&#x2F;vec&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../../alloc/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../alloc/index.html"><img class="rust-logo" src="../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/alloc/vec/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../alloc/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../alloc/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../alloc/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -3353,6 +3356,15 @@
 <span id="3351">3351</span>
 <span id="3352">3352</span>
 <span id="3353">3353</span>
+<span id="3354">3354</span>
+<span id="3355">3355</span>
+<span id="3356">3356</span>
+<span id="3357">3357</span>
+<span id="3358">3358</span>
+<span id="3359">3359</span>
+<span id="3360">3360</span>
+<span id="3361">3361</span>
+<span id="3362">3362</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
 
 <span class="doccomment">//! A contiguous growable array type with heap-allocated contents, written</span>
@@ -4880,9 +4892,12 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note: Because this shifts over the remaining elements, it has a</span>
     <span class="doccomment">/// worst-case performance of *O*(*n*). If you don&#39;t need the order of elements</span>
-    <span class="doccomment">/// to be preserved, use [`swap_remove`] instead.</span>
+    <span class="doccomment">/// to be preserved, use [`swap_remove`] instead. If you&#39;d like to remove</span>
+    <span class="doccomment">/// elements from the beginning of the `Vec`, consider using</span>
+    <span class="doccomment">/// [`VecDeque::pop_front`] instead.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`swap_remove`]: Vec::swap_remove</span>
+    <span class="doccomment">/// [`VecDeque::pop_front`]: crate::collections::VecDeque::pop_front</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
@@ -5253,7 +5268,7 @@
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;kernel&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_push</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">TryReserveError</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">len</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">capacity</span>() {
-            <span class="self">self</span>.<span class="ident">try_reserve</span>(<span class="number">1</span>)<span class="question-mark">?</span>;
+            <span class="self">self</span>.<span class="ident">buf</span>.<span class="ident">try_reserve_for_push</span>(<span class="self">self</span>.<span class="ident">len</span>)<span class="question-mark">?</span>;
         }
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">add</span>(<span class="self">self</span>.<span class="ident">len</span>);
@@ -5265,6 +5280,11 @@
 
     <span class="doccomment">/// Removes the last element from a vector and returns it, or [`None`] if it</span>
     <span class="doccomment">/// is empty.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If you&#39;d like to pop the first element, consider using</span>
+    <span class="doccomment">/// [`VecDeque::pop_front`] instead.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`VecDeque::pop_front`]: crate::collections::VecDeque::pop_front</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -5333,18 +5353,23 @@
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// Creates a draining iterator that removes the specified range in the vector</span>
-    <span class="doccomment">/// and yields the removed items.</span>
+    <span class="doccomment">/// Removes the specified range from the vector in bulk, returning all</span>
+    <span class="doccomment">/// removed elements as an iterator. If the iterator is dropped before</span>
+    <span class="doccomment">/// being fully consumed, it drops the remaining removed elements.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// When the iterator **is** dropped, all elements in the range are removed</span>
-    <span class="doccomment">/// from the vector, even if the iterator was not fully consumed. If the</span>
-    <span class="doccomment">/// iterator **is not** dropped (with [`mem::forget`] for example), it is</span>
-    <span class="doccomment">/// unspecified how many elements are removed.</span>
+    <span class="doccomment">/// The returned iterator keeps a mutable borrow on the vector to optimize</span>
+    <span class="doccomment">/// its implementation.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Panics if the starting point is greater than the end point or if</span>
     <span class="doccomment">/// the end point is greater than the length of the vector.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Leaking</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If the returned iterator goes out of scope without being dropped (due to</span>
+    <span class="doccomment">/// [`mem::forget`], for example), the vector may have lost and leaked</span>
+    <span class="doccomment">/// elements arbitrarily, including elements outside the range.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -5354,7 +5379,7 @@
     <span class="doccomment">/// assert_eq!(v, &amp;[1]);</span>
     <span class="doccomment">/// assert_eq!(u, &amp;[2, 3]);</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// // A full range clears the vector</span>
+    <span class="doccomment">/// // A full range clears the vector, like `clear()` does</span>
     <span class="doccomment">/// v.drain(..);</span>
     <span class="doccomment">/// assert_eq!(v, &amp;[]);</span>
     <span class="doccomment">/// ```</span>
@@ -5585,8 +5610,6 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// #![feature(vec_spare_capacity)]</span>
-    <span class="doccomment">///</span>
     <span class="doccomment">/// // Allocate vector big enough for 10 elements.</span>
     <span class="doccomment">/// let mut v = Vec::with_capacity(10);</span>
     <span class="doccomment">///</span>
@@ -5603,7 +5626,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(&amp;v, &amp;[0, 1, 2]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_spare_capacity&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;75017&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_spare_capacity&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.60.0&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spare_capacity_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> [<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>] {
         <span class="comment">// Note:</span>
@@ -5806,7 +5829,7 @@
     <span class="doccomment">/// Tries to clone and append all elements in a slice to the `Vec`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Iterates over the slice `other`, clones each element, and then appends</span>
-    <span class="doccomment">/// it to this `Vec`. The `other` vector is traversed in-order.</span>
+    <span class="doccomment">/// it to this `Vec`. The `other` slice is traversed in-order.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that this function is same as [`extend`] except that it is</span>
     <span class="doccomment">/// specialized to work with slices instead. If and when Rust gets</span>
@@ -6562,10 +6585,6 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>))]</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;vec_from_array&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.44.0&quot;</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: [<span class="ident">T</span>; <span class="ident">N</span>]) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span><span class="ident">::into_vec</span>(<span class="kw">box</span> <span class="ident">s</span>)
-    }
     <span class="doccomment">/// Allocate a `Vec&lt;T&gt;` and move `s`&#39;s items into it.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
@@ -6573,6 +6592,11 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// assert_eq!(Vec::from([1, 2, 3]), vec![1, 2, 3]);</span>
     <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: [<span class="ident">T</span>; <span class="ident">N</span>]) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span><span class="ident">::into_vec</span>(<span class="kw">box</span> <span class="ident">s</span>)
+    }
+
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: [<span class="ident">T</span>; <span class="ident">N</span>]) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident"><span class="kw">crate</span>::slice::into_vec</span>(<span class="kw">box</span> <span class="ident">s</span>)
@@ -6666,14 +6690,12 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// use std::convert::TryInto;</span>
     <span class="doccomment">/// assert_eq!(vec![1, 2, 3].try_into(), Ok([1, 2, 3]));</span>
     <span class="doccomment">/// assert_eq!(&lt;Vec&lt;i32&gt;&gt;::new().try_into(), Ok([]));</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If the length doesn&#39;t match, the input comes back in `Err`:</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// use std::convert::TryInto;</span>
     <span class="doccomment">/// let r: Result&lt;[i32; 4], _&gt; = (0..10).collect::&lt;Vec&lt;_&gt;&gt;().try_into();</span>
     <span class="doccomment">/// assert_eq!(r, Err(vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9]));</span>
     <span class="doccomment">/// ```</span>
@@ -6681,7 +6703,6 @@
     <span class="doccomment">/// If you&#39;re fine with just getting a prefix of the `Vec&lt;T&gt;`,</span>
     <span class="doccomment">/// you can call [`.truncate(N)`](Vec::truncate) first.</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// use std::convert::TryInto;</span>
     <span class="doccomment">/// let mut v = String::from(&quot;hello world&quot;).into_bytes();</span>
     <span class="doccomment">/// v.sort();</span>
     <span class="doccomment">/// v.truncate(2);</span>
@@ -6707,5 +6728,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="alloc" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="alloc" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
 </body></html>

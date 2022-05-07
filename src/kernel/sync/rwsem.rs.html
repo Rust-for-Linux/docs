@@ -1,6 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;sync&#x2F;rwsem.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>rwsem.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../kernel/index.html"><img class="rust-logo" src="../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/kernel/sync/rwsem.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>rwsem.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../kernel/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -149,6 +152,54 @@
 <span id="147">147</span>
 <span id="148">148</span>
 <span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! A kernel read/write mutex.</span>
@@ -157,7 +208,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! C header: [`include/linux/rwsem.h`](../../../../include/linux/rwsem.h)</span>
 
-<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">mutex::EmptyGuardContext</span>, <span class="ident">CreatableLock</span>, <span class="ident">Guard</span>, <span class="ident">Lock</span>, <span class="ident">ReadLock</span>};
+<span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">mutex::EmptyGuardContext</span>, <span class="ident">Guard</span>, <span class="ident">Lock</span>, <span class="ident">LockFactory</span>, <span class="ident">LockIniter</span>, <span class="ident">ReadLock</span>, <span class="ident">WriteLock</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bindings</span>, <span class="ident">str::CStr</span>, <span class="ident">Opaque</span>};
 <span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">cell::UnsafeCell</span>, <span class="ident">marker::PhantomPinned</span>, <span class="ident">pin::Pin</span>};
 
@@ -236,14 +287,16 @@
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">CreatableLock</span> <span class="kw">for</span> <span class="ident">RwSemaphore</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">CreateArgType</span> <span class="op">=</span> <span class="ident">T</span>;
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">LockFactory</span> <span class="kw">for</span> <span class="ident">RwSemaphore</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">LockedType</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">RwSemaphore</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>;
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new_lock</span>(<span class="ident">data</span>: <span class="ident"><span class="self">Self</span>::CreateArgType</span>) -&gt; <span class="self">Self</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new_lock</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="ident">data</span>: <span class="ident">U</span>) -&gt; <span class="ident">RwSemaphore</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span> {
         <span class="comment">// SAFETY: The safety requirements of `new_lock` also require that `init_lock` be called.</span>
-        <span class="kw">unsafe</span> { <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">data</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">RwSemaphore::new</span>(<span class="ident">data</span>) }
     }
+}
 
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">LockIniter</span> <span class="kw">for</span> <span class="ident">RwSemaphore</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">init_lock</span>(
         <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="self">Self</span><span class="op">&gt;</span>,
         <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">CStr</span>,
@@ -298,6 +351,52 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">data</span>
     }
 }
+
+<span class="doccomment">/// A revocable rw semaphore.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// That is, a read/write semaphore to which access can be revoked at runtime. It is a</span>
+<span class="doccomment">/// specialisation of the more generic [`super::revocable::Revocable`].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use kernel::sync::RevocableRwSemaphore;</span>
+<span class="doccomment">/// # use kernel::revocable_init;</span>
+<span class="doccomment">/// # use core::pin::Pin;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// struct Example {</span>
+<span class="doccomment">///     a: u32,</span>
+<span class="doccomment">///     b: u32,</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// fn read_sum(v: &amp;RevocableRwSemaphore&lt;Example&gt;) -&gt; Option&lt;u32&gt; {</span>
+<span class="doccomment">///     let guard = v.try_read()?;</span>
+<span class="doccomment">///     Some(guard.a + guard.b)</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// fn add_two(v: &amp;RevocableRwSemaphore&lt;Example&gt;) -&gt; Option&lt;u32&gt; {</span>
+<span class="doccomment">///     let mut guard = v.try_write()?;</span>
+<span class="doccomment">///     guard.a += 2;</span>
+<span class="doccomment">///     guard.b += 2;</span>
+<span class="doccomment">///     Some(guard.a + guard.b)</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// // SAFETY: We call `revocable_init` immediately below.</span>
+<span class="doccomment">/// let mut v = unsafe { RevocableRwSemaphore::new(Example { a: 10, b: 20 }) };</span>
+<span class="doccomment">/// // SAFETY: We never move out of `v`.</span>
+<span class="doccomment">/// let pinned = unsafe { Pin::new_unchecked(&amp;mut v) };</span>
+<span class="doccomment">/// revocable_init!(pinned, &quot;example::v&quot;);</span>
+<span class="doccomment">/// assert_eq!(read_sum(&amp;v), Some(30));</span>
+<span class="doccomment">/// assert_eq!(add_two(&amp;v), Some(34));</span>
+<span class="doccomment">/// v.revoke();</span>
+<span class="doccomment">/// assert_eq!(read_sum(&amp;v), None);</span>
+<span class="doccomment">/// assert_eq!(add_two(&amp;v), None);</span>
+<span class="doccomment">/// ```</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">RevocableRwSemaphore</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::revocable::Revocable</span><span class="op">&lt;</span><span class="ident">RwSemaphore</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">T</span><span class="op">&gt;</span>;
+
+<span class="doccomment">/// A guard for a revocable rw semaphore..</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">RevocableRwSemaphoreGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>, <span class="ident">I</span> <span class="op">=</span> <span class="ident">WriteLock</span><span class="op">&gt;</span> <span class="op">=</span>
+    <span class="ident"><span class="kw">super</span>::revocable::RevocableGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">RwSemaphore</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span>;
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
 </body></html>

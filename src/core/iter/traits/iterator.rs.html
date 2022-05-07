@@ -1,6 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;iter&#x2F;traits&#x2F;iterator.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>iterator.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><script defer src="../../../../main.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../core/index.html"><img class="rust-logo" src="../../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/iter/traits/iterator.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>iterator.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><script defer src="../../../../main.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../core/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -3577,9 +3580,124 @@
 <span id="3575">3575</span>
 <span id="3576">3576</span>
 <span id="3577">3577</span>
+<span id="3578">3578</span>
+<span id="3579">3579</span>
+<span id="3580">3580</span>
+<span id="3581">3581</span>
+<span id="3582">3582</span>
+<span id="3583">3583</span>
+<span id="3584">3584</span>
+<span id="3585">3585</span>
+<span id="3586">3586</span>
+<span id="3587">3587</span>
+<span id="3588">3588</span>
+<span id="3589">3589</span>
+<span id="3590">3590</span>
+<span id="3591">3591</span>
+<span id="3592">3592</span>
+<span id="3593">3593</span>
+<span id="3594">3594</span>
+<span id="3595">3595</span>
+<span id="3596">3596</span>
+<span id="3597">3597</span>
+<span id="3598">3598</span>
+<span id="3599">3599</span>
+<span id="3600">3600</span>
+<span id="3601">3601</span>
+<span id="3602">3602</span>
+<span id="3603">3603</span>
+<span id="3604">3604</span>
+<span id="3605">3605</span>
+<span id="3606">3606</span>
+<span id="3607">3607</span>
+<span id="3608">3608</span>
+<span id="3609">3609</span>
+<span id="3610">3610</span>
+<span id="3611">3611</span>
+<span id="3612">3612</span>
+<span id="3613">3613</span>
+<span id="3614">3614</span>
+<span id="3615">3615</span>
+<span id="3616">3616</span>
+<span id="3617">3617</span>
+<span id="3618">3618</span>
+<span id="3619">3619</span>
+<span id="3620">3620</span>
+<span id="3621">3621</span>
+<span id="3622">3622</span>
+<span id="3623">3623</span>
+<span id="3624">3624</span>
+<span id="3625">3625</span>
+<span id="3626">3626</span>
+<span id="3627">3627</span>
+<span id="3628">3628</span>
+<span id="3629">3629</span>
+<span id="3630">3630</span>
+<span id="3631">3631</span>
+<span id="3632">3632</span>
+<span id="3633">3633</span>
+<span id="3634">3634</span>
+<span id="3635">3635</span>
+<span id="3636">3636</span>
+<span id="3637">3637</span>
+<span id="3638">3638</span>
+<span id="3639">3639</span>
+<span id="3640">3640</span>
+<span id="3641">3641</span>
+<span id="3642">3642</span>
+<span id="3643">3643</span>
+<span id="3644">3644</span>
+<span id="3645">3645</span>
+<span id="3646">3646</span>
+<span id="3647">3647</span>
+<span id="3648">3648</span>
+<span id="3649">3649</span>
+<span id="3650">3650</span>
+<span id="3651">3651</span>
+<span id="3652">3652</span>
+<span id="3653">3653</span>
+<span id="3654">3654</span>
+<span id="3655">3655</span>
+<span id="3656">3656</span>
+<span id="3657">3657</span>
+<span id="3658">3658</span>
+<span id="3659">3659</span>
+<span id="3660">3660</span>
+<span id="3661">3661</span>
+<span id="3662">3662</span>
+<span id="3663">3663</span>
+<span id="3664">3664</span>
+<span id="3665">3665</span>
+<span id="3666">3666</span>
+<span id="3667">3667</span>
+<span id="3668">3668</span>
+<span id="3669">3669</span>
+<span id="3670">3670</span>
+<span id="3671">3671</span>
+<span id="3672">3672</span>
+<span id="3673">3673</span>
+<span id="3674">3674</span>
+<span id="3675">3675</span>
+<span id="3676">3676</span>
+<span id="3677">3677</span>
+<span id="3678">3678</span>
+<span id="3679">3679</span>
+<span id="3680">3680</span>
+<span id="3681">3681</span>
+<span id="3682">3682</span>
+<span id="3683">3683</span>
+<span id="3684">3684</span>
+<span id="3685">3685</span>
+<span id="3686">3686</span>
+<span id="3687">3687</span>
+<span id="3688">3688</span>
+<span id="3689">3689</span>
+<span id="3690">3690</span>
+<span id="3691">3691</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cmp</span>::{<span class="self">self</span>, <span class="ident">Ordering</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ops</span>::{<span class="ident">ChangeOutputType</span>, <span class="ident">ControlFlow</span>, <span class="ident">FromResidual</span>, <span class="ident">Residual</span>, <span class="ident">Try</span>};
 
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::try_process</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::TrustedRandomAccessNoCoerce</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span></span>::{<span class="ident">Chain</span>, <span class="ident">Cloned</span>, <span class="ident">Copied</span>, <span class="ident">Cycle</span>, <span class="ident">Enumerate</span>, <span class="ident">Filter</span>, <span class="ident">FilterMap</span>, <span class="ident">Fuse</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span></span>::{<span class="ident">FlatMap</span>, <span class="ident">Flatten</span>};
@@ -4094,8 +4212,44 @@
     <span class="doccomment">/// assert_eq!((2, &#39;o&#39;), zipper[2]);</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
+    <span class="doccomment">/// If both iterators have roughly equivalent syntax, it may be more readable to use [`zip`]:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use std::iter::zip;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let a = [1, 2, 3];</span>
+    <span class="doccomment">/// let b = [2, 3, 4];</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut zipped = zip(</span>
+    <span class="doccomment">///     a.into_iter().map(|x| x * 2).skip(1),</span>
+    <span class="doccomment">///     b.into_iter().map(|x| x * 2).skip(1),</span>
+    <span class="doccomment">/// );</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(zipped.next(), Some((4, 6)));</span>
+    <span class="doccomment">/// assert_eq!(zipped.next(), Some((6, 8)));</span>
+    <span class="doccomment">/// assert_eq!(zipped.next(), None);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// compared to:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// # let a = [1, 2, 3];</span>
+    <span class="doccomment">/// # let b = [2, 3, 4];</span>
+    <span class="doccomment">/// #</span>
+    <span class="doccomment">/// let mut zipped = a</span>
+    <span class="doccomment">///     .into_iter()</span>
+    <span class="doccomment">///     .map(|x| x * 2)</span>
+    <span class="doccomment">///     .skip(1)</span>
+    <span class="doccomment">///     .zip(b.into_iter().map(|x| x * 2).skip(1));</span>
+    <span class="doccomment">/// #</span>
+    <span class="doccomment">/// # assert_eq!(zipped.next(), Some((4, 6)));</span>
+    <span class="doccomment">/// # assert_eq!(zipped.next(), Some((6, 8)));</span>
+    <span class="doccomment">/// # assert_eq!(zipped.next(), None);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// [`enumerate`]: Iterator::enumerate</span>
     <span class="doccomment">/// [`next`]: Iterator::next</span>
+    <span class="doccomment">/// [`zip`]: crate::iter::zip</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">zip</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">U</span>) -&gt; <span class="ident">Zip</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">U::IntoIter</span><span class="op">&gt;</span>
@@ -4169,7 +4323,7 @@
     <span class="doccomment">/// #[derive(PartialEq, Debug)]</span>
     <span class="doccomment">/// struct NotClone(usize);</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let v = vec![NotClone(0), NotClone(1), NotClone(2)];</span>
+    <span class="doccomment">/// let v = [NotClone(0), NotClone(1), NotClone(2)];</span>
     <span class="doccomment">/// let mut it = v.into_iter().intersperse_with(|| NotClone(99));</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(it.next(), Some(NotClone(0)));  // The first element from `v`.</span>
@@ -4734,8 +4888,6 @@
     <span class="doccomment">/// Stopping after an initial [`None`]:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// use std::convert::TryFrom;</span>
-    <span class="doccomment">///</span>
     <span class="doccomment">/// let a = [0, 1, 2, -3, 4, 5, -6];</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// let iter = a.iter().map_while(|x| u32::try_from(*x).ok());</span>
@@ -4751,8 +4903,6 @@
     <span class="doccomment">/// removed:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// use std::convert::TryFrom;</span>
-    <span class="doccomment">///</span>
     <span class="doccomment">/// let a = [1, 2, -3, 4];</span>
     <span class="doccomment">/// let mut iter = a.iter();</span>
     <span class="doccomment">///</span>
@@ -4853,7 +5003,7 @@
     <span class="doccomment">/// `take` will limit itself to the size of the underlying iterator:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// let v = vec![1, 2];</span>
+    <span class="doccomment">/// let v = [1, 2];</span>
     <span class="doccomment">/// let mut iter = v.into_iter().take(5);</span>
     <span class="doccomment">/// assert_eq!(iter.next(), Some(1));</span>
     <span class="doccomment">/// assert_eq!(iter.next(), Some(2));</span>
@@ -5187,7 +5337,7 @@
     <span class="doccomment">/// Basic usage:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// let mut words = vec![&quot;hello&quot;, &quot;world&quot;, &quot;of&quot;, &quot;Rust&quot;].into_iter();</span>
+    <span class="doccomment">/// let mut words = [&quot;hello&quot;, &quot;world&quot;, &quot;of&quot;, &quot;Rust&quot;].into_iter();</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// // Take the first two words.</span>
     <span class="doccomment">/// let hello_world: Vec&lt;_&gt; = words.by_ref().take(2).collect();</span>
@@ -5322,6 +5472,87 @@
         <span class="self">Self</span>: <span class="ident">Sized</span>,
     {
         <span class="ident">FromIterator::from_iter</span>(<span class="self">self</span>)
+    }
+
+    <span class="doccomment">/// Fallibly transforms an iterator into a collection, short circuiting if</span>
+    <span class="doccomment">/// a failure is encountered.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// `try_collect()` is a variation of [`collect()`][`collect`] that allows fallible</span>
+    <span class="doccomment">/// conversions during collection. Its main use case is simplifying conversions from</span>
+    <span class="doccomment">/// iterators yielding [`Option&lt;T&gt;`][`Option`] into `Option&lt;Collection&lt;T&gt;&gt;`, or similarly for other [`Try`]</span>
+    <span class="doccomment">/// types (e.g. [`Result`]).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Importantly, `try_collect()` doesn&#39;t require that the outer [`Try`] type also implements [`FromIterator`];</span>
+    <span class="doccomment">/// only the inner type produced on `Try::Output` must implement it. Concretely,</span>
+    <span class="doccomment">/// this means that collecting into `ControlFlow&lt;_, Vec&lt;i32&gt;&gt;` is valid because `Vec&lt;i32&gt;` implements</span>
+    <span class="doccomment">/// [`FromIterator`], even though [`ControlFlow`] doesn&#39;t.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Also, if a failure is encountered during `try_collect()`, the iterator is still valid and</span>
+    <span class="doccomment">/// may continue to be used, in which case it will continue iterating starting after the element that</span>
+    <span class="doccomment">/// triggered the failure. See the last example below for an example of how this works.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">/// Successfully collecting an iterator of `Option&lt;i32&gt;` into `Option&lt;Vec&lt;i32&gt;&gt;`:</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(iterator_try_collect)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let u = vec![Some(1), Some(2), Some(3)];</span>
+    <span class="doccomment">/// let v = u.into_iter().try_collect::&lt;Vec&lt;i32&gt;&gt;();</span>
+    <span class="doccomment">/// assert_eq!(v, Some(vec![1, 2, 3]));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Failing to collect in the same way:</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(iterator_try_collect)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let u = vec![Some(1), Some(2), None, Some(3)];</span>
+    <span class="doccomment">/// let v = u.into_iter().try_collect::&lt;Vec&lt;i32&gt;&gt;();</span>
+    <span class="doccomment">/// assert_eq!(v, None);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// A similar example, but with `Result`:</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(iterator_try_collect)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let u: Vec&lt;Result&lt;i32, ()&gt;&gt; = vec![Ok(1), Ok(2), Ok(3)];</span>
+    <span class="doccomment">/// let v = u.into_iter().try_collect::&lt;Vec&lt;i32&gt;&gt;();</span>
+    <span class="doccomment">/// assert_eq!(v, Ok(vec![1, 2, 3]));</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let u = vec![Ok(1), Ok(2), Err(()), Ok(3)];</span>
+    <span class="doccomment">/// let v = u.into_iter().try_collect::&lt;Vec&lt;i32&gt;&gt;();</span>
+    <span class="doccomment">/// assert_eq!(v, Err(()));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Finally, even [`ControlFlow`] works, despite the fact that it</span>
+    <span class="doccomment">/// doesn&#39;t implement [`FromIterator`]. Note also that the iterator can</span>
+    <span class="doccomment">/// continue to be used, even if a failure is encountered:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(iterator_try_collect)]</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// use core::ops::ControlFlow::{Break, Continue};</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let u = [Continue(1), Continue(2), Break(3), Continue(4), Continue(5)];</span>
+    <span class="doccomment">/// let mut it = u.into_iter();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let v = it.try_collect::&lt;Vec&lt;_&gt;&gt;();</span>
+    <span class="doccomment">/// assert_eq!(v, Break(3));</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let v = it.try_collect::&lt;Vec&lt;_&gt;&gt;();</span>
+    <span class="doccomment">/// assert_eq!(v, Continue(vec![4, 5]));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [`collect`]: Iterator::collect</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;iterator_try_collect&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;94047&quot;</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">try_collect</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">ChangeOutputType</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span>, <span class="ident">B</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="self">Self</span>: <span class="ident">Sized</span>,
+        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Iterator</span><span class="op">&gt;</span><span class="ident">::Item</span>: <span class="ident">Try</span>,
+        <span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Iterator</span><span class="op">&gt;</span><span class="ident">::Item</span> <span class="kw">as</span> <span class="ident">Try</span><span class="op">&gt;</span><span class="ident">::Residual</span>: <span class="ident">Residual</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
+        <span class="ident">B</span>: <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span> <span class="kw">as</span> <span class="ident">Try</span><span class="op">&gt;</span><span class="ident">::Output</span><span class="op">&gt;</span>,
+    {
+        <span class="ident">try_process</span>(<span class="self">self</span>, <span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">i</span>.<span class="ident">collect</span>())
     }
 
     <span class="doccomment">/// Consumes an iterator, creating two collections from it.</span>
@@ -6283,7 +6514,7 @@
     <span class="doccomment">/// incomparable. You can work around this by using [`Iterator::reduce`]:</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// assert_eq!(</span>
-    <span class="doccomment">///     vec![2.4, f32::NAN, 1.3]</span>
+    <span class="doccomment">///     [2.4, f32::NAN, 1.3]</span>
     <span class="doccomment">///         .into_iter()</span>
     <span class="doccomment">///         .reduce(f32::max)</span>
     <span class="doccomment">///         .unwrap(),</span>
@@ -6321,7 +6552,7 @@
     <span class="doccomment">/// incomparable. You can work around this by using [`Iterator::reduce`]:</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// assert_eq!(</span>
-    <span class="doccomment">///     vec![2.4, f32::NAN, 1.3]</span>
+    <span class="doccomment">///     [2.4, f32::NAN, 1.3]</span>
     <span class="doccomment">///         .into_iter()</span>
     <span class="doccomment">///         .reduce(f32::min)</span>
     <span class="doccomment">///         .unwrap(),</span>
@@ -7155,5 +7386,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
 </body></html>

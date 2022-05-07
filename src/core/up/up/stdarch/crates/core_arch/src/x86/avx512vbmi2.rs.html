@@ -1,6 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;..&#x2F;..&#x2F;stdarch&#x2F;crates&#x2F;core_arch&#x2F;src&#x2F;x86&#x2F;avx512vbmi2.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>avx512vbmi2.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><script defer src="../../../../../../../../../main.js"></script><script defer src="../../../../../../../../../source-script.js"></script><script defer src="../../../../../../../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../../../../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../../../../../../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../../../../logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../../../../../core/index.html"><img class="rust-logo" src="../../../../../../../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../../../../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/../../stdarch/crates/core_arch/src/x86/avx512vbmi2.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>avx512vbmi2.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><script defer src="../../../../../../../../../main.js"></script><script defer src="../../../../../../../../../source-script.js"></script><script defer src="../../../../../../../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../../../../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../../../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../../../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../../../../../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../../../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../../../../../core/index.html"><img class="rust-logo" src="../../../../../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../../../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../../../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -3548,10 +3551,874 @@
 <span id="3546">3546</span>
 <span id="3547">3547</span>
 <span id="3548">3548</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::core_arch</span>::{<span class="ident">simd</span>::<span class="kw-2">*</span>, <span class="ident">simd_llvm</span>::<span class="kw-2">*</span>, <span class="ident">x86</span>::<span class="kw-2">*</span>};
+<span id="3549">3549</span>
+<span id="3550">3550</span>
+<span id="3551">3551</span>
+<span id="3552">3552</span>
+<span id="3553">3553</span>
+<span id="3554">3554</span>
+<span id="3555">3555</span>
+<span id="3556">3556</span>
+<span id="3557">3557</span>
+<span id="3558">3558</span>
+<span id="3559">3559</span>
+<span id="3560">3560</span>
+<span id="3561">3561</span>
+<span id="3562">3562</span>
+<span id="3563">3563</span>
+<span id="3564">3564</span>
+<span id="3565">3565</span>
+<span id="3566">3566</span>
+<span id="3567">3567</span>
+<span id="3568">3568</span>
+<span id="3569">3569</span>
+<span id="3570">3570</span>
+<span id="3571">3571</span>
+<span id="3572">3572</span>
+<span id="3573">3573</span>
+<span id="3574">3574</span>
+<span id="3575">3575</span>
+<span id="3576">3576</span>
+<span id="3577">3577</span>
+<span id="3578">3578</span>
+<span id="3579">3579</span>
+<span id="3580">3580</span>
+<span id="3581">3581</span>
+<span id="3582">3582</span>
+<span id="3583">3583</span>
+<span id="3584">3584</span>
+<span id="3585">3585</span>
+<span id="3586">3586</span>
+<span id="3587">3587</span>
+<span id="3588">3588</span>
+<span id="3589">3589</span>
+<span id="3590">3590</span>
+<span id="3591">3591</span>
+<span id="3592">3592</span>
+<span id="3593">3593</span>
+<span id="3594">3594</span>
+<span id="3595">3595</span>
+<span id="3596">3596</span>
+<span id="3597">3597</span>
+<span id="3598">3598</span>
+<span id="3599">3599</span>
+<span id="3600">3600</span>
+<span id="3601">3601</span>
+<span id="3602">3602</span>
+<span id="3603">3603</span>
+<span id="3604">3604</span>
+<span id="3605">3605</span>
+<span id="3606">3606</span>
+<span id="3607">3607</span>
+<span id="3608">3608</span>
+<span id="3609">3609</span>
+<span id="3610">3610</span>
+<span id="3611">3611</span>
+<span id="3612">3612</span>
+<span id="3613">3613</span>
+<span id="3614">3614</span>
+<span id="3615">3615</span>
+<span id="3616">3616</span>
+<span id="3617">3617</span>
+<span id="3618">3618</span>
+<span id="3619">3619</span>
+<span id="3620">3620</span>
+<span id="3621">3621</span>
+<span id="3622">3622</span>
+<span id="3623">3623</span>
+<span id="3624">3624</span>
+<span id="3625">3625</span>
+<span id="3626">3626</span>
+<span id="3627">3627</span>
+<span id="3628">3628</span>
+<span id="3629">3629</span>
+<span id="3630">3630</span>
+<span id="3631">3631</span>
+<span id="3632">3632</span>
+<span id="3633">3633</span>
+<span id="3634">3634</span>
+<span id="3635">3635</span>
+<span id="3636">3636</span>
+<span id="3637">3637</span>
+<span id="3638">3638</span>
+<span id="3639">3639</span>
+<span id="3640">3640</span>
+<span id="3641">3641</span>
+<span id="3642">3642</span>
+<span id="3643">3643</span>
+<span id="3644">3644</span>
+<span id="3645">3645</span>
+<span id="3646">3646</span>
+<span id="3647">3647</span>
+<span id="3648">3648</span>
+<span id="3649">3649</span>
+<span id="3650">3650</span>
+<span id="3651">3651</span>
+<span id="3652">3652</span>
+<span id="3653">3653</span>
+<span id="3654">3654</span>
+<span id="3655">3655</span>
+<span id="3656">3656</span>
+<span id="3657">3657</span>
+<span id="3658">3658</span>
+<span id="3659">3659</span>
+<span id="3660">3660</span>
+<span id="3661">3661</span>
+<span id="3662">3662</span>
+<span id="3663">3663</span>
+<span id="3664">3664</span>
+<span id="3665">3665</span>
+<span id="3666">3666</span>
+<span id="3667">3667</span>
+<span id="3668">3668</span>
+<span id="3669">3669</span>
+<span id="3670">3670</span>
+<span id="3671">3671</span>
+<span id="3672">3672</span>
+<span id="3673">3673</span>
+<span id="3674">3674</span>
+<span id="3675">3675</span>
+<span id="3676">3676</span>
+<span id="3677">3677</span>
+<span id="3678">3678</span>
+<span id="3679">3679</span>
+<span id="3680">3680</span>
+<span id="3681">3681</span>
+<span id="3682">3682</span>
+<span id="3683">3683</span>
+<span id="3684">3684</span>
+<span id="3685">3685</span>
+<span id="3686">3686</span>
+<span id="3687">3687</span>
+<span id="3688">3688</span>
+<span id="3689">3689</span>
+<span id="3690">3690</span>
+<span id="3691">3691</span>
+<span id="3692">3692</span>
+<span id="3693">3693</span>
+<span id="3694">3694</span>
+<span id="3695">3695</span>
+<span id="3696">3696</span>
+<span id="3697">3697</span>
+<span id="3698">3698</span>
+<span id="3699">3699</span>
+<span id="3700">3700</span>
+<span id="3701">3701</span>
+<span id="3702">3702</span>
+<span id="3703">3703</span>
+<span id="3704">3704</span>
+<span id="3705">3705</span>
+<span id="3706">3706</span>
+<span id="3707">3707</span>
+<span id="3708">3708</span>
+<span id="3709">3709</span>
+<span id="3710">3710</span>
+<span id="3711">3711</span>
+<span id="3712">3712</span>
+<span id="3713">3713</span>
+<span id="3714">3714</span>
+<span id="3715">3715</span>
+<span id="3716">3716</span>
+<span id="3717">3717</span>
+<span id="3718">3718</span>
+<span id="3719">3719</span>
+<span id="3720">3720</span>
+<span id="3721">3721</span>
+<span id="3722">3722</span>
+<span id="3723">3723</span>
+<span id="3724">3724</span>
+<span id="3725">3725</span>
+<span id="3726">3726</span>
+<span id="3727">3727</span>
+<span id="3728">3728</span>
+<span id="3729">3729</span>
+<span id="3730">3730</span>
+<span id="3731">3731</span>
+<span id="3732">3732</span>
+<span id="3733">3733</span>
+<span id="3734">3734</span>
+<span id="3735">3735</span>
+<span id="3736">3736</span>
+<span id="3737">3737</span>
+<span id="3738">3738</span>
+<span id="3739">3739</span>
+<span id="3740">3740</span>
+<span id="3741">3741</span>
+<span id="3742">3742</span>
+<span id="3743">3743</span>
+<span id="3744">3744</span>
+<span id="3745">3745</span>
+<span id="3746">3746</span>
+<span id="3747">3747</span>
+<span id="3748">3748</span>
+<span id="3749">3749</span>
+<span id="3750">3750</span>
+<span id="3751">3751</span>
+<span id="3752">3752</span>
+<span id="3753">3753</span>
+<span id="3754">3754</span>
+<span id="3755">3755</span>
+<span id="3756">3756</span>
+<span id="3757">3757</span>
+<span id="3758">3758</span>
+<span id="3759">3759</span>
+<span id="3760">3760</span>
+<span id="3761">3761</span>
+<span id="3762">3762</span>
+<span id="3763">3763</span>
+<span id="3764">3764</span>
+<span id="3765">3765</span>
+<span id="3766">3766</span>
+<span id="3767">3767</span>
+<span id="3768">3768</span>
+<span id="3769">3769</span>
+<span id="3770">3770</span>
+<span id="3771">3771</span>
+<span id="3772">3772</span>
+<span id="3773">3773</span>
+<span id="3774">3774</span>
+<span id="3775">3775</span>
+<span id="3776">3776</span>
+<span id="3777">3777</span>
+<span id="3778">3778</span>
+<span id="3779">3779</span>
+<span id="3780">3780</span>
+<span id="3781">3781</span>
+<span id="3782">3782</span>
+<span id="3783">3783</span>
+<span id="3784">3784</span>
+<span id="3785">3785</span>
+<span id="3786">3786</span>
+<span id="3787">3787</span>
+<span id="3788">3788</span>
+<span id="3789">3789</span>
+<span id="3790">3790</span>
+<span id="3791">3791</span>
+<span id="3792">3792</span>
+<span id="3793">3793</span>
+<span id="3794">3794</span>
+<span id="3795">3795</span>
+<span id="3796">3796</span>
+<span id="3797">3797</span>
+<span id="3798">3798</span>
+<span id="3799">3799</span>
+<span id="3800">3800</span>
+<span id="3801">3801</span>
+<span id="3802">3802</span>
+<span id="3803">3803</span>
+<span id="3804">3804</span>
+<span id="3805">3805</span>
+<span id="3806">3806</span>
+<span id="3807">3807</span>
+<span id="3808">3808</span>
+<span id="3809">3809</span>
+<span id="3810">3810</span>
+<span id="3811">3811</span>
+<span id="3812">3812</span>
+<span id="3813">3813</span>
+<span id="3814">3814</span>
+<span id="3815">3815</span>
+<span id="3816">3816</span>
+<span id="3817">3817</span>
+<span id="3818">3818</span>
+<span id="3819">3819</span>
+<span id="3820">3820</span>
+<span id="3821">3821</span>
+<span id="3822">3822</span>
+<span id="3823">3823</span>
+<span id="3824">3824</span>
+<span id="3825">3825</span>
+<span id="3826">3826</span>
+<span id="3827">3827</span>
+<span id="3828">3828</span>
+<span id="3829">3829</span>
+<span id="3830">3830</span>
+<span id="3831">3831</span>
+<span id="3832">3832</span>
+<span id="3833">3833</span>
+<span id="3834">3834</span>
+<span id="3835">3835</span>
+<span id="3836">3836</span>
+<span id="3837">3837</span>
+<span id="3838">3838</span>
+<span id="3839">3839</span>
+<span id="3840">3840</span>
+<span id="3841">3841</span>
+<span id="3842">3842</span>
+<span id="3843">3843</span>
+<span id="3844">3844</span>
+<span id="3845">3845</span>
+<span id="3846">3846</span>
+<span id="3847">3847</span>
+<span id="3848">3848</span>
+<span id="3849">3849</span>
+<span id="3850">3850</span>
+<span id="3851">3851</span>
+<span id="3852">3852</span>
+<span id="3853">3853</span>
+<span id="3854">3854</span>
+<span id="3855">3855</span>
+<span id="3856">3856</span>
+<span id="3857">3857</span>
+<span id="3858">3858</span>
+<span id="3859">3859</span>
+<span id="3860">3860</span>
+<span id="3861">3861</span>
+<span id="3862">3862</span>
+<span id="3863">3863</span>
+<span id="3864">3864</span>
+<span id="3865">3865</span>
+<span id="3866">3866</span>
+<span id="3867">3867</span>
+<span id="3868">3868</span>
+<span id="3869">3869</span>
+<span id="3870">3870</span>
+<span id="3871">3871</span>
+<span id="3872">3872</span>
+<span id="3873">3873</span>
+<span id="3874">3874</span>
+<span id="3875">3875</span>
+<span id="3876">3876</span>
+<span id="3877">3877</span>
+<span id="3878">3878</span>
+<span id="3879">3879</span>
+<span id="3880">3880</span>
+<span id="3881">3881</span>
+<span id="3882">3882</span>
+<span id="3883">3883</span>
+<span id="3884">3884</span>
+<span id="3885">3885</span>
+<span id="3886">3886</span>
+<span id="3887">3887</span>
+<span id="3888">3888</span>
+<span id="3889">3889</span>
+<span id="3890">3890</span>
+<span id="3891">3891</span>
+<span id="3892">3892</span>
+<span id="3893">3893</span>
+<span id="3894">3894</span>
+<span id="3895">3895</span>
+<span id="3896">3896</span>
+<span id="3897">3897</span>
+<span id="3898">3898</span>
+<span id="3899">3899</span>
+<span id="3900">3900</span>
+<span id="3901">3901</span>
+<span id="3902">3902</span>
+<span id="3903">3903</span>
+<span id="3904">3904</span>
+<span id="3905">3905</span>
+<span id="3906">3906</span>
+<span id="3907">3907</span>
+<span id="3908">3908</span>
+<span id="3909">3909</span>
+<span id="3910">3910</span>
+<span id="3911">3911</span>
+<span id="3912">3912</span>
+<span id="3913">3913</span>
+<span id="3914">3914</span>
+<span id="3915">3915</span>
+<span id="3916">3916</span>
+<span id="3917">3917</span>
+<span id="3918">3918</span>
+<span id="3919">3919</span>
+<span id="3920">3920</span>
+<span id="3921">3921</span>
+<span id="3922">3922</span>
+<span id="3923">3923</span>
+<span id="3924">3924</span>
+<span id="3925">3925</span>
+<span id="3926">3926</span>
+<span id="3927">3927</span>
+<span id="3928">3928</span>
+<span id="3929">3929</span>
+<span id="3930">3930</span>
+<span id="3931">3931</span>
+<span id="3932">3932</span>
+<span id="3933">3933</span>
+<span id="3934">3934</span>
+<span id="3935">3935</span>
+<span id="3936">3936</span>
+<span id="3937">3937</span>
+<span id="3938">3938</span>
+<span id="3939">3939</span>
+<span id="3940">3940</span>
+<span id="3941">3941</span>
+<span id="3942">3942</span>
+<span id="3943">3943</span>
+<span id="3944">3944</span>
+<span id="3945">3945</span>
+<span id="3946">3946</span>
+<span id="3947">3947</span>
+<span id="3948">3948</span>
+<span id="3949">3949</span>
+<span id="3950">3950</span>
+<span id="3951">3951</span>
+<span id="3952">3952</span>
+<span id="3953">3953</span>
+<span id="3954">3954</span>
+<span id="3955">3955</span>
+<span id="3956">3956</span>
+<span id="3957">3957</span>
+<span id="3958">3958</span>
+<span id="3959">3959</span>
+<span id="3960">3960</span>
+<span id="3961">3961</span>
+<span id="3962">3962</span>
+<span id="3963">3963</span>
+<span id="3964">3964</span>
+<span id="3965">3965</span>
+<span id="3966">3966</span>
+<span id="3967">3967</span>
+<span id="3968">3968</span>
+<span id="3969">3969</span>
+<span id="3970">3970</span>
+<span id="3971">3971</span>
+<span id="3972">3972</span>
+<span id="3973">3973</span>
+<span id="3974">3974</span>
+<span id="3975">3975</span>
+<span id="3976">3976</span>
+<span id="3977">3977</span>
+<span id="3978">3978</span>
+<span id="3979">3979</span>
+<span id="3980">3980</span>
+<span id="3981">3981</span>
+<span id="3982">3982</span>
+<span id="3983">3983</span>
+<span id="3984">3984</span>
+<span id="3985">3985</span>
+<span id="3986">3986</span>
+<span id="3987">3987</span>
+<span id="3988">3988</span>
+<span id="3989">3989</span>
+<span id="3990">3990</span>
+<span id="3991">3991</span>
+<span id="3992">3992</span>
+<span id="3993">3993</span>
+<span id="3994">3994</span>
+<span id="3995">3995</span>
+<span id="3996">3996</span>
+<span id="3997">3997</span>
+<span id="3998">3998</span>
+<span id="3999">3999</span>
+<span id="4000">4000</span>
+<span id="4001">4001</span>
+<span id="4002">4002</span>
+<span id="4003">4003</span>
+<span id="4004">4004</span>
+<span id="4005">4005</span>
+<span id="4006">4006</span>
+<span id="4007">4007</span>
+<span id="4008">4008</span>
+<span id="4009">4009</span>
+<span id="4010">4010</span>
+<span id="4011">4011</span>
+<span id="4012">4012</span>
+<span id="4013">4013</span>
+<span id="4014">4014</span>
+<span id="4015">4015</span>
+<span id="4016">4016</span>
+<span id="4017">4017</span>
+<span id="4018">4018</span>
+<span id="4019">4019</span>
+<span id="4020">4020</span>
+<span id="4021">4021</span>
+<span id="4022">4022</span>
+<span id="4023">4023</span>
+<span id="4024">4024</span>
+<span id="4025">4025</span>
+<span id="4026">4026</span>
+<span id="4027">4027</span>
+<span id="4028">4028</span>
+<span id="4029">4029</span>
+<span id="4030">4030</span>
+<span id="4031">4031</span>
+<span id="4032">4032</span>
+<span id="4033">4033</span>
+<span id="4034">4034</span>
+<span id="4035">4035</span>
+<span id="4036">4036</span>
+<span id="4037">4037</span>
+<span id="4038">4038</span>
+<span id="4039">4039</span>
+<span id="4040">4040</span>
+<span id="4041">4041</span>
+<span id="4042">4042</span>
+<span id="4043">4043</span>
+<span id="4044">4044</span>
+<span id="4045">4045</span>
+<span id="4046">4046</span>
+<span id="4047">4047</span>
+<span id="4048">4048</span>
+<span id="4049">4049</span>
+<span id="4050">4050</span>
+<span id="4051">4051</span>
+<span id="4052">4052</span>
+<span id="4053">4053</span>
+<span id="4054">4054</span>
+<span id="4055">4055</span>
+<span id="4056">4056</span>
+<span id="4057">4057</span>
+<span id="4058">4058</span>
+<span id="4059">4059</span>
+<span id="4060">4060</span>
+<span id="4061">4061</span>
+<span id="4062">4062</span>
+<span id="4063">4063</span>
+<span id="4064">4064</span>
+<span id="4065">4065</span>
+<span id="4066">4066</span>
+<span id="4067">4067</span>
+<span id="4068">4068</span>
+<span id="4069">4069</span>
+<span id="4070">4070</span>
+<span id="4071">4071</span>
+<span id="4072">4072</span>
+<span id="4073">4073</span>
+<span id="4074">4074</span>
+<span id="4075">4075</span>
+<span id="4076">4076</span>
+<span id="4077">4077</span>
+<span id="4078">4078</span>
+<span id="4079">4079</span>
+<span id="4080">4080</span>
+<span id="4081">4081</span>
+<span id="4082">4082</span>
+<span id="4083">4083</span>
+<span id="4084">4084</span>
+<span id="4085">4085</span>
+<span id="4086">4086</span>
+<span id="4087">4087</span>
+<span id="4088">4088</span>
+<span id="4089">4089</span>
+<span id="4090">4090</span>
+<span id="4091">4091</span>
+<span id="4092">4092</span>
+<span id="4093">4093</span>
+<span id="4094">4094</span>
+<span id="4095">4095</span>
+<span id="4096">4096</span>
+<span id="4097">4097</span>
+<span id="4098">4098</span>
+<span id="4099">4099</span>
+<span id="4100">4100</span>
+<span id="4101">4101</span>
+<span id="4102">4102</span>
+<span id="4103">4103</span>
+<span id="4104">4104</span>
+<span id="4105">4105</span>
+<span id="4106">4106</span>
+<span id="4107">4107</span>
+<span id="4108">4108</span>
+<span id="4109">4109</span>
+<span id="4110">4110</span>
+<span id="4111">4111</span>
+<span id="4112">4112</span>
+<span id="4113">4113</span>
+<span id="4114">4114</span>
+<span id="4115">4115</span>
+<span id="4116">4116</span>
+<span id="4117">4117</span>
+<span id="4118">4118</span>
+<span id="4119">4119</span>
+<span id="4120">4120</span>
+<span id="4121">4121</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">arch::asm</span>,
+    <span class="ident">core_arch</span>::{<span class="ident">simd</span>::<span class="kw-2">*</span>, <span class="ident">simd_llvm</span>::<span class="kw-2">*</span>, <span class="ident">x86</span>::<span class="kw-2">*</span>},
+};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">use</span> <span class="ident">stdarch_test::assert_instr</span>;
+
+<span class="doccomment">/// Load contiguous active 16-bit integers from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_expandloadu_epi16)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512f,avx512bw,avx512vbmi2&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_mask_expandloadu_epi16</span>(
+    <span class="ident">src</span>: <span class="ident">__m512i</span>,
+    <span class="ident">k</span>: <span class="ident">__mmask32</span>,
+    <span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i16</span>,
+) -&gt; <span class="ident">__m512i</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span>: <span class="ident">__m512i</span> <span class="op">=</span> <span class="ident">src</span>;
+    <span class="macro">asm!</span>(
+        <span class="macro">vpl!</span>(<span class="string">&quot;vpexpandw {dst}{{{k}}}&quot;</span>),
+        <span class="ident">p</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">mem_addr</span>,
+        <span class="ident">k</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">kreg</span>) <span class="ident">k</span>,
+        <span class="ident">dst</span> <span class="op">=</span> <span class="ident">inout</span>(<span class="ident">zmm_reg</span>) <span class="ident">dst</span>,
+        <span class="ident">options</span>(<span class="ident">pure</span>, <span class="ident">readonly</span>, <span class="ident">nostack</span>)
+    );
+    <span class="ident">dst</span>
+}
+
+<span class="doccomment">/// Load contiguous active 16-bit integers from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_expandloadu_epi16)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512f,avx512bw,avx512vbmi2&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_maskz_expandloadu_epi16</span>(<span class="ident">k</span>: <span class="ident">__mmask32</span>, <span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i16</span>) -&gt; <span class="ident">__m512i</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span>: <span class="ident">__m512i</span>;
+    <span class="macro">asm!</span>(
+        <span class="macro">vpl!</span>(<span class="string">&quot;vpexpandw {dst}{{{k}}} {{z}}&quot;</span>),
+        <span class="ident">p</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">mem_addr</span>,
+        <span class="ident">k</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">kreg</span>) <span class="ident">k</span>,
+        <span class="ident">dst</span> <span class="op">=</span> <span class="ident">out</span>(<span class="ident">zmm_reg</span>) <span class="ident">dst</span>,
+        <span class="ident">options</span>(<span class="ident">pure</span>, <span class="ident">readonly</span>, <span class="ident">nostack</span>)
+    );
+    <span class="ident">dst</span>
+}
+
+<span class="doccomment">/// Load contiguous active 16-bit integers from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_expandloadu_epi16)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512f,avx512vbmi2,avx512vl,avx&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_mask_expandloadu_epi16</span>(
+    <span class="ident">src</span>: <span class="ident">__m256i</span>,
+    <span class="ident">k</span>: <span class="ident">__mmask16</span>,
+    <span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i16</span>,
+) -&gt; <span class="ident">__m256i</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span>: <span class="ident">__m256i</span> <span class="op">=</span> <span class="ident">src</span>;
+    <span class="macro">asm!</span>(
+        <span class="macro">vpl!</span>(<span class="string">&quot;vpexpandw {dst}{{{k}}}&quot;</span>),
+        <span class="ident">p</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">mem_addr</span>,
+        <span class="ident">k</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">kreg</span>) <span class="ident">k</span>,
+        <span class="ident">dst</span> <span class="op">=</span> <span class="ident">inout</span>(<span class="ident">ymm_reg</span>) <span class="ident">dst</span>,
+        <span class="ident">options</span>(<span class="ident">pure</span>, <span class="ident">readonly</span>, <span class="ident">nostack</span>)
+    );
+    <span class="ident">dst</span>
+}
+
+<span class="doccomment">/// Load contiguous active 16-bit integers from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_expandloadu_epi16)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512f,avx512vbmi2,avx512vl,avx&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_maskz_expandloadu_epi16</span>(<span class="ident">k</span>: <span class="ident">__mmask16</span>, <span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i16</span>) -&gt; <span class="ident">__m256i</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span>: <span class="ident">__m256i</span>;
+    <span class="macro">asm!</span>(
+        <span class="macro">vpl!</span>(<span class="string">&quot;vpexpandw {dst}{{{k}}} {{z}}&quot;</span>),
+        <span class="ident">p</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">mem_addr</span>,
+        <span class="ident">k</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">kreg</span>) <span class="ident">k</span>,
+        <span class="ident">dst</span> <span class="op">=</span> <span class="ident">out</span>(<span class="ident">ymm_reg</span>) <span class="ident">dst</span>,
+        <span class="ident">options</span>(<span class="ident">pure</span>, <span class="ident">readonly</span>, <span class="ident">nostack</span>)
+    );
+    <span class="ident">dst</span>
+}
+
+<span class="doccomment">/// Load contiguous active 16-bit integers from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_expandloadu_epi16)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512f,avx512vbmi2,avx512vl,avx,sse&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_expandloadu_epi16</span>(
+    <span class="ident">src</span>: <span class="ident">__m128i</span>,
+    <span class="ident">k</span>: <span class="ident">__mmask8</span>,
+    <span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i16</span>,
+) -&gt; <span class="ident">__m128i</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span>: <span class="ident">__m128i</span> <span class="op">=</span> <span class="ident">src</span>;
+    <span class="macro">asm!</span>(
+        <span class="macro">vpl!</span>(<span class="string">&quot;vpexpandw {dst}{{{k}}}&quot;</span>),
+        <span class="ident">p</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">mem_addr</span>,
+        <span class="ident">k</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">kreg</span>) <span class="ident">k</span>,
+        <span class="ident">dst</span> <span class="op">=</span> <span class="ident">inout</span>(<span class="ident">xmm_reg</span>) <span class="ident">dst</span>,
+        <span class="ident">options</span>(<span class="ident">pure</span>, <span class="ident">readonly</span>, <span class="ident">nostack</span>)
+    );
+    <span class="ident">dst</span>
+}
+
+<span class="doccomment">/// Load contiguous active 16-bit integers from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_expandloadu_epi16)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512f,avx512vbmi2,avx512vl,avx,sse&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_maskz_expandloadu_epi16</span>(<span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i16</span>) -&gt; <span class="ident">__m128i</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span>: <span class="ident">__m128i</span>;
+    <span class="macro">asm!</span>(
+        <span class="macro">vpl!</span>(<span class="string">&quot;vpexpandw {dst}{{{k}}} {{z}}&quot;</span>),
+        <span class="ident">p</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">mem_addr</span>,
+        <span class="ident">k</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">kreg</span>) <span class="ident">k</span>,
+        <span class="ident">dst</span> <span class="op">=</span> <span class="ident">out</span>(<span class="ident">xmm_reg</span>) <span class="ident">dst</span>,
+        <span class="ident">options</span>(<span class="ident">pure</span>, <span class="ident">readonly</span>, <span class="ident">nostack</span>)
+    );
+    <span class="ident">dst</span>
+}
+
+<span class="doccomment">/// Load contiguous active 8-bit integers from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_expandloadu_epi8)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512f,avx512bw,avx512vbmi2&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_mask_expandloadu_epi8</span>(
+    <span class="ident">src</span>: <span class="ident">__m512i</span>,
+    <span class="ident">k</span>: <span class="ident">__mmask64</span>,
+    <span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>,
+) -&gt; <span class="ident">__m512i</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span>: <span class="ident">__m512i</span> <span class="op">=</span> <span class="ident">src</span>;
+    <span class="macro">asm!</span>(
+        <span class="macro">vpl!</span>(<span class="string">&quot;vpexpandb {dst}{{{k}}}&quot;</span>),
+        <span class="ident">p</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">mem_addr</span>,
+        <span class="ident">k</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">kreg</span>) <span class="ident">k</span>,
+        <span class="ident">dst</span> <span class="op">=</span> <span class="ident">inout</span>(<span class="ident">zmm_reg</span>) <span class="ident">dst</span>,
+        <span class="ident">options</span>(<span class="ident">pure</span>, <span class="ident">readonly</span>, <span class="ident">nostack</span>)
+    );
+    <span class="ident">dst</span>
+}
+
+<span class="doccomment">/// Load contiguous active 8-bit integers from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_maskz_expandloadu_epi8)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512f,avx512bw,avx512vbmi2&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_maskz_expandloadu_epi8</span>(<span class="ident">k</span>: <span class="ident">__mmask64</span>, <span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>) -&gt; <span class="ident">__m512i</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span>: <span class="ident">__m512i</span>;
+    <span class="macro">asm!</span>(
+        <span class="macro">vpl!</span>(<span class="string">&quot;vpexpandb {dst}{{{k}}} {{z}}&quot;</span>),
+        <span class="ident">p</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">mem_addr</span>,
+        <span class="ident">k</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">kreg</span>) <span class="ident">k</span>,
+        <span class="ident">dst</span> <span class="op">=</span> <span class="ident">out</span>(<span class="ident">zmm_reg</span>) <span class="ident">dst</span>,
+        <span class="ident">options</span>(<span class="ident">pure</span>, <span class="ident">readonly</span>, <span class="ident">nostack</span>)
+    );
+    <span class="ident">dst</span>
+}
+
+<span class="doccomment">/// Load contiguous active 8-bit integers from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_expandloadu_epi8)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512f,avx512bw,avx512vbmi2,avx512vl,avx&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_mask_expandloadu_epi8</span>(
+    <span class="ident">src</span>: <span class="ident">__m256i</span>,
+    <span class="ident">k</span>: <span class="ident">__mmask32</span>,
+    <span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>,
+) -&gt; <span class="ident">__m256i</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span>: <span class="ident">__m256i</span> <span class="op">=</span> <span class="ident">src</span>;
+    <span class="macro">asm!</span>(
+        <span class="macro">vpl!</span>(<span class="string">&quot;vpexpandb {dst}{{{k}}}&quot;</span>),
+        <span class="ident">p</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">mem_addr</span>,
+        <span class="ident">k</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">kreg</span>) <span class="ident">k</span>,
+        <span class="ident">dst</span> <span class="op">=</span> <span class="ident">inout</span>(<span class="ident">ymm_reg</span>) <span class="ident">dst</span>,
+        <span class="ident">options</span>(<span class="ident">pure</span>, <span class="ident">readonly</span>, <span class="ident">nostack</span>)
+    );
+    <span class="ident">dst</span>
+}
+
+<span class="doccomment">/// Load contiguous active 8-bit integers from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_maskz_expandloadu_epi8)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512f,avx512bw,avx512vbmi2,avx512vl,avx&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_maskz_expandloadu_epi8</span>(<span class="ident">k</span>: <span class="ident">__mmask32</span>, <span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>) -&gt; <span class="ident">__m256i</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span>: <span class="ident">__m256i</span>;
+    <span class="macro">asm!</span>(
+        <span class="macro">vpl!</span>(<span class="string">&quot;vpexpandb {dst}{{{k}}} {{z}}&quot;</span>),
+        <span class="ident">p</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">mem_addr</span>,
+        <span class="ident">k</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">kreg</span>) <span class="ident">k</span>,
+        <span class="ident">dst</span> <span class="op">=</span> <span class="ident">out</span>(<span class="ident">ymm_reg</span>) <span class="ident">dst</span>,
+        <span class="ident">options</span>(<span class="ident">pure</span>, <span class="ident">readonly</span>, <span class="ident">nostack</span>)
+    );
+    <span class="ident">dst</span>
+}
+
+<span class="doccomment">/// Load contiguous active 8-bit integers from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using writemask k (elements are copied from src when the corresponding mask bit is not set).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_expandloadu_epi8)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512f,avx512vbmi2,avx512vl,avx,sse&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_expandloadu_epi8</span>(
+    <span class="ident">src</span>: <span class="ident">__m128i</span>,
+    <span class="ident">k</span>: <span class="ident">__mmask16</span>,
+    <span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>,
+) -&gt; <span class="ident">__m128i</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span>: <span class="ident">__m128i</span> <span class="op">=</span> <span class="ident">src</span>;
+    <span class="macro">asm!</span>(
+        <span class="macro">vpl!</span>(<span class="string">&quot;vpexpandb {dst}{{{k}}}&quot;</span>),
+        <span class="ident">p</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">mem_addr</span>,
+        <span class="ident">k</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">kreg</span>) <span class="ident">k</span>,
+        <span class="ident">dst</span> <span class="op">=</span> <span class="ident">inout</span>(<span class="ident">xmm_reg</span>) <span class="ident">dst</span>,
+        <span class="ident">options</span>(<span class="ident">pure</span>, <span class="ident">readonly</span>, <span class="ident">nostack</span>)
+    );
+    <span class="ident">dst</span>
+}
+
+<span class="doccomment">/// Load contiguous active 8-bit integers from unaligned memory at mem_addr (those with their respective bit set in mask k), and store the results in dst using zeromask k (elements are zeroed out when the corresponding mask bit is not set).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_maskz_expandloadu_epi8)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512f,avx512vbmi2,avx512vl,avx,sse&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_maskz_expandloadu_epi8</span>(<span class="ident">k</span>: <span class="ident">__mmask16</span>, <span class="ident">mem_addr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>) -&gt; <span class="ident">__m128i</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dst</span>: <span class="ident">__m128i</span>;
+    <span class="macro">asm!</span>(
+        <span class="macro">vpl!</span>(<span class="string">&quot;vpexpandb {dst}{{{k}}} {{z}}&quot;</span>),
+        <span class="ident">p</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">mem_addr</span>,
+        <span class="ident">k</span> <span class="op">=</span> <span class="kw">in</span>(<span class="ident">kreg</span>) <span class="ident">k</span>,
+        <span class="ident">dst</span> <span class="op">=</span> <span class="ident">out</span>(<span class="ident">xmm_reg</span>) <span class="ident">dst</span>,
+        <span class="ident">options</span>(<span class="ident">pure</span>, <span class="ident">readonly</span>, <span class="ident">nostack</span>)
+    );
+    <span class="ident">dst</span>
+}
+
+<span class="doccomment">/// Contiguously store the active 16-bit integers in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_compressstoreu_epi16)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpcompressw</span>))]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_mask_compressstoreu_epi16</span>(<span class="ident">base_addr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">k</span>: <span class="ident">__mmask32</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>) {
+    <span class="ident">vcompressstorew</span>(<span class="ident">base_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="ident">a</span>.<span class="ident">as_i16x32</span>(), <span class="ident">k</span>)
+}
+
+<span class="doccomment">/// Contiguously store the active 16-bit integers in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_compressstoreu_epi16)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2,avx512vl&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpcompressw</span>))]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_mask_compressstoreu_epi16</span>(<span class="ident">base_addr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">k</span>: <span class="ident">__mmask16</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>) {
+    <span class="ident">vcompressstorew256</span>(<span class="ident">base_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="ident">a</span>.<span class="ident">as_i16x16</span>(), <span class="ident">k</span>)
+}
+
+<span class="doccomment">/// Contiguously store the active 16-bit integers in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_compressstoreu_epi16)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2,avx512vl&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpcompressw</span>))]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_compressstoreu_epi16</span>(<span class="ident">base_addr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">k</span>: <span class="ident">__mmask8</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>) {
+    <span class="ident">vcompressstorew128</span>(<span class="ident">base_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="ident">a</span>.<span class="ident">as_i16x8</span>(), <span class="ident">k</span>)
+}
+
+<span class="doccomment">/// Contiguously store the active 8-bit integers in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm512_mask_compressstoreu_epi8)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpcompressb</span>))]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm512_mask_compressstoreu_epi8</span>(<span class="ident">base_addr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">k</span>: <span class="ident">__mmask64</span>, <span class="ident">a</span>: <span class="ident">__m512i</span>) {
+    <span class="ident">vcompressstoreb</span>(<span class="ident">base_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="ident">a</span>.<span class="ident">as_i8x64</span>(), <span class="ident">k</span>)
+}
+
+<span class="doccomment">/// Contiguously store the active 8-bit integers in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm256_mask_compressstoreu_epi8)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2,avx512vl&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpcompressb</span>))]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm256_mask_compressstoreu_epi8</span>(<span class="ident">base_addr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">k</span>: <span class="ident">__mmask32</span>, <span class="ident">a</span>: <span class="ident">__m256i</span>) {
+    <span class="ident">vcompressstoreb256</span>(<span class="ident">base_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="ident">a</span>.<span class="ident">as_i8x32</span>(), <span class="ident">k</span>)
+}
+
+<span class="doccomment">/// Contiguously store the active 8-bit integers in a (those with their respective bit set in writemask k) to unaligned memory at base_addr.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Intel&#39;s documentation](https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_mask_compressstoreu_epi8)</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2,avx512vl&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">vpcompressb</span>))]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">_mm_mask_compressstoreu_epi8</span>(<span class="ident">base_addr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">k</span>: <span class="ident">__mmask16</span>, <span class="ident">a</span>: <span class="ident">__m128i</span>) {
+    <span class="ident">vcompressstoreb128</span>(<span class="ident">base_addr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="ident">a</span>.<span class="ident">as_i8x16</span>(), <span class="ident">k</span>)
+}
 
 <span class="doccomment">/// Contiguously store the active 16-bit integers in a (those with their respective bit set in writemask k) to dst, and pass through the remaining elements from src.</span>
 <span class="doccomment">///</span>
@@ -5540,6 +6407,20 @@
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">improper_ctypes</span>)]</span>
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
+    <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.compress.store.w.512&quot;</span>]</span>
+    <span class="kw">fn</span> <span class="ident">vcompressstorew</span>(<span class="ident">mem</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">data</span>: <span class="ident">i16x32</span>, <span class="ident">mask</span>: <span class="ident">u32</span>);
+    <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.compress.store.w.256&quot;</span>]</span>
+    <span class="kw">fn</span> <span class="ident">vcompressstorew256</span>(<span class="ident">mem</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">data</span>: <span class="ident">i16x16</span>, <span class="ident">mask</span>: <span class="ident">u16</span>);
+    <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.compress.store.w.128&quot;</span>]</span>
+    <span class="kw">fn</span> <span class="ident">vcompressstorew128</span>(<span class="ident">mem</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">data</span>: <span class="ident">i16x8</span>, <span class="ident">mask</span>: <span class="ident">u8</span>);
+
+    <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.compress.store.b.512&quot;</span>]</span>
+    <span class="kw">fn</span> <span class="ident">vcompressstoreb</span>(<span class="ident">mem</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">data</span>: <span class="ident">i8x64</span>, <span class="ident">mask</span>: <span class="ident">u64</span>);
+    <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.compress.store.b.256&quot;</span>]</span>
+    <span class="kw">fn</span> <span class="ident">vcompressstoreb256</span>(<span class="ident">mem</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">data</span>: <span class="ident">i8x32</span>, <span class="ident">mask</span>: <span class="ident">u32</span>);
+    <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.compress.store.b.128&quot;</span>]</span>
+    <span class="kw">fn</span> <span class="ident">vcompressstoreb128</span>(<span class="ident">mem</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">data</span>: <span class="ident">i8x16</span>, <span class="ident">mask</span>: <span class="ident">u16</span>);
+
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.compress.w.512&quot;</span>]</span>
     <span class="kw">fn</span> <span class="ident">vpcompressw</span>(<span class="ident">a</span>: <span class="ident">i16x32</span>, <span class="ident">src</span>: <span class="ident">i16x32</span>, <span class="ident">mask</span>: <span class="ident">u32</span>) -&gt; <span class="ident">i16x32</span>;
     <span class="attribute">#[<span class="ident">link_name</span> <span class="op">=</span> <span class="string">&quot;llvm.x86.avx512.mask.compress.w.256&quot;</span>]</span>
@@ -5613,6 +6494,7 @@
     <span class="kw">use</span> <span class="ident">stdarch_test::simd_test</span>;
 
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::core_arch::x86</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::hint::black_box</span>;
 
     <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2&quot;</span>)]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm512_mask_compress_epi16</span>() {
@@ -7095,7 +7977,274 @@
         <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm_set1_epi16</span>(<span class="number">1</span>);
         <span class="ident">assert_eq_m128i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
     }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm512_mask_expandloadu_epi16</span>() {
+        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">_mm512_set1_epi16</span>(<span class="number">42</span>);
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[
+            <span class="number">1_i16</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>, <span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">21</span>, <span class="number">22</span>, <span class="number">23</span>,
+            <span class="number">24</span>, <span class="number">25</span>, <span class="number">26</span>, <span class="number">27</span>, <span class="number">28</span>, <span class="number">29</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">32</span>,
+        ];
+        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">as_ptr</span>();
+        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="number">0b11101000_11001010_11110000_00001111</span>;
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm512_mask_expandloadu_epi16</span>(<span class="ident">src</span>, <span class="ident">m</span>, <span class="ident">black_box</span>(<span class="ident">p</span>));
+        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm512_set_epi16</span>(
+            <span class="number">16</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">42</span>, <span class="number">13</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">12</span>, <span class="number">11</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">10</span>, <span class="number">42</span>, <span class="number">9</span>, <span class="number">42</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>,
+            <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>,
+        );
+        <span class="ident">assert_eq_m512i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm512_maskz_expandloadu_epi16</span>() {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[
+            <span class="number">1_i16</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>, <span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">21</span>, <span class="number">22</span>, <span class="number">23</span>,
+            <span class="number">24</span>, <span class="number">25</span>, <span class="number">26</span>, <span class="number">27</span>, <span class="number">28</span>, <span class="number">29</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">32</span>,
+        ];
+        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">as_ptr</span>();
+        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="number">0b11101000_11001010_11110000_00001111</span>;
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm512_maskz_expandloadu_epi16</span>(<span class="ident">m</span>, <span class="ident">black_box</span>(<span class="ident">p</span>));
+        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm512_set_epi16</span>(
+            <span class="number">16</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">0</span>, <span class="number">13</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">12</span>, <span class="number">11</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">10</span>, <span class="number">0</span>, <span class="number">9</span>, <span class="number">0</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>,
+            <span class="number">0</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>,
+        );
+        <span class="ident">assert_eq_m512i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2,avx512vl&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm256_mask_expandloadu_epi16</span>() {
+        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">_mm256_set1_epi16</span>(<span class="number">42</span>);
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="number">1_i16</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>];
+        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">as_ptr</span>();
+        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="number">0b11101000_11001010</span>;
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_mask_expandloadu_epi16</span>(<span class="ident">src</span>, <span class="ident">m</span>, <span class="ident">black_box</span>(<span class="ident">p</span>));
+        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm256_set_epi16</span>(<span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">42</span>, <span class="number">5</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">2</span>, <span class="number">42</span>, <span class="number">1</span>, <span class="number">42</span>);
+        <span class="ident">assert_eq_m256i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2,avx512vl&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm256_maskz_expandloadu_epi16</span>() {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="number">1_i16</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>];
+        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">as_ptr</span>();
+        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="number">0b11101000_11001010</span>;
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_maskz_expandloadu_epi16</span>(<span class="ident">m</span>, <span class="ident">black_box</span>(<span class="ident">p</span>));
+        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm256_set_epi16</span>(<span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);
+        <span class="ident">assert_eq_m256i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2,avx512vl&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm_mask_expandloadu_epi16</span>() {
+        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">_mm_set1_epi16</span>(<span class="number">42</span>);
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="number">1_i16</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>];
+        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">as_ptr</span>();
+        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="number">0b11101000</span>;
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_mask_expandloadu_epi16</span>(<span class="ident">src</span>, <span class="ident">m</span>, <span class="ident">black_box</span>(<span class="ident">p</span>));
+        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm_set_epi16</span>(<span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">42</span>, <span class="number">1</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>);
+        <span class="ident">assert_eq_m128i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2,avx512vl&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm_maskz_expandloadu_epi16</span>() {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="number">1_i16</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>];
+        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">as_ptr</span>();
+        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="number">0b11101000</span>;
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_maskz_expandloadu_epi16</span>(<span class="ident">m</span>, <span class="ident">black_box</span>(<span class="ident">p</span>));
+        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm_set_epi16</span>(<span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);
+        <span class="ident">assert_eq_m128i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm512_mask_expandloadu_epi8</span>() {
+        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">_mm512_set1_epi8</span>(<span class="number">42</span>);
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[
+            <span class="number">1_i8</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>, <span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">21</span>, <span class="number">22</span>, <span class="number">23</span>,
+            <span class="number">24</span>, <span class="number">25</span>, <span class="number">26</span>, <span class="number">27</span>, <span class="number">28</span>, <span class="number">29</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">32</span>, <span class="number">33</span>, <span class="number">34</span>, <span class="number">35</span>, <span class="number">36</span>, <span class="number">37</span>, <span class="number">38</span>, <span class="number">39</span>, <span class="number">40</span>, <span class="number">41</span>, <span class="number">42</span>, <span class="number">43</span>, <span class="number">44</span>, <span class="number">45</span>,
+            <span class="number">46</span>, <span class="number">47</span>, <span class="number">48</span>, <span class="number">49</span>, <span class="number">50</span>, <span class="number">51</span>, <span class="number">52</span>, <span class="number">53</span>, <span class="number">54</span>, <span class="number">55</span>, <span class="number">56</span>, <span class="number">57</span>, <span class="number">58</span>, <span class="number">59</span>, <span class="number">60</span>, <span class="number">61</span>, <span class="number">62</span>, <span class="number">63</span>, <span class="number">64</span>,
+        ];
+        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">as_ptr</span>();
+        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="number">0b11101000_11001010_11110000_00001111_11111111_00000000_10101010_01010101</span>;
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm512_mask_expandloadu_epi8</span>(<span class="ident">src</span>, <span class="ident">m</span>, <span class="ident">black_box</span>(<span class="ident">p</span>));
+        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm512_set_epi8</span>(
+            <span class="number">32</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">42</span>, <span class="number">29</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">28</span>, <span class="number">27</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">26</span>, <span class="number">42</span>, <span class="number">25</span>, <span class="number">42</span>, <span class="number">24</span>, <span class="number">23</span>, <span class="number">22</span>, <span class="number">21</span>, <span class="number">42</span>, <span class="number">42</span>,
+            <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">20</span>, <span class="number">19</span>, <span class="number">18</span>, <span class="number">17</span>, <span class="number">16</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">13</span>, <span class="number">12</span>, <span class="number">11</span>, <span class="number">10</span>, <span class="number">9</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>,
+            <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">8</span>, <span class="number">42</span>, <span class="number">7</span>, <span class="number">42</span>, <span class="number">6</span>, <span class="number">42</span>, <span class="number">5</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">4</span>, <span class="number">42</span>, <span class="number">3</span>, <span class="number">42</span>, <span class="number">2</span>, <span class="number">42</span>, <span class="number">1</span>,
+        );
+        <span class="ident">assert_eq_m512i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm512_maskz_expandloadu_epi8</span>() {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[
+            <span class="number">1_i8</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>, <span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">21</span>, <span class="number">22</span>, <span class="number">23</span>,
+            <span class="number">24</span>, <span class="number">25</span>, <span class="number">26</span>, <span class="number">27</span>, <span class="number">28</span>, <span class="number">29</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">32</span>, <span class="number">33</span>, <span class="number">34</span>, <span class="number">35</span>, <span class="number">36</span>, <span class="number">37</span>, <span class="number">38</span>, <span class="number">39</span>, <span class="number">40</span>, <span class="number">41</span>, <span class="number">42</span>, <span class="number">43</span>, <span class="number">44</span>, <span class="number">45</span>,
+            <span class="number">46</span>, <span class="number">47</span>, <span class="number">48</span>, <span class="number">49</span>, <span class="number">50</span>, <span class="number">51</span>, <span class="number">52</span>, <span class="number">53</span>, <span class="number">54</span>, <span class="number">55</span>, <span class="number">56</span>, <span class="number">57</span>, <span class="number">58</span>, <span class="number">59</span>, <span class="number">60</span>, <span class="number">61</span>, <span class="number">62</span>, <span class="number">63</span>, <span class="number">64</span>,
+        ];
+        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">as_ptr</span>();
+        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="number">0b11101000_11001010_11110000_00001111_11111111_00000000_10101010_01010101</span>;
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm512_maskz_expandloadu_epi8</span>(<span class="ident">m</span>, <span class="ident">black_box</span>(<span class="ident">p</span>));
+        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm512_set_epi8</span>(
+            <span class="number">32</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">0</span>, <span class="number">29</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">28</span>, <span class="number">27</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">26</span>, <span class="number">0</span>, <span class="number">25</span>, <span class="number">0</span>, <span class="number">24</span>, <span class="number">23</span>, <span class="number">22</span>, <span class="number">21</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>,
+            <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">20</span>, <span class="number">19</span>, <span class="number">18</span>, <span class="number">17</span>, <span class="number">16</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">13</span>, <span class="number">12</span>, <span class="number">11</span>, <span class="number">10</span>, <span class="number">9</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">8</span>, <span class="number">0</span>,
+            <span class="number">7</span>, <span class="number">0</span>, <span class="number">6</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">4</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>,
+        );
+        <span class="ident">assert_eq_m512i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2,avx512vl&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm256_mask_expandloadu_epi8</span>() {
+        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">_mm256_set1_epi8</span>(<span class="number">42</span>);
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[
+            <span class="number">1_i8</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>, <span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">21</span>, <span class="number">22</span>, <span class="number">23</span>,
+            <span class="number">24</span>, <span class="number">25</span>, <span class="number">26</span>, <span class="number">27</span>, <span class="number">28</span>, <span class="number">29</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">32</span>,
+        ];
+        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">as_ptr</span>();
+        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="number">0b11101000_11001010_11110000_00001111</span>;
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_mask_expandloadu_epi8</span>(<span class="ident">src</span>, <span class="ident">m</span>, <span class="ident">black_box</span>(<span class="ident">p</span>));
+        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm256_set_epi8</span>(
+            <span class="number">16</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">42</span>, <span class="number">13</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">12</span>, <span class="number">11</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">10</span>, <span class="number">42</span>, <span class="number">9</span>, <span class="number">42</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>,
+            <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>,
+        );
+        <span class="ident">assert_eq_m256i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2,avx512vl&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm256_maskz_expandloadu_epi8</span>() {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[
+            <span class="number">1_i8</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>, <span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">21</span>, <span class="number">22</span>, <span class="number">23</span>,
+            <span class="number">24</span>, <span class="number">25</span>, <span class="number">26</span>, <span class="number">27</span>, <span class="number">28</span>, <span class="number">29</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">32</span>,
+        ];
+        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">as_ptr</span>();
+        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="number">0b11101000_11001010_11110000_00001111</span>;
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm256_maskz_expandloadu_epi8</span>(<span class="ident">m</span>, <span class="ident">black_box</span>(<span class="ident">p</span>));
+        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm256_set_epi8</span>(
+            <span class="number">16</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">0</span>, <span class="number">13</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">12</span>, <span class="number">11</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">10</span>, <span class="number">0</span>, <span class="number">9</span>, <span class="number">0</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>,
+            <span class="number">0</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>,
+        );
+        <span class="ident">assert_eq_m256i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2,avx512vl&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm_mask_expandloadu_epi8</span>() {
+        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">_mm_set1_epi8</span>(<span class="number">42</span>);
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="number">1_i8</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>];
+        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">as_ptr</span>();
+        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="number">0b11101000_11001010</span>;
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_mask_expandloadu_epi8</span>(<span class="ident">src</span>, <span class="ident">m</span>, <span class="ident">black_box</span>(<span class="ident">p</span>));
+        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm_set_epi8</span>(<span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">42</span>, <span class="number">5</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">42</span>, <span class="number">42</span>, <span class="number">2</span>, <span class="number">42</span>, <span class="number">1</span>, <span class="number">42</span>);
+        <span class="ident">assert_eq_m128i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2,avx512vl&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm_maskz_expandloadu_epi8</span>() {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="number">1_i8</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>];
+        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">a</span>.<span class="ident">as_ptr</span>();
+        <span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="number">0b11101000_11001010</span>;
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">_mm_maskz_expandloadu_epi8</span>(<span class="ident">m</span>, <span class="ident">black_box</span>(<span class="ident">p</span>));
+        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">_mm_set_epi8</span>(<span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);
+        <span class="ident">assert_eq_m128i</span>(<span class="ident">r</span>, <span class="ident">e</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm512_mask_compressstoreu_epi16</span>() {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm512_set_epi16</span>(
+            <span class="number">32</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">29</span>, <span class="number">28</span>, <span class="number">27</span>, <span class="number">26</span>, <span class="number">25</span>, <span class="number">24</span>, <span class="number">23</span>, <span class="number">22</span>, <span class="number">21</span>, <span class="number">20</span>, <span class="number">19</span>, <span class="number">18</span>, <span class="number">17</span>, <span class="number">16</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">13</span>, <span class="number">12</span>, <span class="number">11</span>,
+            <span class="number">10</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>,
+        );
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> [<span class="number">0_i16</span>; <span class="number">32</span>];
+        <span class="ident">_mm512_mask_compressstoreu_epi16</span>(<span class="ident">r</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="number">0</span>, <span class="ident">a</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="ident">r</span>, <span class="kw-2">&amp;</span>[<span class="number">0_i16</span>; <span class="number">32</span>]);
+        <span class="ident">_mm512_mask_compressstoreu_epi16</span>(
+            <span class="ident">r</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+            <span class="number">0b11110000_11001010_11111111_00000000</span>,
+            <span class="ident">a</span>,
+        );
+        <span class="macro">assert_eq!</span>(
+            <span class="kw-2">&amp;</span><span class="ident">r</span>,
+            <span class="kw-2">&amp;</span>[
+                <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">18</span>, <span class="number">20</span>, <span class="number">23</span>, <span class="number">24</span>, <span class="number">29</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">32</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>,
+                <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>
+            ]
+        );
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2,avx512vl&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm256_mask_compressstoreu_epi16</span>() {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm256_set_epi16</span>(<span class="number">16</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">13</span>, <span class="number">12</span>, <span class="number">11</span>, <span class="number">10</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> [<span class="number">0_i16</span>; <span class="number">16</span>];
+        <span class="ident">_mm256_mask_compressstoreu_epi16</span>(<span class="ident">r</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="number">0</span>, <span class="ident">a</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="ident">r</span>, <span class="kw-2">&amp;</span>[<span class="number">0_i16</span>; <span class="number">16</span>]);
+        <span class="ident">_mm256_mask_compressstoreu_epi16</span>(<span class="ident">r</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="number">0b11110000_11001010</span>, <span class="ident">a</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="ident">r</span>, <span class="kw-2">&amp;</span>[<span class="number">2</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2,avx512vl&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm_mask_compressstoreu_epi16</span>() {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm_set_epi16</span>(<span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> [<span class="number">0_i16</span>; <span class="number">8</span>];
+        <span class="ident">_mm_mask_compressstoreu_epi16</span>(<span class="ident">r</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="number">0</span>, <span class="ident">a</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="ident">r</span>, <span class="kw-2">&amp;</span>[<span class="number">0_i16</span>; <span class="number">8</span>]);
+        <span class="ident">_mm_mask_compressstoreu_epi16</span>(<span class="ident">r</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="number">0b11110000</span>, <span class="ident">a</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="ident">r</span>, <span class="kw-2">&amp;</span>[<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]);
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm512_mask_compressstoreu_epi8</span>() {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm512_set_epi8</span>(
+            <span class="number">64</span>, <span class="number">63</span>, <span class="number">62</span>, <span class="number">61</span>, <span class="number">60</span>, <span class="number">59</span>, <span class="number">58</span>, <span class="number">57</span>, <span class="number">56</span>, <span class="number">55</span>, <span class="number">54</span>, <span class="number">53</span>, <span class="number">52</span>, <span class="number">51</span>, <span class="number">50</span>, <span class="number">49</span>, <span class="number">48</span>, <span class="number">47</span>, <span class="number">46</span>, <span class="number">45</span>, <span class="number">44</span>, <span class="number">43</span>,
+            <span class="number">42</span>, <span class="number">41</span>, <span class="number">40</span>, <span class="number">39</span>, <span class="number">38</span>, <span class="number">37</span>, <span class="number">36</span>, <span class="number">35</span>, <span class="number">34</span>, <span class="number">33</span>, <span class="number">32</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">29</span>, <span class="number">28</span>, <span class="number">27</span>, <span class="number">26</span>, <span class="number">25</span>, <span class="number">24</span>, <span class="number">23</span>, <span class="number">22</span>, <span class="number">21</span>,
+            <span class="number">20</span>, <span class="number">19</span>, <span class="number">18</span>, <span class="number">17</span>, <span class="number">16</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">13</span>, <span class="number">12</span>, <span class="number">11</span>, <span class="number">10</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>,
+        );
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> [<span class="number">0_i8</span>; <span class="number">64</span>];
+        <span class="ident">_mm512_mask_compressstoreu_epi8</span>(<span class="ident">r</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="number">0</span>, <span class="ident">a</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="ident">r</span>, <span class="kw-2">&amp;</span>[<span class="number">0_i8</span>; <span class="number">64</span>]);
+        <span class="ident">_mm512_mask_compressstoreu_epi8</span>(
+            <span class="ident">r</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+            <span class="number">0b11110000_11001010_11111111_00000000_10101010_01010101_11110000_00001111</span>,
+            <span class="ident">a</span>,
+        );
+        <span class="macro">assert_eq!</span>(
+            <span class="kw-2">&amp;</span><span class="ident">r</span>,
+            <span class="kw-2">&amp;</span>[
+                <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>, <span class="number">19</span>, <span class="number">21</span>, <span class="number">23</span>, <span class="number">26</span>, <span class="number">28</span>, <span class="number">30</span>, <span class="number">32</span>, <span class="number">41</span>, <span class="number">42</span>, <span class="number">43</span>, <span class="number">44</span>, <span class="number">45</span>, <span class="number">46</span>,
+                <span class="number">47</span>, <span class="number">48</span>, <span class="number">50</span>, <span class="number">52</span>, <span class="number">55</span>, <span class="number">56</span>, <span class="number">61</span>, <span class="number">62</span>, <span class="number">63</span>, <span class="number">64</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>,
+                <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>
+            ]
+        );
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2,avx512vl&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm256_mask_compressstoreu_epi8</span>() {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm256_set_epi8</span>(
+            <span class="number">32</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">29</span>, <span class="number">28</span>, <span class="number">27</span>, <span class="number">26</span>, <span class="number">25</span>, <span class="number">24</span>, <span class="number">23</span>, <span class="number">22</span>, <span class="number">21</span>, <span class="number">20</span>, <span class="number">19</span>, <span class="number">18</span>, <span class="number">17</span>, <span class="number">16</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">13</span>, <span class="number">12</span>, <span class="number">11</span>,
+            <span class="number">10</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>,
+        );
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> [<span class="number">0_i8</span>; <span class="number">32</span>];
+        <span class="ident">_mm256_mask_compressstoreu_epi8</span>(<span class="ident">r</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="number">0</span>, <span class="ident">a</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="ident">r</span>, <span class="kw-2">&amp;</span>[<span class="number">0_i8</span>; <span class="number">32</span>]);
+        <span class="ident">_mm256_mask_compressstoreu_epi8</span>(
+            <span class="ident">r</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+            <span class="number">0b11110000_11001010_11111111_00000000</span>,
+            <span class="ident">a</span>,
+        );
+        <span class="macro">assert_eq!</span>(
+            <span class="kw-2">&amp;</span><span class="ident">r</span>,
+            <span class="kw-2">&amp;</span>[
+                <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">18</span>, <span class="number">20</span>, <span class="number">23</span>, <span class="number">24</span>, <span class="number">29</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">32</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>,
+                <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>
+            ]
+        );
+    }
+
+    <span class="attribute">#[<span class="ident">simd_test</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;avx512vbmi2,avx512vl&quot;</span>)]</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">test_mm_mask_compressstoreu_epi8</span>() {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm_set_epi8</span>(<span class="number">16</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">13</span>, <span class="number">12</span>, <span class="number">11</span>, <span class="number">10</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> [<span class="number">0_i8</span>; <span class="number">16</span>];
+        <span class="ident">_mm_mask_compressstoreu_epi8</span>(<span class="ident">r</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="number">0</span>, <span class="ident">a</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="ident">r</span>, <span class="kw-2">&amp;</span>[<span class="number">0_i8</span>; <span class="number">16</span>]);
+        <span class="ident">_mm_mask_compressstoreu_epi8</span>(<span class="ident">r</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="number">0b11110000_11001010</span>, <span class="ident">a</span>);
+        <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="ident">r</span>, <span class="kw-2">&amp;</span>[<span class="number">2</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]);
+    }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
 </body></html>

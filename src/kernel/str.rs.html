@@ -1,6 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;str.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>str.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/kernel/str.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>str.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -592,6 +595,11 @@
 <span id="590">590</span>
 <span id="591">591</span>
 <span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! String representations.</span>
@@ -617,7 +625,7 @@
 <span class="doccomment">/// ```</span>
 <span class="doccomment">/// # use kernel::b_str;</span>
 <span class="doccomment">/// # use kernel::str::BStr;</span>
-<span class="doccomment">/// const MY_BSTR: &amp;&#39;static BStr = b_str!(&quot;My awesome BStr!&quot;);</span>
+<span class="doccomment">/// const MY_BSTR: &amp;BStr = b_str!(&quot;My awesome BStr!&quot;);</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">b_str</span> {
@@ -810,11 +818,14 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// # use kernel::c_str;</span>
     <span class="doccomment">/// # use kernel::str::CStr;</span>
+    <span class="doccomment">/// # use kernel::str::CString;</span>
     <span class="doccomment">/// let penguin = c_str!(&quot;🐧&quot;);</span>
-    <span class="doccomment">/// assert_eq!(format!(&quot;{}&quot;, penguin), &quot;\\xf0\\x9f\\x90\\xa7&quot;);</span>
+    <span class="doccomment">/// let s = CString::try_from_fmt(fmt!(&quot;{}&quot;, penguin)).unwrap();</span>
+    <span class="doccomment">/// assert_eq!(s.as_bytes_with_nul(), &quot;\\xf0\\x9f\\x90\\xa7\0&quot;.as_bytes());</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// let ascii = c_str!(&quot;so \&quot;cool\&quot;&quot;);</span>
-    <span class="doccomment">/// assert_eq!(format!(&quot;{}&quot;, ascii), &quot;so \&quot;cool\&quot;&quot;);</span>
+    <span class="doccomment">/// let s = CString::try_from_fmt(fmt!(&quot;{}&quot;, ascii)).unwrap();</span>
+    <span class="doccomment">/// assert_eq!(s.as_bytes_with_nul(), &quot;so \&quot;cool\&quot;\0&quot;.as_bytes());</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">c</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">as_bytes</span>() {
@@ -835,12 +846,15 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// # use kernel::c_str;</span>
     <span class="doccomment">/// # use kernel::str::CStr;</span>
+    <span class="doccomment">/// # use kernel::str::CString;</span>
     <span class="doccomment">/// let penguin = c_str!(&quot;🐧&quot;);</span>
-    <span class="doccomment">/// assert_eq!(format!(&quot;{:?}&quot;, penguin), &quot;\&quot;\\xf0\\x9f\\x90\\xa7\&quot;&quot;);</span>
+    <span class="doccomment">/// let s = CString::try_from_fmt(fmt!(&quot;{:?}&quot;, penguin)).unwrap();</span>
+    <span class="doccomment">/// assert_eq!(s.as_bytes_with_nul(), &quot;\&quot;\\xf0\\x9f\\x90\\xa7\&quot;\0&quot;.as_bytes());</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// // embedded double quotes are escaped</span>
+    <span class="doccomment">/// // Embedded double quotes are escaped.</span>
     <span class="doccomment">/// let ascii = c_str!(&quot;so \&quot;cool\&quot;&quot;);</span>
-    <span class="doccomment">/// assert_eq!(format!(&quot;{:?}&quot;, ascii), &quot;\&quot;so \\\&quot;cool\\\&quot;\&quot;&quot;);</span>
+    <span class="doccomment">/// let s = CString::try_from_fmt(fmt!(&quot;{:?}&quot;, ascii)).unwrap();</span>
+    <span class="doccomment">/// assert_eq!(s.as_bytes_with_nul(), &quot;\&quot;so \\\&quot;cool\\\&quot;\&quot;\0&quot;.as_bytes());</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;\&quot;&quot;</span>)<span class="question-mark">?</span>;
@@ -928,7 +942,7 @@
 <span class="doccomment">/// ```</span>
 <span class="doccomment">/// # use kernel::c_str;</span>
 <span class="doccomment">/// # use kernel::str::CStr;</span>
-<span class="doccomment">/// const MY_CSTR: &amp;&#39;static CStr = c_str!(&quot;My awesome CStr!&quot;);</span>
+<span class="doccomment">/// const MY_CSTR: &amp;CStr = c_str!(&quot;My awesome CStr!&quot;);</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">c_str</span> {
@@ -1116,7 +1130,6 @@
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// # use kernel::prelude::*;</span>
 <span class="doccomment">/// use kernel::str::CString;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// let s = CString::try_from_fmt(fmt!(&quot;{}{}{}&quot;, &quot;abc&quot;, 10, 20)).unwrap();</span>
@@ -1185,5 +1198,5 @@
     ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; ( <span class="macro">core::format_args!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>)<span class="kw-2">*</span>) )
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
 </body></html>

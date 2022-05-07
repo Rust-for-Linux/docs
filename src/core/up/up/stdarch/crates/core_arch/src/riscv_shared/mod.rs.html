@@ -1,6 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;..&#x2F;..&#x2F;stdarch&#x2F;crates&#x2F;core_arch&#x2F;src&#x2F;riscv_shared&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><script defer src="../../../../../../../../../main.js"></script><script defer src="../../../../../../../../../source-script.js"></script><script defer src="../../../../../../../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../../../../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../../../../../../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../../../../logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../../../../../core/index.html"><img class="rust-logo" src="../../../../../../../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../../../../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/../../stdarch/crates/core_arch/src/riscv_shared/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><script defer src="../../../../../../../../../main.js"></script><script defer src="../../../../../../../../../source-script.js"></script><script defer src="../../../../../../../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../../../../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../../../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../../../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../../../../../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../../../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../../../../../core/index.html"><img class="rust-logo" src="../../../../../../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../../../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../../../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -481,6 +484,296 @@
 <span id="479">479</span>
 <span id="480">480</span>
 <span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
+<span id="665">665</span>
+<span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
+<span id="678">678</span>
+<span id="679">679</span>
+<span id="680">680</span>
+<span id="681">681</span>
+<span id="682">682</span>
+<span id="683">683</span>
+<span id="684">684</span>
+<span id="685">685</span>
+<span id="686">686</span>
+<span id="687">687</span>
+<span id="688">688</span>
+<span id="689">689</span>
+<span id="690">690</span>
+<span id="691">691</span>
+<span id="692">692</span>
+<span id="693">693</span>
+<span id="694">694</span>
+<span id="695">695</span>
+<span id="696">696</span>
+<span id="697">697</span>
+<span id="698">698</span>
+<span id="699">699</span>
+<span id="700">700</span>
+<span id="701">701</span>
+<span id="702">702</span>
+<span id="703">703</span>
+<span id="704">704</span>
+<span id="705">705</span>
+<span id="706">706</span>
+<span id="707">707</span>
+<span id="708">708</span>
+<span id="709">709</span>
+<span id="710">710</span>
+<span id="711">711</span>
+<span id="712">712</span>
+<span id="713">713</span>
+<span id="714">714</span>
+<span id="715">715</span>
+<span id="716">716</span>
+<span id="717">717</span>
+<span id="718">718</span>
+<span id="719">719</span>
+<span id="720">720</span>
+<span id="721">721</span>
+<span id="722">722</span>
+<span id="723">723</span>
+<span id="724">724</span>
+<span id="725">725</span>
+<span id="726">726</span>
+<span id="727">727</span>
+<span id="728">728</span>
+<span id="729">729</span>
+<span id="730">730</span>
+<span id="731">731</span>
+<span id="732">732</span>
+<span id="733">733</span>
+<span id="734">734</span>
+<span id="735">735</span>
+<span id="736">736</span>
+<span id="737">737</span>
+<span id="738">738</span>
+<span id="739">739</span>
+<span id="740">740</span>
+<span id="741">741</span>
+<span id="742">742</span>
+<span id="743">743</span>
+<span id="744">744</span>
+<span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Shared RISC-V intrinsics</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::arch::asm</span>;
@@ -636,7 +929,7 @@
 <span class="doccomment">/// accesses in either VS-mode or VU-mode.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.B`</span>
-<span class="doccomment">/// instruction which is effectively an unreference to any memory address.</span>
+<span class="doccomment">/// instruction which is effectively a dereference to any memory address.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">hlv_b</span>(<span class="ident">src</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>) -&gt; <span class="ident">i8</span> {
     <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">i8</span>;
@@ -651,7 +944,7 @@
 <span class="doccomment">/// accesses in either VS-mode or VU-mode.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.BU`</span>
-<span class="doccomment">/// instruction which is effectively an unreference to any memory address.</span>
+<span class="doccomment">/// instruction which is effectively a dereference to any memory address.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">hlv_bu</span>(<span class="ident">src</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>) -&gt; <span class="ident">u8</span> {
     <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">u8</span>;
@@ -666,7 +959,7 @@
 <span class="doccomment">/// accesses in either VS-mode or VU-mode.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.H`</span>
-<span class="doccomment">/// instruction which is effectively an unreference to any memory address.</span>
+<span class="doccomment">/// instruction which is effectively a dereference to any memory address.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">hlv_h</span>(<span class="ident">src</span>: <span class="kw-2">*const</span> <span class="ident">i16</span>) -&gt; <span class="ident">i16</span> {
     <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">i16</span>;
@@ -681,7 +974,7 @@
 <span class="doccomment">/// accesses in either VS-mode or VU-mode.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.HU`</span>
-<span class="doccomment">/// instruction which is effectively an unreference to any memory address.</span>
+<span class="doccomment">/// instruction which is effectively a dereference to any memory address.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">hlv_hu</span>(<span class="ident">src</span>: <span class="kw-2">*const</span> <span class="ident">u16</span>) -&gt; <span class="ident">u16</span> {
     <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">u16</span>;
@@ -696,7 +989,7 @@
 <span class="doccomment">/// but read permission is not required.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This function is unsafe for it accesses the virtual supervisor or user via a `HLVX.HU`</span>
-<span class="doccomment">/// instruction which is effectively an unreference to any memory address.</span>
+<span class="doccomment">/// instruction which is effectively a dereference to any memory address.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">hlvx_hu</span>(<span class="ident">src</span>: <span class="kw-2">*const</span> <span class="ident">u16</span>) -&gt; <span class="ident">u16</span> {
     <span class="kw">let</span> <span class="ident">insn</span>: <span class="ident">u16</span>;
@@ -711,7 +1004,7 @@
 <span class="doccomment">/// accesses in either VS-mode or VU-mode.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This function is unsafe for it accesses the virtual supervisor or user via a `HLV.W`</span>
-<span class="doccomment">/// instruction which is effectively an unreference to any memory address.</span>
+<span class="doccomment">/// instruction which is effectively a dereference to any memory address.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">hlv_w</span>(<span class="ident">src</span>: <span class="kw-2">*const</span> <span class="ident">i32</span>) -&gt; <span class="ident">i32</span> {
     <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">i32</span>;
@@ -726,7 +1019,7 @@
 <span class="doccomment">/// but read permission is not required.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This function is unsafe for it accesses the virtual supervisor or user via a `HLVX.WU`</span>
-<span class="doccomment">/// instruction which is effectively an unreference to any memory address.</span>
+<span class="doccomment">/// instruction which is effectively a dereference to any memory address.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">hlvx_wu</span>(<span class="ident">src</span>: <span class="kw-2">*const</span> <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
     <span class="kw">let</span> <span class="ident">insn</span>: <span class="ident">u32</span>;
@@ -741,7 +1034,7 @@
 <span class="doccomment">/// accesses in either VS-mode or VU-mode.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This function is unsafe for it accesses the virtual supervisor or user via a `HSV.B`</span>
-<span class="doccomment">/// instruction which is effectively an unreference to any memory address.</span>
+<span class="doccomment">/// instruction which is effectively a dereference to any memory address.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">hsv_b</span>(<span class="ident">dst</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">src</span>: <span class="ident">i8</span>) {
     <span class="macro">asm!</span>(<span class="string">&quot;.insn r 0x73, 0x4, 0x31, x0, {}, {}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">dst</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">src</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
@@ -754,7 +1047,7 @@
 <span class="doccomment">/// accesses in either VS-mode or VU-mode.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This function is unsafe for it accesses the virtual supervisor or user via a `HSV.H`</span>
-<span class="doccomment">/// instruction which is effectively an unreference to any memory address.</span>
+<span class="doccomment">/// instruction which is effectively a dereference to any memory address.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">hsv_h</span>(<span class="ident">dst</span>: <span class="kw-2">*mut</span> <span class="ident">i16</span>, <span class="ident">src</span>: <span class="ident">i16</span>) {
     <span class="macro">asm!</span>(<span class="string">&quot;.insn r 0x73, 0x4, 0x33, x0, {}, {}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">dst</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">src</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
@@ -767,7 +1060,7 @@
 <span class="doccomment">/// accesses in either VS-mode or VU-mode.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This function is unsafe for it accesses the virtual supervisor or user via a `HSV.W`</span>
-<span class="doccomment">/// instruction which is effectively an unreference to any memory address.</span>
+<span class="doccomment">/// instruction which is effectively a dereference to any memory address.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">hsv_w</span>(<span class="ident">dst</span>: <span class="kw-2">*mut</span> <span class="ident">i32</span>, <span class="ident">src</span>: <span class="ident">i32</span>) {
     <span class="macro">asm!</span>(<span class="string">&quot;.insn r 0x73, 0x4, 0x35, x0, {}, {}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">dst</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">src</span>, <span class="ident">options</span>(<span class="ident">nostack</span>));
@@ -952,6 +1245,111 @@
     <span class="macro">asm!</span>(<span class="string">&quot;.insn r 0x73, 0, 0x33, x0, x0, {}&quot;</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">vmid</span>, <span class="ident">options</span>(<span class="ident">nostack</span>))
 }
 
+<span class="doccomment">/// Reads the floating-point control and status register `fcsr`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Register `fcsr` is a 32-bit read/write register that selects the dynamic rounding mode</span>
+<span class="doccomment">/// for floating-point arithmetic operations and holds the accrued exception flag.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Accoding to &quot;F&quot; Standard Extension for Single-Precision Floating-Point, Version 2.2,</span>
+<span class="doccomment">/// register `fcsr` is defined as:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// | Bit index | Meaning |</span>
+<span class="doccomment">/// |:----------|:--------|</span>
+<span class="doccomment">/// | 0..=4 | Accrued Exceptions (`fflags`) |</span>
+<span class="doccomment">/// | 5..=7 | Rounding Mode (`frm`) |</span>
+<span class="doccomment">/// | 8..=31 | _Reserved_ |</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// For definition of each field, visit [`frrm`] and [`frflags`].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`frrm`]: fn.frrm.html</span>
+<span class="doccomment">/// [`frflags`]: fn.frflags.html</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">frcsr</span>() -&gt; <span class="ident">u32</span> {
+    <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">u32</span>;
+    <span class="kw">unsafe</span> { <span class="macro">asm!</span>(<span class="string">&quot;frcsr {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">value</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>)) };
+    <span class="ident">value</span>
+}
+
+<span class="doccomment">/// Swaps the floating-point control and status register `fcsr`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This function swaps the value in `fcsr` by copying the original value to be returned,</span>
+<span class="doccomment">/// and then writing a new value obtained from input variable `value` into `fcsr`.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fscsr</span>(<span class="ident">value</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
+    <span class="kw">let</span> <span class="ident">original</span>: <span class="ident">u32</span>;
+    <span class="kw">unsafe</span> { <span class="macro">asm!</span>(<span class="string">&quot;fscsr {}, {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">original</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">value</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>)) }
+    <span class="ident">original</span>
+}
+
+<span class="doccomment">/// Reads the floating-point rounding mode register `frm`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Accoding to &quot;F&quot; Standard Extension for Single-Precision Floating-Point, Version 2.2,</span>
+<span class="doccomment">/// the rounding mode field is defined as listed in the table below:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// | Rounding Mode | Mnemonic | Meaning |</span>
+<span class="doccomment">/// |:-------------|:----------|:---------|</span>
+<span class="doccomment">/// | 000 | RNE | Round to Nearest, ties to Even |</span>
+<span class="doccomment">/// | 001 | RTZ | Round towards Zero |</span>
+<span class="doccomment">/// | 010 | RDN | Round Down (towards −∞) |</span>
+<span class="doccomment">/// | 011 | RUP | Round Up (towards +∞) |</span>
+<span class="doccomment">/// | 100 | RMM | Round to Nearest, ties to Max Magnitude |</span>
+<span class="doccomment">/// | 101 |     | _Reserved for future use._ |</span>
+<span class="doccomment">/// | 110 |     | _Reserved for future use._ |</span>
+<span class="doccomment">/// | 111 | DYN | In Rounding Mode register, _reserved_. |</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">frrm</span>() -&gt; <span class="ident">u32</span> {
+    <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">u32</span>;
+    <span class="kw">unsafe</span> { <span class="macro">asm!</span>(<span class="string">&quot;frrm {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">value</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>)) };
+    <span class="ident">value</span>
+}
+
+<span class="doccomment">/// Swaps the floating-point rounding mode register `frm`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This function swaps the value in `frm` by copying the original value to be returned,</span>
+<span class="doccomment">/// and then writing a new value obtained from the three least-significant bits of</span>
+<span class="doccomment">/// input variable `value` into `frm`.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fsrm</span>(<span class="ident">value</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
+    <span class="kw">let</span> <span class="ident">original</span>: <span class="ident">u32</span>;
+    <span class="kw">unsafe</span> { <span class="macro">asm!</span>(<span class="string">&quot;fsrm {}, {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">original</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">value</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>)) }
+    <span class="ident">original</span>
+}
+
+<span class="doccomment">/// Reads the floating-point accrued exception flags register `fflags`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The accrued exception flags indicate the exception conditions that have arisen</span>
+<span class="doccomment">/// on any floating-point arithmetic instruction since the field was last reset by software.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Accoding to &quot;F&quot; Standard Extension for Single-Precision Floating-Point, Version 2.2,</span>
+<span class="doccomment">/// the accured exception flags is defined as a bit vector of 5 bits.</span>
+<span class="doccomment">/// The meaning of each binary bit is listed in the table below.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// | Bit index | Mnemonic | Meaning |</span>
+<span class="doccomment">/// |:--|:---|:-----------------|</span>
+<span class="doccomment">/// | 4 | NV | Invalid Operation |</span>
+<span class="doccomment">/// | 3 | DZ | Divide by Zero |</span>
+<span class="doccomment">/// | 2 | OF | Overflow |</span>
+<span class="doccomment">/// | 1 | UF | Underflow |</span>
+<span class="doccomment">/// | 0 | NX | Inexact |</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">frflags</span>() -&gt; <span class="ident">u32</span> {
+    <span class="kw">let</span> <span class="ident">value</span>: <span class="ident">u32</span>;
+    <span class="kw">unsafe</span> { <span class="macro">asm!</span>(<span class="string">&quot;frflags {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">value</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>)) };
+    <span class="ident">value</span>
+}
+
+<span class="doccomment">/// Swaps the floating-point accrued exception flags register `fflags`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This function swaps the value in `fflags` by copying the original value to be returned,</span>
+<span class="doccomment">/// and then writing a new value obtained from the five least-significant bits of</span>
+<span class="doccomment">/// input variable `value` into `fflags`.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fsflags</span>(<span class="ident">value</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
+    <span class="kw">let</span> <span class="ident">original</span>: <span class="ident">u32</span>;
+    <span class="kw">unsafe</span> { <span class="macro">asm!</span>(<span class="string">&quot;fsflags {}, {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">original</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">value</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>)) }
+    <span class="ident">original</span>
+}
+
 <span class="doccomment">/// Invalidate hypervisor translation cache for all virtual machines and guest physical addresses</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This instruction invalidates any address-translation cache entries that an</span>
@@ -962,6 +1360,191 @@
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">hinval_gvma_all</span>() {
     <span class="macro">asm!</span>(<span class="string">&quot;.insn r 0x73, 0, 0x33, x0, x0, x0&quot;</span>, <span class="ident">options</span>(<span class="ident">nostack</span>))
 }
+
+<span class="doccomment">/// `P0` transformation function as is used in the SM3 hash algorithm</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This function is included in `Zksh` extension. It&#39;s defined as:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```text</span>
+<span class="doccomment">/// P0(X) = X ⊕ (X ≪ 9) ⊕ (X ≪ 17)</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// where `⊕` represents 32-bit xor, and `≪ k` represents rotate left by `k` bits.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// In the SM3 algorithm, the `P0` transformation is used as `E ← P0(TT2)` when the</span>
+<span class="doccomment">/// compression function `CF` uses the intermediate value `TT2` to calculate</span>
+<span class="doccomment">/// the variable `E` in one iteration for subsequent processes.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// According to RISC-V Cryptography Extensions, Volume I, the execution latency of</span>
+<span class="doccomment">/// this instruction must always be independent from the data it operates on.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sm3p0</span>(<span class="ident">x</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
+    <span class="kw">let</span> <span class="ident">ans</span>: <span class="ident">u32</span>;
+    <span class="kw">unsafe</span> {
+        <span class="comment">// asm!(&quot;sm3p0 {}, {}&quot;, out(reg) ans, in(reg) x, options(nomem, nostack))</span>
+        <span class="macro">asm!</span>(<span class="string">&quot;.insn i 0x13, 0x1, {}, {}, 0x108&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">ans</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">x</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>))
+    };
+    <span class="ident">ans</span>
+}
+
+<span class="doccomment">/// `P1` transformation function as is used in the SM3 hash algorithm</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This function is included in `Zksh` extension. It&#39;s defined as:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```text</span>
+<span class="doccomment">/// P1(X) = X ⊕ (X ≪ 15) ⊕ (X ≪ 23)</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// where `⊕` represents 32-bit xor, and `≪ k` represents rotate left by `k` bits.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// In the SM3 algorithm, the `P1` transformation is used to expand message,</span>
+<span class="doccomment">/// where expanded word `Wj` can be generated from the previous words.</span>
+<span class="doccomment">/// The whole process can be described as the following pseudocode:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```text</span>
+<span class="doccomment">/// FOR j=16 TO 67</span>
+<span class="doccomment">///     Wj ← P1(Wj−16 ⊕ Wj−9 ⊕ (Wj−3 ≪ 15)) ⊕ (Wj−13 ≪ 7) ⊕ Wj−6</span>
+<span class="doccomment">/// ENDFOR</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// According to RISC-V Cryptography Extensions, Volume I, the execution latency of</span>
+<span class="doccomment">/// this instruction must always be independent from the data it operates on.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sm3p1</span>(<span class="ident">x</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
+    <span class="kw">let</span> <span class="ident">ans</span>: <span class="ident">u32</span>;
+    <span class="kw">unsafe</span> {
+        <span class="comment">// asm!(&quot;sm3p1 {}, {}&quot;, out(reg) ans, in(reg) x, options(nomem, nostack))</span>
+        <span class="macro">asm!</span>(<span class="string">&quot;.insn i 0x13, 0x1, {}, {}, 0x109&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">ans</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">x</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>))
+    };
+    <span class="ident">ans</span>
+}
+
+<span class="doccomment">/// Accelerates the round function `F` in the SM4 block cipher algorithm</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This instruction is included in extension `Zksed`. It&#39;s defined as:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```text</span>
+<span class="doccomment">/// SM4ED(x, a, BS) = x ⊕ T(ai)</span>
+<span class="doccomment">/// ... where</span>
+<span class="doccomment">/// ai = a.bytes[BS]</span>
+<span class="doccomment">/// T(ai) = L(τ(ai))</span>
+<span class="doccomment">/// bi = τ(ai) = SM4-S-Box(ai)</span>
+<span class="doccomment">/// ci = L(bi) = bi ⊕ (bi ≪ 2) ⊕ (bi ≪ 10) ⊕ (bi ≪ 18) ⊕ (bi ≪ 24)</span>
+<span class="doccomment">/// SM4ED = (ci ≪ (BS * 8)) ⊕ x</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// where `⊕` represents 32-bit xor, and `≪ k` represents rotate left by `k` bits.</span>
+<span class="doccomment">/// As is defined above, `T` is a combined transformation of non linear S-Box transform `τ`</span>
+<span class="doccomment">/// and linear layer transform `L`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// In the SM4 algorithm, the round function `F` is defined as:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```text</span>
+<span class="doccomment">/// F(x0, x1, x2, x3, rk) = x0 ⊕ T(x1 ⊕ x2 ⊕ x3 ⊕ rk)</span>
+<span class="doccomment">/// ... where</span>
+<span class="doccomment">/// T(A) = L(τ(A))</span>
+<span class="doccomment">/// B = τ(A) = (SM4-S-Box(a0), SM4-S-Box(a1), SM4-S-Box(a2), SM4-S-Box(a3))</span>
+<span class="doccomment">/// C = L(B) = B ⊕ (B ≪ 2) ⊕ (B ≪ 10) ⊕ (B ≪ 18) ⊕ (B ≪ 24)</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// It can be implemented by `sm4ed` instruction like:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```no_run</span>
+<span class="doccomment">/// let a = x1 ^ x2 ^ x3 ^ rk;</span>
+<span class="doccomment">/// let c0 = sm4ed::&lt;0&gt;(x0, a);</span>
+<span class="doccomment">/// let c1 = sm4ed::&lt;1&gt;(c0, a); // c1 represents c[0..=1], etc.</span>
+<span class="doccomment">/// let c2 = sm4ed::&lt;2&gt;(c1, a);</span>
+<span class="doccomment">/// let c3 = sm4ed::&lt;3&gt;(c2, a);</span>
+<span class="doccomment">/// return c3; // c3 represents c[0..=3]</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// According to RISC-V Cryptography Extensions, Volume I, the execution latency of</span>
+<span class="doccomment">/// this instruction must always be independent from the data it operates on.</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sm4ed</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">BS</span>: <span class="ident">u8</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="ident">u32</span>, <span class="ident">a</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
+    <span class="macro">static_assert!</span>(<span class="ident">BS</span>: <span class="ident">u8</span> <span class="kw">where</span> <span class="ident">BS</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">3</span>);
+    <span class="kw">let</span> <span class="ident">ans</span>: <span class="ident">u32</span>;
+    <span class="kw">match</span> <span class="ident">BS</span> {
+        <span class="number">0</span> =&gt; <span class="kw">unsafe</span> {
+            <span class="macro">asm!</span>(<span class="string">&quot;.insn r 0x33, 0, 0x18, {}, {}, {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">ans</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">x</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">a</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>))
+        },
+        <span class="number">1</span> =&gt; <span class="kw">unsafe</span> {
+            <span class="macro">asm!</span>(<span class="string">&quot;.insn r 0x33, 0, 0x38, {}, {}, {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">ans</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">x</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">a</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>))
+        },
+        <span class="number">2</span> =&gt; <span class="kw">unsafe</span> {
+            <span class="macro">asm!</span>(<span class="string">&quot;.insn r 0x33, 0, 0x58, {}, {}, {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">ans</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">x</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">a</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>))
+        },
+        <span class="number">3</span> =&gt; <span class="kw">unsafe</span> {
+            <span class="macro">asm!</span>(<span class="string">&quot;.insn r 0x33, 0, 0x78, {}, {}, {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">ans</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">x</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">a</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>))
+        },
+        <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
+    };
+    <span class="ident">ans</span>
+}
+
+<span class="doccomment">/// Accelerates the key schedule operation in the SM4 block cipher algorithm</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This instruction is included in extension `Zksed`. It&#39;s defined as:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```text</span>
+<span class="doccomment">/// SM4KS(x, k, BS) = x ⊕ T&#39;(ki)</span>
+<span class="doccomment">/// ... where</span>
+<span class="doccomment">/// ki = k.bytes[BS]</span>
+<span class="doccomment">/// T&#39;(ki) = L&#39;(τ(ki))</span>
+<span class="doccomment">/// bi = τ(ki) = SM4-S-Box(ki)</span>
+<span class="doccomment">/// ci = L&#39;(bi) = bi ⊕ (bi ≪ 13) ⊕ (bi ≪ 23)</span>
+<span class="doccomment">/// SM4KS = (ci ≪ (BS * 8)) ⊕ x</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// where `⊕` represents 32-bit xor, and `≪ k` represents rotate left by `k` bits.</span>
+<span class="doccomment">/// As is defined above, `T&#39;` is a combined transformation of non linear S-Box transform `τ`</span>
+<span class="doccomment">/// and the replaced linear layer transform `L&#39;`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// In the SM4 algorithm, the key schedule is defined as:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```text</span>
+<span class="doccomment">/// rk[i] = K[i+4] = K[i] ⊕ T&#39;(K[i+1] ⊕ K[i+2] ⊕ K[i+3] ⊕ CK[i])</span>
+<span class="doccomment">/// ... where</span>
+<span class="doccomment">/// K[0..=3] = MK[0..=3] ⊕ FK[0..=3]</span>
+<span class="doccomment">/// T&#39;(K) = L&#39;(τ(K))</span>
+<span class="doccomment">/// B = τ(K) = (SM4-S-Box(k0), SM4-S-Box(k1), SM4-S-Box(k2), SM4-S-Box(k3))</span>
+<span class="doccomment">/// C = L&#39;(B) = B ⊕ (B ≪ 13) ⊕ (B ≪ 23)</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// where `MK` represents the input 128-bit encryption key,</span>
+<span class="doccomment">/// constants `FK` and `CK` are fixed system configuration constant values defined by the SM4 algorithm.</span>
+<span class="doccomment">/// Hence, the key schedule operation can be implemented by `sm4ks` instruction like:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```no_run</span>
+<span class="doccomment">/// let k = k1 ^ k2 ^ k3 ^ ck_i;</span>
+<span class="doccomment">/// let c0 = sm4ks::&lt;0&gt;(k0, k);</span>
+<span class="doccomment">/// let c1 = sm4ks::&lt;1&gt;(c0, k); // c1 represents c[0..=1], etc.</span>
+<span class="doccomment">/// let c2 = sm4ks::&lt;2&gt;(c1, k);</span>
+<span class="doccomment">/// let c3 = sm4ks::&lt;3&gt;(c2, k);</span>
+<span class="doccomment">/// return c3; // c3 represents c[0..=3]</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// According to RISC-V Cryptography Extensions, Volume I, the execution latency of</span>
+<span class="doccomment">/// this instruction must always be independent from the data it operates on.</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sm4ks</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">BS</span>: <span class="ident">u8</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="ident">u32</span>, <span class="ident">k</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
+    <span class="macro">static_assert!</span>(<span class="ident">BS</span>: <span class="ident">u8</span> <span class="kw">where</span> <span class="ident">BS</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">3</span>);
+    <span class="kw">let</span> <span class="ident">ans</span>: <span class="ident">u32</span>;
+    <span class="kw">match</span> <span class="ident">BS</span> {
+        <span class="number">0</span> =&gt; <span class="kw">unsafe</span> {
+            <span class="macro">asm!</span>(<span class="string">&quot;.insn r 0x33, 0, 0x1A, {}, {}, {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">ans</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">x</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">k</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>))
+        },
+        <span class="number">1</span> =&gt; <span class="kw">unsafe</span> {
+            <span class="macro">asm!</span>(<span class="string">&quot;.insn r 0x33, 0, 0x3A, {}, {}, {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">ans</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">x</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">k</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>))
+        },
+        <span class="number">2</span> =&gt; <span class="kw">unsafe</span> {
+            <span class="macro">asm!</span>(<span class="string">&quot;.insn r 0x33, 0, 0x5A, {}, {}, {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">ans</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">x</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">k</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>))
+        },
+        <span class="number">3</span> =&gt; <span class="kw">unsafe</span> {
+            <span class="macro">asm!</span>(<span class="string">&quot;.insn r 0x33, 0, 0x7A, {}, {}, {}&quot;</span>, <span class="ident">out</span>(<span class="ident">reg</span>) <span class="ident">ans</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">x</span>, <span class="kw">in</span>(<span class="ident">reg</span>) <span class="ident">k</span>, <span class="ident">options</span>(<span class="ident">nomem</span>, <span class="ident">nostack</span>))
+        },
+        <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
+    };
+    <span class="ident">ans</span>
+}
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
 </body></html>

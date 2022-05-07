@@ -1,6 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;root&#x2F;.rustup&#x2F;toolchains&#x2F;stable-x86_64-unknown-linux-gnu&#x2F;lib&#x2F;rustlib&#x2F;src&#x2F;rust&#x2F;library&#x2F;core&#x2F;src&#x2F;primitive_docs.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>primitive_docs.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../core/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/primitive_docs.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>primitive_docs.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../core/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1304,6 +1307,55 @@
 <span id="1302">1302</span>
 <span id="1303">1303</span>
 <span id="1304">1304</span>
+<span id="1305">1305</span>
+<span id="1306">1306</span>
+<span id="1307">1307</span>
+<span id="1308">1308</span>
+<span id="1309">1309</span>
+<span id="1310">1310</span>
+<span id="1311">1311</span>
+<span id="1312">1312</span>
+<span id="1313">1313</span>
+<span id="1314">1314</span>
+<span id="1315">1315</span>
+<span id="1316">1316</span>
+<span id="1317">1317</span>
+<span id="1318">1318</span>
+<span id="1319">1319</span>
+<span id="1320">1320</span>
+<span id="1321">1321</span>
+<span id="1322">1322</span>
+<span id="1323">1323</span>
+<span id="1324">1324</span>
+<span id="1325">1325</span>
+<span id="1326">1326</span>
+<span id="1327">1327</span>
+<span id="1328">1328</span>
+<span id="1329">1329</span>
+<span id="1330">1330</span>
+<span id="1331">1331</span>
+<span id="1332">1332</span>
+<span id="1333">1333</span>
+<span id="1334">1334</span>
+<span id="1335">1335</span>
+<span id="1336">1336</span>
+<span id="1337">1337</span>
+<span id="1338">1338</span>
+<span id="1339">1339</span>
+<span id="1340">1340</span>
+<span id="1341">1341</span>
+<span id="1342">1342</span>
+<span id="1343">1343</span>
+<span id="1344">1344</span>
+<span id="1345">1345</span>
+<span id="1346">1346</span>
+<span id="1347">1347</span>
+<span id="1348">1348</span>
+<span id="1349">1349</span>
+<span id="1350">1350</span>
+<span id="1351">1351</span>
+<span id="1352">1352</span>
+<span id="1353">1353</span>
 </pre><pre class="rust"><code><span class="comment">// `library/{std,core}/src/primitive_docs.rs` should have the same contents.</span>
 <span class="comment">// These are different files so that relative links work properly without</span>
 <span class="comment">// having to have `CARGO_PKG_NAME` set, but conceptually they should always be the same.</span>
@@ -1581,19 +1633,68 @@
 <span class="kw">mod</span> <span class="ident">prim_never</span> {}
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">primitive</span> <span class="op">=</span> <span class="string">&quot;char&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">rustdoc::invalid_rust_codeblocks</span>)]</span>
 <span class="doccomment">/// A character type.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The `char` type represents a single character. More specifically, since</span>
 <span class="doccomment">/// &#39;character&#39; isn&#39;t a well-defined concept in Unicode, `char` is a &#39;[Unicode</span>
-<span class="doccomment">/// scalar value]&#39;, which is similar to, but not the same as, a &#39;[Unicode code</span>
-<span class="doccomment">/// point]&#39;.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [Unicode scalar value]: https://www.unicode.org/glossary/#unicode_scalar_value</span>
-<span class="doccomment">/// [Unicode code point]: https://www.unicode.org/glossary/#code_point</span>
+<span class="doccomment">/// scalar value]&#39;.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This documentation describes a number of methods and trait implementations on the</span>
 <span class="doccomment">/// `char` type. For technical reasons, there is additional, separate</span>
 <span class="doccomment">/// documentation in [the `std::char` module](char/index.html) as well.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Validity</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// A `char` is a &#39;[Unicode scalar value]&#39;, which is any &#39;[Unicode code point]&#39;</span>
+<span class="doccomment">/// other than a [surrogate code point]. This has a fixed numerical definition:</span>
+<span class="doccomment">/// code points are in the range 0 to 0x10FFFF, inclusive.</span>
+<span class="doccomment">/// Surrogate code points, used by UTF-16, are in the range 0xD800 to 0xDFFF.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// No `char` may be constructed, whether as a literal or at runtime, that is not a</span>
+<span class="doccomment">/// Unicode scalar value:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```compile_fail</span>
+<span class="doccomment">/// // Each of these is a compiler error</span>
+<span class="doccomment">/// [&#39;\u{D800}&#39;, &#39;\u{DFFF}&#39;, &#39;\u{110000}&#39;];</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```should_panic</span>
+<span class="doccomment">/// // Panics; from_u32 returns None.</span>
+<span class="doccomment">/// char::from_u32(0xDE01).unwrap();</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```no_run</span>
+<span class="doccomment">/// // Undefined behaviour</span>
+<span class="doccomment">/// unsafe { char::from_u32_unchecked(0x110000) };</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// USVs are also the exact set of values that may be encoded in UTF-8. Because</span>
+<span class="doccomment">/// `char` values are USVs and `str` values are valid UTF-8, it is safe to store</span>
+<span class="doccomment">/// any `char` in a `str` or read any character from a `str` as a `char`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The gap in valid `char` values is understood by the compiler, so in the</span>
+<span class="doccomment">/// below example the two ranges are understood to cover the whole range of</span>
+<span class="doccomment">/// possible `char` values and there is no error for a [non-exhaustive match].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// let c: char = &#39;a&#39;;</span>
+<span class="doccomment">/// match c {</span>
+<span class="doccomment">///     &#39;\0&#39; ..= &#39;\u{D7FF}&#39; =&gt; false,</span>
+<span class="doccomment">///     &#39;\u{E000}&#39; ..= &#39;\u{10FFFF}&#39; =&gt; true,</span>
+<span class="doccomment">/// };</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// All USVs are valid `char` values, but not all of them represent a real</span>
+<span class="doccomment">/// character. Many USVs are not currently assigned to a character, but may be</span>
+<span class="doccomment">/// in the future (&quot;reserved&quot;); some will never be a character</span>
+<span class="doccomment">/// (&quot;noncharacters&quot;); and some may be given different meanings by different</span>
+<span class="doccomment">/// users (&quot;private use&quot;).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [Unicode code point]: https://www.unicode.org/glossary/#code_point</span>
+<span class="doccomment">/// [Unicode scalar value]: https://www.unicode.org/glossary/#unicode_scalar_value</span>
+<span class="doccomment">/// [non-exhaustive match]: ../book/ch06-02-match.html#matches-are-exhaustive</span>
+<span class="doccomment">/// [surrogate code point]: https://www.unicode.org/glossary/#surrogate_code_point</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Representation</span>
 <span class="doccomment">///</span>
@@ -2609,5 +2710,5 @@
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
 <span class="kw">mod</span> <span class="ident">prim_fn</span> {}
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
 </body></html>

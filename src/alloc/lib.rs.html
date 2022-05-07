@@ -1,6 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;alloc&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../alloc/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../alloc/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/alloc/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../alloc/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../alloc/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../alloc/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -226,11 +229,6 @@
 <span id="224">224</span>
 <span id="225">225</span>
 <span id="226">226</span>
-<span id="227">227</span>
-<span id="228">228</span>
-<span id="229">229</span>
-<span id="230">230</span>
-<span id="231">231</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
 
 <span class="doccomment">//! # The Rust core allocation and collections library</span>
@@ -302,17 +300,14 @@
     <span class="ident">issue_tracker_base_url</span> <span class="op">=</span> <span class="string">&quot;https://github.com/rust-lang/rust/issues/&quot;</span>,
     <span class="ident">test</span>(<span class="ident">no_crate_inject</span>, <span class="ident">attr</span>(<span class="ident">allow</span>(<span class="ident">unused_variables</span>), <span class="ident">deny</span>(<span class="ident">warnings</span>)))
 )]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(
-    <span class="ident">not</span>(<span class="ident">bootstrap</span>),
-    <span class="ident">doc</span>(<span class="ident">cfg_hide</span>(
-        <span class="ident">not</span>(<span class="ident">test</span>),
-        <span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">bootstrap</span>)),
-        <span class="ident">any</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;miri-test-libstd&quot;</span>), <span class="ident">test</span>, <span class="ident">doctest</span>),
-        <span class="ident">no_global_oom_handling</span>,
-        <span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>),
-        <span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;ptr&quot;</span>
-    ))
-)]</span>
+<span class="attribute">#![<span class="ident">doc</span>(<span class="ident">cfg_hide</span>(
+    <span class="ident">not</span>(<span class="ident">test</span>),
+    <span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">bootstrap</span>)),
+    <span class="ident">any</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;miri-test-libstd&quot;</span>), <span class="ident">test</span>, <span class="ident">doctest</span>),
+    <span class="ident">no_global_oom_handling</span>,
+    <span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>),
+    <span class="ident">target_has_atomic</span> <span class="op">=</span> <span class="string">&quot;ptr&quot;</span>
+))]</span>
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 <span class="attribute">#![<span class="ident">needs_allocator</span>]</span>
 <span class="comment">//</span>
@@ -329,7 +324,7 @@
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">array_chunks</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">array_methods</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">array_windows</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">async_stream</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">async_iterator</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">coerce_unsized</span>)]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">no_global_oom_handling</span>), <span class="ident">feature</span>(<span class="ident">const_alloc_error</span>))]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_box</span>)]</span>
@@ -350,11 +345,9 @@
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">extend_one</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">fmt_internals</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">fn_traits</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">inherent_ascii_escape</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">inplace_iteration</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">iter_advance_by</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">layout_for_ptr</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">maybe_uninit_extra</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">maybe_uninit_slice</span>)]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">feature</span>(<span class="ident">new_uninit</span>))]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">nonnull_slice_from_raw_parts</span>)]</span>
@@ -379,7 +372,7 @@
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">associated_type_bounds</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">box_syntax</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">cfg_sanitize</span>)]</span>
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">cfg_target_has_atomic</span>)]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">bootstrap</span>, <span class="ident">feature</span>(<span class="ident">cfg_target_has_atomic</span>))]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_deref</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_fn_trait_bound</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_mut_refs</span>)]</span>
@@ -387,7 +380,6 @@
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_precise_live_drops</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_trait_impl</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">const_try</span>)]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">bootstrap</span>, <span class="ident">feature</span>(<span class="ident">destructuring_assignment</span>))]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">dropck_eyepatch</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">exclusive_range_pattern</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">fundamental</span>)]</span>
@@ -403,6 +395,7 @@
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">feature</span>(<span class="ident">test</span>))]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">unboxed_closures</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">unsized_fn_params</span>)]</span>
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">c_unwind</span>)]</span>
 <span class="comment">//</span>
 <span class="comment">// Rustdoc features:</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">doc_cfg</span>)]</span>
@@ -463,5 +456,5 @@
     <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">core::format_args</span>;
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="alloc" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="alloc" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
 </body></html>

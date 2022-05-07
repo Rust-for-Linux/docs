@@ -1,6 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust&#x2F;kernel&#x2F;types.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>types.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/kernel/types.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>types.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -569,6 +572,116 @@
 <span id="567">567</span>
 <span id="568">568</span>
 <span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
+<span id="665">665</span>
+<span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
+<span id="678">678</span>
+<span id="679">679</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! Kernel types.</span>
@@ -582,9 +695,11 @@
 <span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
 <span class="kw">use</span> <span class="ident">core</span>::{
     <span class="ident">cell::UnsafeCell</span>,
+    <span class="ident">marker::PhantomData</span>,
     <span class="ident">mem::MaybeUninit</span>,
     <span class="ident">ops</span>::{<span class="self">self</span>, <span class="ident">Deref</span>, <span class="ident">DerefMut</span>},
     <span class="ident">pin::Pin</span>,
+    <span class="ident">ptr::NonNull</span>,
 };
 
 <span class="doccomment">/// Permissions.</span>
@@ -737,7 +852,6 @@
 <span class="doccomment">/// In the example below, we have multiple exit paths and we want to log regardless of which one is</span>
 <span class="doccomment">/// taken:</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// # use kernel::prelude::*;</span>
 <span class="doccomment">/// # use kernel::ScopeGuard;</span>
 <span class="doccomment">/// fn example1(arg: bool) {</span>
 <span class="doccomment">///     let _log = ScopeGuard::new(|| pr_info!(&quot;example1 completed\n&quot;));</span>
@@ -746,14 +860,16 @@
 <span class="doccomment">///         return;</span>
 <span class="doccomment">///     }</span>
 <span class="doccomment">///</span>
-<span class="doccomment">///     // Do something...</span>
+<span class="doccomment">///     pr_info!(&quot;Do something...\n&quot;);</span>
 <span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # example1(false);</span>
+<span class="doccomment">/// # example1(true);</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// In the example below, we want to log the same message on all early exits but a different one on</span>
 <span class="doccomment">/// the main exit path:</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// # use kernel::prelude::*;</span>
 <span class="doccomment">/// # use kernel::ScopeGuard;</span>
 <span class="doccomment">/// fn example2(arg: bool) {</span>
 <span class="doccomment">///     let log = ScopeGuard::new(|| pr_info!(&quot;example2 returned early\n&quot;));</span>
@@ -767,12 +883,14 @@
 <span class="doccomment">///     log.dismiss();</span>
 <span class="doccomment">///     pr_info!(&quot;example2 no early return\n&quot;);</span>
 <span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # example2(false);</span>
+<span class="doccomment">/// # example2(true);</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// In the example below, we need a mutable object (the vector) to be accessible within the log</span>
 <span class="doccomment">/// function, so we wrap it in the [`ScopeGuard`]:</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// # use kernel::prelude::*;</span>
 <span class="doccomment">/// # use kernel::ScopeGuard;</span>
 <span class="doccomment">/// fn example3(arg: bool) -&gt; Result {</span>
 <span class="doccomment">///     let mut vec =</span>
@@ -785,6 +903,9 @@
 <span class="doccomment">///     vec.try_push(20u8)?;</span>
 <span class="doccomment">///     Ok(())</span>
 <span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # assert_eq!(example3(false), Ok(()));</span>
+<span class="doccomment">/// # assert_eq!(example3(true), Ok(()));</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Invariants</span>
@@ -879,7 +1000,6 @@
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// # use kernel::prelude::*;</span>
 <span class="doccomment">/// # use kernel::bit;</span>
 <span class="doccomment">/// let mut x = 0xfeu32;</span>
 <span class="doccomment">///</span>
@@ -998,7 +1118,6 @@
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// # use kernel::prelude::*;</span>
 <span class="doccomment">/// use kernel::bits_iter;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// let mut iter = bits_iter(5usize);</span>
@@ -1008,14 +1127,15 @@
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// # use kernel::prelude::*;</span>
 <span class="doccomment">/// use kernel::bits_iter;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// fn print_bits(x: usize) {</span>
 <span class="doccomment">///     for bit in bits_iter(x) {</span>
-<span class="doccomment">///         println!(&quot;{}&quot;, bit);</span>
+<span class="doccomment">///         pr_info!(&quot;{}\n&quot;, bit);</span>
 <span class="doccomment">///     }</span>
 <span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # print_bits(42);</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bits_iter</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">value</span>: <span class="ident">T</span>) -&gt; <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">u32</span><span class="op">&gt;</span>
@@ -1058,7 +1178,7 @@
 
 <span class="doccomment">/// A trait for boolean types.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// This is meant to be used in type states to allow booelan constraints in implementation blocks.</span>
+<span class="doccomment">/// This is meant to be used in type states to allow boolean constraints in implementation blocks.</span>
 <span class="doccomment">/// In the example below, the implementation containing `MyType::set_value` could _not_ be</span>
 <span class="doccomment">/// constrained to type states containing `Writable = true` if `Writable` were a constant instead</span>
 <span class="doccomment">/// of a type.</span>
@@ -1115,15 +1235,13 @@
 <span class="doccomment">///     }</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// pub(crate) fn test() {</span>
-<span class="doccomment">///     let mut x = MyType::&lt;S1&gt;::new(10);</span>
-<span class="doccomment">///     let mut y = MyType::&lt;S2&gt;::new(20);</span>
+<span class="doccomment">/// let mut x = MyType::&lt;S1&gt;::new(10);</span>
+<span class="doccomment">/// let mut y = MyType::&lt;S2&gt;::new(20);</span>
 <span class="doccomment">///</span>
-<span class="doccomment">///     x.set_value(30);</span>
+<span class="doccomment">/// x.set_value(30);</span>
 <span class="doccomment">///</span>
-<span class="doccomment">///     // The code below fails to compile because `S2` is not writable.</span>
-<span class="doccomment">///     // y.set_value(40);</span>
-<span class="doccomment">/// }</span>
+<span class="doccomment">/// // The code below fails to compile because `S2` is not writable.</span>
+<span class="doccomment">/// // y.set_value(40);</span>
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">Bool</span> {}
 
@@ -1138,6 +1256,111 @@
 
 <span class="comment">// SAFETY: This is one of the only two implementations of `Bool`.</span>
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Bool</span> <span class="kw">for</span> <span class="ident">False</span> {}
+
+<span class="doccomment">/// Types that are _always_ reference counted.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// It allows such types to define their own custom ref increment and decrement functions.</span>
+<span class="doccomment">/// Additionally, it allows users to convert from a shared reference `&amp;T` to an owned reference</span>
+<span class="doccomment">/// [`ARef&lt;T&gt;`].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This is usually implemented by wrappers to existing structures on the C side of the code. For</span>
+<span class="doccomment">/// Rust code, the recommendation is to use [`Ref`] to create reference-counted instances of a</span>
+<span class="doccomment">/// type.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Safety</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Implementers must ensure that increments to the reference count keeps the object alive in</span>
+<span class="doccomment">/// memory at least until a matching decrement performed.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Implementers must also ensure that all instances are reference-counted. (Otherwise they</span>
+<span class="doccomment">/// won&#39;t be able to honour the requirement that [`AlwaysRefCounted::inc_ref`] keep the object</span>
+<span class="doccomment">/// alive.)</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">AlwaysRefCounted</span> {
+    <span class="doccomment">/// Increments the reference count on the object.</span>
+    <span class="kw">fn</span> <span class="ident">inc_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
+
+    <span class="doccomment">/// Decrements the reference count on the object.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Frees the object when the count reaches zero.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Safety</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Callers must ensure that there was a previous matching increment to the reference count,</span>
+    <span class="doccomment">/// and that the object is no longer used after its reference count is decremented (as it may</span>
+    <span class="doccomment">/// result in the object being freed), unless the caller owns another increment on the refcount</span>
+    <span class="doccomment">/// (e.g., it calls [`AlwaysRefCounted::inc_ref`] twice, then calls</span>
+    <span class="doccomment">/// [`AlwaysRefCounted::dec_ref`] once).</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">dec_ref</span>(<span class="ident">obj</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>);
+}
+
+<span class="doccomment">/// An owned reference to an always-reference-counted object.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The object&#39;s reference count is automatically decremented when an instance of [`ARef`] is</span>
+<span class="doccomment">/// dropped. It is also automatically incremented when a new instance is created via</span>
+<span class="doccomment">/// [`ARef::clone`].</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Invariants</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The pointer stored in `ptr` is non-null and valid for the lifetime of the [`ARef`] instance. In</span>
+<span class="doccomment">/// particular, the [`ARef`] instance owns an increment on underlying object&#39;s reference count.</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ARef</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AlwaysRefCounted</span><span class="op">&gt;</span> {
+    <span class="ident">ptr</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+    <span class="ident">_p</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AlwaysRefCounted</span><span class="op">&gt;</span> <span class="ident">ARef</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Creates a new instance of [`ARef`].</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// It takes over an increment of the reference count on the underlying object.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Safety</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Callers must ensure that the reference count was incremented at least once, and that they</span>
+    <span class="doccomment">/// are properly relinquishing one increment. That is, if there is only one increment, callers</span>
+    <span class="doccomment">/// must not use the underlying object anymore -- it is only safe to do so via the newly</span>
+    <span class="doccomment">/// created [`ARef`].</span>
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw</span>(<span class="ident">ptr</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
+        <span class="comment">// INVARIANT: The safety requirements guarantee that the new instance now owns the</span>
+        <span class="comment">// increment on the refcount.</span>
+        <span class="self">Self</span> {
+            <span class="ident">ptr</span>,
+            <span class="ident">_p</span>: <span class="ident">PhantomData</span>,
+        }
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AlwaysRefCounted</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">ARef</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">inc_ref</span>();
+        <span class="comment">// SAFETY: We just incremented the refcount above.</span>
+        <span class="kw">unsafe</span> { <span class="ident"><span class="self">Self</span>::from_raw</span>(<span class="self">self</span>.<span class="ident">ptr</span>) }
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AlwaysRefCounted</span><span class="op">&gt;</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">ARef</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">T</span>;
+
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Target</span> {
+        <span class="comment">// SAFETY: The type invariants guarantee that the object is valid.</span>
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">ptr</span>.<span class="ident">as_ref</span>() }
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AlwaysRefCounted</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ARef</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident">b</span>.<span class="ident">inc_ref</span>();
+        <span class="comment">// SAFETY: We just incremented the refcount above.</span>
+        <span class="kw">unsafe</span> { <span class="ident"><span class="self">Self</span>::from_raw</span>(<span class="ident">NonNull::from</span>(<span class="ident">b</span>)) }
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AlwaysRefCounted</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">ARef</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="comment">// SAFETY: The type invariants guarantee that the `ARef` owns the reference we&#39;re about to</span>
+        <span class="comment">// decrement.</span>
+        <span class="kw">unsafe</span> { <span class="ident">T::dec_ref</span>(<span class="self">self</span>.<span class="ident">ptr</span>) };
+    }
+}
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
 </body></html>
