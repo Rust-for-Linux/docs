@@ -1,107 +1,107 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/1.60.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/char/convert.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>convert.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.gif"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.gif" alt="logo"></div>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/1.62.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/char/convert.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>convert.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
         </a><h2 class="location"></h2>
     </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.gif" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../logo.gif" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -261,115 +261,6 @@
 <span id="256">256</span>
 <span id="257">257</span>
 <span id="258">258</span>
-<span id="259">259</span>
-<span id="260">260</span>
-<span id="261">261</span>
-<span id="262">262</span>
-<span id="263">263</span>
-<span id="264">264</span>
-<span id="265">265</span>
-<span id="266">266</span>
-<span id="267">267</span>
-<span id="268">268</span>
-<span id="269">269</span>
-<span id="270">270</span>
-<span id="271">271</span>
-<span id="272">272</span>
-<span id="273">273</span>
-<span id="274">274</span>
-<span id="275">275</span>
-<span id="276">276</span>
-<span id="277">277</span>
-<span id="278">278</span>
-<span id="279">279</span>
-<span id="280">280</span>
-<span id="281">281</span>
-<span id="282">282</span>
-<span id="283">283</span>
-<span id="284">284</span>
-<span id="285">285</span>
-<span id="286">286</span>
-<span id="287">287</span>
-<span id="288">288</span>
-<span id="289">289</span>
-<span id="290">290</span>
-<span id="291">291</span>
-<span id="292">292</span>
-<span id="293">293</span>
-<span id="294">294</span>
-<span id="295">295</span>
-<span id="296">296</span>
-<span id="297">297</span>
-<span id="298">298</span>
-<span id="299">299</span>
-<span id="300">300</span>
-<span id="301">301</span>
-<span id="302">302</span>
-<span id="303">303</span>
-<span id="304">304</span>
-<span id="305">305</span>
-<span id="306">306</span>
-<span id="307">307</span>
-<span id="308">308</span>
-<span id="309">309</span>
-<span id="310">310</span>
-<span id="311">311</span>
-<span id="312">312</span>
-<span id="313">313</span>
-<span id="314">314</span>
-<span id="315">315</span>
-<span id="316">316</span>
-<span id="317">317</span>
-<span id="318">318</span>
-<span id="319">319</span>
-<span id="320">320</span>
-<span id="321">321</span>
-<span id="322">322</span>
-<span id="323">323</span>
-<span id="324">324</span>
-<span id="325">325</span>
-<span id="326">326</span>
-<span id="327">327</span>
-<span id="328">328</span>
-<span id="329">329</span>
-<span id="330">330</span>
-<span id="331">331</span>
-<span id="332">332</span>
-<span id="333">333</span>
-<span id="334">334</span>
-<span id="335">335</span>
-<span id="336">336</span>
-<span id="337">337</span>
-<span id="338">338</span>
-<span id="339">339</span>
-<span id="340">340</span>
-<span id="341">341</span>
-<span id="342">342</span>
-<span id="343">343</span>
-<span id="344">344</span>
-<span id="345">345</span>
-<span id="346">346</span>
-<span id="347">347</span>
-<span id="348">348</span>
-<span id="349">349</span>
-<span id="350">350</span>
-<span id="351">351</span>
-<span id="352">352</span>
-<span id="353">353</span>
-<span id="354">354</span>
-<span id="355">355</span>
-<span id="356">356</span>
-<span id="357">357</span>
-<span id="358">358</span>
-<span id="359">359</span>
-<span id="360">360</span>
-<span id="361">361</span>
-<span id="362">362</span>
-<span id="363">363</span>
-<span id="364">364</span>
-<span id="365">365</span>
-<span id="366">366</span>
-<span id="367">367</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Character conversions.</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::char::TryFromCharError</span>;
@@ -378,54 +269,10 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::mem::transmute</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::str::FromStr</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::MAX</span>;
-
-<span class="doccomment">/// Converts a `u32` to a `char`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Note that all [`char`]s are valid [`u32`]s, and can be cast to one with</span>
-<span class="doccomment">/// `as`:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// let c = &#39;💯&#39;;</span>
-<span class="doccomment">/// let i = c as u32;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// assert_eq!(128175, i);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// However, the reverse is not true: not all valid [`u32`]s are valid</span>
-<span class="doccomment">/// [`char`]s. `from_u32()` will return `None` if the input is not a valid value</span>
-<span class="doccomment">/// for a [`char`].</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// For an unsafe version of this function which ignores these checks, see</span>
-<span class="doccomment">/// [`from_u32_unchecked`].</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Basic usage:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use std::char;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let c = char::from_u32(0x2764);</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// assert_eq!(Some(&#39;❤&#39;), c);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Returning `None` when the input is not a valid [`char`]:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use std::char;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let c = char::from_u32(0x110000);</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// assert_eq!(None, c);</span>
-<span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;chr&quot;</span>)]</span>
+<span class="doccomment">/// Converts a `u32` to a `char`. See [`char::from_u32`].</span>
 <span class="attribute">#[<span class="ident">must_use</span>]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_char_convert&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;89259&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_u32</span>(<span class="ident">i</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_u32</span>(<span class="ident">i</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
     <span class="comment">// FIXME: once Result::ok is const fn, use it here</span>
     <span class="kw">match</span> <span class="ident">char_try_from_u32</span>(<span class="ident">i</span>) {
         <span class="prelude-val">Ok</span>(<span class="ident">c</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">c</span>),
@@ -433,44 +280,11 @@
     }
 }
 
-<span class="doccomment">/// Converts a `u32` to a `char`, ignoring validity.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Note that all [`char`]s are valid [`u32`]s, and can be cast to one with</span>
-<span class="doccomment">/// `as`:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// let c = &#39;💯&#39;;</span>
-<span class="doccomment">/// let i = c as u32;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// assert_eq!(128175, i);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// However, the reverse is not true: not all valid [`u32`]s are valid</span>
-<span class="doccomment">/// [`char`]s. `from_u32_unchecked()` will ignore this, and blindly cast to</span>
-<span class="doccomment">/// [`char`], possibly creating an invalid one.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Safety</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This function is unsafe, as it may construct invalid `char` values.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// For a safe version of this function, see the [`from_u32`] function.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Basic usage:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use std::char;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let c = unsafe { char::from_u32_unchecked(0x2764) };</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// assert_eq!(&#39;❤&#39;, c);</span>
-<span class="doccomment">/// ```</span>
+<span class="doccomment">/// Converts a `u32` to a `char`, ignoring validity. See [`char::from_u32_unchecked`].</span>
+<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_char_convert&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;89259&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">must_use</span>]</span>
-<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;char_from_unchecked&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.5.0&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_char_convert&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;89259&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_u32_unchecked</span>(<span class="ident">i</span>: <span class="ident">u32</span>) -&gt; <span class="ident">char</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_u32_unchecked</span>(<span class="ident">i</span>: <span class="ident">u32</span>) -&gt; <span class="ident">char</span> {
     <span class="comment">// SAFETY: the caller must guarantee that `i` is a valid char value.</span>
     <span class="kw">if</span> <span class="macro">cfg!</span>(<span class="ident">debug_assertions</span>) { <span class="ident">char::from_u32</span>(<span class="ident">i</span>).<span class="ident">unwrap</span>() } <span class="kw">else</span> { <span class="kw">unsafe</span> { <span class="ident">transmute</span>(<span class="ident">i</span>) } }
 }
@@ -592,6 +406,8 @@
 }
 
 <span class="doccomment">/// An error which can be returned when parsing a char.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This `struct` is created when using the [`char::from_str`] method.</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;char_from_str&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.20.0&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ParseCharError</span> {
@@ -643,7 +459,20 @@
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">char_try_from_u32</span>(<span class="ident">i</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">char</span>, <span class="ident">CharTryFromError</span><span class="op">&gt;</span> {
-    <span class="kw">if</span> (<span class="ident">i</span> <span class="op">&gt;</span> <span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">|</span><span class="op">|</span> (<span class="ident">i</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0xD800</span> <span class="op">&amp;&amp;</span> <span class="ident">i</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">0xDFFF</span>) {
+    <span class="comment">// This is an optimized version of the check</span>
+    <span class="comment">// (i &gt; MAX as u32) || (i &gt;= 0xD800 &amp;&amp; i &lt;= 0xDFFF),</span>
+    <span class="comment">// which can also be written as</span>
+    <span class="comment">// i &gt;= 0x110000 || (i &gt;= 0xD800 &amp;&amp; i &lt; 0xE000).</span>
+    <span class="comment">//</span>
+    <span class="comment">// The XOR with 0xD800 permutes the ranges such that 0xD800..0xE000 is</span>
+    <span class="comment">// mapped to 0x0000..0x0800, while keeping all the high bits outside 0xFFFF the same.</span>
+    <span class="comment">// In particular, numbers &gt;= 0x110000 stay in this range.</span>
+    <span class="comment">//</span>
+    <span class="comment">// Subtracting 0x800 causes 0x0000..0x0800 to wrap, meaning that a single</span>
+    <span class="comment">// unsigned comparison against 0x110000 - 0x800 will detect both the wrapped</span>
+    <span class="comment">// surrogate range as well as the numbers originally larger than 0x110000.</span>
+    <span class="comment">//</span>
+    <span class="kw">if</span> (<span class="ident">i</span> <span class="op">^</span> <span class="number">0xD800</span>).<span class="ident">wrapping_sub</span>(<span class="number">0x800</span>) <span class="op">&gt;</span><span class="op">=</span> <span class="number">0x110000</span> <span class="op">-</span> <span class="number">0x800</span> {
         <span class="prelude-val">Err</span>(<span class="ident">CharTryFromError</span>(()))
     } <span class="kw">else</span> {
         <span class="comment">// SAFETY: checked that it&#39;s a legal unicode value</span>
@@ -661,7 +490,10 @@
     }
 }
 
-<span class="doccomment">/// The error type returned when a conversion from u32 to char fails.</span>
+<span class="doccomment">/// The error type returned when a conversion from [`prim@u32`] to [`prim@char`] fails.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This `struct` is created by the [`char::try_from&lt;u32&gt;`](char#impl-TryFrom&lt;u32&gt;) method.</span>
+<span class="doccomment">/// See its documentation for more.</span>
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;try_from&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.34.0&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CharTryFromError</span>(());
@@ -673,60 +505,10 @@
     }
 }
 
-<span class="doccomment">/// Converts a digit in the given radix to a `char`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// A &#39;radix&#39; here is sometimes also called a &#39;base&#39;. A radix of two</span>
-<span class="doccomment">/// indicates a binary number, a radix of ten, decimal, and a radix of</span>
-<span class="doccomment">/// sixteen, hexadecimal, to give some common values. Arbitrary</span>
-<span class="doccomment">/// radices are supported.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `from_digit()` will return `None` if the input is not a digit in</span>
-<span class="doccomment">/// the given radix.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Panics</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Panics if given a radix larger than 36.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Basic usage:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use std::char;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let c = char::from_digit(4, 10);</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// assert_eq!(Some(&#39;4&#39;), c);</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// // Decimal 11 is a single digit in base 16</span>
-<span class="doccomment">/// let c = char::from_digit(11, 16);</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// assert_eq!(Some(&#39;b&#39;), c);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Returning `None` when the input is not a digit:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use std::char;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let c = char::from_digit(20, 10);</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// assert_eq!(None, c);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Passing a large radix, causing a panic:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```should_panic</span>
-<span class="doccomment">/// use std::char;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// // this panics</span>
-<span class="doccomment">/// let c = char::from_digit(1, 37);</span>
-<span class="doccomment">/// ```</span>
+<span class="doccomment">/// Converts a digit in the given radix to a `char`. See [`char::from_digit`].</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">must_use</span>]</span>
-<span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">rustc_const_unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_char_convert&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;89259&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_digit</span>(<span class="ident">num</span>: <span class="ident">u32</span>, <span class="ident">radix</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_digit</span>(<span class="ident">num</span>: <span class="ident">u32</span>, <span class="ident">radix</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="ident">radix</span> <span class="op">&gt;</span> <span class="number">36</span> {
         <span class="macro">panic!</span>(<span class="string">&quot;from_digit: radix is too high (maximum 36)&quot;</span>);
     }
@@ -738,5 +520,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
 </body></html>

@@ -1,107 +1,107 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/1.60.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/hash/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.gif"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.gif" alt="logo"></div>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/1.62.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/hash/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
         </a><h2 class="location"></h2>
     </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.gif" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../logo.gif" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -813,6 +813,157 @@
 <span id="808">808</span>
 <span id="809">809</span>
 <span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+<span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
+<span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+<span id="865">865</span>
+<span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
+<span id="899">899</span>
+<span id="900">900</span>
+<span id="901">901</span>
+<span id="902">902</span>
+<span id="903">903</span>
+<span id="904">904</span>
+<span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+<span id="911">911</span>
+<span id="912">912</span>
+<span id="913">913</span>
+<span id="914">914</span>
+<span id="915">915</span>
+<span id="916">916</span>
+<span id="917">917</span>
+<span id="918">918</span>
+<span id="919">919</span>
+<span id="920">920</span>
+<span id="921">921</span>
+<span id="922">922</span>
+<span id="923">923</span>
+<span id="924">924</span>
+<span id="925">925</span>
+<span id="926">926</span>
+<span id="927">927</span>
+<span id="928">928</span>
+<span id="929">929</span>
+<span id="930">930</span>
+<span id="931">931</span>
+<span id="932">932</span>
+<span id="933">933</span>
+<span id="934">934</span>
+<span id="935">935</span>
+<span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
+<span id="939">939</span>
+<span id="940">940</span>
+<span id="941">941</span>
+<span id="942">942</span>
+<span id="943">943</span>
+<span id="944">944</span>
+<span id="945">945</span>
+<span id="946">946</span>
+<span id="947">947</span>
+<span id="948">948</span>
+<span id="949">949</span>
+<span id="950">950</span>
+<span id="951">951</span>
+<span id="952">952</span>
+<span id="953">953</span>
+<span id="954">954</span>
+<span id="955">955</span>
+<span id="956">956</span>
+<span id="957">957</span>
+<span id="958">958</span>
+<span id="959">959</span>
+<span id="960">960</span>
+<span id="961">961</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Generic hashing support.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! This module provides a generic way to compute the [hash] of a value.</span>
@@ -1083,10 +1234,29 @@
 <span class="doccomment">/// instance (with [`write`] and [`write_u8`] etc.). Most of the time, `Hasher`</span>
 <span class="doccomment">/// instances are used in conjunction with the [`Hash`] trait.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// This trait makes no assumptions about how the various `write_*` methods are</span>
+<span class="doccomment">/// This trait provides no guarantees about how the various `write_*` methods are</span>
 <span class="doccomment">/// defined and implementations of [`Hash`] should not assume that they work one</span>
 <span class="doccomment">/// way or another. You cannot assume, for example, that a [`write_u32`] call is</span>
-<span class="doccomment">/// equivalent to four calls of [`write_u8`].</span>
+<span class="doccomment">/// equivalent to four calls of [`write_u8`].  Nor can you assume that adjacent</span>
+<span class="doccomment">/// `write` calls are merged, so it&#39;s possible, for example, that</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # fn foo(hasher: &amp;mut impl std::hash::Hasher) {</span>
+<span class="doccomment">/// hasher.write(&amp;[1, 2]);</span>
+<span class="doccomment">/// hasher.write(&amp;[3, 4, 5, 6]);</span>
+<span class="doccomment">/// # }</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// and</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # fn foo(hasher: &amp;mut impl std::hash::Hasher) {</span>
+<span class="doccomment">/// hasher.write(&amp;[1, 2, 3, 4]);</span>
+<span class="doccomment">/// hasher.write(&amp;[5, 6]);</span>
+<span class="doccomment">/// # }</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// end up producing different hashes.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Thus to produce the same hash value, [`Hash`] implementations must ensure</span>
+<span class="doccomment">/// for equivalent items that exactly the same sequence of calls is made -- the</span>
+<span class="doccomment">/// same methods with the same parameters in the same order.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">///</span>
@@ -1148,6 +1318,12 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// println!(&quot;Hash is {:x}!&quot;, hasher.finish());</span>
     <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Note to Implementers</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// You generally should not do length-prefixing as part of implementing</span>
+    <span class="doccomment">/// this method.  It&#39;s up to the [`Hash`] implementation to call</span>
+    <span class="doccomment">/// [`Hasher::write_length_prefix`] before sequences that need it.</span>
     <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rust1&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.0.0&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]);
 
@@ -1224,6 +1400,127 @@
     <span class="kw">fn</span> <span class="ident">write_isize</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">isize</span>) {
         <span class="self">self</span>.<span class="ident">write_usize</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">usize</span>)
     }
+
+    <span class="doccomment">/// Writes a length prefix into this hasher, as part of being prefix-free.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If you&#39;re implementing [`Hash`] for a custom collection, call this before</span>
+    <span class="doccomment">/// writing its contents to this `Hasher`.  That way</span>
+    <span class="doccomment">/// `(collection![1, 2, 3], collection![4, 5])` and</span>
+    <span class="doccomment">/// `(collection![1, 2], collection![3, 4, 5])` will provide different</span>
+    <span class="doccomment">/// sequences of values to the `Hasher`</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The `impl&lt;T&gt; Hash for [T]` includes a call to this method, so if you&#39;re</span>
+    <span class="doccomment">/// hashing a slice (or array or vector) via its `Hash::hash` method,</span>
+    <span class="doccomment">/// you should **not** call this yourself.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This method is only for providing domain separation.  If you want to</span>
+    <span class="doccomment">/// hash a `usize` that represents part of the *data*, then it&#39;s important</span>
+    <span class="doccomment">/// that you pass it to [`Hasher::write_usize`] instead of to this method.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// #![feature(hasher_prefixfree_extras)]</span>
+    <span class="doccomment">/// # // Stubs to make the `impl` below pass the compiler</span>
+    <span class="doccomment">/// # struct MyCollection&lt;T&gt;(Option&lt;T&gt;);</span>
+    <span class="doccomment">/// # impl&lt;T&gt; MyCollection&lt;T&gt; {</span>
+    <span class="doccomment">/// #     fn len(&amp;self) -&gt; usize { todo!() }</span>
+    <span class="doccomment">/// # }</span>
+    <span class="doccomment">/// # impl&lt;&#39;a, T&gt; IntoIterator for &amp;&#39;a MyCollection&lt;T&gt; {</span>
+    <span class="doccomment">/// #     type Item = T;</span>
+    <span class="doccomment">/// #     type IntoIter = std::iter::Empty&lt;T&gt;;</span>
+    <span class="doccomment">/// #     fn into_iter(self) -&gt; Self::IntoIter { todo!() }</span>
+    <span class="doccomment">/// # }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// use std::hash::{Hash, Hasher};</span>
+    <span class="doccomment">/// impl&lt;T: Hash&gt; Hash for MyCollection&lt;T&gt; {</span>
+    <span class="doccomment">///     fn hash&lt;H: Hasher&gt;(&amp;self, state: &amp;mut H) {</span>
+    <span class="doccomment">///         state.write_length_prefix(self.len());</span>
+    <span class="doccomment">///         for elt in self {</span>
+    <span class="doccomment">///             elt.hash(state);</span>
+    <span class="doccomment">///         }</span>
+    <span class="doccomment">///     }</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Note to Implementers</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If you&#39;ve decided that your `Hasher` is willing to be susceptible to</span>
+    <span class="doccomment">/// Hash-DoS attacks, then you might consider skipping hashing some or all</span>
+    <span class="doccomment">/// of the `len` provided in the name of increased performance.</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;hasher_prefixfree_extras&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;96762&quot;</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">write_length_prefix</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">len</span>: <span class="ident">usize</span>) {
+        <span class="self">self</span>.<span class="ident">write_usize</span>(<span class="ident">len</span>);
+    }
+
+    <span class="doccomment">/// Writes a single `str` into this hasher.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If you&#39;re implementing [`Hash`], you generally do not need to call this,</span>
+    <span class="doccomment">/// as the `impl Hash for str` does, so you should prefer that instead.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This includes the domain separator for prefix-freedom, so you should</span>
+    <span class="doccomment">/// **not** call `Self::write_length_prefix` before calling this.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Note to Implementers</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// There are at least two reasonable default ways to implement this.</span>
+    <span class="doccomment">/// Which one will be the default is not yet decided, so for now</span>
+    <span class="doccomment">/// you probably want to override it specifically.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ## The general answer</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// It&#39;s always correct to implement this with a length prefix:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// # #![feature(hasher_prefixfree_extras)]</span>
+    <span class="doccomment">/// # struct Foo;</span>
+    <span class="doccomment">/// # impl std::hash::Hasher for Foo {</span>
+    <span class="doccomment">/// # fn finish(&amp;self) -&gt; u64 { unimplemented!() }</span>
+    <span class="doccomment">/// # fn write(&amp;mut self, _bytes: &amp;[u8]) { unimplemented!() }</span>
+    <span class="doccomment">/// fn write_str(&amp;mut self, s: &amp;str) {</span>
+    <span class="doccomment">///     self.write_length_prefix(s.len());</span>
+    <span class="doccomment">///     self.write(s.as_bytes());</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// # }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// And, if your `Hasher` works in `usize` chunks, this is likely a very</span>
+    <span class="doccomment">/// efficient way to do it, as anything more complicated may well end up</span>
+    <span class="doccomment">/// slower than just running the round with the length.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ## If your `Hasher` works byte-wise</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// One nice thing about `str` being UTF-8 is that the `b&#39;\xFF&#39;` byte</span>
+    <span class="doccomment">/// never happens.  That means that you can append that to the byte stream</span>
+    <span class="doccomment">/// being hashed and maintain prefix-freedom:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// # #![feature(hasher_prefixfree_extras)]</span>
+    <span class="doccomment">/// # struct Foo;</span>
+    <span class="doccomment">/// # impl std::hash::Hasher for Foo {</span>
+    <span class="doccomment">/// # fn finish(&amp;self) -&gt; u64 { unimplemented!() }</span>
+    <span class="doccomment">/// # fn write(&amp;mut self, _bytes: &amp;[u8]) { unimplemented!() }</span>
+    <span class="doccomment">/// fn write_str(&amp;mut self, s: &amp;str) {</span>
+    <span class="doccomment">///     self.write(s.as_bytes());</span>
+    <span class="doccomment">///     self.write_u8(0xff);</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// # }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This does require that your implementation not add extra padding, and</span>
+    <span class="doccomment">/// thus generally requires that you maintain a buffer, running a round</span>
+    <span class="doccomment">/// only once that buffer is full (or `finish` is called).</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// That&#39;s because if `write` pads data out to a fixed chunk size, it&#39;s</span>
+    <span class="doccomment">/// likely that it does it in such a way that `&quot;a&quot;` and `&quot;a\x00&quot;` would</span>
+    <span class="doccomment">/// end up hashing the same sequence of things, introducing conflicts.</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;hasher_prefixfree_extras&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;96762&quot;</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
+        <span class="self">self</span>.<span class="ident">write</span>(<span class="ident">s</span>.<span class="ident">as_bytes</span>());
+        <span class="self">self</span>.<span class="ident">write_u8</span>(<span class="number">0xff</span>);
+    }
 }
 
 <span class="attribute">#[<span class="ident">stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;indirect_hasher_impl&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.22.0&quot;</span>)]</span>
@@ -1269,6 +1566,12 @@
     }
     <span class="kw">fn</span> <span class="ident">write_isize</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">isize</span>) {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_isize</span>(<span class="ident">i</span>)
+    }
+    <span class="kw">fn</span> <span class="ident">write_length_prefix</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">len</span>: <span class="ident">usize</span>) {
+        (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_length_prefix</span>(<span class="ident">len</span>)
+    }
+    <span class="kw">fn</span> <span class="ident">write_str</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
+        (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">write_str</span>(<span class="ident">s</span>)
     }
 }
 
@@ -1524,8 +1827,7 @@
     <span class="kw">impl</span> <span class="ident">Hash</span> <span class="kw">for</span> <span class="ident">str</span> {
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">hash</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Hasher</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">state</span>: <span class="kw-2">&amp;mut</span> <span class="ident">H</span>) {
-            <span class="ident">state</span>.<span class="ident">write</span>(<span class="self">self</span>.<span class="ident">as_bytes</span>());
-            <span class="ident">state</span>.<span class="ident">write_u8</span>(<span class="number">0xff</span>)
+            <span class="ident">state</span>.<span class="ident">write_str</span>(<span class="self">self</span>);
         }
     }
 
@@ -1582,7 +1884,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Hash</span><span class="op">&gt;</span> <span class="ident">Hash</span> <span class="kw">for</span> [<span class="ident">T</span>] {
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">hash</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Hasher</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">state</span>: <span class="kw-2">&amp;mut</span> <span class="ident">H</span>) {
-            <span class="self">self</span>.<span class="ident">len</span>().<span class="ident">hash</span>(<span class="ident">state</span>);
+            <span class="ident">state</span>.<span class="ident">write_length_prefix</span>(<span class="self">self</span>.<span class="ident">len</span>());
             <span class="ident">Hash::hash_slice</span>(<span class="self">self</span>, <span class="ident">state</span>)
         }
     }
@@ -1608,7 +1910,7 @@
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">hash</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Hasher</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">state</span>: <span class="kw-2">&amp;mut</span> <span class="ident">H</span>) {
             <span class="kw">let</span> (<span class="ident">address</span>, <span class="ident">metadata</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">to_raw_parts</span>();
-            <span class="ident">state</span>.<span class="ident">write_usize</span>(<span class="ident">address</span> <span class="kw">as</span> <span class="ident">usize</span>);
+            <span class="ident">state</span>.<span class="ident">write_usize</span>(<span class="ident">address</span>.<span class="ident">addr</span>());
             <span class="ident">metadata</span>.<span class="ident">hash</span>(<span class="ident">state</span>);
         }
     }
@@ -1618,11 +1920,11 @@
         <span class="attribute">#[<span class="ident">inline</span>]</span>
         <span class="kw">fn</span> <span class="ident">hash</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Hasher</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">state</span>: <span class="kw-2">&amp;mut</span> <span class="ident">H</span>) {
             <span class="kw">let</span> (<span class="ident">address</span>, <span class="ident">metadata</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">to_raw_parts</span>();
-            <span class="ident">state</span>.<span class="ident">write_usize</span>(<span class="ident">address</span> <span class="kw">as</span> <span class="ident">usize</span>);
+            <span class="ident">state</span>.<span class="ident">write_usize</span>(<span class="ident">address</span>.<span class="ident">addr</span>());
             <span class="ident">metadata</span>.<span class="ident">hash</span>(<span class="ident">state</span>);
         }
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
 </body></html>

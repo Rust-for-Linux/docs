@@ -1,107 +1,107 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/kernel/gpio.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>gpio.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.gif"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.gif" alt="logo"></div>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
         </a><h2 class="location"></h2>
     </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.gif" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../logo.gif" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -481,6 +481,33 @@
 <span id="476">476</span>
 <span id="477">477</span>
 <span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! Support for gpio device drivers.</span>
@@ -488,14 +515,15 @@
 <span class="doccomment">//! C header: [`include/linux/gpio/driver.h`](../../../../include/linux/gpio/driver.h)</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">bindings</span>, <span class="ident">c_types</span>, <span class="ident">device</span>, <span class="ident">error::code</span>::<span class="kw-2">*</span>, <span class="ident">error::from_kernel_result</span>, <span class="ident">types::PointerWrapper</span>,
-    <span class="ident">Error</span>, <span class="prelude-ty">Result</span>,
+    <span class="ident">bindings</span>, <span class="ident">device</span>, <span class="ident">error::code</span>::<span class="kw-2">*</span>, <span class="ident">error::from_kernel_result</span>, <span class="ident">sync::LockClassKey</span>,
+    <span class="ident">types::PointerWrapper</span>, <span class="ident">Error</span>, <span class="prelude-ty">Result</span>,
 };
 <span class="kw">use</span> <span class="ident">core</span>::{
     <span class="ident">cell::UnsafeCell</span>,
     <span class="ident">marker</span>::{<span class="ident">PhantomData</span>, <span class="ident">PhantomPinned</span>},
     <span class="ident">pin::Pin</span>,
 };
+<span class="kw">use</span> <span class="ident">macros::vtable</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">CONFIG_GPIOLIB_IRQCHIP</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">irqchip</span>::{<span class="ident">ChipWithIrqChip</span>, <span class="ident">RegistrationWithIrqChip</span>};
@@ -510,15 +538,12 @@
 }
 
 <span class="doccomment">/// A gpio chip.</span>
+<span class="attribute">#[<span class="ident">vtable</span>]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Chip</span> {
     <span class="doccomment">/// Context data associated with the gpio chip.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// It determines the type of the context data passed to each of the methods of the trait.</span>
     <span class="kw">type</span> <span class="ident">Data</span>: <span class="ident">PointerWrapper</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="ident">Send</span>;
-
-    <span class="doccomment">/// The methods to use to populate [`struct gpio_chip`]. This is typically populated with</span>
-    <span class="doccomment">/// [`declare_gpio_chip_operations`].</span>
-    <span class="kw">const</span> <span class="ident">TO_USE</span>: <span class="ident">ToUse</span>;
 
     <span class="doccomment">/// Returns the direction of the given gpio line.</span>
     <span class="kw">fn</span> <span class="ident">get_direction</span>(
@@ -556,53 +581,31 @@
     <span class="kw">fn</span> <span class="ident">set</span>(<span class="ident">_data</span>: <span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Data</span> <span class="kw">as</span> <span class="ident">PointerWrapper</span><span class="op">&gt;</span><span class="ident">::Borrowed</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">_offset</span>: <span class="ident">u32</span>, <span class="ident">_value</span>: <span class="ident">bool</span>) {}
 }
 
-<span class="doccomment">/// Represents which fields of [`struct gpio_chip`] should be populated with pointers.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This is typically populated with the [`declare_gpio_chip_operations`] macro.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ToUse</span> {
-    <span class="doccomment">/// The `get_direction` field of [`struct gpio_chip`].</span>
-    <span class="kw">pub</span> <span class="ident">get_direction</span>: <span class="ident">bool</span>,
-
-    <span class="doccomment">/// The `direction_input` field of [`struct gpio_chip`].</span>
-    <span class="kw">pub</span> <span class="ident">direction_input</span>: <span class="ident">bool</span>,
-
-    <span class="doccomment">/// The `direction_output` field of [`struct gpio_chip`].</span>
-    <span class="kw">pub</span> <span class="ident">direction_output</span>: <span class="ident">bool</span>,
-
-    <span class="doccomment">/// The `get` field of [`struct gpio_chip`].</span>
-    <span class="kw">pub</span> <span class="ident">get</span>: <span class="ident">bool</span>,
-
-    <span class="doccomment">/// The `set` field of [`struct gpio_chip`].</span>
-    <span class="kw">pub</span> <span class="ident">set</span>: <span class="ident">bool</span>,
-}
-
-<span class="doccomment">/// A constant version where all values are set to `false`, that is, all supported fields will be</span>
-<span class="doccomment">/// set to null pointers.</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">USE_NONE</span>: <span class="ident">ToUse</span> <span class="op">=</span> <span class="ident">ToUse</span> {
-    <span class="ident">get_direction</span>: <span class="bool-val">false</span>,
-    <span class="ident">direction_input</span>: <span class="bool-val">false</span>,
-    <span class="ident">direction_output</span>: <span class="bool-val">false</span>,
-    <span class="ident">get</span>: <span class="bool-val">false</span>,
-    <span class="ident">set</span>: <span class="bool-val">false</span>,
-};
-
-<span class="doccomment">/// Defines the [`Chip::TO_USE`] field based on a list of fields to be populated.</span>
-<span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules!</span> <span class="ident">declare_gpio_chip_operations</span> {
-    () =&gt; {
-        <span class="kw">const</span> <span class="ident">TO_USE</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::gpio::ToUse</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::gpio::USE_NONE</span>;
-    };
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">i</span>:<span class="ident">ident</span>),<span class="op">+</span>) =&gt; {
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::needless_update</span>)]</span>
-        <span class="kw">const</span> <span class="ident">TO_USE</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::gpio::ToUse</span> <span class="op">=</span>
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::gpio::ToUse</span> {
-                $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">i</span>: <span class="bool-val">true</span>),<span class="op">+</span> ,
-                ..<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::gpio::USE_NONE</span>
-            };
-    };
-}
-
 <span class="doccomment">/// A registration of a gpio chip.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The following example registers an empty gpio chip.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use kernel::prelude::*;</span>
+<span class="doccomment">/// use kernel::{</span>
+<span class="doccomment">///     device::RawDevice,</span>
+<span class="doccomment">///     gpio::{self, Registration},</span>
+<span class="doccomment">/// };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// struct MyGpioChip;</span>
+<span class="doccomment">/// #[vtable]</span>
+<span class="doccomment">/// impl gpio::Chip for MyGpioChip {</span>
+<span class="doccomment">///     type Data = ();</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// fn example(parent: &amp;dyn RawDevice) -&gt; Result&lt;Pin&lt;Box&lt;Registration&lt;MyGpioChip&gt;&gt;&gt;&gt; {</span>
+<span class="doccomment">///     let mut r = Pin::from(Box::try_new(Registration::new())?);</span>
+<span class="doccomment">///     kernel::gpio_chip_register!(r.as_mut(), 32, None, parent, ())?;</span>
+<span class="doccomment">///     Ok(r)</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span> {
     <span class="ident">gc</span>: <span class="ident">UnsafeCell</span><span class="op">&lt;</span><span class="ident">bindings::gpio_chip</span><span class="op">&gt;</span>,
     <span class="ident">parent</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">device::Device</span><span class="op">&gt;</span>,
@@ -624,12 +627,16 @@
     }
 
     <span class="doccomment">/// Registers a gpio chip with the rest of the kernel.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Users are encouraged to use the [`gpio_chip_register`] macro because it automatically</span>
+    <span class="doccomment">/// defines the lock classes and calls the registration function.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">register</span>(
         <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="self">Self</span><span class="op">&gt;</span>,
         <span class="ident">gpio_count</span>: <span class="ident">u16</span>,
         <span class="ident">base</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
         <span class="ident">parent</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">device::RawDevice</span>,
         <span class="ident">data</span>: <span class="ident">T::Data</span>,
+        <span class="ident">lock_keys</span>: [<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">LockClassKey</span>; <span class="number">2</span>],
     ) -&gt; <span class="prelude-ty">Result</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">parent</span>.<span class="ident">is_some</span>() {
             <span class="comment">// Already registered.</span>
@@ -644,19 +651,19 @@
             <span class="comment">// Set up the callbacks.</span>
             <span class="ident">gc</span>.<span class="ident">request</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">bindings::gpiochip_generic_request</span>);
             <span class="ident">gc</span>.<span class="ident">free</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">bindings::gpiochip_generic_free</span>);
-            <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">get_direction</span> {
+            <span class="kw">if</span> <span class="ident">T::HAS_GET_DIRECTION</span> {
                 <span class="ident">gc</span>.<span class="ident">get_direction</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">get_direction_callback</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
             }
-            <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">direction_input</span> {
+            <span class="kw">if</span> <span class="ident">T::HAS_DIRECTION_INPUT</span> {
                 <span class="ident">gc</span>.<span class="ident">direction_input</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">direction_input_callback</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
             }
-            <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">direction_output</span> {
+            <span class="kw">if</span> <span class="ident">T::HAS_DIRECTION_OUTPUT</span> {
                 <span class="ident">gc</span>.<span class="ident">direction_output</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">direction_output_callback</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
             }
-            <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">get</span> {
+            <span class="kw">if</span> <span class="ident">T::HAS_GET</span> {
                 <span class="ident">gc</span>.<span class="ident">get</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">get_callback</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
             }
-            <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">set</span> {
+            <span class="kw">if</span> <span class="ident">T::HAS_SET</span> {
                 <span class="ident">gc</span>.<span class="ident">set</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">set_callback</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
             }
 
@@ -680,8 +687,8 @@
             <span class="ident">bindings::gpiochip_add_data_with_key</span>(
                 <span class="ident">this</span>.<span class="ident">gc</span>.<span class="ident">get</span>(),
                 <span class="ident">data_pointer</span> <span class="kw">as</span> <span class="kw">_</span>,
-                <span class="ident">core::ptr::null_mut</span>(),
-                <span class="ident">core::ptr::null_mut</span>(),
+                <span class="ident">lock_keys</span>[<span class="number">0</span>].<span class="ident">get</span>(),
+                <span class="ident">lock_keys</span>[<span class="number">1</span>].<span class="ident">get</span>(),
             )
         };
         <span class="kw">if</span> <span class="ident">ret</span> <span class="op">&lt;</span> <span class="number">0</span> {
@@ -730,10 +737,29 @@
     }
 }
 
+<span class="doccomment">/// Registers a gpio chip with the rest of the kernel.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// It automatically defines the required lock classes.</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">gpio_chip_register</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">reg</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">count</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">base</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">data</span>:<span class="ident">expr</span> $(,)<span class="question-mark">?</span>) =&gt; {{
+        <span class="kw">static</span> <span class="ident">CLASS1</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::sync::LockClassKey</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::sync::LockClassKey::new</span>();
+        <span class="kw">static</span> <span class="ident">CLASS2</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::sync::LockClassKey</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::sync::LockClassKey::new</span>();
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::gpio::Registration::register</span>(
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">reg</span>,
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">count</span>,
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">base</span>,
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent</span>,
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">data</span>,
+            [<span class="kw-2">&amp;</span><span class="ident">CLASS1</span>, <span class="kw-2">&amp;</span><span class="ident">CLASS2</span>],
+        )
+    }};
+}
+
 <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">get_direction_callback</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(
     <span class="ident">gc</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::gpio_chip</span>,
-    <span class="ident">offset</span>: <span class="ident">c_types::c_uint</span>,
-) -&gt; <span class="ident">c_types::c_int</span> {
+    <span class="ident">offset</span>: <span class="ident">core::ffi::c_uint</span>,
+) -&gt; <span class="ident">core::ffi::c_int</span> {
     <span class="macro">from_kernel_result!</span> {
         <span class="comment">// SAFETY: The value stored as chip data was returned by `into_pointer` during registration.</span>
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">T::Data::borrow</span>(<span class="ident">bindings::gpiochip_get_data</span>(<span class="ident">gc</span>)) };
@@ -743,8 +769,8 @@
 
 <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">direction_input_callback</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(
     <span class="ident">gc</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::gpio_chip</span>,
-    <span class="ident">offset</span>: <span class="ident">c_types::c_uint</span>,
-) -&gt; <span class="ident">c_types::c_int</span> {
+    <span class="ident">offset</span>: <span class="ident">core::ffi::c_uint</span>,
+) -&gt; <span class="ident">core::ffi::c_int</span> {
     <span class="macro">from_kernel_result!</span> {
         <span class="comment">// SAFETY: The value stored as chip data was returned by `into_pointer` during registration.</span>
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">T::Data::borrow</span>(<span class="ident">bindings::gpiochip_get_data</span>(<span class="ident">gc</span>)) };
@@ -755,9 +781,9 @@
 
 <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">direction_output_callback</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(
     <span class="ident">gc</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::gpio_chip</span>,
-    <span class="ident">offset</span>: <span class="ident">c_types::c_uint</span>,
-    <span class="ident">value</span>: <span class="ident">c_types::c_int</span>,
-) -&gt; <span class="ident">c_types::c_int</span> {
+    <span class="ident">offset</span>: <span class="ident">core::ffi::c_uint</span>,
+    <span class="ident">value</span>: <span class="ident">core::ffi::c_int</span>,
+) -&gt; <span class="ident">core::ffi::c_int</span> {
     <span class="macro">from_kernel_result!</span> {
         <span class="comment">// SAFETY: The value stored as chip data was returned by `into_pointer` during registration.</span>
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">T::Data::borrow</span>(<span class="ident">bindings::gpiochip_get_data</span>(<span class="ident">gc</span>)) };
@@ -768,8 +794,8 @@
 
 <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">get_callback</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(
     <span class="ident">gc</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::gpio_chip</span>,
-    <span class="ident">offset</span>: <span class="ident">c_types::c_uint</span>,
-) -&gt; <span class="ident">c_types::c_int</span> {
+    <span class="ident">offset</span>: <span class="ident">core::ffi::c_uint</span>,
+) -&gt; <span class="ident">core::ffi::c_int</span> {
     <span class="macro">from_kernel_result!</span> {
         <span class="comment">// SAFETY: The value stored as chip data was returned by `into_pointer` during registration.</span>
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">T::Data::borrow</span>(<span class="ident">bindings::gpiochip_get_data</span>(<span class="ident">gc</span>)) };
@@ -780,8 +806,8 @@
 
 <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">set_callback</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(
     <span class="ident">gc</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::gpio_chip</span>,
-    <span class="ident">offset</span>: <span class="ident">c_types::c_uint</span>,
-    <span class="ident">value</span>: <span class="ident">c_types::c_int</span>,
+    <span class="ident">offset</span>: <span class="ident">core::ffi::c_uint</span>,
+    <span class="ident">value</span>: <span class="ident">core::ffi::c_int</span>,
 ) {
     <span class="comment">// SAFETY: The value stored as chip data was returned by `into_pointer` during registration.</span>
     <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">T::Data::borrow</span>(<span class="ident">bindings::gpiochip_get_data</span>(<span class="ident">gc</span>)) };
@@ -823,6 +849,9 @@
         }
 
         <span class="doccomment">/// Registers a gpio chip and its irq chip with the rest of the kernel.</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// Users are encouraged to use the [`gpio_irq_chip_register`] macro because it</span>
+        <span class="doccomment">/// automatically defines the lock classes and calls the registration function.</span>
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">register</span><span class="op">&lt;</span><span class="ident">U</span>: <span class="ident">irq::Chip</span><span class="op">&lt;</span><span class="ident">Data</span> <span class="op">=</span> <span class="ident">T::Data</span><span class="op">&gt;</span><span class="op">&gt;</span>(
             <span class="kw-2">mut</span> <span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="self">Self</span><span class="op">&gt;</span>,
             <span class="ident">gpio_count</span>: <span class="ident">u16</span>,
@@ -830,6 +859,7 @@
             <span class="ident">parent</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">device::RawDevice</span>,
             <span class="ident">data</span>: <span class="ident">T::Data</span>,
             <span class="ident">parent_irq</span>: <span class="ident">u32</span>,
+            <span class="ident">lock_keys</span>: [<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">LockClassKey</span>; <span class="number">2</span>],
         ) -&gt; <span class="prelude-ty">Result</span> {
             <span class="kw">if</span> <span class="self">self</span>.<span class="ident">reg</span>.<span class="ident">parent</span>.<span class="ident">is_some</span>() {
                 <span class="comment">// Already registered.</span>
@@ -867,7 +897,7 @@
 
             <span class="comment">// SAFETY: `reg` is pinned when `self` is.</span>
             <span class="kw">let</span> <span class="ident">pinned</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">map_unchecked_mut</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="kw-2">&amp;mut</span> <span class="ident">r</span>.<span class="ident">reg</span>) };
-            <span class="ident">pinned</span>.<span class="ident">register</span>(<span class="ident">gpio_count</span>, <span class="ident">base</span>, <span class="ident">parent</span>, <span class="ident">data</span>)
+            <span class="ident">pinned</span>.<span class="ident">register</span>(<span class="ident">gpio_count</span>, <span class="ident">base</span>, <span class="ident">parent</span>, <span class="ident">data</span>, <span class="ident">lock_keys</span>)
         }
     }
 
@@ -910,9 +940,12 @@
     <span class="doccomment">/// data is passed as context.</span>
     <span class="kw">struct</span> <span class="ident">IrqChipAdapter</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">irq::Chip</span><span class="op">&gt;</span>(<span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
 
+    <span class="attribute">#[<span class="ident">vtable</span>]</span>
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">irq::Chip</span><span class="op">&gt;</span> <span class="ident">irq::Chip</span> <span class="kw">for</span> <span class="ident">IrqChipAdapter</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">type</span> <span class="ident">Data</span> <span class="op">=</span> <span class="kw-2">*mut</span> <span class="ident">bindings::gpio_chip</span>;
-        <span class="kw">const</span> <span class="ident">TO_USE</span>: <span class="ident">irq::ToUse</span> <span class="op">=</span> <span class="ident">T::TO_USE</span>;
+
+        <span class="kw">const</span> <span class="ident">HAS_SET_TYPE</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="ident">T::HAS_SET_TYPE</span>;
+        <span class="kw">const</span> <span class="ident">HAS_SET_WAKE</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="ident">T::HAS_SET_WAKE</span>;
 
         <span class="kw">fn</span> <span class="ident">ack</span>(<span class="ident">gc</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::gpio_chip</span>, <span class="ident">irq_data</span>: <span class="kw-2">&amp;</span><span class="ident">irq::IrqData</span>) {
             <span class="comment">// SAFETY: `IrqChipAdapter` is a private struct, only used when the data stored in the</span>
@@ -958,7 +991,28 @@
             <span class="ident">T::set_wake</span>(<span class="ident">data</span>, <span class="ident">irq_data</span>, <span class="ident">on</span>)
         }
     }
+
+    <span class="doccomment">/// Registers a gpio chip and its irq chip with the rest of the kernel.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// It automatically defines the required lock classes.</span>
+    <span class="attribute">#[<span class="ident">macro_export</span>]</span>
+    <span class="macro">macro_rules!</span> <span class="ident">gpio_irq_chip_register</span> {
+        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">reg</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">irqchip</span>:<span class="ident">ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">count</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">base</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">data</span>:<span class="ident">expr</span>,
+         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent_irq</span>:<span class="ident">expr</span> $(,)<span class="question-mark">?</span>) =&gt; {{
+            <span class="kw">static</span> <span class="ident">CLASS1</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::sync::LockClassKey</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::sync::LockClassKey::new</span>();
+            <span class="kw">static</span> <span class="ident">CLASS2</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::sync::LockClassKey</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::sync::LockClassKey::new</span>();
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::gpio::RegistrationWithIrqChip::register</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">irqchip</span><span class="op">&gt;</span>(
+                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">reg</span>,
+                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">count</span>,
+                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">base</span>,
+                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent</span>,
+                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">data</span>,
+                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent_irq</span>,
+                [<span class="kw-2">&amp;</span><span class="ident">CLASS1</span>, <span class="kw-2">&amp;</span><span class="ident">CLASS2</span>],
+            )
+        }};
+    }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
 </body></html>

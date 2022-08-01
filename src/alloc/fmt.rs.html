@@ -1,107 +1,107 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/alloc/fmt.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>fmt.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.gif"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../alloc/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.gif" alt="logo"></div>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../alloc/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
         </a><h2 class="location"></h2>
     </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../alloc/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.gif" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../alloc/index.html"><img class="rust-logo" src="../../logo.gif" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../alloc/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../alloc/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -604,6 +604,19 @@
 <span id="599">599</span>
 <span id="600">600</span>
 <span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
 
 <span class="doccomment">//! Utilities for formatting and printing `String`s.</span>
@@ -829,10 +842,12 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! 3. An asterisk `.*`:</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!    `.*` means that this `{...}` is associated with *two* format inputs rather than one: the</span>
-<span class="doccomment">//!    first input holds the `usize` precision, and the second holds the value to print. Note that</span>
-<span class="doccomment">//!    in this case, if one uses the format string `{&lt;arg&gt;:&lt;spec&gt;.*}`, then the `&lt;arg&gt;` part refers</span>
-<span class="doccomment">//!    to the *value* to print, and the `precision` must come in the input preceding `&lt;arg&gt;`.</span>
+<span class="doccomment">//!    `.*` means that this `{...}` is associated with *two* format inputs rather than one:</span>
+<span class="doccomment">//!    - If a format string in the fashion of `{:&lt;spec&gt;.*}` is used, then the first input holds</span>
+<span class="doccomment">//!      the `usize` precision, and the second holds the value to print.</span>
+<span class="doccomment">//!    - If a format string in the fashion of `{&lt;arg&gt;:&lt;spec&gt;.*}` is used, then the `&lt;arg&gt;` part</span>
+<span class="doccomment">//!      refers to the value to print, and the `precision` is taken like it was specified with an</span>
+<span class="doccomment">//!      omitted positional parameter (`{}` instead of `{&lt;arg&gt;:}`).</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! For example, the following calls all print the same thing `Hello x is 0.01000`:</span>
 <span class="doccomment">//!</span>
@@ -846,15 +861,19 @@
 <span class="doccomment">//! // Hello {arg 0 (&quot;x&quot;)} is {arg 2 (0.01) with precision specified in arg 1 (5)}</span>
 <span class="doccomment">//! println!(&quot;Hello {0} is {2:.1$}&quot;, &quot;x&quot;, 5, 0.01);</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! // Hello {next arg (&quot;x&quot;)} is {second of next two args (0.01) with precision</span>
-<span class="doccomment">//! //                          specified in first of next two args (5)}</span>
+<span class="doccomment">//! // Hello {next arg -&gt; arg 0 (&quot;x&quot;)} is {second of next two args -&gt; arg 2 (0.01) with precision</span>
+<span class="doccomment">//! //                          specified in first of next two args -&gt; arg 1 (5)}</span>
 <span class="doccomment">//! println!(&quot;Hello {} is {:.*}&quot;,    &quot;x&quot;, 5, 0.01);</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! // Hello {next arg (&quot;x&quot;)} is {arg 2 (0.01) with precision</span>
-<span class="doccomment">//! //                          specified in its predecessor (5)}</span>
+<span class="doccomment">//! // Hello {arg 1 (&quot;x&quot;)} is {arg 2 (0.01) with precision</span>
+<span class="doccomment">//! //                          specified in next arg -&gt; arg 0 (5)}</span>
+<span class="doccomment">//! println!(&quot;Hello {1} is {2:.*}&quot;,  5, &quot;x&quot;, 0.01);</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! // Hello {next arg -&gt; arg 0 (&quot;x&quot;)} is {arg 2 (0.01) with precision</span>
+<span class="doccomment">//! //                          specified in next arg -&gt; arg 1 (5)}</span>
 <span class="doccomment">//! println!(&quot;Hello {} is {2:.*}&quot;,   &quot;x&quot;, 5, 0.01);</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! // Hello {next arg (&quot;x&quot;)} is {arg &quot;number&quot; (0.01) with precision specified</span>
+<span class="doccomment">//! // Hello {next arg -&gt; arg 0 (&quot;x&quot;)} is {arg &quot;number&quot; (0.01) with precision specified</span>
 <span class="doccomment">//! //                          in arg &quot;prec&quot; (5)}</span>
 <span class="doccomment">//! println!(&quot;Hello {} is {number:.prec$}&quot;, &quot;x&quot;, prec = 5, number = 0.01);</span>
 <span class="doccomment">//! ```</span>
@@ -912,7 +931,7 @@
 <span class="doccomment">//! ```text</span>
 <span class="doccomment">//! format_string := text [ maybe_format text ] *</span>
 <span class="doccomment">//! maybe_format := &#39;{&#39; &#39;{&#39; | &#39;}&#39; &#39;}&#39; | format</span>
-<span class="doccomment">//! format := &#39;{&#39; [ argument ] [ &#39;:&#39; format_spec ] &#39;}&#39;</span>
+<span class="doccomment">//! format := &#39;{&#39; [ argument ] [ &#39;:&#39; format_spec ] [ ws ] * &#39;}&#39;</span>
 <span class="doccomment">//! argument := integer | identifier</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! format_spec := [[fill]align][sign][&#39;#&#39;][&#39;0&#39;][width][&#39;.&#39; precision]type</span>
@@ -925,7 +944,12 @@
 <span class="doccomment">//! count := parameter | integer</span>
 <span class="doccomment">//! parameter := argument &#39;$&#39;</span>
 <span class="doccomment">//! ```</span>
-<span class="doccomment">//! In the above grammar, `text` must not contain any `&#39;{&#39;` or `&#39;}&#39;` characters.</span>
+<span class="doccomment">//! In the above grammar,</span>
+<span class="doccomment">//! - `text` must not contain any `&#39;{&#39;` or `&#39;}&#39;` characters,</span>
+<span class="doccomment">//! - `ws` is any character for which [`char::is_whitespace`] returns `true`, has no semantic</span>
+<span class="doccomment">//!   meaning and is completely optional,</span>
+<span class="doccomment">//! - `integer` is a decimal integer that may contain leading zeroes and</span>
+<span class="doccomment">//! - `identifier` is an `IDENTIFIER_OR_KEYWORD` (not an `IDENTIFIER`) as defined by the [Rust language reference](https://doc.rust-lang.org/reference/identifiers.html).</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Formatting traits</span>
 <span class="doccomment">//!</span>
@@ -966,9 +990,9 @@
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Your type will be passed as `self` by-reference, and then the function</span>
-<span class="doccomment">//! should emit output into the `f.buf` stream. It is up to each format trait</span>
-<span class="doccomment">//! implementation to correctly adhere to the requested formatting parameters.</span>
-<span class="doccomment">//! The values of these parameters will be listed in the fields of the</span>
+<span class="doccomment">//! should emit output into the Formatter `f` which implements `fmt::Write`. It is up to each</span>
+<span class="doccomment">//! format trait implementation to correctly adhere to the requested formatting parameters.</span>
+<span class="doccomment">//! The values of these parameters can be accessed with methods of the</span>
 <span class="doccomment">//! [`Formatter`] struct. In order to help with this, the [`Formatter`] struct also</span>
 <span class="doccomment">//! provides some helper methods.</span>
 <span class="doccomment">//!</span>
@@ -1024,9 +1048,9 @@
 <span class="doccomment">//! fn main() {</span>
 <span class="doccomment">//!     let myvector = Vector2D { x: 3, y: 4 };</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!     println!(&quot;{}&quot;, myvector);       // =&gt; &quot;(3, 4)&quot;</span>
-<span class="doccomment">//!     println!(&quot;{:?}&quot;, myvector);     // =&gt; &quot;Vector2D {x: 3, y:4}&quot;</span>
-<span class="doccomment">//!     println!(&quot;{:10.3b}&quot;, myvector); // =&gt; &quot;     5.000&quot;</span>
+<span class="doccomment">//!     println!(&quot;{myvector}&quot;);       // =&gt; &quot;(3, 4)&quot;</span>
+<span class="doccomment">//!     println!(&quot;{myvector:?}&quot;);     // =&gt; &quot;Vector2D {x: 3, y:4}&quot;</span>
+<span class="doccomment">//!     println!(&quot;{myvector:10.3b}&quot;); // =&gt; &quot;     5.000&quot;</span>
 <span class="doccomment">//! }</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
@@ -1057,7 +1081,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```ignore (only-for-syntax-highlight)</span>
 <span class="doccomment">//! format!      // described above</span>
-<span class="doccomment">//! write!       // first argument is a &amp;mut io::Write, the destination</span>
+<span class="doccomment">//! write!       // first argument is either a &amp;mut io::Write or a &amp;mut fmt::Write, the destination</span>
 <span class="doccomment">//! writeln!     // same as write but appends a newline</span>
 <span class="doccomment">//! print!       // the format string is printed to the standard output</span>
 <span class="doccomment">//! println!     // same as print but appends a newline</span>
@@ -1068,11 +1092,11 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ### `write!`</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! This and [`writeln!`] are two macros which are used to emit the format string</span>
+<span class="doccomment">//! [`write!`] and [`writeln!`] are two macros which are used to emit the format string</span>
 <span class="doccomment">//! to a specified stream. This is used to prevent intermediate allocations of</span>
 <span class="doccomment">//! format strings and instead directly write the output. Under the hood, this</span>
 <span class="doccomment">//! function is actually invoking the [`write_fmt`] function defined on the</span>
-<span class="doccomment">//! [`std::io::Write`] trait. Example usage is:</span>
+<span class="doccomment">//! [`std::io::Write`] and the [`std::fmt::Write`] trait. Example usage is:</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//! # #![allow(unused_must_use)]</span>
@@ -1099,7 +1123,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ### `format_args!`</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! This is a curious macro used to safely pass around</span>
+<span class="doccomment">//! [`format_args!`] is a curious macro used to safely pass around</span>
 <span class="doccomment">//! an opaque object describing the format string. This object</span>
 <span class="doccomment">//! does not require any heap allocations to create, and it only</span>
 <span class="doccomment">//! references information on the stack. Under the hood, all of</span>
@@ -1137,10 +1161,12 @@
 <span class="doccomment">//! [`to_string`]: crate::string::ToString::to_string &quot;ToString::to_string&quot;</span>
 <span class="doccomment">//! [`write_fmt`]: ../../std/io/trait.Write.html#method.write_fmt</span>
 <span class="doccomment">//! [`std::io::Write`]: ../../std/io/trait.Write.html</span>
+<span class="doccomment">//! [`std::fmt::Write`]: ../../std/fmt/trait.Write.html</span>
 <span class="doccomment">//! [`print!`]: ../../std/macro.print.html &quot;print!&quot;</span>
 <span class="doccomment">//! [`println!`]: ../../std/macro.println.html &quot;println!&quot;</span>
 <span class="doccomment">//! [`eprint!`]: ../../std/macro.eprint.html &quot;eprint!&quot;</span>
 <span class="doccomment">//! [`eprintln!`]: ../../std/macro.eprintln.html &quot;eprintln!&quot;</span>
+<span class="doccomment">//! [`format_args!`]: ../../std/macro.format_args.html &quot;format_args!&quot;</span>
 <span class="doccomment">//! [`fmt::Arguments`]: Arguments &quot;fmt::Arguments&quot;</span>
 <span class="doccomment">//! [`format`]: format() &quot;fmt::format&quot;</span>
 
@@ -1206,5 +1232,5 @@
     <span class="ident">output</span>
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="alloc" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="alloc" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
 </body></html>

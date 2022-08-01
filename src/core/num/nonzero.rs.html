@@ -1,107 +1,107 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/1.60.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/nonzero.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>nonzero.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.gif"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.gif" alt="logo"></div>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/1.62.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/nonzero.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>nonzero.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
         </a><h2 class="location"></h2>
     </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.gif" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../logo.gif" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -994,6 +994,148 @@
 <span id="989">989</span>
 <span id="990">990</span>
 <span id="991">991</span>
+<span id="992">992</span>
+<span id="993">993</span>
+<span id="994">994</span>
+<span id="995">995</span>
+<span id="996">996</span>
+<span id="997">997</span>
+<span id="998">998</span>
+<span id="999">999</span>
+<span id="1000">1000</span>
+<span id="1001">1001</span>
+<span id="1002">1002</span>
+<span id="1003">1003</span>
+<span id="1004">1004</span>
+<span id="1005">1005</span>
+<span id="1006">1006</span>
+<span id="1007">1007</span>
+<span id="1008">1008</span>
+<span id="1009">1009</span>
+<span id="1010">1010</span>
+<span id="1011">1011</span>
+<span id="1012">1012</span>
+<span id="1013">1013</span>
+<span id="1014">1014</span>
+<span id="1015">1015</span>
+<span id="1016">1016</span>
+<span id="1017">1017</span>
+<span id="1018">1018</span>
+<span id="1019">1019</span>
+<span id="1020">1020</span>
+<span id="1021">1021</span>
+<span id="1022">1022</span>
+<span id="1023">1023</span>
+<span id="1024">1024</span>
+<span id="1025">1025</span>
+<span id="1026">1026</span>
+<span id="1027">1027</span>
+<span id="1028">1028</span>
+<span id="1029">1029</span>
+<span id="1030">1030</span>
+<span id="1031">1031</span>
+<span id="1032">1032</span>
+<span id="1033">1033</span>
+<span id="1034">1034</span>
+<span id="1035">1035</span>
+<span id="1036">1036</span>
+<span id="1037">1037</span>
+<span id="1038">1038</span>
+<span id="1039">1039</span>
+<span id="1040">1040</span>
+<span id="1041">1041</span>
+<span id="1042">1042</span>
+<span id="1043">1043</span>
+<span id="1044">1044</span>
+<span id="1045">1045</span>
+<span id="1046">1046</span>
+<span id="1047">1047</span>
+<span id="1048">1048</span>
+<span id="1049">1049</span>
+<span id="1050">1050</span>
+<span id="1051">1051</span>
+<span id="1052">1052</span>
+<span id="1053">1053</span>
+<span id="1054">1054</span>
+<span id="1055">1055</span>
+<span id="1056">1056</span>
+<span id="1057">1057</span>
+<span id="1058">1058</span>
+<span id="1059">1059</span>
+<span id="1060">1060</span>
+<span id="1061">1061</span>
+<span id="1062">1062</span>
+<span id="1063">1063</span>
+<span id="1064">1064</span>
+<span id="1065">1065</span>
+<span id="1066">1066</span>
+<span id="1067">1067</span>
+<span id="1068">1068</span>
+<span id="1069">1069</span>
+<span id="1070">1070</span>
+<span id="1071">1071</span>
+<span id="1072">1072</span>
+<span id="1073">1073</span>
+<span id="1074">1074</span>
+<span id="1075">1075</span>
+<span id="1076">1076</span>
+<span id="1077">1077</span>
+<span id="1078">1078</span>
+<span id="1079">1079</span>
+<span id="1080">1080</span>
+<span id="1081">1081</span>
+<span id="1082">1082</span>
+<span id="1083">1083</span>
+<span id="1084">1084</span>
+<span id="1085">1085</span>
+<span id="1086">1086</span>
+<span id="1087">1087</span>
+<span id="1088">1088</span>
+<span id="1089">1089</span>
+<span id="1090">1090</span>
+<span id="1091">1091</span>
+<span id="1092">1092</span>
+<span id="1093">1093</span>
+<span id="1094">1094</span>
+<span id="1095">1095</span>
+<span id="1096">1096</span>
+<span id="1097">1097</span>
+<span id="1098">1098</span>
+<span id="1099">1099</span>
+<span id="1100">1100</span>
+<span id="1101">1101</span>
+<span id="1102">1102</span>
+<span id="1103">1103</span>
+<span id="1104">1104</span>
+<span id="1105">1105</span>
+<span id="1106">1106</span>
+<span id="1107">1107</span>
+<span id="1108">1108</span>
+<span id="1109">1109</span>
+<span id="1110">1110</span>
+<span id="1111">1111</span>
+<span id="1112">1112</span>
+<span id="1113">1113</span>
+<span id="1114">1114</span>
+<span id="1115">1115</span>
+<span id="1116">1116</span>
+<span id="1117">1117</span>
+<span id="1118">1118</span>
+<span id="1119">1119</span>
+<span id="1120">1120</span>
+<span id="1121">1121</span>
+<span id="1122">1122</span>
+<span id="1123">1123</span>
+<span id="1124">1124</span>
+<span id="1125">1125</span>
+<span id="1126">1126</span>
+<span id="1127">1127</span>
+<span id="1128">1128</span>
+<span id="1129">1129</span>
+<span id="1130">1130</span>
+<span id="1131">1131</span>
+<span id="1132">1132</span>
+<span id="1133">1133</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Definitions of integer that is known not to equal zero.</span>
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::fmt</span>;
@@ -1050,7 +1192,10 @@
                 <span class="attribute">#[<span class="ident">inline</span>]</span>
                 <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new_unchecked</span>(<span class="ident">n</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span>) -&gt; <span class="self">Self</span> {
                     <span class="comment">// SAFETY: this is guaranteed to be safe by the caller.</span>
-                    <span class="kw">unsafe</span> { <span class="self">Self</span>(<span class="ident">n</span>) }
+                    <span class="kw">unsafe</span> {
+                        <span class="macro">core::intrinsics::assert_unsafe_precondition!</span>(<span class="ident">n</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>);
+                        <span class="self">Self</span>(<span class="ident">n</span>)
+                    }
                 }
 
                 <span class="doccomment">/// Creates a non-zero if the given value is not zero.</span>
@@ -1070,7 +1215,7 @@
                 <span class="doccomment">/// Returns the value as a primitive type.</span>
                 <span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">stability</span>]</span>
                 <span class="attribute">#[<span class="ident">inline</span>]</span>
-                <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;nonzero&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.34.0&quot;</span>)]</span>
+                <span class="attribute">#[<span class="ident">rustc_const_stable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;const_nonzero_get&quot;</span>, <span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.34.0&quot;</span>)]</span>
                 <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="self">self</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span> {
                     <span class="self">self</span>.<span class="number">0</span>
                 }
@@ -1461,7 +1606,7 @@
                               without modifying the original&quot;</span>]</span>
                 <span class="attribute">#[<span class="ident">inline</span>]</span>
                 <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">log2</span>(<span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-                    <span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span><span class="op">&gt;</span><span class="ident">::BITS</span> <span class="op">-</span> <span class="number">1</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">leading_zeros</span>()
+                    <span class="ident"><span class="self">Self</span>::BITS</span> <span class="op">-</span> <span class="number">1</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">leading_zeros</span>()
                 }
 
                 <span class="doccomment">/// Returns the base 10 logarithm of the number, rounded down.</span>
@@ -1985,6 +2130,145 @@
 }
 
 <span class="macro">nonzero_unsigned_is_power_of_two!</span> { <span class="ident">NonZeroU8</span> <span class="ident">NonZeroU16</span> <span class="ident">NonZeroU32</span> <span class="ident">NonZeroU64</span> <span class="ident">NonZeroU128</span> <span class="ident">NonZeroUsize</span> }
+
+<span class="macro">macro_rules!</span> <span class="ident">nonzero_min_max_unsigned</span> {
+    ( $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ty</span>: <span class="ident">ident</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span>: <span class="ident">ident</span>); )<span class="op">+</span> ) =&gt; {
+        $(
+            <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ty</span> {
+                <span class="doccomment">/// The smallest value that can be represented by this non-zero</span>
+                <span class="doccomment">/// integer type, 1.</span>
+                <span class="doccomment">///</span>
+                <span class="doccomment">/// # Examples</span>
+                <span class="doccomment">///</span>
+                <span class="doccomment">/// ```</span>
+                <span class="doccomment">/// #![feature(nonzero_min_max)]</span>
+                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;# use std::num::&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ty</span>), <span class="string">&quot;;&quot;</span>)]</span>
+                <span class="doccomment">///</span>
+                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;assert_eq!(&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ty</span>), <span class="string">&quot;::MIN.get(), 1&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span>), <span class="string">&quot;);&quot;</span>)]</span>
+                <span class="doccomment">/// ```</span>
+                <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;nonzero_min_max&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;89065&quot;</span>)]</span>
+                <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MIN</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new</span>(<span class="number">1</span>).<span class="ident">unwrap</span>();
+
+                <span class="doccomment">/// The largest value that can be represented by this non-zero</span>
+                <span class="doccomment">/// integer type,</span>
+                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;equal to [`&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span>), <span class="string">&quot;::MAX`].&quot;</span>)]</span>
+                <span class="doccomment">///</span>
+                <span class="doccomment">/// # Examples</span>
+                <span class="doccomment">///</span>
+                <span class="doccomment">/// ```</span>
+                <span class="doccomment">/// #![feature(nonzero_min_max)]</span>
+                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;# use std::num::&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ty</span>), <span class="string">&quot;;&quot;</span>)]</span>
+                <span class="doccomment">///</span>
+                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;assert_eq!(&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ty</span>), <span class="string">&quot;::MAX.get(), &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span>), <span class="string">&quot;::MAX);&quot;</span>)]</span>
+                <span class="doccomment">/// ```</span>
+                <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;nonzero_min_max&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;89065&quot;</span>)]</span>
+                <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new</span>(<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span><span class="op">&gt;</span><span class="ident">::MAX</span>).<span class="ident">unwrap</span>();
+            }
+        )<span class="op">+</span>
+    }
+}
+
+<span class="macro">macro_rules!</span> <span class="ident">nonzero_min_max_signed</span> {
+    ( $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ty</span>: <span class="ident">ident</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span>: <span class="ident">ident</span>); )<span class="op">+</span> ) =&gt; {
+        $(
+            <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ty</span> {
+                <span class="doccomment">/// The smallest value that can be represented by this non-zero</span>
+                <span class="doccomment">/// integer type,</span>
+                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;equal to [`&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span>), <span class="string">&quot;::MIN`].&quot;</span>)]</span>
+                <span class="doccomment">///</span>
+                <span class="doccomment">/// Note: While most integer types are defined for every whole</span>
+                <span class="doccomment">/// number between `MIN` and `MAX`, signed non-zero integers are</span>
+                <span class="doccomment">/// a special case. They have a &quot;gap&quot; at 0.</span>
+                <span class="doccomment">///</span>
+                <span class="doccomment">/// # Examples</span>
+                <span class="doccomment">///</span>
+                <span class="doccomment">/// ```</span>
+                <span class="doccomment">/// #![feature(nonzero_min_max)]</span>
+                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;# use std::num::&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ty</span>), <span class="string">&quot;;&quot;</span>)]</span>
+                <span class="doccomment">///</span>
+                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;assert_eq!(&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ty</span>), <span class="string">&quot;::MIN.get(), &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span>), <span class="string">&quot;::MIN);&quot;</span>)]</span>
+                <span class="doccomment">/// ```</span>
+                <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;nonzero_min_max&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;89065&quot;</span>)]</span>
+                <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MIN</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new</span>(<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span><span class="op">&gt;</span><span class="ident">::MIN</span>).<span class="ident">unwrap</span>();
+
+                <span class="doccomment">/// The largest value that can be represented by this non-zero</span>
+                <span class="doccomment">/// integer type,</span>
+                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;equal to [`&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span>), <span class="string">&quot;::MAX`].&quot;</span>)]</span>
+                <span class="doccomment">///</span>
+                <span class="doccomment">/// Note: While most integer types are defined for every whole</span>
+                <span class="doccomment">/// number between `MIN` and `MAX`, signed non-zero integers are</span>
+                <span class="doccomment">/// a special case. They have a &quot;gap&quot; at 0.</span>
+                <span class="doccomment">///</span>
+                <span class="doccomment">/// # Examples</span>
+                <span class="doccomment">///</span>
+                <span class="doccomment">/// ```</span>
+                <span class="doccomment">/// #![feature(nonzero_min_max)]</span>
+                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;# use std::num::&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ty</span>), <span class="string">&quot;;&quot;</span>)]</span>
+                <span class="doccomment">///</span>
+                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;assert_eq!(&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ty</span>), <span class="string">&quot;::MAX.get(), &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span>), <span class="string">&quot;::MAX);&quot;</span>)]</span>
+                <span class="doccomment">/// ```</span>
+                <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;nonzero_min_max&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;89065&quot;</span>)]</span>
+                <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::new</span>(<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span><span class="op">&gt;</span><span class="ident">::MAX</span>).<span class="ident">unwrap</span>();
+            }
+        )<span class="op">+</span>
+    }
+}
+
+<span class="macro">nonzero_min_max_unsigned!</span> {
+    <span class="ident">NonZeroU8</span>(<span class="ident">u8</span>);
+    <span class="ident">NonZeroU16</span>(<span class="ident">u16</span>);
+    <span class="ident">NonZeroU32</span>(<span class="ident">u32</span>);
+    <span class="ident">NonZeroU64</span>(<span class="ident">u64</span>);
+    <span class="ident">NonZeroU128</span>(<span class="ident">u128</span>);
+    <span class="ident">NonZeroUsize</span>(<span class="ident">usize</span>);
+}
+
+<span class="macro">nonzero_min_max_signed!</span> {
+    <span class="ident">NonZeroI8</span>(<span class="ident">i8</span>);
+    <span class="ident">NonZeroI16</span>(<span class="ident">i16</span>);
+    <span class="ident">NonZeroI32</span>(<span class="ident">i32</span>);
+    <span class="ident">NonZeroI64</span>(<span class="ident">i64</span>);
+    <span class="ident">NonZeroI128</span>(<span class="ident">i128</span>);
+    <span class="ident">NonZeroIsize</span>(<span class="ident">isize</span>);
+}
+
+<span class="macro">macro_rules!</span> <span class="ident">nonzero_bits</span> {
+    ( $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ty</span>: <span class="ident">ident</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span>: <span class="ident">ty</span>); )<span class="op">+</span> ) =&gt; {
+        $(
+            <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ty</span> {
+                <span class="doccomment">/// The size of this non-zero integer type in bits.</span>
+                <span class="doccomment">///</span>
+                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;This value is equal to [`&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span>), <span class="string">&quot;::BITS`].&quot;</span>)]</span>
+                <span class="doccomment">///</span>
+                <span class="doccomment">/// # Examples</span>
+                <span class="doccomment">///</span>
+                <span class="doccomment">/// ```</span>
+                <span class="doccomment">/// #![feature(nonzero_bits)]</span>
+                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;# use std::num::&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ty</span>), <span class="string">&quot;;&quot;</span>)]</span>
+                <span class="doccomment">///</span>
+                <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro">concat!</span>(<span class="string">&quot;assert_eq!(&quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Ty</span>), <span class="string">&quot;::BITS, &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span>), <span class="string">&quot;::BITS);&quot;</span>)]</span>
+                <span class="doccomment">/// ```</span>
+                <span class="attribute">#[<span class="ident">unstable</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;nonzero_bits&quot;</span>, <span class="ident">issue</span> <span class="op">=</span> <span class="string">&quot;94881&quot;</span>)]</span>
+                <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BITS</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">Int</span><span class="op">&gt;</span><span class="ident">::BITS</span>;
+            }
+        )<span class="op">+</span>
+    }
+}
+
+<span class="macro">nonzero_bits!</span> {
+    <span class="ident">NonZeroU8</span>(<span class="ident">u8</span>);
+    <span class="ident">NonZeroI8</span>(<span class="ident">i8</span>);
+    <span class="ident">NonZeroU16</span>(<span class="ident">u16</span>);
+    <span class="ident">NonZeroI16</span>(<span class="ident">i16</span>);
+    <span class="ident">NonZeroU32</span>(<span class="ident">u32</span>);
+    <span class="ident">NonZeroI32</span>(<span class="ident">i32</span>);
+    <span class="ident">NonZeroU64</span>(<span class="ident">u64</span>);
+    <span class="ident">NonZeroI64</span>(<span class="ident">i64</span>);
+    <span class="ident">NonZeroU128</span>(<span class="ident">u128</span>);
+    <span class="ident">NonZeroI128</span>(<span class="ident">i128</span>);
+    <span class="ident">NonZeroUsize</span>(<span class="ident">usize</span>);
+    <span class="ident">NonZeroIsize</span>(<span class="ident">isize</span>);
+}
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
 </body></html>

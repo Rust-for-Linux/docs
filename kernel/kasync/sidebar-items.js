@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["net","Async networking."]]});
+initSidebarItems({"fn":[["yield_now","Yields execution of the current task so that other tasks may execute."]],"mod":[["executor","Kernel support for executing futures."],["net","Async networking."]]});

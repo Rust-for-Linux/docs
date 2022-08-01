@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["read_lock","Acquires the RCU read side lock."]],"struct":[["Guard","Evidence that the RCU read side lock is held on the current thread/CPU."]]});

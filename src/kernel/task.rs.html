@@ -1,107 +1,107 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/kernel/task.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>task.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.gif"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.gif" alt="logo"></div>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
         </a><h2 class="location"></h2>
     </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.gif" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../logo.gif" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -178,20 +178,89 @@
 <span id="173">173</span>
 <span id="174">174</span>
 <span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! Tasks (threads and processes).</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! C header: [`include/linux/sched.h`](../../../../include/linux/sched.h).</span>
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bindings</span>;
-<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">marker::PhantomData</span>, <span class="ident">mem::ManuallyDrop</span>, <span class="ident">ops::Deref</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">bindings</span>, <span class="ident">c_str</span>, <span class="ident">error::from_kernel_err_ptr</span>, <span class="ident">types::PointerWrapper</span>, <span class="ident">ARef</span>, <span class="ident">AlwaysRefCounted</span>,
+    <span class="prelude-ty">Result</span>, <span class="ident">ScopeGuard</span>,
+};
+<span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
+<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">cell::UnsafeCell</span>, <span class="ident">fmt</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">ops::Deref</span>, <span class="ident">ptr</span>};
 
 <span class="doccomment">/// Wraps the kernel&#39;s `struct task_struct`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Invariants</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// The pointer `Task::ptr` is non-null and valid. Its reference count is also non-zero.</span>
+<span class="doccomment">/// Instances of this type are always ref-counted, that is, a call to `get_task_struct` ensures</span>
+<span class="doccomment">/// that the allocation remains valid at least until the matching call to `put_task_struct`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">///</span>
@@ -216,28 +285,24 @@
 <span class="doccomment">/// incremented when creating `State` and decremented when it is dropped:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// use kernel::task::Task;</span>
+<span class="doccomment">/// use kernel::{task::Task, ARef};</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// struct State {</span>
-<span class="doccomment">///     creator: Task,</span>
+<span class="doccomment">///     creator: ARef&lt;Task&gt;,</span>
 <span class="doccomment">///     index: u32,</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// impl State {</span>
 <span class="doccomment">///     fn new() -&gt; Self {</span>
 <span class="doccomment">///         Self {</span>
-<span class="doccomment">///             creator: Task::current().clone(),</span>
+<span class="doccomment">///             creator: Task::current().into(),</span>
 <span class="doccomment">///             index: 0,</span>
 <span class="doccomment">///         }</span>
 <span class="doccomment">///     }</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Task</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::task_struct</span>,
-}
-
-<span class="comment">// SAFETY: Given that the task is referenced, it is OK to send it to another thread.</span>
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">Task</span> {}
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Task</span>(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">UnsafeCell</span><span class="op">&lt;</span><span class="ident">bindings::task_struct</span><span class="op">&gt;</span>);
 
 <span class="comment">// SAFETY: It&#39;s OK to access `Task` through references from other threads because we&#39;re either</span>
 <span class="comment">// accessing properties that don&#39;t change (e.g., `pid`, `group_leader`) or that are properly</span>
@@ -253,106 +318,169 @@
         <span class="comment">// SAFETY: Just an FFI call.</span>
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">bindings::get_current</span>() };
 
-        <span class="comment">// SAFETY: If the current thread is still running, the current task is valid. Given</span>
-        <span class="comment">// that `TaskRef` is not `Send`, we know it cannot be transferred to another thread (where</span>
-        <span class="comment">// it could potentially outlive the caller).</span>
-        <span class="kw">unsafe</span> { <span class="ident">TaskRef::from_ptr</span>(<span class="ident">ptr</span>) }
+        <span class="ident">TaskRef</span> {
+            <span class="comment">// SAFETY: If the current thread is still running, the current task is valid. Given</span>
+            <span class="comment">// that `TaskRef` is not `Send`, we know it cannot be transferred to another thread</span>
+            <span class="comment">// (where it could potentially outlive the caller).</span>
+            <span class="ident">task</span>: <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">ptr</span>.<span class="ident">cast</span>() },
+            <span class="ident">_not_send</span>: <span class="ident">PhantomData</span>,
+        }
     }
 
     <span class="doccomment">/// Returns the group leader of the given task.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">group_leader</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">TaskRef</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-        <span class="comment">// SAFETY: By the type invariant, we know that `self.ptr` is non-null and valid.</span>
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">ptr</span>).<span class="ident">group_leader</span> };
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">group_leader</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Task</span> {
+        <span class="comment">// SAFETY: By the type invariant, we know that `self.0` is valid.</span>
+        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="macro">core::ptr::addr_of!</span>((<span class="kw-2">*</span><span class="self">self</span>.<span class="number">0</span>.<span class="ident">get</span>()).<span class="ident">group_leader</span>).<span class="ident">read</span>() };
 
         <span class="comment">// SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,</span>
         <span class="comment">// and given that a task has a reference to its group leader, we know it must be valid for</span>
         <span class="comment">// the lifetime of the returned task reference.</span>
-        <span class="kw">unsafe</span> { <span class="ident">TaskRef::from_ptr</span>(<span class="ident">ptr</span>) }
+        <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">ptr</span>.<span class="ident">cast</span>() }
     }
 
     <span class="doccomment">/// Returns the PID of the given task.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Pid</span> {
-        <span class="comment">// SAFETY: By the type invariant, we know that `self.ptr` is non-null and valid.</span>
-        <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">ptr</span>).<span class="ident">pid</span> }
+        <span class="comment">// SAFETY: By the type invariant, we know that `self.0` is valid.</span>
+        <span class="kw">unsafe</span> { <span class="macro">core::ptr::addr_of!</span>((<span class="kw-2">*</span><span class="self">self</span>.<span class="number">0</span>.<span class="ident">get</span>()).<span class="ident">pid</span>).<span class="ident">read</span>() }
     }
 
     <span class="doccomment">/// Determines whether the given task has pending signals.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">signal_pending</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="comment">// SAFETY: By the type invariant, we know that `self.ptr` is non-null and valid.</span>
-        <span class="kw">unsafe</span> { <span class="ident">bindings::signal_pending</span>(<span class="self">self</span>.<span class="ident">ptr</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> }
+        <span class="comment">// SAFETY: By the type invariant, we know that `self.0` is valid.</span>
+        <span class="kw">unsafe</span> { <span class="ident">bindings::signal_pending</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">get</span>()) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> }
+    }
+
+    <span class="doccomment">/// Starts a new kernel thread and runs it.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Launches 10 threads and waits for them to complete.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use core::sync::atomic::{AtomicU32, Ordering};</span>
+    <span class="doccomment">/// use kernel::sync::{CondVar, Mutex};</span>
+    <span class="doccomment">/// use kernel::task::Task;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// kernel::init_static_sync! {</span>
+    <span class="doccomment">///     static COUNT: Mutex&lt;u32&gt; = 0;</span>
+    <span class="doccomment">///     static COUNT_IS_ZERO: CondVar;</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// fn threadfn() {</span>
+    <span class="doccomment">///     pr_info!(&quot;Running from thread {}\n&quot;, Task::current().pid());</span>
+    <span class="doccomment">///     let mut guard = COUNT.lock();</span>
+    <span class="doccomment">///     *guard -= 1;</span>
+    <span class="doccomment">///     if *guard == 0 {</span>
+    <span class="doccomment">///         COUNT_IS_ZERO.notify_all();</span>
+    <span class="doccomment">///     }</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// // Set count to 10 and spawn 10 threads.</span>
+    <span class="doccomment">/// *COUNT.lock() = 10;</span>
+    <span class="doccomment">/// for i in 0..10 {</span>
+    <span class="doccomment">///     Task::spawn(fmt!(&quot;test{i}&quot;), threadfn).unwrap();</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// // Wait for count to drop to zero.</span>
+    <span class="doccomment">/// let mut guard = COUNT.lock();</span>
+    <span class="doccomment">/// while (*guard != 0) {</span>
+    <span class="doccomment">///     COUNT_IS_ZERO.wait(&amp;mut guard);</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FnOnce</span>() <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+        <span class="ident">name</span>: <span class="ident">fmt::Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
+        <span class="ident">func</span>: <span class="ident">T</span>,
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ARef</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">threadfn</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FnOnce</span>() <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+            <span class="ident">arg</span>: <span class="kw-2">*mut</span> <span class="ident">core::ffi::c_void</span>,
+        ) -&gt; <span class="ident">core::ffi::c_int</span> {
+            <span class="comment">// SAFETY: The thread argument is always a `Box&lt;T&gt;` because it is only called via the</span>
+            <span class="comment">// thread creation below.</span>
+            <span class="kw">let</span> <span class="ident">bfunc</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Box</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::from_pointer</span>(<span class="ident">arg</span>) };
+            <span class="ident">bfunc</span>();
+            <span class="number">0</span>
+        }
+
+        <span class="kw">let</span> <span class="ident">arg</span> <span class="op">=</span> <span class="ident">Box::try_new</span>(<span class="ident">func</span>)<span class="question-mark">?</span>.<span class="ident">into_pointer</span>();
+
+        <span class="comment">// SAFETY: `arg` was just created with a call to `into_pointer` above.</span>
+        <span class="kw">let</span> <span class="ident">guard</span> <span class="op">=</span> <span class="ident">ScopeGuard::new</span>(<span class="op">|</span><span class="op">|</span> <span class="kw">unsafe</span> {
+            <span class="ident">Box</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="ident">::from_pointer</span>(<span class="ident">arg</span>);
+        });
+
+        <span class="comment">// SAFETY: The function pointer is always valid (as long as the module remains loaded).</span>
+        <span class="comment">// Ownership of `raw` is transferred to the new thread (if one is actually created), so it</span>
+        <span class="comment">// remains valid. Lastly, the C format string is a constant that require formatting as the</span>
+        <span class="comment">// one and only extra argument.</span>
+        <span class="kw">let</span> <span class="ident">ktask</span> <span class="op">=</span> <span class="ident">from_kernel_err_ptr</span>(<span class="kw">unsafe</span> {
+            <span class="ident">bindings::kthread_create_on_node</span>(
+                <span class="prelude-val">Some</span>(<span class="ident">threadfn</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>),
+                <span class="ident">arg</span> <span class="kw">as</span> <span class="kw">_</span>,
+                <span class="ident">bindings::NUMA_NO_NODE</span>,
+                <span class="macro">c_str!</span>(<span class="string">&quot;%pA&quot;</span>).<span class="ident">as_char_ptr</span>(),
+                <span class="kw-2">&amp;</span><span class="ident">name</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">core::ffi::c_void</span>,
+            )
+        })<span class="question-mark">?</span>;
+
+        <span class="comment">// SAFETY: Since the kthread creation succeeded and we haven&#39;t run it yet, we know the task</span>
+        <span class="comment">// is valid.</span>
+        <span class="kw">let</span> <span class="ident">task</span>: <span class="ident">ARef</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">ktask</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">Task</span>) }.<span class="ident">into</span>();
+
+        <span class="comment">// Wakes up the thread, otherwise it won&#39;t run.</span>
+        <span class="ident">task</span>.<span class="ident">wake_up</span>();
+
+        <span class="ident">guard</span>.<span class="ident">dismiss</span>();
+        <span class="prelude-val">Ok</span>(<span class="ident">task</span>)
+    }
+
+    <span class="doccomment">/// Wakes up the task.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wake_up</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="comment">// SAFETY: By the type invariant, we know that `self.0.get()` is non-null and valid.</span>
+        <span class="comment">// And `wake_up_process` is safe to be called for any valid task, even if the task is</span>
+        <span class="comment">// running.</span>
+        <span class="kw">unsafe</span> { <span class="ident">bindings::wake_up_process</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">get</span>()) };
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">Task</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">ptr</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">ptr</span>
+<span class="comment">// SAFETY: The type invariants guarantee that `Task` is always ref-counted.</span>
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">AlwaysRefCounted</span> <span class="kw">for</span> <span class="ident">Task</span> {
+    <span class="kw">fn</span> <span class="ident">inc_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="comment">// SAFETY: The existence of a shared reference means that the refcount is nonzero.</span>
+        <span class="kw">unsafe</span> { <span class="ident">bindings::get_task_struct</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">get</span>()) };
+    }
+
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">dec_ref</span>(<span class="ident">obj</span>: <span class="ident">ptr::NonNull</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) {
+        <span class="comment">// SAFETY: The safety requirements guarantee that the refcount is nonzero.</span>
+        <span class="kw">unsafe</span> { <span class="ident">bindings::put_task_struct</span>(<span class="ident">obj</span>.<span class="ident">cast</span>().<span class="ident">as_ptr</span>()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Eq</span> <span class="kw">for</span> <span class="ident">Task</span> {}
-
-<span class="kw">impl</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">Task</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
-        <span class="comment">// SAFETY: The type invariants guarantee that `self.ptr` has a non-zero reference count.</span>
-        <span class="kw">unsafe</span> { <span class="ident">bindings::get_task_struct</span>(<span class="self">self</span>.<span class="ident">ptr</span>) };
-
-        <span class="comment">// INVARIANT: We incremented the reference count to account for the new `Task` being</span>
-        <span class="comment">// created.</span>
-        <span class="self">Self</span> { <span class="ident">ptr</span>: <span class="self">self</span>.<span class="ident">ptr</span> }
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Task</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="comment">// INVARIANT: We may decrement the refcount to zero, but the `Task` is being dropped, so</span>
-        <span class="comment">// this is not observable.</span>
-        <span class="comment">// SAFETY: The type invariants guarantee that `Task::ptr` has a non-zero reference count.</span>
-        <span class="kw">unsafe</span> { <span class="ident">bindings::put_task_struct</span>(<span class="self">self</span>.<span class="ident">ptr</span>) };
-    }
-}
-
-<span class="doccomment">/// A wrapper for [`Task`] that doesn&#39;t automatically decrement the refcount when dropped.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// We need the wrapper because [`ManuallyDrop`] alone would allow callers to call</span>
-<span class="doccomment">/// [`ManuallyDrop::into_inner`]. This would allow an unsafe sequence to be triggered without</span>
-<span class="doccomment">/// `unsafe` blocks because it would trigger an unbalanced call to `put_task_struct`.</span>
+<span class="doccomment">/// A wrapper for a shared reference to [`Task`] that isn&#39;t [`Send`].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// We make this explicitly not [`Send`] so that we can use it to represent the current thread</span>
-<span class="doccomment">/// without having to increment/decrement its reference count.</span>
+<span class="doccomment">/// without having to increment/decrement the task&#39;s reference count.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Invariants</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The wrapped [`Task`] remains valid for the lifetime of the object.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TaskRef</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">task</span>: <span class="ident">ManuallyDrop</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span>,
-    <span class="ident">_not_send</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> (), <span class="kw-2">*mut</span> ())<span class="op">&gt;</span>,
+    <span class="ident">task</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Task</span>,
+    <span class="ident">_not_send</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">*mut</span> ()<span class="op">&gt;</span>,
 }
-
-<span class="kw">impl</span> <span class="ident">TaskRef</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Constructs a new `struct task_struct` wrapper that doesn&#39;t change its reference count.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Safety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The pointer `ptr` must be non-null and valid for the lifetime of the object.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_ptr</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::task_struct</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {
-            <span class="ident">task</span>: <span class="ident">ManuallyDrop::new</span>(<span class="ident">Task</span> { <span class="ident">ptr</span> }),
-            <span class="ident">_not_send</span>: <span class="ident">PhantomData</span>,
-        }
-    }
-}
-
-<span class="comment">// SAFETY: It is OK to share a reference to the current thread with another thread because we know</span>
-<span class="comment">// the owner cannot go away while the shared reference exists (and `Task` itself is `Sync`).</span>
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">TaskRef</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {}
 
 <span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">TaskRef</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">Task</span>;
 
     <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Target</span> {
-        <span class="self">self</span>.<span class="ident">task</span>.<span class="ident">deref</span>()
+        <span class="self">self</span>.<span class="ident">task</span>
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">TaskRef</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ARef</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">t</span>: <span class="ident">TaskRef</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident">t</span>.<span class="ident">deref</span>().<span class="ident">into</span>()
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
 </body></html>

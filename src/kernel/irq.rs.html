@@ -1,107 +1,107 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/kernel/irq.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>irq.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.gif"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.gif" alt="logo"></div>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
         </a><h2 class="location"></h2>
     </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.gif" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../logo.gif" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -414,6 +414,276 @@
 <span id="409">409</span>
 <span id="410">410</span>
 <span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
+<span id="665">665</span>
+<span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
+<span id="678">678</span>
+<span id="679">679</span>
+<span id="680">680</span>
+<span id="681">681</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! Interrupts and interrupt chips.</span>
@@ -425,8 +695,15 @@
 
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bindings</span>, <span class="ident">c_types</span>, <span class="ident">error::from_kernel_result</span>, <span class="ident">types::PointerWrapper</span>, <span class="ident">Error</span>, <span class="prelude-ty">Result</span>};
-<span class="kw">use</span> <span class="ident">core::ops::Deref</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">bindings</span>,
+    <span class="ident">error</span>::{<span class="ident">from_kernel_result</span>, <span class="ident">to_result</span>},
+    <span class="ident">str::CString</span>,
+    <span class="ident">types::PointerWrapper</span>,
+    <span class="ident">Error</span>, <span class="prelude-ty">Result</span>, <span class="ident">ScopeGuard</span>,
+};
+<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">fmt</span>, <span class="ident">marker::PhantomData</span>, <span class="ident">ops::Deref</span>};
+<span class="kw">use</span> <span class="ident">macros::vtable</span>;
 
 <span class="doccomment">/// The type of irq hardware numbers.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">HwNumber</span> <span class="op">=</span> <span class="ident">bindings::irq_hw_number_t</span>;
@@ -511,13 +788,10 @@
 <span class="doccomment">/// It is a trait for the functions defined in [`struct irq_chip`].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`struct irq_chip`]: ../../../include/linux/irq.h</span>
+<span class="attribute">#[<span class="ident">vtable</span>]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Chip</span>: <span class="ident">Sized</span> {
     <span class="doccomment">/// The type of the context data stored in the irq chip and made available on each callback.</span>
     <span class="kw">type</span> <span class="ident">Data</span>: <span class="ident">PointerWrapper</span>;
-
-    <span class="doccomment">/// The methods to use to populate [`struct irq_chip`]. This is typically populated with</span>
-    <span class="doccomment">/// [`declare_irq_chip_operations`].</span>
-    <span class="kw">const</span> <span class="ident">TO_USE</span>: <span class="ident">ToUse</span>;
 
     <span class="doccomment">/// Called at the start of a new interrupt.</span>
     <span class="kw">fn</span> <span class="ident">ack</span>(<span class="ident">data</span>: <span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Data</span> <span class="kw">as</span> <span class="ident">PointerWrapper</span><span class="op">&gt;</span><span class="ident">::Borrowed</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>, <span class="ident">irq_data</span>: <span class="kw-2">&amp;</span><span class="ident">IrqData</span>);
@@ -560,47 +834,13 @@
     <span class="ident">chip</span>.<span class="ident">irq_mask</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">irq_mask_callback</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
     <span class="ident">chip</span>.<span class="ident">irq_unmask</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">irq_unmask_callback</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
 
-    <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">set_type</span> {
+    <span class="kw">if</span> <span class="ident">T::HAS_SET_TYPE</span> {
         <span class="ident">chip</span>.<span class="ident">irq_set_type</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">irq_set_type_callback</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
     }
 
-    <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">set_wake</span> {
+    <span class="kw">if</span> <span class="ident">T::HAS_SET_WAKE</span> {
         <span class="ident">chip</span>.<span class="ident">irq_set_wake</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">irq_set_wake_callback</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
     }
-}
-
-<span class="doccomment">/// Represents which fields of [`struct irq_chip`] should be populated with pointers.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This is typically populated with the [`declare_irq_chip_operations`] macro.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ToUse</span> {
-    <span class="doccomment">/// The `irq_set_type` field of [`struct irq_chip`].</span>
-    <span class="kw">pub</span> <span class="ident">set_type</span>: <span class="ident">bool</span>,
-
-    <span class="doccomment">/// The `irq_set_wake` field of [`struct irq_chip`].</span>
-    <span class="kw">pub</span> <span class="ident">set_wake</span>: <span class="ident">bool</span>,
-}
-
-<span class="doccomment">/// A constant version where all values are to set to `false`, that is, all supported fields will</span>
-<span class="doccomment">/// be set to null pointers.</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">USE_NONE</span>: <span class="ident">ToUse</span> <span class="op">=</span> <span class="ident">ToUse</span> {
-    <span class="ident">set_type</span>: <span class="bool-val">false</span>,
-    <span class="ident">set_wake</span>: <span class="bool-val">false</span>,
-};
-
-<span class="doccomment">/// Defines the [`Chip::TO_USE`] field based on a list of fields to be populated.</span>
-<span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules!</span> <span class="ident">declare_irq_chip_operations</span> {
-    () =&gt; {
-        <span class="kw">const</span> <span class="ident">TO_USE</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::irq::ToUse</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::irq::USE_NONE</span>;
-    };
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">i</span>:<span class="ident">ident</span>),<span class="op">+</span>) =&gt; {
-        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::needless_update</span>)]</span>
-        <span class="kw">const</span> <span class="ident">TO_USE</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::irq::ToUse</span> <span class="op">=</span>
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::irq::ToUse</span> {
-                $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">i</span>: <span class="bool-val">true</span>),<span class="op">+</span> ,
-                ..<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::irq::USE_NONE</span>
-            };
-    };
 }
 
 <span class="doccomment">/// Enables or disables power-management wake-on for the given irq number.</span>
@@ -649,8 +889,8 @@
 
 <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">irq_set_type_callback</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(
     <span class="ident">irq_data</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::irq_data</span>,
-    <span class="ident">flow_type</span>: <span class="ident">c_types::c_uint</span>,
-) -&gt; <span class="ident">c_types::c_int</span> {
+    <span class="ident">flow_type</span>: <span class="ident">core::ffi::c_uint</span>,
+) -&gt; <span class="ident">core::ffi::c_int</span> {
     <span class="macro">from_kernel_result!</span> {
         <span class="comment">// SAFETY: The safety requirements of `init_chip`, which is the only place that uses this</span>
         <span class="comment">// callback, ensure that the value stored as irq chip data comes from a previous call to</span>
@@ -659,15 +899,19 @@
 
         <span class="comment">// SAFETY: The value returned by `IrqData` is only valid until the end of this function, and</span>
         <span class="comment">// `irq_data` is guaranteed to be valid until then (by the contract with C code).</span>
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">T::set_type</span>(<span class="ident">data</span>, <span class="kw-2">&amp;mut</span> <span class="ident">LockedIrqData</span>(<span class="kw">unsafe</span> { <span class="ident">IrqData::from_ptr</span>(<span class="ident">irq_data</span>) }), <span class="ident">flow_type</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">T::set_type</span>(
+            <span class="ident">data</span>,
+            <span class="kw-2">&amp;mut</span> <span class="ident">LockedIrqData</span>(<span class="kw">unsafe</span> { <span class="ident">IrqData::from_ptr</span>(<span class="ident">irq_data</span>) }),
+            <span class="ident">flow_type</span>,
+        )<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">ret</span> <span class="kw">as</span> <span class="kw">_</span>)
     }
 }
 
 <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">irq_set_wake_callback</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Chip</span><span class="op">&gt;</span>(
     <span class="ident">irq_data</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::irq_data</span>,
-    <span class="ident">on</span>: <span class="ident">c_types::c_uint</span>,
-) -&gt; <span class="ident">c_types::c_int</span> {
+    <span class="ident">on</span>: <span class="ident">core::ffi::c_uint</span>,
+) -&gt; <span class="ident">core::ffi::c_int</span> {
     <span class="macro">from_kernel_result!</span> {
         <span class="comment">// SAFETY: The safety requirements of `init_chip`, which is the only place that uses this</span>
         <span class="comment">// callback, ensure that the value stored as irq chip data comes from a previous call to</span>
@@ -743,6 +987,302 @@
             <span class="ident">irq_chip</span>,
         }
     }
+}
+
+<span class="kw">struct</span> <span class="ident">InternalRegistration</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">PointerWrapper</span><span class="op">&gt;</span> {
+    <span class="ident">irq</span>: <span class="ident">u32</span>,
+    <span class="ident">data</span>: <span class="kw-2">*mut</span> <span class="ident">core::ffi::c_void</span>,
+    <span class="ident">name</span>: <span class="ident">CString</span>,
+    <span class="ident">_p</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">PointerWrapper</span><span class="op">&gt;</span> <span class="ident">InternalRegistration</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Registers a new irq handler.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Safety</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Callers must ensure that `handler` and `thread_fn` are compatible with the registration,</span>
+    <span class="doccomment">/// that is, that they only use their second argument while the call is happening and that they</span>
+    <span class="doccomment">/// only call [`T::borrow`] on it (e.g., they shouldn&#39;t call [`T::from_pointer`] and consume</span>
+    <span class="doccomment">/// it).</span>
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">try_new</span>(
+        <span class="ident">irq</span>: <span class="ident">core::ffi::c_uint</span>,
+        <span class="ident">handler</span>: <span class="ident">bindings::irq_handler_t</span>,
+        <span class="ident">thread_fn</span>: <span class="ident">bindings::irq_handler_t</span>,
+        <span class="ident">flags</span>: <span class="ident">usize</span>,
+        <span class="ident">data</span>: <span class="ident">T</span>,
+        <span class="ident">name</span>: <span class="ident">fmt::Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">into_pointer</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>;
+        <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">CString::try_from_fmt</span>(<span class="ident">name</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">guard</span> <span class="op">=</span> <span class="ident">ScopeGuard::new</span>(<span class="op">|</span><span class="op">|</span> {
+            <span class="comment">// SAFETY: `ptr` came from a previous call to `into_pointer`.</span>
+            <span class="kw">unsafe</span> { <span class="ident">T::from_pointer</span>(<span class="ident">ptr</span>) };
+        });
+        <span class="comment">// SAFETY: `name` and `ptr` remain valid as long as the registration is alive.</span>
+        <span class="ident">to_result</span>(<span class="kw">unsafe</span> {
+            <span class="ident">bindings::request_threaded_irq</span>(
+                <span class="ident">irq</span>,
+                <span class="ident">handler</span>,
+                <span class="ident">thread_fn</span>,
+                <span class="ident">flags</span> <span class="kw">as</span> <span class="kw">_</span>,
+                <span class="ident">name</span>.<span class="ident">as_char_ptr</span>(),
+                <span class="ident">ptr</span>,
+            )
+        })<span class="question-mark">?</span>;
+        <span class="ident">guard</span>.<span class="ident">dismiss</span>();
+        <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
+            <span class="ident">irq</span>,
+            <span class="ident">name</span>,
+            <span class="ident">data</span>: <span class="ident">ptr</span>,
+            <span class="ident">_p</span>: <span class="ident">PhantomData</span>,
+        })
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">PointerWrapper</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">InternalRegistration</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="comment">// Unregister irq handler.</span>
+        <span class="comment">//</span>
+        <span class="comment">// SAFETY: When `try_new` succeeds, the irq was successfully requested, so it is ok to free</span>
+        <span class="comment">// it here.</span>
+        <span class="kw">unsafe</span> { <span class="ident">bindings::free_irq</span>(<span class="self">self</span>.<span class="ident">irq</span>, <span class="self">self</span>.<span class="ident">data</span>) };
+
+        <span class="comment">// Free context data.</span>
+        <span class="comment">//</span>
+        <span class="comment">// SAFETY: This matches the call to `into_pointer` from `try_new` in the success case.</span>
+        <span class="kw">unsafe</span> { <span class="ident">T::from_pointer</span>(<span class="self">self</span>.<span class="ident">data</span>) };
+    }
+}
+
+<span class="doccomment">/// An irq handler.</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Handler</span> {
+    <span class="doccomment">/// The context data associated with and made available to the handler.</span>
+    <span class="kw">type</span> <span class="ident">Data</span>: <span class="ident">PointerWrapper</span>;
+
+    <span class="doccomment">/// Called from interrupt context when the irq happens.</span>
+    <span class="kw">fn</span> <span class="ident">handle_irq</span>(<span class="ident">data</span>: <span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Data</span> <span class="kw">as</span> <span class="ident">PointerWrapper</span><span class="op">&gt;</span><span class="ident">::Borrowed</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Return</span>;
+}
+
+<span class="doccomment">/// The registration of an interrupt handler.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The following is an example of a regular handler with a boxed `u32` as data.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use kernel::prelude::*;</span>
+<span class="doccomment">/// use kernel::irq;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// struct Example;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// impl irq::Handler for Example {</span>
+<span class="doccomment">///     type Data = Box&lt;u32&gt;;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     fn handle_irq(_data: &amp;u32) -&gt; irq::Return {</span>
+<span class="doccomment">///         irq::Return::None</span>
+<span class="doccomment">///     }</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// fn request_irq(irq: u32, data: Box&lt;u32&gt;) -&gt; Result&lt;irq::Registration&lt;Example&gt;&gt; {</span>
+<span class="doccomment">///     irq::Registration::try_new(irq, data, irq::flags::SHARED, fmt!(&quot;example_{irq}&quot;))</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Handler</span><span class="op">&gt;</span>(<span class="ident">InternalRegistration</span><span class="op">&lt;</span><span class="ident">H::Data</span><span class="op">&gt;</span>);
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Handler</span><span class="op">&gt;</span> <span class="ident">Registration</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Registers a new irq handler.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The valid values of `flags` come from the [`flags`] module.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_new</span>(
+        <span class="ident">irq</span>: <span class="ident">u32</span>,
+        <span class="ident">data</span>: <span class="ident">H::Data</span>,
+        <span class="ident">flags</span>: <span class="ident">usize</span>,
+        <span class="ident">name</span>: <span class="ident">fmt::Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="comment">// SAFETY: `handler` only calls `H::Data::borrow` on `raw_data`.</span>
+        <span class="prelude-val">Ok</span>(<span class="self">Self</span>(<span class="kw">unsafe</span> {
+            <span class="ident">InternalRegistration::try_new</span>(<span class="ident">irq</span>, <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::handler</span>), <span class="prelude-val">None</span>, <span class="ident">flags</span>, <span class="ident">data</span>, <span class="ident">name</span>)<span class="question-mark">?</span>
+        }))
+    }
+
+    <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">handler</span>(
+        <span class="ident">_irq</span>: <span class="ident">core::ffi::c_int</span>,
+        <span class="ident">raw_data</span>: <span class="kw-2">*mut</span> <span class="ident">core::ffi::c_void</span>,
+    ) -&gt; <span class="ident">bindings::irqreturn_t</span> {
+        <span class="comment">// SAFETY: On registration, `into_pointer` was called, so it is safe to borrow from it here</span>
+        <span class="comment">// because `from_pointer` is called only after the irq is unregistered.</span>
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">H::Data::borrow</span>(<span class="ident">raw_data</span>) };
+        <span class="ident">H::handle_irq</span>(<span class="ident">data</span>) <span class="kw">as</span> <span class="kw">_</span>
+    }
+}
+
+<span class="doccomment">/// A threaded irq handler.</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ThreadedHandler</span> {
+    <span class="doccomment">/// The context data associated with and made available to the handlers.</span>
+    <span class="kw">type</span> <span class="ident">Data</span>: <span class="ident">PointerWrapper</span>;
+
+    <span class="doccomment">/// Called from interrupt context when the irq first happens.</span>
+    <span class="kw">fn</span> <span class="ident">handle_primary_irq</span>(<span class="ident">_data</span>: <span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Data</span> <span class="kw">as</span> <span class="ident">PointerWrapper</span><span class="op">&gt;</span><span class="ident">::Borrowed</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Return</span> {
+        <span class="ident">Return::WakeThread</span>
+    }
+
+    <span class="doccomment">/// Called from the handler thread.</span>
+    <span class="kw">fn</span> <span class="ident">handle_threaded_irq</span>(<span class="ident">data</span>: <span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Data</span> <span class="kw">as</span> <span class="ident">PointerWrapper</span><span class="op">&gt;</span><span class="ident">::Borrowed</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">Return</span>;
+}
+
+<span class="doccomment">/// The registration of a threaded interrupt handler.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The following is an example of a threaded handler with a ref-counted u32 as data:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// # use kernel::prelude::*;</span>
+<span class="doccomment">/// use kernel::{</span>
+<span class="doccomment">///     irq,</span>
+<span class="doccomment">///     sync::{Ref, RefBorrow},</span>
+<span class="doccomment">/// };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// struct Example;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// impl irq::ThreadedHandler for Example {</span>
+<span class="doccomment">///     type Data = Ref&lt;u32&gt;;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     fn handle_threaded_irq(_data: RefBorrow&lt;&#39;_, u32&gt;) -&gt; irq::Return {</span>
+<span class="doccomment">///         irq::Return::None</span>
+<span class="doccomment">///     }</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// fn request_irq(irq: u32, data: Ref&lt;u32&gt;) -&gt; Result&lt;irq::ThreadedRegistration&lt;Example&gt;&gt; {</span>
+<span class="doccomment">///     irq::ThreadedRegistration::try_new(irq, data, irq::flags::SHARED, fmt!(&quot;example_{irq}&quot;))</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ThreadedRegistration</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">ThreadedHandler</span><span class="op">&gt;</span>(<span class="ident">InternalRegistration</span><span class="op">&lt;</span><span class="ident">H::Data</span><span class="op">&gt;</span>);
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">ThreadedHandler</span><span class="op">&gt;</span> <span class="ident">ThreadedRegistration</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Registers a new threaded irq handler.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The valid values of `flags` come from the [`flags`] module.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_new</span>(
+        <span class="ident">irq</span>: <span class="ident">u32</span>,
+        <span class="ident">data</span>: <span class="ident">H::Data</span>,
+        <span class="ident">flags</span>: <span class="ident">usize</span>,
+        <span class="ident">name</span>: <span class="ident">fmt::Arguments</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="comment">// SAFETY: both `primary_handler` and `threaded_handler` only call `H::Data::borrow` on</span>
+        <span class="comment">// `raw_data`.</span>
+        <span class="prelude-val">Ok</span>(<span class="self">Self</span>(<span class="kw">unsafe</span> {
+            <span class="ident">InternalRegistration::try_new</span>(
+                <span class="ident">irq</span>,
+                <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::primary_handler</span>),
+                <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::threaded_handler</span>),
+                <span class="ident">flags</span>,
+                <span class="ident">data</span>,
+                <span class="ident">name</span>,
+            )<span class="question-mark">?</span>
+        }))
+    }
+
+    <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">primary_handler</span>(
+        <span class="ident">_irq</span>: <span class="ident">core::ffi::c_int</span>,
+        <span class="ident">raw_data</span>: <span class="kw-2">*mut</span> <span class="ident">core::ffi::c_void</span>,
+    ) -&gt; <span class="ident">bindings::irqreturn_t</span> {
+        <span class="comment">// SAFETY: On registration, `into_pointer` was called, so it is safe to borrow from it here</span>
+        <span class="comment">// because `from_pointer` is called only after the irq is unregistered.</span>
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">H::Data::borrow</span>(<span class="ident">raw_data</span>) };
+        <span class="ident">H::handle_primary_irq</span>(<span class="ident">data</span>) <span class="kw">as</span> <span class="kw">_</span>
+    }
+
+    <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">threaded_handler</span>(
+        <span class="ident">_irq</span>: <span class="ident">core::ffi::c_int</span>,
+        <span class="ident">raw_data</span>: <span class="kw-2">*mut</span> <span class="ident">core::ffi::c_void</span>,
+    ) -&gt; <span class="ident">bindings::irqreturn_t</span> {
+        <span class="comment">// SAFETY: On registration, `into_pointer` was called, so it is safe to borrow from it here</span>
+        <span class="comment">// because `from_pointer` is called only after the irq is unregistered.</span>
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">H::Data::borrow</span>(<span class="ident">raw_data</span>) };
+        <span class="ident">H::handle_threaded_irq</span>(<span class="ident">data</span>) <span class="kw">as</span> <span class="kw">_</span>
+    }
+}
+
+<span class="doccomment">/// The return value from interrupt handlers.</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Return</span> {
+    <span class="doccomment">/// The interrupt was not from this device or was not handled.</span>
+    <span class="prelude-val">None</span> <span class="op">=</span> <span class="ident">bindings::irqreturn_IRQ_NONE</span> <span class="kw">as</span> <span class="kw">_</span>,
+
+    <span class="doccomment">/// The interrupt was handled by this device.</span>
+    <span class="ident">Handled</span> <span class="op">=</span> <span class="ident">bindings::irqreturn_IRQ_HANDLED</span> <span class="kw">as</span> <span class="kw">_</span>,
+
+    <span class="doccomment">/// The handler wants the handler thread to wake up.</span>
+    <span class="ident">WakeThread</span> <span class="op">=</span> <span class="ident">bindings::irqreturn_IRQ_WAKE_THREAD</span> <span class="kw">as</span> <span class="kw">_</span>,
+}
+
+<span class="doccomment">/// Container for interrupt flags.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">flags</span> {
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bindings</span>;
+
+    <span class="doccomment">/// Use the interrupt line as already configured.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRIGGER_NONE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_TRIGGER_NONE</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// The interrupt is triggered when the signal goes from low to high.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRIGGER_RISING</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_TRIGGER_RISING</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// The interrupt is triggered when the signal goes from high to low.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRIGGER_FALLING</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_TRIGGER_FALLING</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// The interrupt is triggered while the signal is held high.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRIGGER_HIGH</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_TRIGGER_HIGH</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// The interrupt is triggered while the signal is held low.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TRIGGER_LOW</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_TRIGGER_LOW</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// Allow sharing the irq among several devices.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SHARED</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_SHARED</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// Set by callers when they expect sharing mismatches to occur.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PROBE_SHARED</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_PROBE_SHARED</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// Flag to mark this interrupt as timer interrupt.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TIMER</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_TIMER</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// Interrupt is per cpu.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PERCPU</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_PERCPU</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// Flag to exclude this interrupt from irq balancing.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NOBALANCING</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_NOBALANCING</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// Interrupt is used for polling (only the interrupt that is registered first in a shared</span>
+    <span class="doccomment">/// interrupt is considered for performance reasons).</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IRQPOLL</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_IRQPOLL</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// Interrupt is not reenabled after the hardirq handler finished. Used by threaded interrupts</span>
+    <span class="doccomment">/// which need to keep the irq line disabled until the threaded handler has been run.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ONESHOT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_ONESHOT</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// Do not disable this IRQ during suspend. Does not guarantee that this interrupt will wake</span>
+    <span class="doccomment">/// the system from a suspended state.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NO_SUSPEND</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_NO_SUSPEND</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// Force enable it on resume even if [`NO_SUSPEND`] is set.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">FORCE_RESUME</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_FORCE_RESUME</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// Interrupt cannot be threaded.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NO_THREAD</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_NO_THREAD</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// Resume IRQ early during syscore instead of at device resume time.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">EARLY_RESUME</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_EARLY_RESUME</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// If the IRQ is shared with a NO_SUSPEND user, execute this interrupt handler after</span>
+    <span class="doccomment">/// suspending interrupts. For system wakeup devices users need to implement wakeup detection</span>
+    <span class="doccomment">/// in their interrupt handlers.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">COND_SUSPEND</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_COND_SUSPEND</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// Don&#39;t enable IRQ or NMI automatically when users request it. Users will enable it</span>
+    <span class="doccomment">/// explicitly by `enable_irq` or `enable_nmi` later.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NO_AUTOEN</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_NO_AUTOEN</span> <span class="kw">as</span> <span class="kw">_</span>;
+
+    <span class="doccomment">/// Exclude from runnaway detection for IPI and similar handlers, depends on `PERCPU`.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NO_DEBUG</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">bindings::IRQF_NO_DEBUG</span> <span class="kw">as</span> <span class="kw">_</span>;
 }
 
 <span class="doccomment">/// A guard to call `chained_irq_exit` after `chained_irq_enter` was called.</span>
@@ -826,5 +1366,5 @@
     <span class="ident">T::handle_irq_flow</span>(<span class="ident">data</span>, <span class="kw-2">&amp;</span><span class="kw">unsafe</span> { <span class="ident">Descriptor::from_ptr</span>(<span class="ident">desc</span>) });
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
 </body></html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Declares a kernel module that exposes a single file system."><meta name="keywords" content="rust, rustlang, rust-lang, module_fs"><title>module_fs in kernel - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../dark.css" disabled><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../storage.js"></script><script src="../crates.js"></script><script defer src="../main.js"></script>
+    <noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../logo.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../logo.svg" alt="logo"></div>
+        </a><div class="sidebar-elems"><h2 class="location"><a href="index.html">In kernel</a></h2><div id="sidebar-vars" data-name="module_fs" data-ty="macro" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../kernel/index.html"><img class="rust-logo" src="../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Macro <a href="index.html">kernel</a>::<wbr><a class="macro" href="#">module_fs</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/kernel/fs.rs.html#838-846">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><div class="docblock item-decl"><div class="example-wrap"><pre class="rust macro"><code><span class="macro">macro_rules!</span> <span class="ident">module_fs</span> {
+    (<span class="kw">type</span>: <span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ty</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">f</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; { ... };
+}</code></pre></div>
+</div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Declares a kernel module that exposes a single file system.</p>
+<p>The <code>type</code> argument must be a type which implements the <a href="fs/trait.Type.html" title="Type"><code>Type</code></a> trait. Also accepts various
+forms of kernel metadata.</p>
+<h2 id="examples"><a href="#examples">Examples</a></h2>
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="kw">use</span> <span class="ident">kernel::prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">kernel</span>::{<span class="ident">c_str</span>, <span class="ident">fs</span>};
+
+<span class="macro">module_fs!</span> {
+    <span class="kw">type</span>: <span class="ident">MyFs</span>,
+    <span class="ident">name</span>: <span class="string">b&quot;my_fs_kernel_module&quot;</span>,
+    <span class="ident">author</span>: <span class="string">b&quot;Rust for Linux Contributors&quot;</span>,
+    <span class="ident">description</span>: <span class="string">b&quot;My very own file system kernel module!&quot;</span>,
+    <span class="ident">license</span>: <span class="string">b&quot;GPL&quot;</span>,
+}
+
+<span class="kw">struct</span> <span class="ident">MyFs</span>;
+
+<span class="attribute">#[<span class="ident">vtable</span>]</span>
+<span class="kw">impl</span> <span class="ident">fs::Context</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MyFs</span> {
+    <span class="kw">type</span> <span class="ident">Data</span> <span class="op">=</span> ();
+    <span class="kw">fn</span> <span class="ident">try_new</span>() -&gt; <span class="prelude-ty">Result</span> {
+        <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">fs::Type</span> <span class="kw">for</span> <span class="ident">MyFs</span> {
+    <span class="kw">type</span> <span class="ident">Context</span> <span class="op">=</span> <span class="self">Self</span>;
+    <span class="kw">const</span> <span class="ident">SUPER_TYPE</span>: <span class="ident">fs::Super</span> <span class="op">=</span> <span class="ident">fs::Super::Independent</span>;
+    <span class="kw">const</span> <span class="ident">NAME</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">CStr</span> <span class="op">=</span> <span class="macro">c_str!</span>(<span class="string">&quot;example&quot;</span>);
+    <span class="kw">const</span> <span class="ident">FLAGS</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">0</span>;
+
+    <span class="kw">fn</span> <span class="ident">fill_super</span>(<span class="ident">_data</span>: (), <span class="ident">sb</span>: <span class="ident">fs::NewSuperBlock</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="self">Self</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">fs::SuperBlock</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">sb</span> <span class="op">=</span> <span class="ident">sb</span>.<span class="ident">init</span>(
+            (),
+            <span class="kw-2">&amp;</span><span class="ident">fs::SuperParams</span> {
+                <span class="ident">magic</span>: <span class="number">0x6578616d</span>,
+                ..<span class="ident">fs::SuperParams::DEFAULT</span>
+            },
+        )<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">sb</span> <span class="op">=</span> <span class="ident">sb</span>.<span class="ident">init_root</span>()<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(<span class="ident">sb</span>)
+    }
+}</code></pre></div>
+</div></details></section></div></main><div id="rustdoc-vars" data-root-path="../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
+</body></html>

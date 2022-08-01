@@ -1,107 +1,107 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/kernel/file.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>file.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.gif"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.gif" alt="logo"></div>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
         </a><h2 class="location"></h2>
     </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.gif" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../logo.gif" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -863,6 +863,33 @@
 <span id="858">858</span>
 <span id="859">859</span>
 <span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+<span id="865">865</span>
+<span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! Files and file descriptors.</span>
@@ -871,7 +898,7 @@
 <span class="doccomment">//! [`include/linux/file.h`](../../../../include/linux/file.h)</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">bindings</span>, <span class="ident">c_types</span>,
+    <span class="ident">bindings</span>,
     <span class="ident">cred::Credential</span>,
     <span class="ident">error</span>::{<span class="ident">code</span>::<span class="kw-2">*</span>, <span class="ident">from_kernel_result</span>, <span class="ident">Error</span>, <span class="prelude-ty">Result</span>},
     <span class="ident">io_buffer</span>::{<span class="ident">IoBufferReader</span>, <span class="ident">IoBufferWriter</span>},
@@ -884,6 +911,90 @@
 };
 <span class="kw">use</span> <span class="ident">core::convert</span>::{<span class="ident">TryFrom</span>, <span class="ident">TryInto</span>};
 <span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">cell::UnsafeCell</span>, <span class="ident">marker</span>, <span class="ident">mem</span>, <span class="ident">ptr</span>};
+<span class="kw">use</span> <span class="ident">macros::vtable</span>;
+
+<span class="doccomment">/// Flags associated with a [`File`].</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">flags</span> {
+    <span class="doccomment">/// File is opened in append mode.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_APPEND</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_APPEND</span>;
+
+    <span class="doccomment">/// Signal-driven I/O is enabled.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_ASYNC</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::FASYNC</span>;
+
+    <span class="doccomment">/// Close-on-exec flag is set.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_CLOEXEC</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_CLOEXEC</span>;
+
+    <span class="doccomment">/// File was created if it didn&#39;t already exist.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_CREAT</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_CREAT</span>;
+
+    <span class="doccomment">/// Direct I/O is enabled for this file.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_DIRECT</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_DIRECT</span>;
+
+    <span class="doccomment">/// File must be a directory.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_DIRECTORY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_DIRECTORY</span>;
+
+    <span class="doccomment">/// Like [`O_SYNC`] except metadata is not synced.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_DSYNC</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_DSYNC</span>;
+
+    <span class="doccomment">/// Ensure that this file is created with the `open(2)` call.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_EXCL</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_EXCL</span>;
+
+    <span class="doccomment">/// Large file size enabled (`off64_t` over `off_t`).</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_LARGEFILE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_LARGEFILE</span>;
+
+    <span class="doccomment">/// Do not update the file last access time.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_NOATIME</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_NOATIME</span>;
+
+    <span class="doccomment">/// File should not be used as process&#39;s controlling terminal.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_NOCTTY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_NOCTTY</span>;
+
+    <span class="doccomment">/// If basename of path is a symbolic link, fail open.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_NOFOLLOW</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_NOFOLLOW</span>;
+
+    <span class="doccomment">/// File is using nonblocking I/O.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_NONBLOCK</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_NONBLOCK</span>;
+
+    <span class="doccomment">/// Also known as `O_NDELAY`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This is effectively the same flag as [`O_NONBLOCK`] on all architectures</span>
+    <span class="doccomment">/// except SPARC64.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_NDELAY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_NDELAY</span>;
+
+    <span class="doccomment">/// Used to obtain a path file descriptor.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_PATH</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_PATH</span>;
+
+    <span class="doccomment">/// Write operations on this file will flush data and metadata.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_SYNC</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_SYNC</span>;
+
+    <span class="doccomment">/// This file is an unnamed temporary regular file.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_TMPFILE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_TMPFILE</span>;
+
+    <span class="doccomment">/// File should be truncated to length 0.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_TRUNC</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_TRUNC</span>;
+
+    <span class="doccomment">/// Bitmask for access mode flags.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use kernel::file;</span>
+    <span class="doccomment">/// # fn do_something() {}</span>
+    <span class="doccomment">/// # let flags = 0;</span>
+    <span class="doccomment">/// if (flags &amp; file::flags::O_ACCMODE) == file::flags::O_RDONLY {</span>
+    <span class="doccomment">///     do_something();</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_ACCMODE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_ACCMODE</span>;
+
+    <span class="doccomment">/// File is read only.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_RDONLY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_RDONLY</span>;
+
+    <span class="doccomment">/// File is write only.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_WRONLY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_WRONLY</span>;
+
+    <span class="doccomment">/// File can be both read and written.</span>
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_RDWR</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">bindings::O_RDWR</span>;
+}
 
 <span class="doccomment">/// Wraps the kernel&#39;s `struct file`.</span>
 <span class="doccomment">///</span>
@@ -927,11 +1038,6 @@
         <span class="kw">unsafe</span> { <span class="macro">core::ptr::addr_of!</span>((<span class="kw-2">*</span><span class="self">self</span>.<span class="number">0</span>.<span class="ident">get</span>()).<span class="ident">f_pos</span>).<span class="ident">read</span>() <span class="kw">as</span> <span class="kw">_</span> }
     }
 
-    <span class="doccomment">/// Returns whether the file is in blocking mode.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_blocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">flags</span>() <span class="op">&amp;</span> <span class="ident">bindings::O_NONBLOCK</span> <span class="op">==</span> <span class="number">0</span>
-    }
-
     <span class="doccomment">/// Returns the credentials of the task that originally opened the file.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cred</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Credential</span> {
         <span class="comment">// SAFETY: The file is valid because the shared reference guarantees a nonzero refcount.</span>
@@ -943,6 +1049,8 @@
     }
 
     <span class="doccomment">/// Returns the flags associated with the file.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The flags are a combination of the constants in [`flags`].</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flags</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="comment">// SAFETY: The file is valid because the shared reference guarantees a nonzero refcount.</span>
         <span class="kw">unsafe</span> { <span class="macro">core::ptr::addr_of!</span>((<span class="kw-2">*</span><span class="self">self</span>.<span class="number">0</span>.<span class="ident">get</span>()).<span class="ident">f_flags</span>).<span class="ident">read</span>() }
@@ -1081,7 +1189,7 @@
     <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">open_callback</span>(
         <span class="ident">inode</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::inode</span>,
         <span class="ident">file</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::file</span>,
-    ) -&gt; <span class="ident">c_types::c_int</span> {
+    ) -&gt; <span class="ident">core::ffi::c_int</span> {
         <span class="macro">from_kernel_result!</span> {
             <span class="comment">// SAFETY: `A::convert` must return a valid non-null pointer that</span>
             <span class="comment">// should point to data in the inode or file that lives longer</span>
@@ -1098,19 +1206,20 @@
             <span class="comment">// for implementers of the file operations (no other C code accesses</span>
             <span class="comment">// it), so we know that there are no concurrent threads/CPUs accessing</span>
             <span class="comment">// it (it&#39;s not visible to any other Rust code).</span>
-            <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">file</span>).<span class="ident">private_data</span> <span class="op">=</span> <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">c_types::c_void</span> };
+            <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">file</span>).<span class="ident">private_data</span> <span class="op">=</span> <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">core::ffi::c_void</span> };
             <span class="prelude-val">Ok</span>(<span class="number">0</span>)
         }
     }
 
     <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">read_callback</span>(
         <span class="ident">file</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::file</span>,
-        <span class="ident">buf</span>: <span class="kw-2">*mut</span> <span class="ident">c_types::c_char</span>,
-        <span class="ident">len</span>: <span class="ident">c_types::c_size_t</span>,
+        <span class="ident">buf</span>: <span class="kw-2">*mut</span> <span class="ident">core::ffi::c_char</span>,
+        <span class="ident">len</span>: <span class="ident">core::ffi::c_size_t</span>,
         <span class="ident">offset</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::loff_t</span>,
-    ) -&gt; <span class="ident">c_types::c_ssize_t</span> {
+    ) -&gt; <span class="ident">core::ffi::c_ssize_t</span> {
         <span class="macro">from_kernel_result!</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">UserSlicePtr::new</span>(<span class="ident">buf</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">c_types::c_void</span>, <span class="ident">len</span>).<span class="ident">writer</span>() };
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span> <span class="op">=</span>
+                <span class="kw">unsafe</span> { <span class="ident">UserSlicePtr::new</span>(<span class="ident">buf</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">core::ffi::c_void</span>, <span class="ident">len</span>).<span class="ident">writer</span>() };
             <span class="comment">// SAFETY: `private_data` was initialised by `open_callback` with a value returned by</span>
             <span class="comment">// `T::Data::into_pointer`. `T::Data::from_pointer` is only called by the</span>
             <span class="comment">// `release` callback, which the C API guarantees that will be called only when all</span>
@@ -1118,7 +1227,7 @@
             <span class="comment">// function is running.</span>
             <span class="kw">let</span> <span class="ident">f</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">T::Data::borrow</span>((<span class="kw-2">*</span><span class="ident">file</span>).<span class="ident">private_data</span>) };
             <span class="comment">// No `FMODE_UNSIGNED_OFFSET` support, so `offset` must be in [0, 2^63).</span>
-            <span class="comment">// See discussion in https://github.com/fishinabarrel/linux-kernel-module-rust/pull/113</span>
+            <span class="comment">// See &lt;https://github.com/fishinabarrel/linux-kernel-module-rust/pull/113&gt;.</span>
             <span class="kw">let</span> <span class="ident">read</span> <span class="op">=</span> <span class="ident">T::read</span>(
                 <span class="ident">f</span>,
                 <span class="kw">unsafe</span> { <span class="ident">File::from_ptr</span>(<span class="ident">file</span>) },
@@ -1144,8 +1253,12 @@
             <span class="comment">// references to `file` have been released, so we know it can&#39;t be called while this</span>
             <span class="comment">// function is running.</span>
             <span class="kw">let</span> <span class="ident">f</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">T::Data::borrow</span>((<span class="kw-2">*</span><span class="ident">file</span>).<span class="ident">private_data</span>) };
-            <span class="kw">let</span> <span class="ident">read</span> <span class="op">=</span>
-                <span class="ident">T::read</span>(<span class="ident">f</span>, <span class="kw">unsafe</span> { <span class="ident">File::from_ptr</span>(<span class="ident">file</span>) }, <span class="kw-2">&amp;mut</span> <span class="ident">iter</span>, <span class="ident">offset</span>.<span class="ident">try_into</span>()<span class="question-mark">?</span>)<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">read</span> <span class="op">=</span> <span class="ident">T::read</span>(
+                <span class="ident">f</span>,
+                <span class="kw">unsafe</span> { <span class="ident">File::from_ptr</span>(<span class="ident">file</span>) },
+                <span class="kw-2">&amp;mut</span> <span class="ident">iter</span>,
+                <span class="ident">offset</span>.<span class="ident">try_into</span>()<span class="question-mark">?</span>,
+            )<span class="question-mark">?</span>;
             <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">iocb</span>).<span class="ident">ki_pos</span> <span class="op">+</span><span class="op">=</span> <span class="ident">bindings::loff_t::try_from</span>(<span class="ident">read</span>).<span class="ident">unwrap</span>() };
             <span class="prelude-val">Ok</span>(<span class="ident">read</span> <span class="kw">as</span> <span class="kw">_</span>)
         }
@@ -1153,12 +1266,13 @@
 
     <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">write_callback</span>(
         <span class="ident">file</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::file</span>,
-        <span class="ident">buf</span>: <span class="kw-2">*const</span> <span class="ident">c_types::c_char</span>,
-        <span class="ident">len</span>: <span class="ident">c_types::c_size_t</span>,
+        <span class="ident">buf</span>: <span class="kw-2">*const</span> <span class="ident">core::ffi::c_char</span>,
+        <span class="ident">len</span>: <span class="ident">core::ffi::c_size_t</span>,
         <span class="ident">offset</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::loff_t</span>,
-    ) -&gt; <span class="ident">c_types::c_ssize_t</span> {
+    ) -&gt; <span class="ident">core::ffi::c_ssize_t</span> {
         <span class="macro">from_kernel_result!</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">UserSlicePtr::new</span>(<span class="ident">buf</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">c_types::c_void</span>, <span class="ident">len</span>).<span class="ident">reader</span>() };
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span> <span class="op">=</span>
+                <span class="kw">unsafe</span> { <span class="ident">UserSlicePtr::new</span>(<span class="ident">buf</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">core::ffi::c_void</span>, <span class="ident">len</span>).<span class="ident">reader</span>() };
             <span class="comment">// SAFETY: `private_data` was initialised by `open_callback` with a value returned by</span>
             <span class="comment">// `T::Data::into_pointer`. `T::Data::from_pointer` is only called by the</span>
             <span class="comment">// `release` callback, which the C API guarantees that will be called only when all</span>
@@ -1166,12 +1280,12 @@
             <span class="comment">// function is running.</span>
             <span class="kw">let</span> <span class="ident">f</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">T::Data::borrow</span>((<span class="kw-2">*</span><span class="ident">file</span>).<span class="ident">private_data</span>) };
             <span class="comment">// No `FMODE_UNSIGNED_OFFSET` support, so `offset` must be in [0, 2^63).</span>
-            <span class="comment">// See discussion in https://github.com/fishinabarrel/linux-kernel-module-rust/pull/113</span>
+            <span class="comment">// See &lt;https://github.com/fishinabarrel/linux-kernel-module-rust/pull/113&gt;.</span>
             <span class="kw">let</span> <span class="ident">written</span> <span class="op">=</span> <span class="ident">T::write</span>(
                 <span class="ident">f</span>,
                 <span class="kw">unsafe</span> { <span class="ident">File::from_ptr</span>(<span class="ident">file</span>) },
                 <span class="kw-2">&amp;mut</span> <span class="ident">data</span>,
-                <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">offset</span> }.<span class="ident">try_into</span>()<span class="question-mark">?</span>
+                <span class="kw">unsafe</span> { <span class="kw-2">*</span><span class="ident">offset</span> }.<span class="ident">try_into</span>()<span class="question-mark">?</span>,
             )<span class="question-mark">?</span>;
             <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">offset</span>) <span class="op">+</span><span class="op">=</span> <span class="ident">bindings::loff_t::try_from</span>(<span class="ident">written</span>).<span class="ident">unwrap</span>() };
             <span class="prelude-val">Ok</span>(<span class="ident">written</span> <span class="kw">as</span> <span class="kw">_</span>)
@@ -1192,8 +1306,12 @@
             <span class="comment">// references to `file` have been released, so we know it can&#39;t be called while this</span>
             <span class="comment">// function is running.</span>
             <span class="kw">let</span> <span class="ident">f</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">T::Data::borrow</span>((<span class="kw-2">*</span><span class="ident">file</span>).<span class="ident">private_data</span>) };
-            <span class="kw">let</span> <span class="ident">written</span> <span class="op">=</span>
-                <span class="ident">T::write</span>(<span class="ident">f</span>, <span class="kw">unsafe</span> { <span class="ident">File::from_ptr</span>(<span class="ident">file</span>) }, <span class="kw-2">&amp;mut</span> <span class="ident">iter</span>, <span class="ident">offset</span>.<span class="ident">try_into</span>()<span class="question-mark">?</span>)<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">written</span> <span class="op">=</span> <span class="ident">T::write</span>(
+                <span class="ident">f</span>,
+                <span class="kw">unsafe</span> { <span class="ident">File::from_ptr</span>(<span class="ident">file</span>) },
+                <span class="kw-2">&amp;mut</span> <span class="ident">iter</span>,
+                <span class="ident">offset</span>.<span class="ident">try_into</span>()<span class="question-mark">?</span>,
+            )<span class="question-mark">?</span>;
             <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">iocb</span>).<span class="ident">ki_pos</span> <span class="op">+</span><span class="op">=</span> <span class="ident">bindings::loff_t::try_from</span>(<span class="ident">written</span>).<span class="ident">unwrap</span>() };
             <span class="prelude-val">Ok</span>(<span class="ident">written</span> <span class="kw">as</span> <span class="kw">_</span>)
         }
@@ -1202,7 +1320,7 @@
     <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">release_callback</span>(
         <span class="ident">_inode</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::inode</span>,
         <span class="ident">file</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::file</span>,
-    ) -&gt; <span class="ident">c_types::c_int</span> {
+    ) -&gt; <span class="ident">core::ffi::c_int</span> {
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw">unsafe</span> { <span class="kw-2">&amp;mut</span> (<span class="kw-2">*</span><span class="ident">file</span>).<span class="ident">private_data</span> }, <span class="ident">ptr::null_mut</span>());
         <span class="ident">T::release</span>(<span class="kw">unsafe</span> { <span class="ident">T::Data::from_pointer</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw">_</span>) }, <span class="kw">unsafe</span> {
             <span class="ident">File::from_ptr</span>(<span class="ident">file</span>)
@@ -1213,7 +1331,7 @@
     <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">llseek_callback</span>(
         <span class="ident">file</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::file</span>,
         <span class="ident">offset</span>: <span class="ident">bindings::loff_t</span>,
-        <span class="ident">whence</span>: <span class="ident">c_types::c_int</span>,
+        <span class="ident">whence</span>: <span class="ident">core::ffi::c_int</span>,
     ) -&gt; <span class="ident">bindings::loff_t</span> {
         <span class="macro">from_kernel_result!</span> {
             <span class="kw">let</span> <span class="ident">off</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">whence</span> <span class="kw">as</span> <span class="ident">u32</span> {
@@ -1235,9 +1353,9 @@
 
     <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">unlocked_ioctl_callback</span>(
         <span class="ident">file</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::file</span>,
-        <span class="ident">cmd</span>: <span class="ident">c_types::c_uint</span>,
-        <span class="ident">arg</span>: <span class="ident">c_types::c_ulong</span>,
-    ) -&gt; <span class="ident">c_types::c_long</span> {
+        <span class="ident">cmd</span>: <span class="ident">core::ffi::c_uint</span>,
+        <span class="ident">arg</span>: <span class="ident">core::ffi::c_ulong</span>,
+    ) -&gt; <span class="ident">core::ffi::c_long</span> {
         <span class="macro">from_kernel_result!</span> {
             <span class="comment">// SAFETY: `private_data` was initialised by `open_callback` with a value returned by</span>
             <span class="comment">// `T::Data::into_pointer`. `T::Data::from_pointer` is only called by the</span>
@@ -1253,9 +1371,9 @@
 
     <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">compat_ioctl_callback</span>(
         <span class="ident">file</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::file</span>,
-        <span class="ident">cmd</span>: <span class="ident">c_types::c_uint</span>,
-        <span class="ident">arg</span>: <span class="ident">c_types::c_ulong</span>,
-    ) -&gt; <span class="ident">c_types::c_long</span> {
+        <span class="ident">cmd</span>: <span class="ident">core::ffi::c_uint</span>,
+        <span class="ident">arg</span>: <span class="ident">core::ffi::c_ulong</span>,
+    ) -&gt; <span class="ident">core::ffi::c_long</span> {
         <span class="macro">from_kernel_result!</span> {
             <span class="comment">// SAFETY: `private_data` was initialised by `open_callback` with a value returned by</span>
             <span class="comment">// `T::Data::into_pointer`. `T::Data::from_pointer` is only called by the</span>
@@ -1272,7 +1390,7 @@
     <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">mmap_callback</span>(
         <span class="ident">file</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::file</span>,
         <span class="ident">vma</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::vm_area_struct</span>,
-    ) -&gt; <span class="ident">c_types::c_int</span> {
+    ) -&gt; <span class="ident">core::ffi::c_int</span> {
         <span class="macro">from_kernel_result!</span> {
             <span class="comment">// SAFETY: `private_data` was initialised by `open_callback` with a value returned by</span>
             <span class="comment">// `T::Data::into_pointer`. `T::Data::from_pointer` is only called by the</span>
@@ -1296,8 +1414,8 @@
         <span class="ident">file</span>: <span class="kw-2">*mut</span> <span class="ident">bindings::file</span>,
         <span class="ident">start</span>: <span class="ident">bindings::loff_t</span>,
         <span class="ident">end</span>: <span class="ident">bindings::loff_t</span>,
-        <span class="ident">datasync</span>: <span class="ident">c_types::c_int</span>,
-    ) -&gt; <span class="ident">c_types::c_int</span> {
+        <span class="ident">datasync</span>: <span class="ident">core::ffi::c_int</span>,
+    ) -&gt; <span class="ident">core::ffi::c_int</span> {
         <span class="macro">from_kernel_result!</span> {
             <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">start</span>.<span class="ident">try_into</span>()<span class="question-mark">?</span>;
             <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">end</span>.<span class="ident">try_into</span>()<span class="question-mark">?</span>;
@@ -1333,24 +1451,24 @@
     <span class="kw">const</span> <span class="ident">VTABLE</span>: <span class="ident">bindings::file_operations</span> <span class="op">=</span> <span class="ident">bindings::file_operations</span> {
         <span class="ident">open</span>: <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::open_callback</span>),
         <span class="ident">release</span>: <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::release_callback</span>),
-        <span class="ident">read</span>: <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">read</span> {
+        <span class="ident">read</span>: <span class="kw">if</span> <span class="ident">T::HAS_READ</span> {
             <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::read_callback</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
         },
-        <span class="ident">write</span>: <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">write</span> {
+        <span class="ident">write</span>: <span class="kw">if</span> <span class="ident">T::HAS_WRITE</span> {
             <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::write_callback</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
         },
-        <span class="ident">llseek</span>: <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">seek</span> {
+        <span class="ident">llseek</span>: <span class="kw">if</span> <span class="ident">T::HAS_SEEK</span> {
             <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::llseek_callback</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
         },
 
         <span class="ident">check_flags</span>: <span class="prelude-val">None</span>,
-        <span class="ident">compat_ioctl</span>: <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">compat_ioctl</span> {
+        <span class="ident">compat_ioctl</span>: <span class="kw">if</span> <span class="ident">T::HAS_COMPAT_IOCTL</span> {
             <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::compat_ioctl_callback</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -1361,7 +1479,7 @@
         <span class="ident">fasync</span>: <span class="prelude-val">None</span>,
         <span class="ident">flock</span>: <span class="prelude-val">None</span>,
         <span class="ident">flush</span>: <span class="prelude-val">None</span>,
-        <span class="ident">fsync</span>: <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">fsync</span> {
+        <span class="ident">fsync</span>: <span class="kw">if</span> <span class="ident">T::HAS_FSYNC</span> {
             <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::fsync_callback</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -1371,19 +1489,19 @@
         <span class="ident">iterate_shared</span>: <span class="prelude-val">None</span>,
         <span class="ident">iopoll</span>: <span class="prelude-val">None</span>,
         <span class="ident">lock</span>: <span class="prelude-val">None</span>,
-        <span class="ident">mmap</span>: <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">mmap</span> {
+        <span class="ident">mmap</span>: <span class="kw">if</span> <span class="ident">T::HAS_MMAP</span> {
             <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::mmap_callback</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
         },
         <span class="ident">mmap_supported_flags</span>: <span class="number">0</span>,
         <span class="ident">owner</span>: <span class="ident">ptr::null_mut</span>(),
-        <span class="ident">poll</span>: <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">poll</span> {
+        <span class="ident">poll</span>: <span class="kw">if</span> <span class="ident">T::HAS_POLL</span> {
             <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::poll_callback</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
         },
-        <span class="ident">read_iter</span>: <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">read_iter</span> {
+        <span class="ident">read_iter</span>: <span class="kw">if</span> <span class="ident">T::HAS_READ</span> {
             <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::read_iter_callback</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -1394,12 +1512,13 @@
         <span class="ident">show_fdinfo</span>: <span class="prelude-val">None</span>,
         <span class="ident">splice_read</span>: <span class="prelude-val">None</span>,
         <span class="ident">splice_write</span>: <span class="prelude-val">None</span>,
-        <span class="ident">unlocked_ioctl</span>: <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">ioctl</span> {
+        <span class="ident">unlocked_ioctl</span>: <span class="kw">if</span> <span class="ident">T::HAS_IOCTL</span> {
             <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::unlocked_ioctl_callback</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
         },
-        <span class="ident">write_iter</span>: <span class="kw">if</span> <span class="ident">T::TO_USE</span>.<span class="ident">write_iter</span> {
+        <span class="ident">uring_cmd</span>: <span class="prelude-val">None</span>,
+        <span class="ident">write_iter</span>: <span class="kw">if</span> <span class="ident">T::HAS_WRITE</span> {
             <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::write_iter_callback</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -1414,69 +1533,6 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">build</span>() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">bindings::file_operations</span> {
         <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::VTABLE</span>
     }
-}
-
-<span class="doccomment">/// Represents which fields of [`struct file_operations`] should be populated with pointers.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ToUse</span> {
-    <span class="doccomment">/// The `read` field of [`struct file_operations`].</span>
-    <span class="kw">pub</span> <span class="ident">read</span>: <span class="ident">bool</span>,
-
-    <span class="doccomment">/// The `read_iter` field of [`struct file_operations`].</span>
-    <span class="kw">pub</span> <span class="ident">read_iter</span>: <span class="ident">bool</span>,
-
-    <span class="doccomment">/// The `write` field of [`struct file_operations`].</span>
-    <span class="kw">pub</span> <span class="ident">write</span>: <span class="ident">bool</span>,
-
-    <span class="doccomment">/// The `write_iter` field of [`struct file_operations`].</span>
-    <span class="kw">pub</span> <span class="ident">write_iter</span>: <span class="ident">bool</span>,
-
-    <span class="doccomment">/// The `llseek` field of [`struct file_operations`].</span>
-    <span class="kw">pub</span> <span class="ident">seek</span>: <span class="ident">bool</span>,
-
-    <span class="doccomment">/// The `unlocked_ioctl` field of [`struct file_operations`].</span>
-    <span class="kw">pub</span> <span class="ident">ioctl</span>: <span class="ident">bool</span>,
-
-    <span class="doccomment">/// The `compat_ioctl` field of [`struct file_operations`].</span>
-    <span class="kw">pub</span> <span class="ident">compat_ioctl</span>: <span class="ident">bool</span>,
-
-    <span class="doccomment">/// The `fsync` field of [`struct file_operations`].</span>
-    <span class="kw">pub</span> <span class="ident">fsync</span>: <span class="ident">bool</span>,
-
-    <span class="doccomment">/// The `mmap` field of [`struct file_operations`].</span>
-    <span class="kw">pub</span> <span class="ident">mmap</span>: <span class="ident">bool</span>,
-
-    <span class="doccomment">/// The `poll` field of [`struct file_operations`].</span>
-    <span class="kw">pub</span> <span class="ident">poll</span>: <span class="ident">bool</span>,
-}
-
-<span class="doccomment">/// A constant version where all values are to set to `false`, that is, all supported fields will</span>
-<span class="doccomment">/// be set to null pointers.</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">USE_NONE</span>: <span class="ident">ToUse</span> <span class="op">=</span> <span class="ident">ToUse</span> {
-    <span class="ident">read</span>: <span class="bool-val">false</span>,
-    <span class="ident">read_iter</span>: <span class="bool-val">false</span>,
-    <span class="ident">write</span>: <span class="bool-val">false</span>,
-    <span class="ident">write_iter</span>: <span class="bool-val">false</span>,
-    <span class="ident">seek</span>: <span class="bool-val">false</span>,
-    <span class="ident">ioctl</span>: <span class="bool-val">false</span>,
-    <span class="ident">compat_ioctl</span>: <span class="bool-val">false</span>,
-    <span class="ident">fsync</span>: <span class="bool-val">false</span>,
-    <span class="ident">mmap</span>: <span class="bool-val">false</span>,
-    <span class="ident">poll</span>: <span class="bool-val">false</span>,
-};
-
-<span class="doccomment">/// Defines the [`Operations::TO_USE`] field based on a list of fields to be populated.</span>
-<span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules!</span> <span class="ident">declare_file_operations</span> {
-    () =&gt; {
-        <span class="kw">const</span> <span class="ident">TO_USE</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::file::ToUse</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::file::USE_NONE</span>;
-    };
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">i</span>:<span class="ident">ident</span>),<span class="op">+</span>) =&gt; {
-        <span class="kw">const</span> <span class="ident">TO_USE</span>: <span class="ident">kernel::file::ToUse</span> <span class="op">=</span>
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::file::ToUse</span> {
-                $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">i</span>: <span class="bool-val">true</span>),<span class="op">+</span> ,
-                ..<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::file::USE_NONE</span>
-            };
-    };
 }
 
 <span class="doccomment">/// Allows the handling of ioctls defined with the `_IO`, `_IOR`, `_IOW`, and `_IOWR` macros.</span>
@@ -1606,10 +1662,8 @@
 <span class="doccomment">/// File descriptors may be used from multiple threads/processes concurrently, so your type must be</span>
 <span class="doccomment">/// [`Sync`]. It must also be [`Send`] because [`Operations::release`] will be called from the</span>
 <span class="doccomment">/// thread that decrements that associated file&#39;s refcount to zero.</span>
+<span class="attribute">#[<span class="ident">vtable</span>]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Operations</span> {
-    <span class="doccomment">/// The methods to use to populate [`struct file_operations`].</span>
-    <span class="kw">const</span> <span class="ident">TO_USE</span>: <span class="ident">ToUse</span>;
-
     <span class="doccomment">/// The type of the context data returned by [`Operations::open`] and made available to</span>
     <span class="doccomment">/// other methods.</span>
     <span class="kw">type</span> <span class="ident">Data</span>: <span class="ident">PointerWrapper</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">=</span> ();
@@ -1724,5 +1778,5 @@
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
 </body></html>

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Cursor","A list cursor that allows traversing a linked list and inspecting elements."],["Iterator","An iterator for the linked list."],["Links","Links of a linked list."],["List","An intrusive circular doubly-linked list."]],"trait":[["Adapter","A linked-list adapter."]]});
