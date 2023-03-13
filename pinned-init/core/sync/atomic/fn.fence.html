@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="An atomic fence."><meta name="keywords" content="rust, rustlang, rust-lang, fence"><title>fence in core::sync::atomic - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div>
+        </a><div class="sidebar-elems"><h2 class="location"><a href="index.html">In core::sync::atomic</a></h2><div id="sidebar-vars" data-name="fence" data-ty="fn" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Function <a href="../../index.html">core</a>::<wbr><a href="../index.html">sync</a>::<wbr><a href="index.html">atomic</a>::<wbr><a class="fn" href="#">fence</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><span class="since" title="Stable since Rust version 1.0.0">1.0.0</span> · <a class="srclink" href="../../../src/core/sync/atomic.rs.html#2900-2911">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><div class="docblock item-decl"><pre class="rust fn"><code>pub fn fence(order: <a class="enum" href="enum.Ordering.html" title="enum core::sync::atomic::Ordering">Ordering</a>)</code></pre></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>An atomic fence.</p>
+<p>Depending on the specified order, a fence prevents the compiler and CPU from
+reordering certain types of memory operations around it.
+That creates synchronizes-with relationships between it and atomic operations
+or fences in other threads.</p>
+<p>A fence ‘A’ which has (at least) <a href="enum.Ordering.html#variant.Release" title="Release"><code>Release</code></a> ordering semantics, synchronizes
+with a fence ‘B’ with (at least) <a href="enum.Ordering.html#variant.Acquire" title="Acquire"><code>Acquire</code></a> semantics, if and only if there
+exist operations X and Y, both operating on some atomic object ‘M’ such
+that A is sequenced before X, Y is synchronized before B and Y observes
+the change to M. This provides a happens-before dependence between A and B.</p>
+<div class="example-wrap"><pre class="language-text"><code>    Thread 1                                          Thread 2
+
+fence(Release);      A --------------
+x.store(3, Relaxed); X ---------    |
+                               |    |
+                               |    |
+                               -------------&gt; Y  if x.load(Relaxed) == 3 {
+                                    |-------&gt; B      fence(Acquire);
+                                                     ...
+                                                 }</code></pre></div>
+<p>Atomic operations with <a href="enum.Ordering.html#variant.Release" title="Release"><code>Release</code></a> or <a href="enum.Ordering.html#variant.Acquire" title="Acquire"><code>Acquire</code></a> semantics can also synchronize
+with a fence.</p>
+<p>A fence which has <a href="enum.Ordering.html#variant.SeqCst" title="SeqCst"><code>SeqCst</code></a> ordering, in addition to having both <a href="enum.Ordering.html#variant.Acquire" title="Acquire"><code>Acquire</code></a>
+and <a href="enum.Ordering.html#variant.Release" title="Release"><code>Release</code></a> semantics, participates in the global program order of the
+other <a href="enum.Ordering.html#variant.SeqCst" title="SeqCst"><code>SeqCst</code></a> operations and/or fences.</p>
+<p>Accepts <a href="enum.Ordering.html#variant.Acquire" title="Acquire"><code>Acquire</code></a>, <a href="enum.Ordering.html#variant.Release" title="Release"><code>Release</code></a>, <a href="enum.Ordering.html#variant.AcqRel" title="AcqRel"><code>AcqRel</code></a> and <a href="enum.Ordering.html#variant.SeqCst" title="SeqCst"><code>SeqCst</code></a> orderings.</p>
+<h2 id="panics"><a href="#panics">Panics</a></h2>
+<p>Panics if <code>order</code> is <a href="enum.Ordering.html#variant.Relaxed" title="Relaxed"><code>Relaxed</code></a>.</p>
+<h2 id="examples"><a href="#examples">Examples</a></h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">std::sync::atomic::AtomicBool</span>;
+<span class="kw">use</span> <span class="ident">std::sync::atomic::fence</span>;
+<span class="kw">use</span> <span class="ident">std::sync::atomic::Ordering</span>;
+
+<span class="comment">// A mutual exclusion primitive based on spinlock.</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Mutex</span> {
+    <span class="ident">flag</span>: <span class="ident">AtomicBool</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Mutex</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">Mutex</span> {
+        <span class="ident">Mutex</span> {
+            <span class="ident">flag</span>: <span class="ident">AtomicBool::new</span>(<span class="bool-val">false</span>),
+        }
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lock</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="comment">// Wait until the old value is `false`.</span>
+        <span class="kw">while</span> <span class="self">self</span>
+            .<span class="ident">flag</span>
+            .<span class="ident">compare_exchange_weak</span>(<span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="ident">Ordering::Relaxed</span>, <span class="ident">Ordering::Relaxed</span>)
+            .<span class="ident">is_err</span>()
+        {}
+        <span class="comment">// This fence synchronizes-with store in `unlock`.</span>
+        <span class="ident">fence</span>(<span class="ident">Ordering::Acquire</span>);
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unlock</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="self">self</span>.<span class="ident">flag</span>.<span class="ident">store</span>(<span class="bool-val">false</span>, <span class="ident">Ordering::Release</span>);
+    }
+}</code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Ause%20std%3A%3Async%3A%3Aatomic%3A%3AAtomicBool%3B%0Ause%20std%3A%3Async%3A%3Aatomic%3A%3Afence%3B%0Ause%20std%3A%3Async%3A%3Aatomic%3A%3AOrdering%3B%0A%0A%2F%2F%20A%20mutual%20exclusion%20primitive%20based%20on%20spinlock.%0Apub%20struct%20Mutex%20%7B%0A%20%20%20%20flag%3A%20AtomicBool%2C%0A%7D%0A%0Aimpl%20Mutex%20%7B%0A%20%20%20%20pub%20fn%20new()%20-%3E%20Mutex%20%7B%0A%20%20%20%20%20%20%20%20Mutex%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20flag%3A%20AtomicBool%3A%3Anew(false)%2C%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%0A%20%20%20%20pub%20fn%20lock(%26self)%20%7B%0A%20%20%20%20%20%20%20%20%2F%2F%20Wait%20until%20the%20old%20value%20is%20%60false%60.%0A%20%20%20%20%20%20%20%20while%20self%0A%20%20%20%20%20%20%20%20%20%20%20%20.flag%0A%20%20%20%20%20%20%20%20%20%20%20%20.compare_exchange_weak(false%2C%20true%2C%20Ordering%3A%3ARelaxed%2C%20Ordering%3A%3ARelaxed)%0A%20%20%20%20%20%20%20%20%20%20%20%20.is_err()%0A%20%20%20%20%20%20%20%20%7B%7D%0A%20%20%20%20%20%20%20%20%2F%2F%20This%20fence%20synchronizes-with%20store%20in%20%60unlock%60.%0A%20%20%20%20%20%20%20%20fence(Ordering%3A%3AAcquire)%3B%0A%20%20%20%20%7D%0A%0A%20%20%20%20pub%20fn%20unlock(%26self)%20%7B%0A%20%20%20%20%20%20%20%20self.flag.store(false%2C%20Ordering%3A%3ARelease)%3B%0A%20%20%20%20%7D%0A%7D%0A%7D&amp;edition=2021">Run</a></div>
+</div></details></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
+</body></html>

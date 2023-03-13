@@ -1,0 +1,1 @@
+initSidebarItems({"attr":[["pin_data","Used to specify the pinning information of the fields of a struct."],["pinned_drop","Used to implement `PinnedDrop` safely."],["vtable","Declares or implements a vtable trait."]],"macro":[["concat_idents","Concatenate two identifiers."],["module","Declares a kernel module."]]});

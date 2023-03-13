@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Overloadable operators."><meta name="keywords" content="rust, rustlang, rust-lang, ops"><title>core::ops - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a><h2 class="location"><a href="#">Module ops</a></h2><div class="sidebar-elems"><section><div class="block"><ul><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#traits">Traits</a></li></ul></div></section><div id="sidebar-vars" data-name="ops" data-ty="mod" data-relpath="./"></div><script defer src="./sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../core/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Module <a href="../index.html">core</a>::<wbr><a class="mod" href="#">ops</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><span class="since" title="Stable since Rust version 1.0.0">1.0.0</span> · <a class="srclink" href="../../src/core/ops/mod.rs.html#1-208">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Overloadable operators.</p>
+<p>Implementing these traits allows you to overload certain operators.</p>
+<p>Some of these traits are imported by the prelude, so they are available in
+every Rust program. Only operators backed by traits can be overloaded. For
+example, the addition operator (<code>+</code>) can be overloaded through the <a href="trait.Add.html" title="Add"><code>Add</code></a>
+trait, but since the assignment operator (<code>=</code>) has no backing trait, there
+is no way of overloading its semantics. Additionally, this module does not
+provide any mechanism to create new operators. If traitless overloading or
+custom operators are required, you should look toward macros or compiler
+plugins to extend Rust’s syntax.</p>
+<p>Implementations of operator traits should be unsurprising in their
+respective contexts, keeping in mind their usual meanings and
+<a href="../../reference/expressions.html#expression-precedence">operator precedence</a>. For example, when implementing <a href="trait.Mul.html" title="Mul"><code>Mul</code></a>, the operation
+should have some resemblance to multiplication (and share expected
+properties like associativity).</p>
+<p>Note that the <code>&amp;&amp;</code> and <code>||</code> operators short-circuit, i.e., they only
+evaluate their second operand if it contributes to the result. Since this
+behavior is not enforceable by traits, <code>&amp;&amp;</code> and <code>||</code> are not supported as
+overloadable operators.</p>
+<p>Many of the operators take their operands by value. In non-generic
+contexts involving built-in types, this is usually not a problem.
+However, using these operators in generic code, requires some
+attention if values have to be reused as opposed to letting the operators
+consume them. One option is to occasionally use <a href="../clone/trait.Clone.html#tymethod.clone"><code>clone</code></a>.
+Another option is to rely on the types involved providing additional
+operator implementations for references. For example, for a user-defined
+type <code>T</code> which is supposed to support addition, it is probably a good
+idea to have both <code>T</code> and <code>&amp;T</code> implement the traits <a href="trait.Add.html" title="Add"><code>Add&lt;T&gt;</code></a> and
+<a href="trait.Add.html" title="Add"><code>Add&lt;&amp;T&gt;</code></a> so that generic code can be written without unnecessary
+cloning.</p>
+<h2 id="examples"><a href="#examples">Examples</a></h2>
+<p>This example creates a <code>Point</code> struct that implements <a href="trait.Add.html" title="Add"><code>Add</code></a> and <a href="trait.Sub.html" title="Sub"><code>Sub</code></a>,
+and then demonstrates adding and subtracting two <code>Point</code>s.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">std::ops</span>::{<span class="ident">Add</span>, <span class="ident">Sub</span>};
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">struct</span> <span class="ident">Point</span> {
+    <span class="ident">x</span>: <span class="ident">i32</span>,
+    <span class="ident">y</span>: <span class="ident">i32</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Add</span> <span class="kw">for</span> <span class="ident">Point</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
+
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="self">Self</span>) -&gt; <span class="self">Self</span> {
+        <span class="self">Self</span> {<span class="ident">x</span>: <span class="self">self</span>.<span class="ident">x</span> <span class="op">+</span> <span class="ident">other</span>.<span class="ident">x</span>, <span class="ident">y</span>: <span class="self">self</span>.<span class="ident">y</span> <span class="op">+</span> <span class="ident">other</span>.<span class="ident">y</span>}
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Sub</span> <span class="kw">for</span> <span class="ident">Point</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
+
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="self">Self</span>) -&gt; <span class="self">Self</span> {
+        <span class="self">Self</span> {<span class="ident">x</span>: <span class="self">self</span>.<span class="ident">x</span> <span class="op">-</span> <span class="ident">other</span>.<span class="ident">x</span>, <span class="ident">y</span>: <span class="self">self</span>.<span class="ident">y</span> <span class="op">-</span> <span class="ident">other</span>.<span class="ident">y</span>}
+    }
+}
+
+<span class="macro">assert_eq!</span>(<span class="ident">Point</span> {<span class="ident">x</span>: <span class="number">3</span>, <span class="ident">y</span>: <span class="number">3</span>}, <span class="ident">Point</span> {<span class="ident">x</span>: <span class="number">1</span>, <span class="ident">y</span>: <span class="number">0</span>} <span class="op">+</span> <span class="ident">Point</span> {<span class="ident">x</span>: <span class="number">2</span>, <span class="ident">y</span>: <span class="number">3</span>});
+<span class="macro">assert_eq!</span>(<span class="ident">Point</span> {<span class="ident">x</span>: <span class="op">-</span><span class="number">1</span>, <span class="ident">y</span>: <span class="op">-</span><span class="number">3</span>}, <span class="ident">Point</span> {<span class="ident">x</span>: <span class="number">1</span>, <span class="ident">y</span>: <span class="number">0</span>} <span class="op">-</span> <span class="ident">Point</span> {<span class="ident">x</span>: <span class="number">2</span>, <span class="ident">y</span>: <span class="number">3</span>});</code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Ause%20std%3A%3Aops%3A%3A%7BAdd%2C%20Sub%7D%3B%0A%0A%23%5Bderive(Debug%2C%20Copy%2C%20Clone%2C%20PartialEq)%5D%0Astruct%20Point%20%7B%0A%20%20%20%20x%3A%20i32%2C%0A%20%20%20%20y%3A%20i32%2C%0A%7D%0A%0Aimpl%20Add%20for%20Point%20%7B%0A%20%20%20%20type%20Output%20%3D%20Self%3B%0A%0A%20%20%20%20fn%20add(self%2C%20other%3A%20Self)%20-%3E%20Self%20%7B%0A%20%20%20%20%20%20%20%20Self%20%7Bx%3A%20self.x%20%2B%20other.x%2C%20y%3A%20self.y%20%2B%20other.y%7D%0A%20%20%20%20%7D%0A%7D%0A%0Aimpl%20Sub%20for%20Point%20%7B%0A%20%20%20%20type%20Output%20%3D%20Self%3B%0A%0A%20%20%20%20fn%20sub(self%2C%20other%3A%20Self)%20-%3E%20Self%20%7B%0A%20%20%20%20%20%20%20%20Self%20%7Bx%3A%20self.x%20-%20other.x%2C%20y%3A%20self.y%20-%20other.y%7D%0A%20%20%20%20%7D%0A%7D%0A%0Aassert_eq!(Point%20%7Bx%3A%203%2C%20y%3A%203%7D%2C%20Point%20%7Bx%3A%201%2C%20y%3A%200%7D%20%2B%20Point%20%7Bx%3A%202%2C%20y%3A%203%7D)%3B%0Aassert_eq!(Point%20%7Bx%3A%20-1%2C%20y%3A%20-3%7D%2C%20Point%20%7Bx%3A%201%2C%20y%3A%200%7D%20-%20Point%20%7Bx%3A%202%2C%20y%3A%203%7D)%3B%0A%7D&amp;edition=2021">Run</a></div>
+<p>See the documentation for each trait for an example implementation.</p>
+<p>The <a href="trait.Fn.html" title="Fn"><code>Fn</code></a>, <a href="trait.FnMut.html" title="FnMut"><code>FnMut</code></a>, and <a href="trait.FnOnce.html" title="FnOnce"><code>FnOnce</code></a> traits are implemented by types that can be
+invoked like functions. Note that <a href="trait.Fn.html" title="Fn"><code>Fn</code></a> takes <code>&amp;self</code>, <a href="trait.FnMut.html" title="FnMut"><code>FnMut</code></a> takes <code>&amp;mut self</code> and <a href="trait.FnOnce.html" title="FnOnce"><code>FnOnce</code></a> takes <code>self</code>. These correspond to the three kinds of
+methods that can be invoked on an instance: call-by-reference,
+call-by-mutable-reference, and call-by-value. The most common use of these
+traits is to act as bounds to higher-level functions that take functions or
+closures as arguments.</p>
+<p>Taking a <a href="trait.Fn.html" title="Fn"><code>Fn</code></a> as a parameter:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn</span> <span class="ident">call_with_one</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">func</span>: <span class="ident">F</span>) -&gt; <span class="ident">usize</span>
+    <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">usize</span>) -&gt; <span class="ident">usize</span>
+{
+    <span class="ident">func</span>(<span class="number">1</span>)
+}
+
+<span class="kw">let</span> <span class="ident">double</span> <span class="op">=</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">*</span> <span class="number">2</span>;
+<span class="macro">assert_eq!</span>(<span class="ident">call_with_one</span>(<span class="ident">double</span>), <span class="number">2</span>);</code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Afn%20call_with_one%3CF%3E(func%3A%20F)%20-%3E%20usize%0A%20%20%20%20where%20F%3A%20Fn(usize)%20-%3E%20usize%0A%7B%0A%20%20%20%20func(1)%0A%7D%0A%0Alet%20double%20%3D%20%7Cx%7C%20x%20*%202%3B%0Aassert_eq!(call_with_one(double)%2C%202)%3B%0A%7D&amp;edition=2021">Run</a></div>
+<p>Taking a <a href="trait.FnMut.html" title="FnMut"><code>FnMut</code></a> as a parameter:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn</span> <span class="ident">do_twice</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="ident">func</span>: <span class="ident">F</span>)
+    <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">FnMut</span>()
+{
+    <span class="ident">func</span>();
+    <span class="ident">func</span>();
+}
+
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">x</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">1</span>;
+{
+    <span class="kw">let</span> <span class="ident">add_two_to_x</span> <span class="op">=</span> <span class="op">|</span><span class="op">|</span> <span class="ident">x</span> <span class="op">+</span><span class="op">=</span> <span class="number">2</span>;
+    <span class="ident">do_twice</span>(<span class="ident">add_two_to_x</span>);
+}
+
+<span class="macro">assert_eq!</span>(<span class="ident">x</span>, <span class="number">5</span>);</code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Afn%20do_twice%3CF%3E(mut%20func%3A%20F)%0A%20%20%20%20where%20F%3A%20FnMut()%0A%7B%0A%20%20%20%20func()%3B%0A%20%20%20%20func()%3B%0A%7D%0A%0Alet%20mut%20x%3A%20usize%20%3D%201%3B%0A%7B%0A%20%20%20%20let%20add_two_to_x%20%3D%20%7C%7C%20x%20%2B%3D%202%3B%0A%20%20%20%20do_twice(add_two_to_x)%3B%0A%7D%0A%0Aassert_eq!(x%2C%205)%3B%0A%7D&amp;edition=2021">Run</a></div>
+<p>Taking a <a href="trait.FnOnce.html" title="FnOnce"><code>FnOnce</code></a> as a parameter:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn</span> <span class="ident">consume_with_relish</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">func</span>: <span class="ident">F</span>)
+    <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">FnOnce</span>() -&gt; <span class="ident">String</span>
+{
+    <span class="comment">// `func` consumes its captured variables, so it cannot be run more</span>
+    <span class="comment">// than once</span>
+    <span class="macro">println!</span>(<span class="string">&quot;Consumed: {}&quot;</span>, <span class="ident">func</span>());
+
+    <span class="macro">println!</span>(<span class="string">&quot;Delicious!&quot;</span>);
+
+    <span class="comment">// Attempting to invoke `func()` again will throw a `use of moved</span>
+    <span class="comment">// value` error for `func`</span>
+}
+
+<span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">String::from</span>(<span class="string">&quot;x&quot;</span>);
+<span class="kw">let</span> <span class="ident">consume_and_return_x</span> <span class="op">=</span> <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">x</span>;
+<span class="ident">consume_with_relish</span>(<span class="ident">consume_and_return_x</span>);
+
+<span class="comment">// `consume_and_return_x` can no longer be invoked at this point</span></code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Afn%20consume_with_relish%3CF%3E(func%3A%20F)%0A%20%20%20%20where%20F%3A%20FnOnce()%20-%3E%20String%0A%7B%0A%20%20%20%20%2F%2F%20%60func%60%20consumes%20its%20captured%20variables%2C%20so%20it%20cannot%20be%20run%20more%0A%20%20%20%20%2F%2F%20than%20once%0A%20%20%20%20println!(%22Consumed%3A%20%7B%7D%22%2C%20func())%3B%0A%0A%20%20%20%20println!(%22Delicious!%22)%3B%0A%0A%20%20%20%20%2F%2F%20Attempting%20to%20invoke%20%60func()%60%20again%20will%20throw%20a%20%60use%20of%20moved%0A%20%20%20%20%2F%2F%20value%60%20error%20for%20%60func%60%0A%7D%0A%0Alet%20x%20%3D%20String%3A%3Afrom(%22x%22)%3B%0Alet%20consume_and_return_x%20%3D%20move%20%7C%7C%20x%3B%0Aconsume_with_relish(consume_and_return_x)%3B%0A%0A%2F%2F%20%60consume_and_return_x%60%20can%20no%20longer%20be%20invoked%20at%20this%20point%0A%7D&amp;edition=2021">Run</a></div>
+</div></details><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left unstable module-item"><a class="struct" href="struct.Yeet.html" title="core::ops::Yeet struct">Yeet</a><span class="stab unstable" title="">Experimental</span></div><div class="item-right docblock-short"><p>Implement <code>FromResidual&lt;Yeet&lt;T&gt;&gt;</code> on your type to enable
+<code>do yeet expr</code> syntax in functions returning your type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Range.html" title="core::ops::Range struct">Range</a></div><div class="item-right docblock-short"><p>A (half-open) range bounded inclusively below and exclusively above
+(<code>start..end</code>).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.RangeFrom.html" title="core::ops::RangeFrom struct">RangeFrom</a></div><div class="item-right docblock-short"><p>A range only bounded inclusively below (<code>start..</code>).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.RangeFull.html" title="core::ops::RangeFull struct">RangeFull</a></div><div class="item-right docblock-short"><p>An unbounded range (<code>..</code>).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.RangeInclusive.html" title="core::ops::RangeInclusive struct">RangeInclusive</a></div><div class="item-right docblock-short"><p>A range bounded inclusively below and above (<code>start..=end</code>).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.RangeTo.html" title="core::ops::RangeTo struct">RangeTo</a></div><div class="item-right docblock-short"><p>A range only bounded exclusively above (<code>..end</code>).</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.RangeToInclusive.html" title="core::ops::RangeToInclusive struct">RangeToInclusive</a></div><div class="item-right docblock-short"><p>A range only bounded inclusively above (<code>..=end</code>).</p>
+</div></div></div><h2 id="enums" class="small-section-header"><a href="#enums">Enums</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left unstable module-item"><a class="enum" href="enum.GeneratorState.html" title="core::ops::GeneratorState enum">GeneratorState</a><span class="stab unstable" title="">Experimental</span></div><div class="item-right docblock-short"><p>The result of a generator resumption.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.Bound.html" title="core::ops::Bound enum">Bound</a></div><div class="item-right docblock-short"><p>An endpoint of a range of keys.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.ControlFlow.html" title="core::ops::ControlFlow enum">ControlFlow</a></div><div class="item-right docblock-short"><p>Used to tell an operation whether it should exit early or go on as usual.</p>
+</div></div></div><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left unstable module-item"><a class="trait" href="trait.CoerceUnsized.html" title="core::ops::CoerceUnsized trait">CoerceUnsized</a><span class="stab unstable" title="">Experimental</span></div><div class="item-right docblock-short"><p>Trait that indicates that this is a pointer or a wrapper for one,
+where unsizing can be performed on the pointee.</p>
+</div></div><div class="item-row"><div class="item-left unstable module-item"><a class="trait" href="trait.DispatchFromDyn.html" title="core::ops::DispatchFromDyn trait">DispatchFromDyn</a><span class="stab unstable" title="">Experimental</span></div><div class="item-right docblock-short"><p><code>DispatchFromDyn</code> is used in the implementation of object safety checks (specifically allowing
+arbitrary self types), to guarantee that a method’s receiver type can be dispatched on.</p>
+</div></div><div class="item-row"><div class="item-left unstable module-item"><a class="trait" href="trait.FromResidual.html" title="core::ops::FromResidual trait">FromResidual</a><span class="stab unstable" title="">Experimental</span></div><div class="item-right docblock-short"><p>Used to specify which residuals can be converted into which <a href="trait.Try.html" title="crate::ops::Try"><code>crate::ops::Try</code></a> types.</p>
+</div></div><div class="item-row"><div class="item-left unstable module-item"><a class="trait" href="trait.Generator.html" title="core::ops::Generator trait">Generator</a><span class="stab unstable" title="">Experimental</span></div><div class="item-right docblock-short"><p>The trait implemented by builtin generator types.</p>
+</div></div><div class="item-row"><div class="item-left unstable module-item"><a class="trait" href="trait.OneSidedRange.html" title="core::ops::OneSidedRange trait">OneSidedRange</a><span class="stab unstable" title="">Experimental</span></div><div class="item-right docblock-short"><p><code>OneSidedRange</code> is implemented for built-in range types that are unbounded
+on one side. For example, <code>a..</code>, <code>..b</code> and <code>..=c</code> implement <code>OneSidedRange</code>,
+but <code>..</code>, <code>d..e</code>, and <code>f..=g</code> do not.</p>
+</div></div><div class="item-row"><div class="item-left unstable module-item"><a class="trait" href="trait.Residual.html" title="core::ops::Residual trait">Residual</a><span class="stab unstable" title="">Experimental</span></div><div class="item-right docblock-short"><p>Allows retrieving the canonical type implementing <a href="trait.Try.html" title="Try"><code>Try</code></a> that has this type
+as its residual and allows it to hold an <code>O</code> as its output.</p>
+</div></div><div class="item-row"><div class="item-left unstable module-item"><a class="trait" href="trait.Try.html" title="core::ops::Try trait">Try</a><span class="stab unstable" title="">Experimental</span></div><div class="item-right docblock-short"><p>The <code>?</code> operator and <code>try {}</code> blocks.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Add.html" title="core::ops::Add trait">Add</a></div><div class="item-right docblock-short"><p>The addition operator <code>+</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.AddAssign.html" title="core::ops::AddAssign trait">AddAssign</a></div><div class="item-right docblock-short"><p>The addition assignment operator <code>+=</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.BitAnd.html" title="core::ops::BitAnd trait">BitAnd</a></div><div class="item-right docblock-short"><p>The bitwise AND operator <code>&amp;</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.BitAndAssign.html" title="core::ops::BitAndAssign trait">BitAndAssign</a></div><div class="item-right docblock-short"><p>The bitwise AND assignment operator <code>&amp;=</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.BitOr.html" title="core::ops::BitOr trait">BitOr</a></div><div class="item-right docblock-short"><p>The bitwise OR operator <code>|</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.BitOrAssign.html" title="core::ops::BitOrAssign trait">BitOrAssign</a></div><div class="item-right docblock-short"><p>The bitwise OR assignment operator <code>|=</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.BitXor.html" title="core::ops::BitXor trait">BitXor</a></div><div class="item-right docblock-short"><p>The bitwise XOR operator <code>^</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.BitXorAssign.html" title="core::ops::BitXorAssign trait">BitXorAssign</a></div><div class="item-right docblock-short"><p>The bitwise XOR assignment operator <code>^=</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Deref.html" title="core::ops::Deref trait">Deref</a></div><div class="item-right docblock-short"><p>Used for immutable dereferencing operations, like <code>*v</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.DerefMut.html" title="core::ops::DerefMut trait">DerefMut</a></div><div class="item-right docblock-short"><p>Used for mutable dereferencing operations, like in <code>*v = 1;</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Div.html" title="core::ops::Div trait">Div</a></div><div class="item-right docblock-short"><p>The division operator <code>/</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.DivAssign.html" title="core::ops::DivAssign trait">DivAssign</a></div><div class="item-right docblock-short"><p>The division assignment operator <code>/=</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Drop.html" title="core::ops::Drop trait">Drop</a></div><div class="item-right docblock-short"><p>Custom code within the destructor.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Fn.html" title="core::ops::Fn trait">Fn</a></div><div class="item-right docblock-short"><p>The version of the call operator that takes an immutable receiver.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.FnMut.html" title="core::ops::FnMut trait">FnMut</a></div><div class="item-right docblock-short"><p>The version of the call operator that takes a mutable receiver.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.FnOnce.html" title="core::ops::FnOnce trait">FnOnce</a></div><div class="item-right docblock-short"><p>The version of the call operator that takes a by-value receiver.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Index.html" title="core::ops::Index trait">Index</a></div><div class="item-right docblock-short"><p>Used for indexing operations (<code>container[index]</code>) in immutable contexts.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.IndexMut.html" title="core::ops::IndexMut trait">IndexMut</a></div><div class="item-right docblock-short"><p>Used for indexing operations (<code>container[index]</code>) in mutable contexts.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Mul.html" title="core::ops::Mul trait">Mul</a></div><div class="item-right docblock-short"><p>The multiplication operator <code>*</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.MulAssign.html" title="core::ops::MulAssign trait">MulAssign</a></div><div class="item-right docblock-short"><p>The multiplication assignment operator <code>*=</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Neg.html" title="core::ops::Neg trait">Neg</a></div><div class="item-right docblock-short"><p>The unary negation operator <code>-</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Not.html" title="core::ops::Not trait">Not</a></div><div class="item-right docblock-short"><p>The unary logical negation operator <code>!</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.RangeBounds.html" title="core::ops::RangeBounds trait">RangeBounds</a></div><div class="item-right docblock-short"><p><code>RangeBounds</code> is implemented by Rust’s built-in range types, produced
+by range syntax like <code>..</code>, <code>a..</code>, <code>..b</code>, <code>..=c</code>, <code>d..e</code>, or <code>f..=g</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Rem.html" title="core::ops::Rem trait">Rem</a></div><div class="item-right docblock-short"><p>The remainder operator <code>%</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.RemAssign.html" title="core::ops::RemAssign trait">RemAssign</a></div><div class="item-right docblock-short"><p>The remainder assignment operator <code>%=</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Shl.html" title="core::ops::Shl trait">Shl</a></div><div class="item-right docblock-short"><p>The left shift operator <code>&lt;&lt;</code>. Note that because this trait is implemented
+for all integer types with multiple right-hand-side types, Rust’s type
+checker has special handling for <code>_ &lt;&lt; _</code>, setting the result type for
+integer operations to the type of the left-hand-side operand. This means
+that though <code>a &lt;&lt; b</code> and <code>a.shl(b)</code> are one and the same from an evaluation
+standpoint, they are different when it comes to type inference.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.ShlAssign.html" title="core::ops::ShlAssign trait">ShlAssign</a></div><div class="item-right docblock-short"><p>The left shift assignment operator <code>&lt;&lt;=</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Shr.html" title="core::ops::Shr trait">Shr</a></div><div class="item-right docblock-short"><p>The right shift operator <code>&gt;&gt;</code>. Note that because this trait is implemented
+for all integer types with multiple right-hand-side types, Rust’s type
+checker has special handling for <code>_ &gt;&gt; _</code>, setting the result type for
+integer operations to the type of the left-hand-side operand. This means
+that though <code>a &gt;&gt; b</code> and <code>a.shr(b)</code> are one and the same from an evaluation
+standpoint, they are different when it comes to type inference.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.ShrAssign.html" title="core::ops::ShrAssign trait">ShrAssign</a></div><div class="item-right docblock-short"><p>The right shift assignment operator <code>&gt;&gt;=</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Sub.html" title="core::ops::Sub trait">Sub</a></div><div class="item-right docblock-short"><p>The subtraction operator <code>-</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.SubAssign.html" title="core::ops::SubAssign trait">SubAssign</a></div><div class="item-right docblock-short"><p>The subtraction assignment operator <code>-=</code>.</p>
+</div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
+</body></html>

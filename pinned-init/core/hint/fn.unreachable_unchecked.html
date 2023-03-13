@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Informs the compiler that the site which is calling this function is not reachable, possibly enabling further optimizations."><meta name="keywords" content="rust, rustlang, rust-lang, unreachable_unchecked"><title>unreachable_unchecked in core::hint - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a><div class="sidebar-elems"><h2 class="location"><a href="index.html">In core::hint</a></h2><div id="sidebar-vars" data-name="unreachable_unchecked" data-ty="fn" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../core/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Function <a href="../index.html">core</a>::<wbr><a href="index.html">hint</a>::<wbr><a class="fn" href="#">unreachable_unchecked</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><span class="since" title="Stable since Rust version 1.27.0, const since 1.57.0">1.27.0 (const: 1.57.0)</span> · <a class="srclink" href="../../src/core/hint.rs.html#99-103">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><div class="docblock item-decl"><pre class="rust fn"><code>pub const unsafe fn unreachable_unchecked() -&gt; <a class="primitive" href="../primitive.never.html">!</a></code></pre></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Informs the compiler that the site which is calling this function is not
+reachable, possibly enabling further optimizations.</p>
+<h2 id="safety"><a href="#safety">Safety</a></h2>
+<p>Reaching this function is <em>Undefined Behavior</em>.</p>
+<p>As the compiler assumes that all forms of Undefined Behavior can never
+happen, it will eliminate all branches in the surrounding code that it can
+determine will invariably lead to a call to <code>unreachable_unchecked()</code>.</p>
+<p>If the assumptions embedded in using this function turn out to be wrong -
+that is, if the site which is calling <code>unreachable_unchecked()</code> is actually
+reachable at runtime - the compiler may have generated nonsensical machine
+instructions for this situation, including in seemingly unrelated code,
+causing difficult-to-debug problems.</p>
+<p>Use this function sparingly. Consider using the <a href="../macro.unreachable.html" title="unreachable!"><code>unreachable!</code></a> macro,
+which may prevent some optimizations but will safely panic in case it is
+actually reached at runtime. Benchmark your code to find out if using
+<code>unreachable_unchecked()</code> comes with a performance benefit.</p>
+<h2 id="examples"><a href="#examples">Examples</a></h2>
+<p><code>unreachable_unchecked()</code> can be used in situations where the compiler
+can’t prove invariants that were previously established. Such situations
+have a higher chance of occuring if those invariants are upheld by
+external code that the compiler can’t analyze.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn</span> <span class="ident">prepare_inputs</span>(<span class="ident">divisors</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) {
+    <span class="comment">// Note to future-self when making changes: The invariant established</span>
+    <span class="comment">// here is NOT checked in `do_computation()`; if this changes, you HAVE</span>
+    <span class="comment">// to change `do_computation()`.</span>
+    <span class="ident">divisors</span>.<span class="ident">retain</span>(<span class="op">|</span><span class="ident">divisor</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">divisor</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>)
+}
+
+<span class="doccomment">/// # Safety</span>
+<span class="doccomment">/// All elements of `divisor` must be non-zero.</span>
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">do_computation</span>(<span class="ident">i</span>: <span class="ident">u32</span>, <span class="ident">divisors</span>: <span class="kw-2">&amp;</span>[<span class="ident">u32</span>]) -&gt; <span class="ident">u32</span> {
+    <span class="ident">divisors</span>.<span class="ident">iter</span>().<span class="ident">fold</span>(<span class="ident">i</span>, <span class="op">|</span><span class="ident">acc</span>, <span class="ident">divisor</span><span class="op">|</span> {
+        <span class="comment">// Convince the compiler that a division by zero can&#39;t happen here</span>
+        <span class="comment">// and a check is not needed below.</span>
+        <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">divisor</span> <span class="op">==</span> <span class="number">0</span> {
+            <span class="comment">// Safety: `divisor` can&#39;t be zero because of `prepare_inputs`,</span>
+            <span class="comment">// but the compiler does not know about this. We *promise*</span>
+            <span class="comment">// that we always call `prepare_inputs`.</span>
+            <span class="ident">std::hint::unreachable_unchecked</span>()
+        }
+        <span class="comment">// The compiler would normally introduce a check here that prevents</span>
+        <span class="comment">// a division by zero. However, if `divisor` was zero, the branch</span>
+        <span class="comment">// above would reach what we explicitly marked as unreachable.</span>
+        <span class="comment">// The compiler concludes that `divisor` can&#39;t be zero at this point</span>
+        <span class="comment">// and removes the - now proven useless - check.</span>
+        <span class="ident">acc</span> <span class="op">/</span> <span class="ident">divisor</span>
+    })
+}
+
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">divisors</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">2</span>, <span class="number">0</span>, <span class="number">4</span>];
+<span class="ident">prepare_inputs</span>(<span class="kw-2">&amp;mut</span> <span class="ident">divisors</span>);
+<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">unsafe</span> {
+    <span class="comment">// Safety: prepare_inputs() guarantees that divisors is non-zero</span>
+    <span class="ident">do_computation</span>(<span class="number">100</span>, <span class="kw-2">&amp;</span><span class="ident">divisors</span>)
+};
+<span class="macro">assert_eq!</span>(<span class="ident">result</span>, <span class="number">12</span>);
+</code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Afn%20prepare_inputs(divisors%3A%20%26mut%20Vec%3Cu32%3E)%20%7B%0A%20%20%20%20%2F%2F%20Note%20to%20future-self%20when%20making%20changes%3A%20The%20invariant%20established%0A%20%20%20%20%2F%2F%20here%20is%20NOT%20checked%20in%20%60do_computation()%60%3B%20if%20this%20changes%2C%20you%20HAVE%0A%20%20%20%20%2F%2F%20to%20change%20%60do_computation()%60.%0A%20%20%20%20divisors.retain(%7Cdivisor%7C%20*divisor%20!%3D%200)%0A%7D%0A%0A%2F%2F%2F%20%23%20Safety%0A%2F%2F%2F%20All%20elements%20of%20%60divisor%60%20must%20be%20non-zero.%0Aunsafe%20fn%20do_computation(i%3A%20u32%2C%20divisors%3A%20%26%5Bu32%5D)%20-%3E%20u32%20%7B%0A%20%20%20%20divisors.iter().fold(i%2C%20%7Cacc%2C%20divisor%7C%20%7B%0A%20%20%20%20%20%20%20%20%2F%2F%20Convince%20the%20compiler%20that%20a%20division%20by%20zero%20can't%20happen%20here%0A%20%20%20%20%20%20%20%20%2F%2F%20and%20a%20check%20is%20not%20needed%20below.%0A%20%20%20%20%20%20%20%20if%20*divisor%20%3D%3D%200%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20Safety%3A%20%60divisor%60%20can't%20be%20zero%20because%20of%20%60prepare_inputs%60%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20but%20the%20compiler%20does%20not%20know%20about%20this.%20We%20*promise*%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20that%20we%20always%20call%20%60prepare_inputs%60.%0A%20%20%20%20%20%20%20%20%20%20%20%20std%3A%3Ahint%3A%3Aunreachable_unchecked()%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%2F%2F%20The%20compiler%20would%20normally%20introduce%20a%20check%20here%20that%20prevents%0A%20%20%20%20%20%20%20%20%2F%2F%20a%20division%20by%20zero.%20However%2C%20if%20%60divisor%60%20was%20zero%2C%20the%20branch%0A%20%20%20%20%20%20%20%20%2F%2F%20above%20would%20reach%20what%20we%20explicitly%20marked%20as%20unreachable.%0A%20%20%20%20%20%20%20%20%2F%2F%20The%20compiler%20concludes%20that%20%60divisor%60%20can't%20be%20zero%20at%20this%20point%0A%20%20%20%20%20%20%20%20%2F%2F%20and%20removes%20the%20-%20now%20proven%20useless%20-%20check.%0A%20%20%20%20%20%20%20%20acc%20%2F%20divisor%0A%20%20%20%20%7D)%0A%7D%0A%0Alet%20mut%20divisors%20%3D%20vec!%5B2%2C%200%2C%204%5D%3B%0Aprepare_inputs(%26mut%20divisors)%3B%0Alet%20result%20%3D%20unsafe%20%7B%0A%20%20%20%20%2F%2F%20Safety%3A%20prepare_inputs()%20guarantees%20that%20divisors%20is%20non-zero%0A%20%20%20%20do_computation(100%2C%20%26divisors)%0A%7D%3B%0Aassert_eq!(result%2C%2012)%3B%0A%7D&amp;edition=2021">Run</a></div>
+<p>While using <code>unreachable_unchecked()</code> is perfectly sound in the following
+example, the compiler is able to prove that a division by zero is not
+possible. Benchmarking reveals that <code>unreachable_unchecked()</code> provides
+no benefit over using <a href="../macro.unreachable.html" title="unreachable!"><code>unreachable!</code></a>, while the latter does not introduce
+the possibility of Undefined Behavior.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn</span> <span class="ident">div_1</span>(<span class="ident">a</span>: <span class="ident">u32</span>, <span class="ident">b</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span> {
+    <span class="kw">use</span> <span class="ident">std::hint::unreachable_unchecked</span>;
+
+    <span class="comment">// `b.saturating_add(1)` is always positive (not zero),</span>
+    <span class="comment">// hence `checked_div` will never return `None`.</span>
+    <span class="comment">// Therefore, the else branch is unreachable.</span>
+    <span class="ident">a</span>.<span class="ident">checked_div</span>(<span class="ident">b</span>.<span class="ident">saturating_add</span>(<span class="number">1</span>))
+        .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">unreachable_unchecked</span>() })
+}
+
+<span class="macro">assert_eq!</span>(<span class="ident">div_1</span>(<span class="number">7</span>, <span class="number">0</span>), <span class="number">7</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">div_1</span>(<span class="number">9</span>, <span class="number">1</span>), <span class="number">4</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">div_1</span>(<span class="number">11</span>, <span class="ident">u32::MAX</span>), <span class="number">0</span>);</code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Afn%20div_1(a%3A%20u32%2C%20b%3A%20u32)%20-%3E%20u32%20%7B%0A%20%20%20%20use%20std%3A%3Ahint%3A%3Aunreachable_unchecked%3B%0A%0A%20%20%20%20%2F%2F%20%60b.saturating_add(1)%60%20is%20always%20positive%20(not%20zero)%2C%0A%20%20%20%20%2F%2F%20hence%20%60checked_div%60%20will%20never%20return%20%60None%60.%0A%20%20%20%20%2F%2F%20Therefore%2C%20the%20else%20branch%20is%20unreachable.%0A%20%20%20%20a.checked_div(b.saturating_add(1))%0A%20%20%20%20%20%20%20%20.unwrap_or_else(%7C%7C%20unsafe%20%7B%20unreachable_unchecked()%20%7D)%0A%7D%0A%0Aassert_eq!(div_1(7%2C%200)%2C%207)%3B%0Aassert_eq!(div_1(9%2C%201)%2C%204)%3B%0Aassert_eq!(div_1(11%2C%20u32%3A%3AMAX)%2C%200)%3B%0A%7D&amp;edition=2021">Run</a></div>
+</div></details></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
+</body></html>

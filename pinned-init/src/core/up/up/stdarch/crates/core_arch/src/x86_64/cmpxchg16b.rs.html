@@ -1,0 +1,154 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/1.62.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/../../stdarch/crates/core_arch/src/x86_64/cmpxchg16b.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>cmpxchg16b.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../../../../../storage.js"></script><script src="../../../../../../../../../crates.js"></script><script defer src="../../../../../../../../../main.js"></script><script defer src="../../../../../../../../../source-script.js"></script><script defer src="../../../../../../../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../../../../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../../../../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../../../../logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../../../../../../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../../../../../../logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../../../../../../core/index.html"><img class="rust-logo" src="../../../../../../../../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../../../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../../../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::sync::atomic::Ordering</span>;
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">use</span> <span class="ident">stdarch_test::assert_instr</span>;
+
+<span class="doccomment">/// Compares and exchange 16 bytes (128 bits) of data atomically.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This intrinsic corresponds to the `cmpxchg16b` instruction on `x86_64`</span>
+<span class="doccomment">/// processors. It performs an atomic compare-and-swap, updating the `ptr`</span>
+<span class="doccomment">/// memory location to `val` if the current value in memory equals `old`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Return value</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This function returns the previous value at the memory location. If it is</span>
+<span class="doccomment">/// equal to `old` then the memory was updated to `new`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Memory Orderings</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This atomic operations has the same semantics of memory orderings as</span>
+<span class="doccomment">/// `AtomicUsize::compare_exchange` does, only operating on 16 bytes of memory</span>
+<span class="doccomment">/// instead of just a pointer.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// For more information on memory orderings here see the `compare_exchange`</span>
+<span class="doccomment">/// documentation for other `Atomic*` types in the standard library.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Unsafety</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This method is unsafe because it takes a raw pointer and will attempt to</span>
+<span class="doccomment">/// read and possibly write the memory at the pointer. The pointer must also be</span>
+<span class="doccomment">/// aligned on a 16-byte boundary.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This method also requires the `cmpxchg16b` CPU feature to be available at</span>
+<span class="doccomment">/// runtime to work correctly. If the CPU running the binary does not actually</span>
+<span class="doccomment">/// support `cmpxchg16b` and the program enters an execution path that</span>
+<span class="doccomment">/// eventually would reach this function the behavior is undefined.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `success` ordering must also be stronger or equal to `failure`, or this</span>
+<span class="doccomment">/// function call is undefined. See the `Atomic*` documentation&#39;s</span>
+<span class="doccomment">/// `compare_exchange` function for more information. When `compare_exchange`</span>
+<span class="doccomment">/// panics, this is undefined behavior. Currently this function aborts the</span>
+<span class="doccomment">/// process with an undefined instruction.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">test</span>, <span class="ident">assert_instr</span>(<span class="ident">cmpxchg16b</span>, <span class="ident">success</span> <span class="op">=</span> <span class="ident">Ordering::SeqCst</span>, <span class="ident">failure</span> <span class="op">=</span> <span class="ident">Ordering::SeqCst</span>))]</span>
+<span class="attribute">#[<span class="ident">target_feature</span>(<span class="ident">enable</span> <span class="op">=</span> <span class="string">&quot;cmpxchg16b&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">cmpxchg16b</span>(
+    <span class="ident">dst</span>: <span class="kw-2">*mut</span> <span class="ident">u128</span>,
+    <span class="ident">old</span>: <span class="ident">u128</span>,
+    <span class="ident">new</span>: <span class="ident">u128</span>,
+    <span class="ident">success</span>: <span class="ident">Ordering</span>,
+    <span class="ident">failure</span>: <span class="ident">Ordering</span>,
+) -&gt; <span class="ident">u128</span> {
+    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">intrinsics</span>, <span class="ident">sync::atomic::Ordering</span>::<span class="kw-2">*</span>};
+
+    <span class="macro">debug_assert!</span>(<span class="ident">dst</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">%</span> <span class="number">16</span> <span class="op">==</span> <span class="number">0</span>);
+
+    <span class="kw">let</span> (<span class="ident">val</span>, <span class="ident">_ok</span>) <span class="op">=</span> <span class="kw">match</span> (<span class="ident">success</span>, <span class="ident">failure</span>) {
+        (<span class="ident">Acquire</span>, <span class="ident">Acquire</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg_acq</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+        (<span class="ident">Release</span>, <span class="ident">Relaxed</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg_rel</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+        (<span class="ident">AcqRel</span>, <span class="ident">Acquire</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg_acqrel</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+        (<span class="ident">Relaxed</span>, <span class="ident">Relaxed</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg_relaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+        (<span class="ident">SeqCst</span>, <span class="ident">SeqCst</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+        (<span class="ident">Acquire</span>, <span class="ident">Relaxed</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg_acq_failrelaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+        (<span class="ident">AcqRel</span>, <span class="ident">Relaxed</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg_acqrel_failrelaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+        (<span class="ident">SeqCst</span>, <span class="ident">Relaxed</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg_failrelaxed</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+        (<span class="ident">SeqCst</span>, <span class="ident">Acquire</span>) =&gt; <span class="ident">intrinsics::atomic_cxchg_failacq</span>(<span class="ident">dst</span>, <span class="ident">old</span>, <span class="ident">new</span>),
+
+        <span class="comment">// The above block is all copied from libcore, and this statement is</span>
+        <span class="comment">// also copied from libcore except that it&#39;s a panic in libcore and we</span>
+        <span class="comment">// have a little bit more of a lightweight panic here.</span>
+        <span class="kw">_</span> =&gt; <span class="ident"><span class="kw">crate</span>::core_arch::x86::ud2</span>(),
+    };
+    <span class="ident">val</span>
+}
+</code></pre></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
+</body></html>

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Arc","A reference-counted pointer to an instance of `T`."],["ArcBorrow","A borrowed reference to an [`Arc`] instance."],["UniqueArc","A refcounted object that is known to have a refcount of 1."]]});

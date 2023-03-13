@@ -1,0 +1,4 @@
+(function() {var implementors = {};
+implementors["alloc"] = [{"text":"impl <a class=\"trait\" href=\"core/default/trait.Default.html\" title=\"trait core::default::Default\">Default</a> for <a class=\"struct\" href=\"alloc/alloc/struct.Global.html\" title=\"struct alloc::alloc::Global\">Global</a>","synthetic":false,"types":["alloc::alloc::Global"]},{"text":"impl&lt;T&gt; <a class=\"trait\" href=\"core/default/trait.Default.html\" title=\"trait core::default::Default\">Default</a> for <a class=\"struct\" href=\"alloc/vec/struct.Vec.html\" title=\"struct alloc::vec::Vec\">Vec</a>&lt;T&gt;","synthetic":false,"types":["alloc::vec::Vec"]}];
+implementors["core"] = [];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

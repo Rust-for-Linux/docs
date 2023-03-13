@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API to safely and fallibly initialize pinned `struct`s using in-place constructors."><meta name="keywords" content="rust, rustlang, rust-lang, init"><title>kernel::init - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a><h2 class="location"><a href="#">Module init</a></h2><div class="sidebar-elems"><section><div class="block"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#traits">Traits</a></li><li><a href="#functions">Functions</a></li></ul></div></section><div id="sidebar-vars" data-name="init" data-ty="mod" data-relpath="./"></div><script defer src="./sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Module <a href="../index.html">kernel</a>::<wbr><a class="mod" href="#">init</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../../src/kernel/init.rs.html#3-1396">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>API to safely and fallibly initialize pinned <code>struct</code>s using in-place constructors.</p>
+<p>It also allows in-place initialization of big <code>struct</code>s that would otherwise produce a stack
+overflow.</p>
+<p>Most <code>struct</code>s from the <a href="../sync/index.html"><code>sync</code></a> module need to be pinned, because they contain self-referential
+<code>struct</code>s from C. <a href="https://doc.rust-lang.org/std/pin/index.html">Pinning</a> is Rust’s way of ensuring data does not move.</p>
+<h2 id="overview"><a href="#overview">Overview</a></h2>
+<p>To initialize a <code>struct</code> with an in-place constructor you will need two things:</p>
+<ul>
+<li>an in-place constructor,</li>
+<li>a memory location that can hold your <code>struct</code> (this can be the <a href="../macro.stack_pin_init.html">stack</a>, an <a href="../sync/struct.Arc.html"><code>Arc&lt;T&gt;</code></a>,
+<a href="../sync/struct.UniqueArc.html" title="UniqueArc&lt;T&gt;"><code>UniqueArc&lt;T&gt;</code></a>, <a href="../../alloc/boxed/struct.Box.html" title="Box&lt;T&gt;"><code>Box&lt;T&gt;</code></a> or any other smart pointer that implements <a href="trait.InPlaceInit.html" title="InPlaceInit"><code>InPlaceInit</code></a>).</li>
+</ul>
+<p>To get an in-place constructor there are generally three options:</p>
+<ul>
+<li>directly creating an in-place constructor using the <a href="../macro.pin_init.html" title="pin_init!"><code>pin_init!</code></a> macro,</li>
+<li>a custom function/macro returning an in-place constructor provided by someone else,</li>
+<li>using the unsafe function <a href="fn.pin_init_from_closure.html" title="pin_init_from_closure()"><code>pin_init_from_closure()</code></a> to manually create an initializer.</li>
+</ul>
+<p>Aside from pinned initialization, this API also supports in-place construction without pinning,
+the marcos/types/functions are generally named like the pinned variants without the <code>pin</code>
+prefix.</p>
+<h2 id="examples"><a href="#examples">Examples</a></h2><h3 id="using-the-pin_init-macro"><a href="#using-the-pin_init-macro">Using the <code>pin_init!</code> macro</a></h3>
+<p>If you want to use <a href="trait.PinInit.html" title="PinInit"><code>PinInit</code></a>, then you will have to annotate your <code>struct</code> with
+<code>#[</code><a href="../../macros/attr.pin_data.html"><code>pin_data</code></a><code>]</code>. It is a macro that uses <code>#[pin]</code> as a marker for
+<a href="https://doc.rust-lang.org/std/pin/index.html#pinning-is-structural-for-field">structurally pinned fields</a>. After doing this, you can then create an in-place constructor via
+<a href="../macro.pin_init.html" title="pin_init!"><code>pin_init!</code></a>. The syntax is almost the same as normal <code>struct</code> initializers. The difference is
+that you need to write <code>&lt;-</code> instead of <code>:</code> for fields that you want to initialize in-place.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">kernel</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">sync::Mutex</span>, <span class="ident">new_mutex</span>};
+<span class="attribute">#[<span class="ident">pin_data</span>]</span>
+<span class="kw">struct</span> <span class="ident">Foo</span> {
+    <span class="attribute">#[<span class="ident">pin</span>]</span>
+    <span class="ident">a</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+    <span class="ident">b</span>: <span class="ident">u32</span>,
+}
+
+<span class="kw">let</span> <span class="ident">foo</span> <span class="op">=</span> <span class="macro">pin_init!</span>(<span class="ident">Foo</span> {
+    <span class="ident">a</span> <span class="op">&lt;</span><span class="op">-</span> <span class="macro">new_mutex!</span>(<span class="number">42</span>, <span class="string">&quot;Foo::a&quot;</span>),
+    <span class="ident">b</span>: <span class="number">24</span>,
+});</code></pre></div>
+<p><code>foo</code> now is of the type <a href="trait.PinInit.html"><code>impl PinInit&lt;Foo&gt;</code></a>. We can now use any smart pointer that we like
+(or just the stack) to actually initialize a <code>Foo</code>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let</span> <span class="ident">foo</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Foo</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box::pin_init</span>(<span class="ident">foo</span>);</code></pre></div>
+<p>For more information see the <a href="../macro.pin_init.html" title="pin_init!"><code>pin_init!</code></a> macro.</p>
+<h3 id="using-a-custom-functionmacro-that-returns-an-initializer"><a href="#using-a-custom-functionmacro-that-returns-an-initializer">Using a custom function/macro that returns an initializer</a></h3>
+<p>Many types from the kernel supply a function/macro that returns an initializer, because the
+above method only works for types where you can access the fields.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let</span> <span class="ident">mtx</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Arc::pin_init</span>(<span class="macro">new_mutex!</span>(<span class="number">42</span>, <span class="string">&quot;example::mtx&quot;</span>));</code></pre></div>
+<p>To declare an init macro/function you just return an <a href="trait.PinInit.html"><code>impl PinInit&lt;T, E&gt;</code></a>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#[<span class="ident">pin_data</span>]</span>
+<span class="kw">struct</span> <span class="ident">DriverData</span> {
+    <span class="attribute">#[<span class="ident">pin</span>]</span>
+    <span class="ident">status</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
+    <span class="ident">buffer</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="number">1_000_000</span>]<span class="op">&gt;</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">DriverData</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="kw">impl</span> <span class="ident">PinInit</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="macro">try_pin_init!</span>(<span class="self">Self</span> {
+            <span class="ident">status</span> <span class="op">&lt;</span><span class="op">-</span> <span class="macro">new_mutex!</span>(<span class="number">0</span>, <span class="string">&quot;DriverData::status&quot;</span>),
+            <span class="ident">buffer</span>: <span class="ident">Box::init</span>(<span class="ident">kernel::init::zeroed</span>())<span class="question-mark">?</span>,
+        })
+    }
+}</code></pre></div>
+<h3 id="manual-creation-of-an-initializer"><a href="#manual-creation-of-an-initializer">Manual creation of an initializer</a></h3>
+<p>Often when working with primitives the previous approaches are not sufficient. That is where
+<a href="fn.pin_init_from_closure.html" title="pin_init_from_closure()"><code>pin_init_from_closure()</code></a> comes in. This <code>unsafe</code> function allows you to create a
+<a href="trait.PinInit.html"><code>impl PinInit&lt;T, E&gt;</code></a> directly from a closure. Of course you have to ensure that the closure
+actually does the initialization in the correct way. Here are the things to look out for
+(we are calling the parameter to the closure <code>slot</code>):</p>
+<ul>
+<li>when the closure returns <code>Ok(())</code>, then it has completed the initialization successfully, so
+<code>slot</code> now contains a valid bit pattern for the type <code>T</code>,</li>
+<li>when the closure returns <code>Err(e)</code>, then the caller may deallocate the memory at <code>slot</code>, so
+you need to take care to clean up anything if your initialization fails mid-way,</li>
+<li>you may assume that <code>slot</code> will stay pinned even after the closure returns until <code>drop</code> of
+<code>slot</code> gets called.</li>
+</ul>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">kernel::init</span>::{<span class="ident">PinInit</span>, <span class="self">self</span>};
+<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">ptr::addr_of_mut</span>, <span class="ident">marker::PhantomPinned</span>};
+<span class="doccomment">/// # Invariants</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// `foo` is always initialized</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RawFoo</span> {
+    <span class="ident">foo</span>: <span class="ident">Opaque</span><span class="op">&lt;</span><span class="ident">bindings::foo</span><span class="op">&gt;</span>,
+    <span class="ident">_p</span>: <span class="ident">PhantomPinned</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">RawFoo</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">flags</span>: <span class="ident">u32</span>) -&gt; <span class="kw">impl</span> <span class="ident">PinInit</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="comment">// SAFETY:</span>
+        <span class="comment">// - when the closure returns `Ok(())`, then it has successfully initialized and</span>
+        <span class="comment">//   enabled `foo`,</span>
+        <span class="comment">// - when it returns `Err(e)`, then it has cleaned up before</span>
+        <span class="kw">unsafe</span> {
+            <span class="ident">init::pin_init_from_closure</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">slot</span>: <span class="kw-2">*mut</span> <span class="self">Self</span><span class="op">|</span> {
+                <span class="comment">// `slot` contains uninit memory, avoid creating a reference.</span>
+                <span class="kw">let</span> <span class="ident">foo</span> <span class="op">=</span> <span class="macro">addr_of_mut!</span>((<span class="kw-2">*</span><span class="ident">slot</span>).<span class="ident">foo</span>);
+
+                <span class="comment">// Initialize the `foo`</span>
+                <span class="ident">bindings::init_foo</span>(<span class="ident">Opaque::raw_get</span>(<span class="ident">foo</span>));
+
+                <span class="comment">// Try to enable it.</span>
+                <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">bindings::enable_foo</span>(<span class="ident">Opaque::raw_get</span>(<span class="ident">foo</span>), <span class="ident">flags</span>);
+                <span class="kw">if</span> <span class="ident">err</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
+                    <span class="comment">// Enabling has failed, first clean up the foo and then return the error.</span>
+                    <span class="ident">bindings::destroy_foo</span>(<span class="ident">Opaque::raw_get</span>(<span class="ident">foo</span>));
+                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::from_kernel_errno</span>(<span class="ident">err</span>));
+                }
+
+                <span class="comment">// All fields of `RawFoo` have been initialized, since `_p` is a ZST.</span>
+                <span class="prelude-val">Ok</span>(())
+            })
+        }
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">RawFoo</span> {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="comment">// SAFETY: Since `foo` is initialized, destroying is safe.</span>
+        <span class="kw">unsafe</span> { <span class="ident">bindings::destroy_foo</span>(<span class="self">self</span>.<span class="ident">foo</span>.<span class="ident">get</span>()) };
+    }
+}</code></pre></div>
+<p>For the special case where initializing a field is a single FFI-function call that cannot fail,
+there exist helper functions in <a href="common/index.html" title="kernel::init::common"><code>kernel::init::common</code></a>. These functions initialize a single
+<a href="../types/struct.Opaque.html"><code>Opaque</code></a> field by just delegating to the FFI-function. You can use these in combination with
+<a href="../macro.pin_init.html" title="pin_init!"><code>pin_init!</code></a>.</p>
+<p>For more information on how to use <a href="fn.pin_init_from_closure.html" title="pin_init_from_closure()"><code>pin_init_from_closure()</code></a>, take a look at the uses inside
+the <code>kernel</code> crate. The <a href="../sync/index.html"><code>sync</code></a> module is a good starting point.</p>
+</div></details><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="common/index.html" title="kernel::init::common mod">common</a></div><div class="item-right docblock-short"><p>Module containing common kernel initializer functions.</p>
+</div></div></div><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.StackInit.html" title="kernel::init::StackInit struct">StackInit</a></div><div class="item-right docblock-short"><p>Stack initializer helper type. Use <a href="../macro.stack_pin_init.html"><code>stack_pin_init</code></a> instead of this primitive.</p>
+</div></div></div><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.InPlaceInit.html" title="kernel::init::InPlaceInit trait">InPlaceInit</a></div><div class="item-right docblock-short"><p>Smart pointer that can initialize memory in-place.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Init.html" title="kernel::init::Init trait">Init</a></div><div class="item-right docblock-short"><p>An initializer for <code>T</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.PinInit.html" title="kernel::init::PinInit trait">PinInit</a></div><div class="item-right docblock-short"><p>A pinned initializer for <code>T</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.PinnedDrop.html" title="kernel::init::PinnedDrop trait">PinnedDrop</a></div><div class="item-right docblock-short"><p>Trait facilitating pinned destruction.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Zeroable.html" title="kernel::init::Zeroable trait">Zeroable</a></div><div class="item-right docblock-short"><p>Marker trait for types that can be initialized by writing just zeroes.</p>
+</div></div></div><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.from_value.html" title="kernel::init::from_value fn">from_value</a></div><div class="item-right docblock-short"><p>Convert a value into an initializer.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.init_from_closure.html" title="kernel::init::init_from_closure fn">init_from_closure</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Creates a new <a href="trait.Init.html" title="Init&lt;T, E&gt;"><code>Init&lt;T, E&gt;</code></a> from the given closure.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.pin_init_from_closure.html" title="kernel::init::pin_init_from_closure fn">pin_init_from_closure</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Creates a new <a href="trait.PinInit.html" title="PinInit&lt;T, E&gt;"><code>PinInit&lt;T, E&gt;</code></a> from the given closure.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.uninit.html" title="kernel::init::uninit fn">uninit</a></div><div class="item-right docblock-short"><p>An initializer that leaves the memory uninitialized.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.zeroed.html" title="kernel::init::zeroed fn">zeroed</a></div><div class="item-right docblock-short"><p>Create a new zeroed T.</p>
+</div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
+</body></html>
