@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Overwrites a memory location with the given value without reading or dropping the old value."><meta name="keywords" content="rust, rustlang, rust-lang, write"><title>write in core::ptr - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../core/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
+        </a><div class="sidebar-elems"><h2 class="location"><a href="index.html">In core::ptr</a></h2><div id="sidebar-vars" data-name="write" data-ty="fn" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../core/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Function <a href="../index.html">core</a>::<wbr><a href="index.html">ptr</a>::<wbr><a class="fn" href="#">write</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><span class="since" title="Stable since Rust version 1.0.0, const unstable">1.0.0 (const: <a href="https://github.com/rust-lang/rust/issues/86302" title="Tracking issue for const_ptr_write">unstable</a>)</span> · <a class="srclink" href="../../src/core/ptr/mod.rs.html#1275-1290">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><div class="docblock item-decl"><pre class="rust fn"><code>pub unsafe fn write&lt;T&gt;(dst: <a class="primitive" href="../primitive.pointer.html">*mut T</a>, src: T)</code></pre></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Overwrites a memory location with the given value without reading or
+dropping the old value.</p>
+<p><code>write</code> does not drop the contents of <code>dst</code>. This is safe, but it could leak
+allocations or resources, so care should be taken not to overwrite an object
+that should be dropped.</p>
+<p>Additionally, it does not drop <code>src</code>. Semantically, <code>src</code> is moved into the
+location pointed to by <code>dst</code>.</p>
+<p>This is appropriate for initializing uninitialized memory, or overwriting
+memory that has previously been <a href="fn.read.html" title="read"><code>read</code></a> from.</p>
+<h2 id="safety"><a href="#safety">Safety</a></h2>
+<p>Behavior is undefined if any of the following conditions are violated:</p>
+<ul>
+<li>
+<p><code>dst</code> must be <a href="index.html#safety">valid</a> for writes.</p>
+</li>
+<li>
+<p><code>dst</code> must be properly aligned. Use <a href="fn.write_unaligned.html" title="write_unaligned"><code>write_unaligned</code></a> if this is not the
+case.</p>
+</li>
+</ul>
+<p>Note that even if <code>T</code> has size <code>0</code>, the pointer must be non-null and properly aligned.</p>
+<h2 id="examples"><a href="#examples">Examples</a></h2>
+<p>Basic usage:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">x</span> <span class="op">=</span> <span class="number">0</span>;
+<span class="kw">let</span> <span class="ident">y</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="ident">x</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i32</span>;
+<span class="kw">let</span> <span class="ident">z</span> <span class="op">=</span> <span class="number">12</span>;
+
+<span class="kw">unsafe</span> {
+    <span class="ident">std::ptr::write</span>(<span class="ident">y</span>, <span class="ident">z</span>);
+    <span class="macro">assert_eq!</span>(<span class="ident">std::ptr::read</span>(<span class="ident">y</span>), <span class="number">12</span>);
+}</code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Alet%20mut%20x%20%3D%200%3B%0Alet%20y%20%3D%20%26mut%20x%20as%20*mut%20i32%3B%0Alet%20z%20%3D%2012%3B%0A%0Aunsafe%20%7B%0A%20%20%20%20std%3A%3Aptr%3A%3Awrite(y%2C%20z)%3B%0A%20%20%20%20assert_eq!(std%3A%3Aptr%3A%3Aread(y)%2C%2012)%3B%0A%7D%0A%7D&amp;edition=2021">Run</a></div>
+<p>Manually implement <a href="../mem/fn.swap.html" title="mem::swap"><code>mem::swap</code></a>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">std::ptr</span>;
+
+<span class="kw">fn</span> <span class="ident">swap</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="kw-2">&amp;mut</span> <span class="ident">T</span>, <span class="ident">b</span>: <span class="kw-2">&amp;mut</span> <span class="ident">T</span>) {
+    <span class="kw">unsafe</span> {
+        <span class="comment">// Create a bitwise copy of the value at `a` in `tmp`.</span>
+        <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">ptr::read</span>(<span class="ident">a</span>);
+
+        <span class="comment">// Exiting at this point (either by explicitly returning or by</span>
+        <span class="comment">// calling a function which panics) would cause the value in `tmp` to</span>
+        <span class="comment">// be dropped while the same value is still referenced by `a`. This</span>
+        <span class="comment">// could trigger undefined behavior if `T` is not `Copy`.</span>
+
+        <span class="comment">// Create a bitwise copy of the value at `b` in `a`.</span>
+        <span class="comment">// This is safe because mutable references cannot alias.</span>
+        <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">b</span>, <span class="ident">a</span>, <span class="number">1</span>);
+
+        <span class="comment">// As above, exiting here could trigger undefined behavior because</span>
+        <span class="comment">// the same value is referenced by `a` and `b`.</span>
+
+        <span class="comment">// Move `tmp` into `b`.</span>
+        <span class="ident">ptr::write</span>(<span class="ident">b</span>, <span class="ident">tmp</span>);
+
+        <span class="comment">// `tmp` has been moved (`write` takes ownership of its second argument),</span>
+        <span class="comment">// so nothing is dropped implicitly here.</span>
+    }
+}
+
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">foo</span> <span class="op">=</span> <span class="string">&quot;foo&quot;</span>.<span class="ident">to_owned</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bar</span> <span class="op">=</span> <span class="string">&quot;bar&quot;</span>.<span class="ident">to_owned</span>();
+
+<span class="ident">swap</span>(<span class="kw-2">&amp;mut</span> <span class="ident">foo</span>, <span class="kw-2">&amp;mut</span> <span class="ident">bar</span>);
+
+<span class="macro">assert_eq!</span>(<span class="ident">foo</span>, <span class="string">&quot;bar&quot;</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">bar</span>, <span class="string">&quot;foo&quot;</span>);</code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Ause%20std%3A%3Aptr%3B%0A%0Afn%20swap%3CT%3E(a%3A%20%26mut%20T%2C%20b%3A%20%26mut%20T)%20%7B%0A%20%20%20%20unsafe%20%7B%0A%20%20%20%20%20%20%20%20%2F%2F%20Create%20a%20bitwise%20copy%20of%20the%20value%20at%20%60a%60%20in%20%60tmp%60.%0A%20%20%20%20%20%20%20%20let%20tmp%20%3D%20ptr%3A%3Aread(a)%3B%0A%0A%20%20%20%20%20%20%20%20%2F%2F%20Exiting%20at%20this%20point%20(either%20by%20explicitly%20returning%20or%20by%0A%20%20%20%20%20%20%20%20%2F%2F%20calling%20a%20function%20which%20panics)%20would%20cause%20the%20value%20in%20%60tmp%60%20to%0A%20%20%20%20%20%20%20%20%2F%2F%20be%20dropped%20while%20the%20same%20value%20is%20still%20referenced%20by%20%60a%60.%20This%0A%20%20%20%20%20%20%20%20%2F%2F%20could%20trigger%20undefined%20behavior%20if%20%60T%60%20is%20not%20%60Copy%60.%0A%0A%20%20%20%20%20%20%20%20%2F%2F%20Create%20a%20bitwise%20copy%20of%20the%20value%20at%20%60b%60%20in%20%60a%60.%0A%20%20%20%20%20%20%20%20%2F%2F%20This%20is%20safe%20because%20mutable%20references%20cannot%20alias.%0A%20%20%20%20%20%20%20%20ptr%3A%3Acopy_nonoverlapping(b%2C%20a%2C%201)%3B%0A%0A%20%20%20%20%20%20%20%20%2F%2F%20As%20above%2C%20exiting%20here%20could%20trigger%20undefined%20behavior%20because%0A%20%20%20%20%20%20%20%20%2F%2F%20the%20same%20value%20is%20referenced%20by%20%60a%60%20and%20%60b%60.%0A%0A%20%20%20%20%20%20%20%20%2F%2F%20Move%20%60tmp%60%20into%20%60b%60.%0A%20%20%20%20%20%20%20%20ptr%3A%3Awrite(b%2C%20tmp)%3B%0A%0A%20%20%20%20%20%20%20%20%2F%2F%20%60tmp%60%20has%20been%20moved%20(%60write%60%20takes%20ownership%20of%20its%20second%20argument)%2C%0A%20%20%20%20%20%20%20%20%2F%2F%20so%20nothing%20is%20dropped%20implicitly%20here.%0A%20%20%20%20%7D%0A%7D%0A%0Alet%20mut%20foo%20%3D%20%22foo%22.to_owned()%3B%0Alet%20mut%20bar%20%3D%20%22bar%22.to_owned()%3B%0A%0Aswap(%26mut%20foo%2C%20%26mut%20bar)%3B%0A%0Aassert_eq!(foo%2C%20%22bar%22)%3B%0Aassert_eq!(bar%2C%20%22foo%22)%3B%0A%7D&amp;edition=2021">Run</a></div>
+</div></details></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
+</body></html>

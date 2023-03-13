@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Declares a kernel module."><meta name="keywords" content="rust, rustlang, rust-lang, module"><title>module in macros - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../dark.css" disabled><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../storage.js"></script><script src="../crates.js"></script><script defer src="../main.js"></script>
+    <noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../logo.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../macros/index.html"><div class="logo-container"><img class="rust-logo" src="../logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../macros/index.html"><div class="logo-container"><img class="rust-logo" src="../logo.svg" alt="logo"></div>
+        </a><div class="sidebar-elems"><h2 class="location"><a href="index.html">In macros</a></h2><div id="sidebar-vars" data-name="module" data-ty="macro" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../macros/index.html"><img class="rust-logo" src="../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Macro <a href="index.html">macros</a>::<wbr><a class="macro" href="#">module</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/macros/lib.rs.html#72-74">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><div class="docblock item-decl"><pre class="rust macro"><code>module!() { /* proc-macro */ }</code></pre></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Declares a kernel module.</p>
+<p>The <code>type</code> argument should be a type which implements the <a href="../kernel/trait.Module.html"><code>Module</code></a>
+trait. Also accepts various forms of kernel metadata.</p>
+<p>C header: <a href="../../../include/linux/moduleparam.h"><code>include/linux/moduleparam.h</code></a></p>
+<h2 id="examples"><a href="#examples">Examples</a></h2>
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="kw">use</span> <span class="ident">kernel::prelude</span>::<span class="kw-2">*</span>;
+
+<span class="macro">module!</span>{
+    <span class="kw">type</span>: <span class="ident">MyModule</span>,
+    <span class="ident">name</span>: <span class="string">&quot;my_kernel_module&quot;</span>,
+    <span class="ident">author</span>: <span class="string">&quot;Rust for Linux Contributors&quot;</span>,
+    <span class="ident">description</span>: <span class="string">&quot;My very own kernel module!&quot;</span>,
+    <span class="ident">license</span>: <span class="string">&quot;GPL&quot;</span>,
+    <span class="ident">params</span>: {
+       <span class="ident">my_i32</span>: <span class="ident">i32</span> {
+           <span class="ident">default</span>: <span class="number">42</span>,
+           <span class="ident">permissions</span>: <span class="number">0o000</span>,
+           <span class="ident">description</span>: <span class="string">&quot;Example of i32&quot;</span>,
+       },
+       <span class="ident">writeable_i32</span>: <span class="ident">i32</span> {
+           <span class="ident">default</span>: <span class="number">42</span>,
+           <span class="ident">permissions</span>: <span class="number">0o644</span>,
+           <span class="ident">description</span>: <span class="string">&quot;Example of i32&quot;</span>,
+       },
+   },
+}
+
+<span class="kw">struct</span> <span class="ident">MyModule</span>;
+
+<span class="kw">impl</span> <span class="ident">kernel::Module</span> <span class="kw">for</span> <span class="ident">MyModule</span> {
+    <span class="kw">fn</span> <span class="ident">init</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="comment">// If the parameter is writeable, then the kparam lock must be</span>
+        <span class="comment">// taken to read the parameter:</span>
+        {
+            <span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">THIS_MODULE</span>.<span class="ident">kernel_param_lock</span>();
+            <span class="macro">pr_info!</span>(<span class="string">&quot;i32 param is:  {}\n&quot;</span>, <span class="ident">writeable_i32</span>.<span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="ident">lock</span>));
+        }
+        <span class="comment">// If the parameter is read only, it can be read without locking</span>
+        <span class="comment">// the kernel parameters:</span>
+        <span class="macro">pr_info!</span>(<span class="string">&quot;i32 param is:  {}\n&quot;</span>, <span class="ident">my_i32</span>.<span class="ident">read</span>());
+        <span class="prelude-val">Ok</span>(<span class="self">Self</span>)
+    }
+}</code></pre></div>
+<h2 id="supported-argument-types"><a href="#supported-argument-types">Supported argument types</a></h2>
+<ul>
+<li><code>type</code>: type which implements the <a href="../kernel/trait.Module.html"><code>Module</code></a> trait (required).</li>
+<li><code>name</code>: byte array of the name of the kernel module (required).</li>
+<li><code>author</code>: byte array of the author of the kernel module.</li>
+<li><code>description</code>: byte array of the description of the kernel module.</li>
+<li><code>license</code>: byte array of the license of the kernel module (required).</li>
+<li><code>alias</code>: byte array of alias name of the kernel module.</li>
+</ul>
+</div></details></section></div></main><div id="rustdoc-vars" data-root-path="../" data-current-crate="macros" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
+</body></html>

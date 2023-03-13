@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["TryReserveErrorKind","Details of the allocation that caused a `TryReserveError`"]],"struct":[["TryReserveError","The error type for `try_reserve` methods."]]});

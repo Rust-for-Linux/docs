@@ -1,0 +1,1 @@
+initSidebarItems({"attr":[["vtable","Declares or implements a vtable trait."]],"macro":[["concat_idents","Concatenate two identifiers."],["module","Declares a kernel module."]]});
