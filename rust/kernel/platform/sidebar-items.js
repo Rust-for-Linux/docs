@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["Adapter","An adapter for the registration of platform drivers."],["Device","A platform device."]],"trait":[["Driver","A platform driver."]],"type":[["Registration","A registration of a platform driver."]]};

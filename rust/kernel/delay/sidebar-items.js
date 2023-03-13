@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["coarse_sleep","Sleeps safely even with waitqueue interruptions."]]};

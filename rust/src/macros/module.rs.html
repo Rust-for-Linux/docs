@@ -1,0 +1,1314 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/macros/module.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>module.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../macros/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+</pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0
+
+</span><span class="kw">use </span>proc_macro::{token_stream, Delimiter, Group, Literal, TokenStream, TokenTree};
+<span class="kw">use </span>std::fmt::Write;
+
+<span class="kw">use </span><span class="kw">crate</span>::helpers::<span class="kw-2">*</span>;
+
+<span class="attribute">#[derive(Clone, PartialEq)]
+</span><span class="kw">enum </span>ParamType {
+    Ident(String),
+    Array { vals: String, max_length: usize },
+}
+
+<span class="kw">fn </span>expect_array_fields(it: <span class="kw-2">&amp;mut </span>token_stream::IntoIter) -&gt; ParamType {
+    <span class="macro">assert_eq!</span>(expect_punct(it), <span class="string">&#39;&lt;&#39;</span>);
+    <span class="kw">let </span>vals = expect_ident(it);
+    <span class="macro">assert_eq!</span>(expect_punct(it), <span class="string">&#39;,&#39;</span>);
+    <span class="kw">let </span>max_length_str = expect_literal(it);
+    <span class="kw">let </span>max_length = max_length_str
+        .parse::&lt;usize&gt;()
+        .expect(<span class="string">&quot;Expected usize length&quot;</span>);
+    <span class="macro">assert_eq!</span>(expect_punct(it), <span class="string">&#39;&gt;&#39;</span>);
+    ParamType::Array { vals, max_length }
+}
+
+<span class="kw">fn </span>expect_type(it: <span class="kw-2">&amp;mut </span>token_stream::IntoIter) -&gt; ParamType {
+    <span class="kw">if let </span>TokenTree::Ident(ident) = it
+        .next()
+        .expect(<span class="string">&quot;Reached end of token stream for param type&quot;</span>)
+    {
+        <span class="kw">match </span>ident.to_string().as_ref() {
+            <span class="string">&quot;ArrayParam&quot; </span>=&gt; expect_array_fields(it),
+            <span class="kw">_ </span>=&gt; ParamType::Ident(ident.to_string()),
+        }
+    } <span class="kw">else </span>{
+        <span class="macro">panic!</span>(<span class="string">&quot;Expected Param Type&quot;</span>)
+    }
+}
+
+<span class="kw">struct </span>ModInfoBuilder&lt;<span class="lifetime">&#39;a</span>&gt; {
+    module: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str,
+    counter: usize,
+    buffer: String,
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ModInfoBuilder&lt;<span class="lifetime">&#39;a</span>&gt; {
+    <span class="kw">fn </span>new(module: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str) -&gt; <span class="self">Self </span>{
+        ModInfoBuilder {
+            module,
+            counter: <span class="number">0</span>,
+            buffer: String::new(),
+        }
+    }
+
+    <span class="kw">fn </span>emit_base(<span class="kw-2">&amp;mut </span><span class="self">self</span>, field: <span class="kw-2">&amp;</span>str, content: <span class="kw-2">&amp;</span>str, builtin: bool) {
+        <span class="kw">let </span>string = <span class="kw">if </span>builtin {
+            <span class="comment">// Built-in modules prefix their modinfo strings by `module.`.
+            </span><span class="macro">format!</span>(
+                <span class="string">&quot;{module}.{field}={content}\0&quot;</span>,
+                module = <span class="self">self</span>.module,
+                field = field,
+                content = content
+            )
+        } <span class="kw">else </span>{
+            <span class="comment">// Loadable modules&#39; modinfo strings go as-is.
+            </span><span class="macro">format!</span>(<span class="string">&quot;{field}={content}\0&quot;</span>, field = field, content = content)
+        };
+
+        <span class="macro">write!</span>(
+            <span class="kw-2">&amp;mut </span><span class="self">self</span>.buffer,
+            <span class="string">&quot;
+                {cfg}
+                #[doc(hidden)]
+                #[link_section = \&quot;.modinfo\&quot;]
+                #[used]
+                pub static __{module}_{counter}: [u8; {length}] = *{string};
+            &quot;</span>,
+            cfg = <span class="kw">if </span>builtin {
+                <span class="string">&quot;#[cfg(not(MODULE))]&quot;
+            </span>} <span class="kw">else </span>{
+                <span class="string">&quot;#[cfg(MODULE)]&quot;
+            </span>},
+            module = <span class="self">self</span>.module.to_uppercase(),
+            counter = <span class="self">self</span>.counter,
+            length = string.len(),
+            string = Literal::byte_string(string.as_bytes()),
+        )
+        .unwrap();
+
+        <span class="self">self</span>.counter += <span class="number">1</span>;
+    }
+
+    <span class="kw">fn </span>emit_only_builtin(<span class="kw-2">&amp;mut </span><span class="self">self</span>, field: <span class="kw-2">&amp;</span>str, content: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.emit_base(field, content, <span class="bool-val">true</span>)
+    }
+
+    <span class="kw">fn </span>emit_only_loadable(<span class="kw-2">&amp;mut </span><span class="self">self</span>, field: <span class="kw-2">&amp;</span>str, content: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.emit_base(field, content, <span class="bool-val">false</span>)
+    }
+
+    <span class="kw">fn </span>emit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, field: <span class="kw-2">&amp;</span>str, content: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.emit_only_builtin(field, content);
+        <span class="self">self</span>.emit_only_loadable(field, content);
+    }
+
+    <span class="kw">fn </span>emit_param(<span class="kw-2">&amp;mut </span><span class="self">self</span>, field: <span class="kw-2">&amp;</span>str, param: <span class="kw-2">&amp;</span>str, content: <span class="kw-2">&amp;</span>str) {
+        <span class="kw">let </span>content = <span class="macro">format!</span>(<span class="string">&quot;{param}:{content}&quot;</span>, param = param, content = content);
+        <span class="self">self</span>.emit(field, <span class="kw-2">&amp;</span>content);
+    }
+}
+
+<span class="kw">fn </span>permissions_are_readonly(perms: <span class="kw-2">&amp;</span>str) -&gt; bool {
+    <span class="kw">let </span>(radix, digits) = <span class="kw">if let </span><span class="prelude-val">Some</span>(n) = perms.strip_prefix(<span class="string">&quot;0x&quot;</span>) {
+        (<span class="number">16</span>, n)
+    } <span class="kw">else if let </span><span class="prelude-val">Some</span>(n) = perms.strip_prefix(<span class="string">&quot;0o&quot;</span>) {
+        (<span class="number">8</span>, n)
+    } <span class="kw">else if let </span><span class="prelude-val">Some</span>(n) = perms.strip_prefix(<span class="string">&quot;0b&quot;</span>) {
+        (<span class="number">2</span>, n)
+    } <span class="kw">else </span>{
+        (<span class="number">10</span>, perms)
+    };
+    <span class="kw">match </span>u32::from_str_radix(digits, radix) {
+        <span class="prelude-val">Ok</span>(perms) =&gt; perms &amp; <span class="number">0o222 </span>== <span class="number">0</span>,
+        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="bool-val">false</span>,
+    }
+}
+
+<span class="kw">fn </span>param_ops_path(param_type: <span class="kw-2">&amp;</span>str) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+    <span class="kw">match </span>param_type {
+        <span class="string">&quot;bool&quot; </span>=&gt; <span class="string">&quot;kernel::module_param::PARAM_OPS_BOOL&quot;</span>,
+        <span class="string">&quot;i8&quot; </span>=&gt; <span class="string">&quot;kernel::module_param::PARAM_OPS_I8&quot;</span>,
+        <span class="string">&quot;u8&quot; </span>=&gt; <span class="string">&quot;kernel::module_param::PARAM_OPS_U8&quot;</span>,
+        <span class="string">&quot;i16&quot; </span>=&gt; <span class="string">&quot;kernel::module_param::PARAM_OPS_I16&quot;</span>,
+        <span class="string">&quot;u16&quot; </span>=&gt; <span class="string">&quot;kernel::module_param::PARAM_OPS_U16&quot;</span>,
+        <span class="string">&quot;i32&quot; </span>=&gt; <span class="string">&quot;kernel::module_param::PARAM_OPS_I32&quot;</span>,
+        <span class="string">&quot;u32&quot; </span>=&gt; <span class="string">&quot;kernel::module_param::PARAM_OPS_U32&quot;</span>,
+        <span class="string">&quot;i64&quot; </span>=&gt; <span class="string">&quot;kernel::module_param::PARAM_OPS_I64&quot;</span>,
+        <span class="string">&quot;u64&quot; </span>=&gt; <span class="string">&quot;kernel::module_param::PARAM_OPS_U64&quot;</span>,
+        <span class="string">&quot;isize&quot; </span>=&gt; <span class="string">&quot;kernel::module_param::PARAM_OPS_ISIZE&quot;</span>,
+        <span class="string">&quot;usize&quot; </span>=&gt; <span class="string">&quot;kernel::module_param::PARAM_OPS_USIZE&quot;</span>,
+        <span class="string">&quot;str&quot; </span>=&gt; <span class="string">&quot;kernel::module_param::PARAM_OPS_STR&quot;</span>,
+        t =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Unrecognized type {}&quot;</span>, t),
+    }
+}
+
+<span class="attribute">#[allow(clippy::type_complexity)]
+</span><span class="kw">fn </span>try_simple_param_val(
+    param_type: <span class="kw-2">&amp;</span>str,
+) -&gt; Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;mut </span>token_stream::IntoIter) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt;&gt; {
+    <span class="kw">match </span>param_type {
+        <span class="string">&quot;bool&quot; </span>=&gt; Box::new(try_ident),
+        <span class="string">&quot;str&quot; </span>=&gt; Box::new(|param_it| {
+            try_byte_string(param_it)
+                .map(|s| <span class="macro">format!</span>(<span class="string">&quot;kernel::module_param::StringParam::Ref(b\&quot;{}\&quot;)&quot;</span>, s))
+        }),
+        <span class="kw">_ </span>=&gt; Box::new(try_literal),
+    }
+}
+
+<span class="kw">fn </span>get_default(param_type: <span class="kw-2">&amp;</span>ParamType, param_it: <span class="kw-2">&amp;mut </span>token_stream::IntoIter) -&gt; String {
+    <span class="kw">let </span>try_param_val = <span class="kw">match </span>param_type {
+        ParamType::Ident(<span class="kw-2">ref </span>param_type)
+        | ParamType::Array {
+            vals: <span class="kw-2">ref </span>param_type,
+            max_length: <span class="kw">_</span>,
+        } =&gt; try_simple_param_val(param_type),
+    };
+    <span class="macro">assert_eq!</span>(expect_ident(param_it), <span class="string">&quot;default&quot;</span>);
+    <span class="macro">assert_eq!</span>(expect_punct(param_it), <span class="string">&#39;:&#39;</span>);
+    <span class="kw">let </span>default = <span class="kw">match </span>param_type {
+        ParamType::Ident(<span class="kw">_</span>) =&gt; try_param_val(param_it).expect(<span class="string">&quot;Expected default param value&quot;</span>),
+        ParamType::Array {
+            vals: <span class="kw">_</span>,
+            max_length: <span class="kw">_</span>,
+        } =&gt; {
+            <span class="kw">let </span>group = expect_group(param_it);
+            <span class="macro">assert_eq!</span>(group.delimiter(), Delimiter::Bracket);
+            <span class="kw">let </span><span class="kw-2">mut </span>default_vals = Vec::new();
+            <span class="kw">let </span><span class="kw-2">mut </span>it = group.stream().into_iter();
+
+            <span class="kw">while let </span><span class="prelude-val">Some</span>(default_val) = try_param_val(<span class="kw-2">&amp;mut </span>it) {
+                default_vals.push(default_val);
+                <span class="kw">match </span>it.next() {
+                    <span class="prelude-val">Some</span>(TokenTree::Punct(punct)) =&gt; <span class="macro">assert_eq!</span>(punct.as_char(), <span class="string">&#39;,&#39;</span>),
+                    <span class="prelude-val">None </span>=&gt; <span class="kw">break</span>,
+                    <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;Expected &#39;,&#39; or end of array default values&quot;</span>),
+                }
+            }
+
+            <span class="kw">let </span><span class="kw-2">mut </span>default_array = <span class="string">&quot;kernel::module_param::ArrayParam::create(&amp;[&quot;</span>.to_string();
+            default_array.push_str(
+                <span class="kw-2">&amp;</span>default_vals
+                    .iter()
+                    .map(|val| val.to_string())
+                    .collect::&lt;Vec&lt;String&gt;&gt;()
+                    .join(<span class="string">&quot;,&quot;</span>),
+            );
+            default_array.push_str(<span class="string">&quot;])&quot;</span>);
+            default_array
+        }
+    };
+    <span class="macro">assert_eq!</span>(expect_punct(param_it), <span class="string">&#39;,&#39;</span>);
+    default
+}
+
+<span class="kw">fn </span>generated_array_ops_name(vals: <span class="kw-2">&amp;</span>str, max_length: usize) -&gt; String {
+    <span class="macro">format!</span>(
+        <span class="string">&quot;__generated_array_ops_{vals}_{max_length}&quot;</span>,
+        vals = vals,
+        max_length = max_length
+    )
+}
+
+<span class="attribute">#[derive(Debug, Default)]
+</span><span class="kw">struct </span>ModuleInfo {
+    type_: String,
+    license: String,
+    name: String,
+    author: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    description: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    alias: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    params: <span class="prelude-ty">Option</span>&lt;Group&gt;,
+}
+
+<span class="kw">impl </span>ModuleInfo {
+    <span class="kw">fn </span>parse(it: <span class="kw-2">&amp;mut </span>token_stream::IntoIter) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>info = ModuleInfo::default();
+
+        <span class="kw">const </span>EXPECTED_KEYS: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>str] = <span class="kw-2">&amp;</span>[
+            <span class="string">&quot;type&quot;</span>,
+            <span class="string">&quot;name&quot;</span>,
+            <span class="string">&quot;author&quot;</span>,
+            <span class="string">&quot;description&quot;</span>,
+            <span class="string">&quot;license&quot;</span>,
+            <span class="string">&quot;alias&quot;</span>,
+            <span class="string">&quot;alias_rtnl_link&quot;</span>,
+            <span class="string">&quot;params&quot;</span>,
+        ];
+        <span class="kw">const </span>REQUIRED_KEYS: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>str] = <span class="kw-2">&amp;</span>[<span class="string">&quot;type&quot;</span>, <span class="string">&quot;name&quot;</span>, <span class="string">&quot;license&quot;</span>];
+        <span class="kw">let </span><span class="kw-2">mut </span>seen_keys = Vec::new();
+
+        <span class="kw">loop </span>{
+            <span class="kw">let </span>key = <span class="kw">match </span>it.next() {
+                <span class="prelude-val">Some</span>(TokenTree::Ident(ident)) =&gt; ident.to_string(),
+                <span class="prelude-val">Some</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Expected Ident or end&quot;</span>),
+                <span class="prelude-val">None </span>=&gt; <span class="kw">break</span>,
+            };
+
+            <span class="kw">if </span>seen_keys.contains(<span class="kw-2">&amp;</span>key) {
+                <span class="macro">panic!</span>(
+                    <span class="string">&quot;Duplicated key \&quot;{}\&quot;. Keys can only be specified once.&quot;</span>,
+                    key
+                );
+            }
+
+            <span class="macro">assert_eq!</span>(expect_punct(it), <span class="string">&#39;:&#39;</span>);
+
+            <span class="kw">match </span>key.as_str() {
+                <span class="string">&quot;type&quot; </span>=&gt; info.type_ = expect_ident(it),
+                <span class="string">&quot;name&quot; </span>=&gt; info.name = expect_string_ascii(it),
+                <span class="string">&quot;author&quot; </span>=&gt; info.author = <span class="prelude-val">Some</span>(expect_string(it)),
+                <span class="string">&quot;description&quot; </span>=&gt; info.description = <span class="prelude-val">Some</span>(expect_string(it)),
+                <span class="string">&quot;license&quot; </span>=&gt; info.license = expect_string_ascii(it),
+                <span class="string">&quot;alias&quot; </span>=&gt; info.alias = <span class="prelude-val">Some</span>(expect_string_ascii(it)),
+                <span class="string">&quot;alias_rtnl_link&quot; </span>=&gt; {
+                    info.alias = <span class="prelude-val">Some</span>(<span class="macro">format!</span>(<span class="string">&quot;rtnl-link-{}&quot;</span>, expect_string_ascii(it)))
+                }
+                <span class="string">&quot;params&quot; </span>=&gt; info.params = <span class="prelude-val">Some</span>(expect_group(it)),
+                <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(
+                    <span class="string">&quot;Unknown key \&quot;{}\&quot;. Valid keys are: {:?}.&quot;</span>,
+                    key, EXPECTED_KEYS
+                ),
+            }
+
+            <span class="macro">assert_eq!</span>(expect_punct(it), <span class="string">&#39;,&#39;</span>);
+
+            seen_keys.push(key);
+        }
+
+        expect_end(it);
+
+        <span class="kw">for </span>key <span class="kw">in </span>REQUIRED_KEYS {
+            <span class="kw">if </span>!seen_keys.iter().any(|e| e == key) {
+                <span class="macro">panic!</span>(<span class="string">&quot;Missing required key \&quot;{}\&quot;.&quot;</span>, key);
+            }
+        }
+
+        <span class="kw">let </span><span class="kw-2">mut </span>ordered_keys: Vec&lt;<span class="kw-2">&amp;</span>str&gt; = Vec::new();
+        <span class="kw">for </span>key <span class="kw">in </span>EXPECTED_KEYS {
+            <span class="kw">if </span>seen_keys.iter().any(|e| e == key) {
+                ordered_keys.push(key);
+            }
+        }
+
+        <span class="kw">if </span>seen_keys != ordered_keys {
+            <span class="macro">panic!</span>(
+                <span class="string">&quot;Keys are not ordered as expected. Order them like: {:?}.&quot;</span>,
+                ordered_keys
+            );
+        }
+
+        info
+    }
+}
+
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>module(ts: TokenStream) -&gt; TokenStream {
+    <span class="kw">let </span><span class="kw-2">mut </span>it = ts.into_iter();
+
+    <span class="kw">let </span>info = ModuleInfo::parse(<span class="kw-2">&amp;mut </span>it);
+
+    <span class="kw">let </span><span class="kw-2">mut </span>modinfo = ModInfoBuilder::new(info.name.as_ref());
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(author) = info.author {
+        modinfo.emit(<span class="string">&quot;author&quot;</span>, <span class="kw-2">&amp;</span>author);
+    }
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(description) = info.description {
+        modinfo.emit(<span class="string">&quot;description&quot;</span>, <span class="kw-2">&amp;</span>description);
+    }
+    modinfo.emit(<span class="string">&quot;license&quot;</span>, <span class="kw-2">&amp;</span>info.license);
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(alias) = info.alias {
+        modinfo.emit(<span class="string">&quot;alias&quot;</span>, <span class="kw-2">&amp;</span>alias);
+    }
+
+    <span class="comment">// Built-in modules also export the `file` modinfo string.
+    </span><span class="kw">let </span>file =
+        std::env::var(<span class="string">&quot;RUST_MODFILE&quot;</span>).expect(<span class="string">&quot;Unable to fetch RUST_MODFILE environmental variable&quot;</span>);
+    modinfo.emit_only_builtin(<span class="string">&quot;file&quot;</span>, <span class="kw-2">&amp;</span>file);
+
+    <span class="kw">let </span><span class="kw-2">mut </span>array_types_to_generate = Vec::new();
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(params) = info.params {
+        <span class="macro">assert_eq!</span>(params.delimiter(), Delimiter::Brace);
+
+        <span class="kw">let </span><span class="kw-2">mut </span>it = params.stream().into_iter();
+
+        <span class="kw">loop </span>{
+            <span class="kw">let </span>param_name = <span class="kw">match </span>it.next() {
+                <span class="prelude-val">Some</span>(TokenTree::Ident(ident)) =&gt; ident.to_string(),
+                <span class="prelude-val">Some</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Expected Ident or end&quot;</span>),
+                <span class="prelude-val">None </span>=&gt; <span class="kw">break</span>,
+            };
+
+            <span class="macro">assert_eq!</span>(expect_punct(<span class="kw-2">&amp;mut </span>it), <span class="string">&#39;:&#39;</span>);
+            <span class="kw">let </span>param_type = expect_type(<span class="kw-2">&amp;mut </span>it);
+            <span class="kw">let </span>group = expect_group(<span class="kw-2">&amp;mut </span>it);
+            <span class="macro">assert_eq!</span>(expect_punct(<span class="kw-2">&amp;mut </span>it), <span class="string">&#39;,&#39;</span>);
+
+            <span class="macro">assert_eq!</span>(group.delimiter(), Delimiter::Brace);
+
+            <span class="kw">let </span><span class="kw-2">mut </span>param_it = group.stream().into_iter();
+            <span class="kw">let </span>param_default = get_default(<span class="kw-2">&amp;</span>param_type, <span class="kw-2">&amp;mut </span>param_it);
+            <span class="kw">let </span>param_permissions = get_literal(<span class="kw-2">&amp;mut </span>param_it, <span class="string">&quot;permissions&quot;</span>);
+            <span class="kw">let </span>param_description = get_string(<span class="kw-2">&amp;mut </span>param_it, <span class="string">&quot;description&quot;</span>);
+            expect_end(<span class="kw-2">&amp;mut </span>param_it);
+
+            <span class="comment">// TODO: More primitive types.
+            // TODO: Other kinds: unsafes, etc.
+            </span><span class="kw">let </span>(param_kernel_type, ops): (String, <span class="kw">_</span>) = <span class="kw">match </span>param_type {
+                ParamType::Ident(<span class="kw-2">ref </span>param_type) =&gt; (
+                    param_type.to_string(),
+                    param_ops_path(param_type).to_string(),
+                ),
+                ParamType::Array {
+                    <span class="kw-2">ref </span>vals,
+                    max_length,
+                } =&gt; {
+                    array_types_to_generate.push((vals.clone(), max_length));
+                    (
+                        <span class="macro">format!</span>(<span class="string">&quot;__rust_array_param_{}_{}&quot;</span>, vals, max_length),
+                        generated_array_ops_name(vals, max_length),
+                    )
+                }
+            };
+
+            modinfo.emit_param(<span class="string">&quot;parmtype&quot;</span>, <span class="kw-2">&amp;</span>param_name, <span class="kw-2">&amp;</span>param_kernel_type);
+            modinfo.emit_param(<span class="string">&quot;parm&quot;</span>, <span class="kw-2">&amp;</span>param_name, <span class="kw-2">&amp;</span>param_description);
+            <span class="kw">let </span>param_type_internal = <span class="kw">match </span>param_type {
+                ParamType::Ident(<span class="kw-2">ref </span>param_type) =&gt; <span class="kw">match </span>param_type.as_ref() {
+                    <span class="string">&quot;str&quot; </span>=&gt; <span class="string">&quot;kernel::module_param::StringParam&quot;</span>.to_string(),
+                    other =&gt; other.to_string(),
+                },
+                ParamType::Array {
+                    <span class="kw-2">ref </span>vals,
+                    max_length,
+                } =&gt; <span class="macro">format!</span>(
+                    <span class="string">&quot;kernel::module_param::ArrayParam&lt;{vals}, {max_length}&gt;&quot;</span>,
+                    vals = vals,
+                    max_length = max_length
+                ),
+            };
+            <span class="kw">let </span>read_func = <span class="kw">if </span>permissions_are_readonly(<span class="kw-2">&amp;</span>param_permissions) {
+                <span class="macro">format!</span>(
+                    <span class="string">&quot;
+                        fn read(&amp;self)
+                            -&gt; &amp;&lt;{param_type_internal} as kernel::module_param::ModuleParam&gt;::Value {{
+                            // SAFETY: Parameters do not need to be locked because they are
+                            // read only or sysfs is not enabled.
+                            unsafe {{
+                                &lt;{param_type_internal} as kernel::module_param::ModuleParam&gt;::value(
+                                    &amp;__{name}_{param_name}_value
+                                )
+                            }}
+                        }}
+                    &quot;</span>,
+                    name = info.name,
+                    param_name = param_name,
+                    param_type_internal = param_type_internal,
+                )
+            } <span class="kw">else </span>{
+                <span class="macro">format!</span>(
+                    <span class="string">&quot;
+                        fn read&lt;&#39;lck&gt;(&amp;self, lock: &amp;&#39;lck kernel::KParamGuard)
+                            -&gt; &amp;&#39;lck &lt;{param_type_internal} as kernel::module_param::ModuleParam&gt;::Value {{
+                            // SAFETY: Parameters are locked by `KParamGuard`.
+                            unsafe {{
+                                &lt;{param_type_internal} as kernel::module_param::ModuleParam&gt;::value(
+                                    &amp;__{name}_{param_name}_value
+                                )
+                            }}
+                        }}
+                    &quot;</span>,
+                    name = info.name,
+                    param_name = param_name,
+                    param_type_internal = param_type_internal,
+                )
+            };
+            <span class="kw">let </span>kparam = <span class="macro">format!</span>(
+                <span class="string">&quot;
+                    kernel::bindings::kernel_param__bindgen_ty_1 {{
+                        arg: unsafe {{ &amp;__{name}_{param_name}_value }}
+                            as *const _ as *mut core::ffi::c_void,
+                    }},
+                &quot;</span>,
+                name = info.name,
+                param_name = param_name,
+            );
+            <span class="macro">write!</span>(
+                modinfo.buffer,
+                <span class="string">&quot;
+                static mut __{name}_{param_name}_value: {param_type_internal} = {param_default};
+
+                struct __{name}_{param_name};
+
+                impl __{name}_{param_name} {{ {read_func} }}
+
+                const {param_name}: __{name}_{param_name} = __{name}_{param_name};
+
+                // Note: the C macro that generates the static structs for the `__param` section
+                // asks for them to be `aligned(sizeof(void *))`. However, that was put in place
+                // in 2003 in commit 38d5b085d2a0 (\&quot;[PATCH] Fix over-alignment problem on x86-64\&quot;)
+                // to undo GCC over-alignment of static structs of &gt;32 bytes. It seems that is
+                // not the case anymore, so we simplify to a transparent representation here
+                // in the expectation that it is not needed anymore.
+                // TODO: Revisit this to confirm the above comment and remove it if it happened.
+                #[repr(transparent)]
+                struct __{name}_{param_name}_RacyKernelParam(kernel::bindings::kernel_param);
+
+                unsafe impl Sync for __{name}_{param_name}_RacyKernelParam {{
+                }}
+
+                #[cfg(not(MODULE))]
+                const __{name}_{param_name}_name: *const core::ffi::c_char =
+                    b\&quot;{name}.{param_name}\\0\&quot; as *const _ as *const core::ffi::c_char;
+
+                #[cfg(MODULE)]
+                const __{name}_{param_name}_name: *const core::ffi::c_char =
+                    b\&quot;{param_name}\\0\&quot; as *const _ as *const core::ffi::c_char;
+
+                #[link_section = \&quot;__param\&quot;]
+                #[used]
+                static __{name}_{param_name}_struct: __{name}_{param_name}_RacyKernelParam =
+                    __{name}_{param_name}_RacyKernelParam(kernel::bindings::kernel_param {{
+                        name: __{name}_{param_name}_name,
+                        // SAFETY: `__this_module` is constructed by the kernel at load time
+                        // and will not be freed until the module is unloaded.
+                        #[cfg(MODULE)]
+                        mod_: unsafe {{ &amp;kernel::bindings::__this_module as *const _ as *mut _ }},
+                        #[cfg(not(MODULE))]
+                        mod_: core::ptr::null_mut(),
+                        ops: unsafe {{ &amp;{ops} }} as *const kernel::bindings::kernel_param_ops,
+                        perm: {permissions},
+                        level: -1,
+                        flags: 0,
+                        __bindgen_anon_1: {kparam}
+                    }});
+                &quot;</span>,
+                name = info.name,
+                param_type_internal = param_type_internal,
+                read_func = read_func,
+                param_default = param_default,
+                param_name = param_name,
+                ops = ops,
+                permissions = param_permissions,
+                kparam = kparam,
+            )
+            .unwrap();
+        }
+    }
+
+    <span class="kw">let </span><span class="kw-2">mut </span>generated_array_types = String::new();
+
+    <span class="kw">for </span>(vals, max_length) <span class="kw">in </span>array_types_to_generate {
+        <span class="kw">let </span>ops_name = generated_array_ops_name(<span class="kw-2">&amp;</span>vals, max_length);
+        <span class="macro">write!</span>(
+            generated_array_types,
+            <span class="string">&quot;
+                kernel::make_param_ops!(
+                    {ops_name},
+                    kernel::module_param::ArrayParam&lt;{vals}, {{ {max_length} }}&gt;
+                );
+            &quot;</span>,
+            ops_name = ops_name,
+            vals = vals,
+            max_length = max_length,
+        )
+        .unwrap();
+    }
+
+    <span class="macro">format!</span>(
+        <span class="string">&quot;
+            /// The module name.
+            ///
+            /// Used by the printing macros, e.g. [`info!`].
+            const __LOG_PREFIX: &amp;[u8] = b\&quot;{name}\\0\&quot;;
+
+            /// The \&quot;Rust loadable module\&quot; mark, for `scripts/is_rust_module.sh`.
+            //
+            // This may be best done another way later on, e.g. as a new modinfo
+            // key or a new section. For the moment, keep it simple.
+            #[cfg(MODULE)]
+            #[doc(hidden)]
+            #[used]
+            static __IS_RUST_MODULE: () = ();
+
+            static mut __MOD: Option&lt;{type_}&gt; = None;
+
+            // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
+            // freed until the module is unloaded.
+            #[cfg(MODULE)]
+            static THIS_MODULE: kernel::ThisModule = unsafe {{
+                kernel::ThisModule::from_ptr(&amp;kernel::bindings::__this_module as *const _ as *mut _)
+            }};
+            #[cfg(not(MODULE))]
+            static THIS_MODULE: kernel::ThisModule = unsafe {{
+                kernel::ThisModule::from_ptr(core::ptr::null_mut())
+            }};
+
+            // Loadable modules need to export the `{{init,cleanup}}_module` identifiers.
+            #[cfg(MODULE)]
+            #[doc(hidden)]
+            #[no_mangle]
+            pub extern \&quot;C\&quot; fn init_module() -&gt; core::ffi::c_int {{
+                __init()
+            }}
+
+            #[cfg(MODULE)]
+            #[doc(hidden)]
+            #[no_mangle]
+            pub extern \&quot;C\&quot; fn cleanup_module() {{
+                __exit()
+            }}
+
+            // Built-in modules are initialized through an initcall pointer
+            // and the identifiers need to be unique.
+            #[cfg(not(MODULE))]
+            #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
+            #[doc(hidden)]
+            #[link_section = \&quot;{initcall_section}\&quot;]
+            #[used]
+            pub static __{name}_initcall: extern \&quot;C\&quot; fn() -&gt; core::ffi::c_int = __{name}_init;
+
+            #[cfg(not(MODULE))]
+            #[cfg(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)]
+            core::arch::global_asm!(
+                r#\&quot;.section \&quot;{initcall_section}\&quot;, \&quot;a\&quot;
+                __{name}_initcall:
+                    .long   __{name}_init - .
+                    .previous
+                \&quot;#
+            );
+
+            #[cfg(not(MODULE))]
+            #[doc(hidden)]
+            #[no_mangle]
+            pub extern \&quot;C\&quot; fn __{name}_init() -&gt; core::ffi::c_int {{
+                __init()
+            }}
+
+            #[cfg(not(MODULE))]
+            #[doc(hidden)]
+            #[no_mangle]
+            pub extern \&quot;C\&quot; fn __{name}_exit() {{
+                __exit()
+            }}
+
+            fn __init() -&gt; core::ffi::c_int {{
+                match &lt;{type_} as kernel::Module&gt;::init(kernel::c_str!(\&quot;{name}\&quot;), &amp;THIS_MODULE) {{
+                    Ok(m) =&gt; {{
+                        unsafe {{
+                            __MOD = Some(m);
+                        }}
+                        return 0;
+                    }}
+                    Err(e) =&gt; {{
+                        return e.to_kernel_errno();
+                    }}
+                }}
+            }}
+
+            fn __exit() {{
+                unsafe {{
+                    // Invokes `drop()` on `__MOD`, which should be used for cleanup.
+                    __MOD = None;
+                }}
+            }}
+
+            {modinfo}
+
+            {generated_array_types}
+        &quot;</span>,
+        type_ = info.type_,
+        name = info.name,
+        modinfo = modinfo.buffer,
+        generated_array_types = generated_array_types,
+        initcall_section = <span class="string">&quot;.initcall6.init&quot;
+    </span>)
+    .parse()
+    .expect(<span class="string">&quot;Error parsing formatted string into token stream.&quot;</span>)
+}
+
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_permissions_are_readonly() {
+        <span class="macro">assert!</span>(permissions_are_readonly(<span class="string">&quot;0b000000000&quot;</span>));
+        <span class="macro">assert!</span>(permissions_are_readonly(<span class="string">&quot;0o000&quot;</span>));
+        <span class="macro">assert!</span>(permissions_are_readonly(<span class="string">&quot;000&quot;</span>));
+        <span class="macro">assert!</span>(permissions_are_readonly(<span class="string">&quot;0x000&quot;</span>));
+
+        <span class="macro">assert!</span>(!permissions_are_readonly(<span class="string">&quot;0b111111111&quot;</span>));
+        <span class="macro">assert!</span>(!permissions_are_readonly(<span class="string">&quot;0o777&quot;</span>));
+        <span class="macro">assert!</span>(!permissions_are_readonly(<span class="string">&quot;511&quot;</span>));
+        <span class="macro">assert!</span>(!permissions_are_readonly(<span class="string">&quot;0x1ff&quot;</span>));
+
+        <span class="macro">assert!</span>(permissions_are_readonly(<span class="string">&quot;0o014&quot;</span>));
+        <span class="macro">assert!</span>(permissions_are_readonly(<span class="string">&quot;0o015&quot;</span>));
+
+        <span class="macro">assert!</span>(!permissions_are_readonly(<span class="string">&quot;0o214&quot;</span>));
+        <span class="macro">assert!</span>(!permissions_are_readonly(<span class="string">&quot;0o024&quot;</span>));
+        <span class="macro">assert!</span>(!permissions_are_readonly(<span class="string">&quot;0o012&quot;</span>));
+
+        <span class="macro">assert!</span>(!permissions_are_readonly(<span class="string">&quot;0o315&quot;</span>));
+        <span class="macro">assert!</span>(!permissions_are_readonly(<span class="string">&quot;0o065&quot;</span>));
+        <span class="macro">assert!</span>(!permissions_are_readonly(<span class="string">&quot;0o017&quot;</span>));
+    }
+}
+</code></pre></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="macros" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0 (69f9c33d7 2022-12-12)" ></div></body></html>

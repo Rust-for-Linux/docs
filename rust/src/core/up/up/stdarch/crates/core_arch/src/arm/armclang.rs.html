@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/1.66.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/../../stdarch/crates/core_arch/src/arm/armclang.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>armclang.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../../../../../../normalize.css"><link rel="stylesheet" href="../../../../../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../../../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../../../../../../dark.css" disabled><link rel="stylesheet" href="../../../../../../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../../../../../../storage.js"></script><script defer src="../../../../../../../../../source-script.js"></script><script defer src="../../../../../../../../../source-files.js"></script><script defer src="../../../../../../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../../../../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../../../../../core/index.html"><img class="rust-logo" src="../../../../../../../../../logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../../../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+</pre><pre class="rust"><code><span class="doccomment">//! ARM compiler specific intrinsics
+//!
+//! # References
+//!
+//! - [ARM Compiler v 6.10 - armclang Reference Guide][arm_comp_ref]
+//!
+//! [arm_comp_ref]: https://developer.arm.com/docs/100067/0610
+
+</span><span class="attribute">#[cfg(test)]
+</span><span class="kw">use </span>stdarch_test::assert_instr;
+
+<span class="doccomment">/// Inserts a breakpoint instruction.
+///
+/// `VAL` is a compile-time constant integer in range `[0, 255]`.
+///
+/// The breakpoint instruction inserted is `BKPT` on A32/T32.
+///
+/// # Note
+///
+/// [ARM&#39;s documentation][arm_docs] defines that `__breakpoint` accepts the
+/// following values for `VAL`:
+///
+/// - `0...65535` when compiling as A32,
+/// - `0...255` when compiling as T32.
+///
+/// The current implementation only accepts values in range `[0, 255]`.
+///
+/// [arm_docs]: https://developer.arm.com/docs/100067/latest/compiler-specific-intrinsics/__breakpoint-intrinsic
+</span><span class="attribute">#[cfg_attr(test, assert_instr(bkpt, VAL = <span class="number">0</span>))]
+#[inline(always)]
+#[rustc_legacy_const_generics(<span class="number">0</span>)]
+</span><span class="kw">pub unsafe fn </span>__breakpoint&lt;<span class="kw">const </span>VAL: i32&gt;() {
+    <span class="macro">static_assert_imm8!</span>(VAL);
+    <span class="macro">crate::arch::asm!</span>(<span class="string">&quot;bkpt #{}&quot;</span>, <span class="kw">const </span>VAL);
+}
+</code></pre></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../../../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0 (69f9c33d7 2022-12-12)" ></div></body></html>

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["Hook","Hooks allowed in the [`super::Family::INet`], [`super::Family::Ipv4`], and [`super::Family::Ipv6`] families."]]};

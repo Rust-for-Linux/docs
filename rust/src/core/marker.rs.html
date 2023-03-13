@@ -1,0 +1,1690 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/1.66.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/marker.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>marker.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../core/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
+<span id="665">665</span>
+<span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
+<span id="678">678</span>
+<span id="679">679</span>
+<span id="680">680</span>
+<span id="681">681</span>
+<span id="682">682</span>
+<span id="683">683</span>
+<span id="684">684</span>
+<span id="685">685</span>
+<span id="686">686</span>
+<span id="687">687</span>
+<span id="688">688</span>
+<span id="689">689</span>
+<span id="690">690</span>
+<span id="691">691</span>
+<span id="692">692</span>
+<span id="693">693</span>
+<span id="694">694</span>
+<span id="695">695</span>
+<span id="696">696</span>
+<span id="697">697</span>
+<span id="698">698</span>
+<span id="699">699</span>
+<span id="700">700</span>
+<span id="701">701</span>
+<span id="702">702</span>
+<span id="703">703</span>
+<span id="704">704</span>
+<span id="705">705</span>
+<span id="706">706</span>
+<span id="707">707</span>
+<span id="708">708</span>
+<span id="709">709</span>
+<span id="710">710</span>
+<span id="711">711</span>
+<span id="712">712</span>
+<span id="713">713</span>
+<span id="714">714</span>
+<span id="715">715</span>
+<span id="716">716</span>
+<span id="717">717</span>
+<span id="718">718</span>
+<span id="719">719</span>
+<span id="720">720</span>
+<span id="721">721</span>
+<span id="722">722</span>
+<span id="723">723</span>
+<span id="724">724</span>
+<span id="725">725</span>
+<span id="726">726</span>
+<span id="727">727</span>
+<span id="728">728</span>
+<span id="729">729</span>
+<span id="730">730</span>
+<span id="731">731</span>
+<span id="732">732</span>
+<span id="733">733</span>
+<span id="734">734</span>
+<span id="735">735</span>
+<span id="736">736</span>
+<span id="737">737</span>
+<span id="738">738</span>
+<span id="739">739</span>
+<span id="740">740</span>
+<span id="741">741</span>
+<span id="742">742</span>
+<span id="743">743</span>
+<span id="744">744</span>
+<span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Primitive traits and types representing basic properties of types.
+//!
+//! Rust types can be classified in various useful ways according to
+//! their intrinsic properties. These classifications are represented
+//! as traits.
+
+</span><span class="attribute">#![stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+
+</span><span class="kw">use </span><span class="kw">crate</span>::cell::UnsafeCell;
+<span class="kw">use </span><span class="kw">crate</span>::cmp;
+<span class="kw">use </span><span class="kw">crate</span>::fmt::Debug;
+<span class="kw">use </span><span class="kw">crate</span>::hash::Hash;
+<span class="kw">use </span><span class="kw">crate</span>::hash::Hasher;
+
+<span class="doccomment">/// Types that can be transferred across thread boundaries.
+///
+/// This trait is automatically implemented when the compiler determines it&#39;s
+/// appropriate.
+///
+/// An example of a non-`Send` type is the reference-counting pointer
+/// [`rc::Rc`][`Rc`]. If two threads attempt to clone [`Rc`]s that point to the same
+/// reference-counted value, they might try to update the reference count at the
+/// same time, which is [undefined behavior][ub] because [`Rc`] doesn&#39;t use atomic
+/// operations. Its cousin [`sync::Arc`][arc] does use atomic operations (incurring
+/// some overhead) and thus is `Send`.
+///
+/// See [the Nomicon](../../nomicon/send-and-sync.html) for more details.
+///
+/// [`Rc`]: ../../std/rc/struct.Rc.html
+/// [arc]: ../../std/sync/struct.Arc.html
+/// [ub]: ../../reference/behavior-considered-undefined.html
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+#[cfg_attr(not(test), rustc_diagnostic_item = <span class="string">&quot;Send&quot;</span>)]
+#[rustc_on_unimplemented(
+    message = <span class="string">&quot;`{Self}` cannot be sent between threads safely&quot;</span>,
+    label = <span class="string">&quot;`{Self}` cannot be sent between threads safely&quot;
+</span>)]
+</span><span class="kw">pub unsafe </span>auto <span class="kw">trait </span>Send {
+    <span class="comment">// empty.
+</span>}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; !Send <span class="kw">for </span><span class="kw-2">*const </span>T {}
+<span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; !Send <span class="kw">for </span><span class="kw-2">*mut </span>T {}
+
+<span class="comment">// Most instances arise automatically, but this instance is needed to link up `T: Sync` with
+// `&amp;T: Send` (and it also removes the unsound default instance `T Send` -&gt; `&amp;T: Send` that would
+// otherwise exist).
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+</span><span class="kw">unsafe impl</span>&lt;T: Sync + <span class="question-mark">?</span>Sized&gt; Send <span class="kw">for </span><span class="kw-2">&amp;</span>T {}
+
+<span class="doccomment">/// Types with a constant size known at compile time.
+///
+/// All type parameters have an implicit bound of `Sized`. The special syntax
+/// `?Sized` can be used to remove this bound if it&#39;s not appropriate.
+///
+/// ```
+/// # #![allow(dead_code)]
+/// struct Foo&lt;T&gt;(T);
+/// struct Bar&lt;T: ?Sized&gt;(T);
+///
+/// // struct FooUse(Foo&lt;[i32]&gt;); // error: Sized is not implemented for [i32]
+/// struct BarUse(Bar&lt;[i32]&gt;); // OK
+/// ```
+///
+/// The one exception is the implicit `Self` type of a trait. A trait does not
+/// have an implicit `Sized` bound as this is incompatible with [trait object]s
+/// where, by definition, the trait needs to work with all possible implementors,
+/// and thus could be any size.
+///
+/// Although Rust will let you bind `Sized` to a trait, you won&#39;t
+/// be able to use it to form a trait object later:
+///
+/// ```
+/// # #![allow(unused_variables)]
+/// trait Foo { }
+/// trait Bar: Sized { }
+///
+/// struct Impl;
+/// impl Foo for Impl { }
+/// impl Bar for Impl { }
+///
+/// let x: &amp;dyn Foo = &amp;Impl;    // OK
+/// // let y: &amp;dyn Bar = &amp;Impl; // error: the trait `Bar` cannot
+///                             // be made into an object
+/// ```
+///
+/// [trait object]: ../../book/ch17-02-trait-objects.html
+</span><span class="attribute">#[doc(alias = <span class="string">&quot;?&quot;</span>, alias = <span class="string">&quot;?Sized&quot;</span>)]
+#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+#[lang = <span class="string">&quot;sized&quot;</span>]
+#[rustc_on_unimplemented(
+    message = <span class="string">&quot;the size for values of type `{Self}` cannot be known at compilation time&quot;</span>,
+    label = <span class="string">&quot;doesn&#39;t have a size known at compile-time&quot;
+</span>)]
+#[fundamental] </span><span class="comment">// for Default, for example, which requires that `[T]: !Default` be evaluatable
+</span><span class="attribute">#[rustc_specialization_trait]
+</span><span class="kw">pub trait </span>Sized {
+    <span class="comment">// Empty.
+</span>}
+
+<span class="doccomment">/// Types that can be &quot;unsized&quot; to a dynamically-sized type.
+///
+/// For example, the sized array type `[i8; 2]` implements `Unsize&lt;[i8]&gt;` and
+/// `Unsize&lt;dyn fmt::Debug&gt;`.
+///
+/// All implementations of `Unsize` are provided automatically by the compiler.
+/// Those implementations are:
+///
+/// - Arrays `[T; N]` implement `Unsize&lt;[T]&gt;`.
+/// - Types implementing a trait `Trait` also implement `Unsize&lt;dyn Trait&gt;`.
+/// - Structs `Foo&lt;..., T, ...&gt;` implement `Unsize&lt;Foo&lt;..., U, ...&gt;&gt;` if all of these conditions
+///   are met:
+///   - `T: Unsize&lt;U&gt;`.
+///   - Only the last field of `Foo` has a type involving `T`.
+///   - `Bar&lt;T&gt;: Unsize&lt;Bar&lt;U&gt;&gt;`, where `Bar&lt;T&gt;` stands for the actual type of that last field.
+///
+/// `Unsize` is used along with [`ops::CoerceUnsized`] to allow
+/// &quot;user-defined&quot; containers such as [`Rc`] to contain dynamically-sized
+/// types. See the [DST coercion RFC][RFC982] and [the nomicon entry on coercion][nomicon-coerce]
+/// for more details.
+///
+/// [`ops::CoerceUnsized`]: crate::ops::CoerceUnsized
+/// [`Rc`]: ../../std/rc/struct.Rc.html
+/// [RFC982]: https://github.com/rust-lang/rfcs/blob/master/text/0982-dst-coercion.md
+/// [nomicon-coerce]: ../../nomicon/coercions.html
+</span><span class="attribute">#[unstable(feature = <span class="string">&quot;unsize&quot;</span>, issue = <span class="string">&quot;27732&quot;</span>)]
+#[lang = <span class="string">&quot;unsize&quot;</span>]
+</span><span class="kw">pub trait </span>Unsize&lt;T: <span class="question-mark">?</span>Sized&gt; {
+    <span class="comment">// Empty.
+</span>}
+
+<span class="doccomment">/// Required trait for constants used in pattern matches.
+///
+/// Any type that derives `PartialEq` automatically implements this trait,
+/// *regardless* of whether its type-parameters implement `Eq`.
+///
+/// If a `const` item contains some type that does not implement this trait,
+/// then that type either (1.) does not implement `PartialEq` (which means the
+/// constant will not provide that comparison method, which code generation
+/// assumes is available), or (2.) it implements *its own* version of
+/// `PartialEq` (which we assume does not conform to a structural-equality
+/// comparison).
+///
+/// In either of the two scenarios above, we reject usage of such a constant in
+/// a pattern match.
+///
+/// See also the [structural match RFC][RFC1445], and [issue 63438] which
+/// motivated migrating from attribute-based design to this trait.
+///
+/// [RFC1445]: https://github.com/rust-lang/rfcs/blob/master/text/1445-restrict-constants-in-patterns.md
+/// [issue 63438]: https://github.com/rust-lang/rust/issues/63438
+</span><span class="attribute">#[unstable(feature = <span class="string">&quot;structural_match&quot;</span>, issue = <span class="string">&quot;31434&quot;</span>)]
+#[rustc_on_unimplemented(message = <span class="string">&quot;the type `{Self}` does not `#[derive(PartialEq)]`&quot;</span>)]
+#[lang = <span class="string">&quot;structural_peq&quot;</span>]
+</span><span class="kw">pub trait </span>StructuralPartialEq {
+    <span class="comment">// Empty.
+</span>}
+
+<span class="doccomment">/// Required trait for constants used in pattern matches.
+///
+/// Any type that derives `Eq` automatically implements this trait, *regardless*
+/// of whether its type parameters implement `Eq`.
+///
+/// This is a hack to work around a limitation in our type system.
+///
+/// # Background
+///
+/// We want to require that types of consts used in pattern matches
+/// have the attribute `#[derive(PartialEq, Eq)]`.
+///
+/// In a more ideal world, we could check that requirement by just checking that
+/// the given type implements both the `StructuralPartialEq` trait *and*
+/// the `Eq` trait. However, you can have ADTs that *do* `derive(PartialEq, Eq)`,
+/// and be a case that we want the compiler to accept, and yet the constant&#39;s
+/// type fails to implement `Eq`.
+///
+/// Namely, a case like this:
+///
+/// ```rust
+/// #[derive(PartialEq, Eq)]
+/// struct Wrap&lt;X&gt;(X);
+///
+/// fn higher_order(_: &amp;()) { }
+///
+/// const CFN: Wrap&lt;fn(&amp;())&gt; = Wrap(higher_order);
+///
+/// fn main() {
+///     match CFN {
+///         CFN =&gt; {}
+///         _ =&gt; {}
+///     }
+/// }
+/// ```
+///
+/// (The problem in the above code is that `Wrap&lt;fn(&amp;())&gt;` does not implement
+/// `PartialEq`, nor `Eq`, because `for&lt;&#39;a&gt; fn(&amp;&#39;a _)` does not implement those
+/// traits.)
+///
+/// Therefore, we cannot rely on naive check for `StructuralPartialEq` and
+/// mere `Eq`.
+///
+/// As a hack to work around this, we use two separate traits injected by each
+/// of the two derives (`#[derive(PartialEq)]` and `#[derive(Eq)]`) and check
+/// that both of them are present as part of structural-match checking.
+</span><span class="attribute">#[unstable(feature = <span class="string">&quot;structural_match&quot;</span>, issue = <span class="string">&quot;31434&quot;</span>)]
+#[rustc_on_unimplemented(message = <span class="string">&quot;the type `{Self}` does not `#[derive(Eq)]`&quot;</span>)]
+#[lang = <span class="string">&quot;structural_teq&quot;</span>]
+</span><span class="kw">pub trait </span>StructuralEq {
+    <span class="comment">// Empty.
+</span>}
+
+<span class="doccomment">/// Types whose values can be duplicated simply by copying bits.
+///
+/// By default, variable bindings have &#39;move semantics.&#39; In other
+/// words:
+///
+/// ```
+/// #[derive(Debug)]
+/// struct Foo;
+///
+/// let x = Foo;
+///
+/// let y = x;
+///
+/// // `x` has moved into `y`, and so cannot be used
+///
+/// // println!(&quot;{x:?}&quot;); // error: use of moved value
+/// ```
+///
+/// However, if a type implements `Copy`, it instead has &#39;copy semantics&#39;:
+///
+/// ```
+/// // We can derive a `Copy` implementation. `Clone` is also required, as it&#39;s
+/// // a supertrait of `Copy`.
+/// #[derive(Debug, Copy, Clone)]
+/// struct Foo;
+///
+/// let x = Foo;
+///
+/// let y = x;
+///
+/// // `y` is a copy of `x`
+///
+/// println!(&quot;{x:?}&quot;); // A-OK!
+/// ```
+///
+/// It&#39;s important to note that in these two examples, the only difference is whether you
+/// are allowed to access `x` after the assignment. Under the hood, both a copy and a move
+/// can result in bits being copied in memory, although this is sometimes optimized away.
+///
+/// ## How can I implement `Copy`?
+///
+/// There are two ways to implement `Copy` on your type. The simplest is to use `derive`:
+///
+/// ```
+/// #[derive(Copy, Clone)]
+/// struct MyStruct;
+/// ```
+///
+/// You can also implement `Copy` and `Clone` manually:
+///
+/// ```
+/// struct MyStruct;
+///
+/// impl Copy for MyStruct { }
+///
+/// impl Clone for MyStruct {
+///     fn clone(&amp;self) -&gt; MyStruct {
+///         *self
+///     }
+/// }
+/// ```
+///
+/// There is a small difference between the two: the `derive` strategy will also place a `Copy`
+/// bound on type parameters, which isn&#39;t always desired.
+///
+/// ## What&#39;s the difference between `Copy` and `Clone`?
+///
+/// Copies happen implicitly, for example as part of an assignment `y = x`. The behavior of
+/// `Copy` is not overloadable; it is always a simple bit-wise copy.
+///
+/// Cloning is an explicit action, `x.clone()`. The implementation of [`Clone`] can
+/// provide any type-specific behavior necessary to duplicate values safely. For example,
+/// the implementation of [`Clone`] for [`String`] needs to copy the pointed-to string
+/// buffer in the heap. A simple bitwise copy of [`String`] values would merely copy the
+/// pointer, leading to a double free down the line. For this reason, [`String`] is [`Clone`]
+/// but not `Copy`.
+///
+/// [`Clone`] is a supertrait of `Copy`, so everything which is `Copy` must also implement
+/// [`Clone`]. If a type is `Copy` then its [`Clone`] implementation only needs to return `*self`
+/// (see the example above).
+///
+/// ## When can my type be `Copy`?
+///
+/// A type can implement `Copy` if all of its components implement `Copy`. For example, this
+/// struct can be `Copy`:
+///
+/// ```
+/// # #[allow(dead_code)]
+/// #[derive(Copy, Clone)]
+/// struct Point {
+///    x: i32,
+///    y: i32,
+/// }
+/// ```
+///
+/// A struct can be `Copy`, and [`i32`] is `Copy`, therefore `Point` is eligible to be `Copy`.
+/// By contrast, consider
+///
+/// ```
+/// # #![allow(dead_code)]
+/// # struct Point;
+/// struct PointList {
+///     points: Vec&lt;Point&gt;,
+/// }
+/// ```
+///
+/// The struct `PointList` cannot implement `Copy`, because [`Vec&lt;T&gt;`] is not `Copy`. If we
+/// attempt to derive a `Copy` implementation, we&#39;ll get an error:
+///
+/// ```text
+/// the trait `Copy` may not be implemented for this type; field `points` does not implement `Copy`
+/// ```
+///
+/// Shared references (`&amp;T`) are also `Copy`, so a type can be `Copy`, even when it holds
+/// shared references of types `T` that are *not* `Copy`. Consider the following struct,
+/// which can implement `Copy`, because it only holds a *shared reference* to our non-`Copy`
+/// type `PointList` from above:
+///
+/// ```
+/// # #![allow(dead_code)]
+/// # struct PointList;
+/// #[derive(Copy, Clone)]
+/// struct PointListWrapper&lt;&#39;a&gt; {
+///     point_list_ref: &amp;&#39;a PointList,
+/// }
+/// ```
+///
+/// ## When *can&#39;t* my type be `Copy`?
+///
+/// Some types can&#39;t be copied safely. For example, copying `&amp;mut T` would create an aliased
+/// mutable reference. Copying [`String`] would duplicate responsibility for managing the
+/// [`String`]&#39;s buffer, leading to a double free.
+///
+/// Generalizing the latter case, any type implementing [`Drop`] can&#39;t be `Copy`, because it&#39;s
+/// managing some resource besides its own [`size_of::&lt;T&gt;`] bytes.
+///
+/// If you try to implement `Copy` on a struct or enum containing non-`Copy` data, you will get
+/// the error [E0204].
+///
+/// [E0204]: ../../error_codes/E0204.html
+///
+/// ## When *should* my type be `Copy`?
+///
+/// Generally speaking, if your type _can_ implement `Copy`, it should. Keep in mind, though,
+/// that implementing `Copy` is part of the public API of your type. If the type might become
+/// non-`Copy` in the future, it could be prudent to omit the `Copy` implementation now, to
+/// avoid a breaking API change.
+///
+/// ## Additional implementors
+///
+/// In addition to the [implementors listed below][impls],
+/// the following types also implement `Copy`:
+///
+/// * Function item types (i.e., the distinct types defined for each function)
+/// * Function pointer types (e.g., `fn() -&gt; i32`)
+/// * Closure types, if they capture no value from the environment
+///   or if all such captured values implement `Copy` themselves.
+///   Note that variables captured by shared reference always implement `Copy`
+///   (even if the referent doesn&#39;t),
+///   while variables captured by mutable reference never implement `Copy`.
+///
+/// [`Vec&lt;T&gt;`]: ../../std/vec/struct.Vec.html
+/// [`String`]: ../../std/string/struct.String.html
+/// [`size_of::&lt;T&gt;`]: crate::mem::size_of
+/// [impls]: #implementors
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+#[lang = <span class="string">&quot;copy&quot;</span>]
+</span><span class="comment">// FIXME(matthewjasper) This allows copying a type that doesn&#39;t implement
+// `Copy` because of unsatisfied lifetime bounds (copying `A&lt;&#39;_&gt;` when only
+// `A&lt;&#39;static&gt;: Copy` and `A&lt;&#39;_&gt;: Clone`).
+// We have this attribute here for now only because there are quite a few
+// existing specializations on `Copy` that already exist in the standard
+// library, and there&#39;s no way to safely have this behavior right now.
+</span><span class="attribute">#[rustc_unsafe_specialization_marker]
+#[rustc_diagnostic_item = <span class="string">&quot;Copy&quot;</span>]
+</span><span class="kw">pub trait </span>Copy: Clone {
+    <span class="comment">// Empty.
+</span>}
+
+<span class="doccomment">/// Derive macro generating an impl of the trait `Copy`.
+</span><span class="attribute">#[rustc_builtin_macro]
+#[stable(feature = <span class="string">&quot;builtin_macro_prelude&quot;</span>, since = <span class="string">&quot;1.38.0&quot;</span>)]
+#[allow_internal_unstable(core_intrinsics, derive_clone_copy)]
+</span><span class="kw">pub macro </span>Copy(<span class="macro-nonterminal">$item</span>:item) {
+    <span class="comment">/* compiler built-in */
+</span>}
+
+<span class="doccomment">/// Types for which it is safe to share references between threads.
+///
+/// This trait is automatically implemented when the compiler determines
+/// it&#39;s appropriate.
+///
+/// The precise definition is: a type `T` is [`Sync`] if and only if `&amp;T` is
+/// [`Send`]. In other words, if there is no possibility of
+/// [undefined behavior][ub] (including data races) when passing
+/// `&amp;T` references between threads.
+///
+/// As one would expect, primitive types like [`u8`] and [`f64`]
+/// are all [`Sync`], and so are simple aggregate types containing them,
+/// like tuples, structs and enums. More examples of basic [`Sync`]
+/// types include &quot;immutable&quot; types like `&amp;T`, and those with simple
+/// inherited mutability, such as [`Box&lt;T&gt;`][box], [`Vec&lt;T&gt;`][vec] and
+/// most other collection types. (Generic parameters need to be [`Sync`]
+/// for their container to be [`Sync`].)
+///
+/// A somewhat surprising consequence of the definition is that `&amp;mut T`
+/// is `Sync` (if `T` is `Sync`) even though it seems like that might
+/// provide unsynchronized mutation. The trick is that a mutable
+/// reference behind a shared reference (that is, `&amp; &amp;mut T`)
+/// becomes read-only, as if it were a `&amp; &amp;T`. Hence there is no risk
+/// of a data race.
+///
+/// Types that are not `Sync` are those that have &quot;interior
+/// mutability&quot; in a non-thread-safe form, such as [`Cell`][cell]
+/// and [`RefCell`][refcell]. These types allow for mutation of
+/// their contents even through an immutable, shared reference. For
+/// example the `set` method on [`Cell&lt;T&gt;`][cell] takes `&amp;self`, so it requires
+/// only a shared reference [`&amp;Cell&lt;T&gt;`][cell]. The method performs no
+/// synchronization, thus [`Cell`][cell] cannot be `Sync`.
+///
+/// Another example of a non-`Sync` type is the reference-counting
+/// pointer [`Rc`][rc]. Given any reference [`&amp;Rc&lt;T&gt;`][rc], you can clone
+/// a new [`Rc&lt;T&gt;`][rc], modifying the reference counts in a non-atomic way.
+///
+/// For cases when one does need thread-safe interior mutability,
+/// Rust provides [atomic data types], as well as explicit locking via
+/// [`sync::Mutex`][mutex] and [`sync::RwLock`][rwlock]. These types
+/// ensure that any mutation cannot cause data races, hence the types
+/// are `Sync`. Likewise, [`sync::Arc`][arc] provides a thread-safe
+/// analogue of [`Rc`][rc].
+///
+/// Any types with interior mutability must also use the
+/// [`cell::UnsafeCell`][unsafecell] wrapper around the value(s) which
+/// can be mutated through a shared reference. Failing to doing this is
+/// [undefined behavior][ub]. For example, [`transmute`][transmute]-ing
+/// from `&amp;T` to `&amp;mut T` is invalid.
+///
+/// See [the Nomicon][nomicon-send-and-sync] for more details about `Sync`.
+///
+/// [box]: ../../std/boxed/struct.Box.html
+/// [vec]: ../../std/vec/struct.Vec.html
+/// [cell]: crate::cell::Cell
+/// [refcell]: crate::cell::RefCell
+/// [rc]: ../../std/rc/struct.Rc.html
+/// [arc]: ../../std/sync/struct.Arc.html
+/// [atomic data types]: crate::sync::atomic
+/// [mutex]: ../../std/sync/struct.Mutex.html
+/// [rwlock]: ../../std/sync/struct.RwLock.html
+/// [unsafecell]: crate::cell::UnsafeCell
+/// [ub]: ../../reference/behavior-considered-undefined.html
+/// [transmute]: crate::mem::transmute
+/// [nomicon-send-and-sync]: ../../nomicon/send-and-sync.html
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+#[cfg_attr(not(test), rustc_diagnostic_item = <span class="string">&quot;Sync&quot;</span>)]
+#[lang = <span class="string">&quot;sync&quot;</span>]
+#[rustc_on_unimplemented(
+    message = <span class="string">&quot;`{Self}` cannot be shared between threads safely&quot;</span>,
+    label = <span class="string">&quot;`{Self}` cannot be shared between threads safely&quot;
+</span>)]
+</span><span class="kw">pub unsafe </span>auto <span class="kw">trait </span>Sync {
+    <span class="comment">// FIXME(estebank): once support to add notes in `rustc_on_unimplemented`
+    // lands in beta, and it has been extended to check whether a closure is
+    // anywhere in the requirement chain, extend it as such (#48534):
+    // ```
+    // on(
+    //     closure,
+    //     note=&quot;`{Self}` cannot be shared safely, consider marking the closure `move`&quot;
+    // ),
+    // ```
+
+    // Empty
+</span>}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; !Sync <span class="kw">for </span><span class="kw-2">*const </span>T {}
+<span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; !Sync <span class="kw">for </span><span class="kw-2">*mut </span>T {}
+
+<span class="doccomment">/// Zero-sized type used to mark things that &quot;act like&quot; they own a `T`.
+///
+/// Adding a `PhantomData&lt;T&gt;` field to your type tells the compiler that your
+/// type acts as though it stores a value of type `T`, even though it doesn&#39;t
+/// really. This information is used when computing certain safety properties.
+///
+/// For a more in-depth explanation of how to use `PhantomData&lt;T&gt;`, please see
+/// [the Nomicon](../../nomicon/phantom-data.html).
+///
+/// # A ghastly note 👻👻👻
+///
+/// Though they both have scary names, `PhantomData` and &#39;phantom types&#39; are
+/// related, but not identical. A phantom type parameter is simply a type
+/// parameter which is never used. In Rust, this often causes the compiler to
+/// complain, and the solution is to add a &quot;dummy&quot; use by way of `PhantomData`.
+///
+/// # Examples
+///
+/// ## Unused lifetime parameters
+///
+/// Perhaps the most common use case for `PhantomData` is a struct that has an
+/// unused lifetime parameter, typically as part of some unsafe code. For
+/// example, here is a struct `Slice` that has two pointers of type `*const T`,
+/// presumably pointing into an array somewhere:
+///
+/// ```compile_fail,E0392
+/// struct Slice&lt;&#39;a, T&gt; {
+///     start: *const T,
+///     end: *const T,
+/// }
+/// ```
+///
+/// The intention is that the underlying data is only valid for the
+/// lifetime `&#39;a`, so `Slice` should not outlive `&#39;a`. However, this
+/// intent is not expressed in the code, since there are no uses of
+/// the lifetime `&#39;a` and hence it is not clear what data it applies
+/// to. We can correct this by telling the compiler to act *as if* the
+/// `Slice` struct contained a reference `&amp;&#39;a T`:
+///
+/// ```
+/// use std::marker::PhantomData;
+///
+/// # #[allow(dead_code)]
+/// struct Slice&lt;&#39;a, T: &#39;a&gt; {
+///     start: *const T,
+///     end: *const T,
+///     phantom: PhantomData&lt;&amp;&#39;a T&gt;,
+/// }
+/// ```
+///
+/// This also in turn requires the annotation `T: &#39;a`, indicating
+/// that any references in `T` are valid over the lifetime `&#39;a`.
+///
+/// When initializing a `Slice` you simply provide the value
+/// `PhantomData` for the field `phantom`:
+///
+/// ```
+/// # #![allow(dead_code)]
+/// # use std::marker::PhantomData;
+/// # struct Slice&lt;&#39;a, T: &#39;a&gt; {
+/// #     start: *const T,
+/// #     end: *const T,
+/// #     phantom: PhantomData&lt;&amp;&#39;a T&gt;,
+/// # }
+/// fn borrow_vec&lt;T&gt;(vec: &amp;Vec&lt;T&gt;) -&gt; Slice&lt;&#39;_, T&gt; {
+///     let ptr = vec.as_ptr();
+///     Slice {
+///         start: ptr,
+///         end: unsafe { ptr.add(vec.len()) },
+///         phantom: PhantomData,
+///     }
+/// }
+/// ```
+///
+/// ## Unused type parameters
+///
+/// It sometimes happens that you have unused type parameters which
+/// indicate what type of data a struct is &quot;tied&quot; to, even though that
+/// data is not actually found in the struct itself. Here is an
+/// example where this arises with [FFI]. The foreign interface uses
+/// handles of type `*mut ()` to refer to Rust values of different
+/// types. We track the Rust type using a phantom type parameter on
+/// the struct `ExternalResource` which wraps a handle.
+///
+/// [FFI]: ../../book/ch19-01-unsafe-rust.html#using-extern-functions-to-call-external-code
+///
+/// ```
+/// # #![allow(dead_code)]
+/// # trait ResType { }
+/// # struct ParamType;
+/// # mod foreign_lib {
+/// #     pub fn new(_: usize) -&gt; *mut () { 42 as *mut () }
+/// #     pub fn do_stuff(_: *mut (), _: usize) {}
+/// # }
+/// # fn convert_params(_: ParamType) -&gt; usize { 42 }
+/// use std::marker::PhantomData;
+/// use std::mem;
+///
+/// struct ExternalResource&lt;R&gt; {
+///    resource_handle: *mut (),
+///    resource_type: PhantomData&lt;R&gt;,
+/// }
+///
+/// impl&lt;R: ResType&gt; ExternalResource&lt;R&gt; {
+///     fn new() -&gt; Self {
+///         let size_of_res = mem::size_of::&lt;R&gt;();
+///         Self {
+///             resource_handle: foreign_lib::new(size_of_res),
+///             resource_type: PhantomData,
+///         }
+///     }
+///
+///     fn do_stuff(&amp;self, param: ParamType) {
+///         let foreign_params = convert_params(param);
+///         foreign_lib::do_stuff(self.resource_handle, foreign_params);
+///     }
+/// }
+/// ```
+///
+/// ## Ownership and the drop check
+///
+/// Adding a field of type `PhantomData&lt;T&gt;` indicates that your
+/// type owns data of type `T`. This in turn implies that when your
+/// type is dropped, it may drop one or more instances of the type
+/// `T`. This has bearing on the Rust compiler&#39;s [drop check]
+/// analysis.
+///
+/// If your struct does not in fact *own* the data of type `T`, it is
+/// better to use a reference type, like `PhantomData&lt;&amp;&#39;a T&gt;`
+/// (ideally) or `PhantomData&lt;*const T&gt;` (if no lifetime applies), so
+/// as not to indicate ownership.
+///
+/// [drop check]: ../../nomicon/dropck.html
+</span><span class="attribute">#[lang = <span class="string">&quot;phantom_data&quot;</span>]
+#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+</span><span class="kw">pub struct </span>PhantomData&lt;T: <span class="question-mark">?</span>Sized&gt;;
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; Hash <span class="kw">for </span>PhantomData&lt;T&gt; {
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>hash&lt;H: Hasher&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>H) {}
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; cmp::PartialEq <span class="kw">for </span>PhantomData&lt;T&gt; {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, _other: <span class="kw-2">&amp;</span>PhantomData&lt;T&gt;) -&gt; bool {
+        <span class="bool-val">true
+    </span>}
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; cmp::Eq <span class="kw">for </span>PhantomData&lt;T&gt; {}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; cmp::PartialOrd <span class="kw">for </span>PhantomData&lt;T&gt; {
+    <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, _other: <span class="kw-2">&amp;</span>PhantomData&lt;T&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;cmp::Ordering&gt; {
+        Option::Some(cmp::Ordering::Equal)
+    }
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; cmp::Ord <span class="kw">for </span>PhantomData&lt;T&gt; {
+    <span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, _other: <span class="kw-2">&amp;</span>PhantomData&lt;T&gt;) -&gt; cmp::Ordering {
+        cmp::Ordering::Equal
+    }
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; Copy <span class="kw">for </span>PhantomData&lt;T&gt; {}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; Clone <span class="kw">for </span>PhantomData&lt;T&gt; {
+    <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">Self
+    </span>}
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+#[rustc_const_unstable(feature = <span class="string">&quot;const_default_impls&quot;</span>, issue = <span class="string">&quot;87864&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; <span class="kw">const </span>Default <span class="kw">for </span>PhantomData&lt;T&gt; {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self
+    </span>}
+}
+
+<span class="attribute">#[unstable(feature = <span class="string">&quot;structural_match&quot;</span>, issue = <span class="string">&quot;31434&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; StructuralPartialEq <span class="kw">for </span>PhantomData&lt;T&gt; {}
+
+<span class="attribute">#[unstable(feature = <span class="string">&quot;structural_match&quot;</span>, issue = <span class="string">&quot;31434&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; StructuralEq <span class="kw">for </span>PhantomData&lt;T&gt; {}
+
+<span class="doccomment">/// Compiler-internal trait used to indicate the type of enum discriminants.
+///
+/// This trait is automatically implemented for every type and does not add any
+/// guarantees to [`mem::Discriminant`]. It is **undefined behavior** to transmute
+/// between `DiscriminantKind::Discriminant` and `mem::Discriminant`.
+///
+/// [`mem::Discriminant`]: crate::mem::Discriminant
+</span><span class="attribute">#[unstable(
+    feature = <span class="string">&quot;discriminant_kind&quot;</span>,
+    issue = <span class="string">&quot;none&quot;</span>,
+    reason = <span class="string">&quot;this trait is unlikely to ever be stabilized, use `mem::discriminant` instead&quot;
+</span>)]
+#[lang = <span class="string">&quot;discriminant_kind&quot;</span>]
+</span><span class="kw">pub trait </span>DiscriminantKind {
+    <span class="doccomment">/// The type of the discriminant, which must satisfy the trait
+    /// bounds required by `mem::Discriminant`.
+    </span><span class="attribute">#[lang = <span class="string">&quot;discriminant_type&quot;</span>]
+    </span><span class="kw">type </span>Discriminant: Clone + Copy + Debug + Eq + PartialEq + Hash + Send + Sync + Unpin;
+}
+
+<span class="doccomment">/// Compiler-internal trait used to determine whether a type contains
+/// any `UnsafeCell` internally, but not through an indirection.
+/// This affects, for example, whether a `static` of that type is
+/// placed in read-only static memory or writable static memory.
+</span><span class="attribute">#[lang = <span class="string">&quot;freeze&quot;</span>]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe </span>auto <span class="kw">trait </span>Freeze {}
+
+<span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; !Freeze <span class="kw">for </span>UnsafeCell&lt;T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; Freeze <span class="kw">for </span>PhantomData&lt;T&gt; {}
+<span class="kw">unsafe impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; Freeze <span class="kw">for </span><span class="kw-2">*const </span>T {}
+<span class="kw">unsafe impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; Freeze <span class="kw">for </span><span class="kw-2">*mut </span>T {}
+<span class="kw">unsafe impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; Freeze <span class="kw">for </span><span class="kw-2">&amp;</span>T {}
+<span class="kw">unsafe impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; Freeze <span class="kw">for </span><span class="kw-2">&amp;mut </span>T {}
+
+<span class="doccomment">/// Types that can be safely moved after being pinned.
+///
+/// Rust itself has no notion of immovable types, and considers moves (e.g.,
+/// through assignment or [`mem::replace`]) to always be safe.
+///
+/// The [`Pin`][Pin] type is used instead to prevent moves through the type
+/// system. Pointers `P&lt;T&gt;` wrapped in the [`Pin&lt;P&lt;T&gt;&gt;`][Pin] wrapper can&#39;t be
+/// moved out of. See the [`pin` module] documentation for more information on
+/// pinning.
+///
+/// Implementing the `Unpin` trait for `T` lifts the restrictions of pinning off
+/// the type, which then allows moving `T` out of [`Pin&lt;P&lt;T&gt;&gt;`][Pin] with
+/// functions such as [`mem::replace`].
+///
+/// `Unpin` has no consequence at all for non-pinned data. In particular,
+/// [`mem::replace`] happily moves `!Unpin` data (it works for any `&amp;mut T`, not
+/// just when `T: Unpin`). However, you cannot use [`mem::replace`] on data
+/// wrapped inside a [`Pin&lt;P&lt;T&gt;&gt;`][Pin] because you cannot get the `&amp;mut T` you
+/// need for that, and *that* is what makes this system work.
+///
+/// So this, for example, can only be done on types implementing `Unpin`:
+///
+/// ```rust
+/// # #![allow(unused_must_use)]
+/// use std::mem;
+/// use std::pin::Pin;
+///
+/// let mut string = &quot;this&quot;.to_string();
+/// let mut pinned_string = Pin::new(&amp;mut string);
+///
+/// // We need a mutable reference to call `mem::replace`.
+/// // We can obtain such a reference by (implicitly) invoking `Pin::deref_mut`,
+/// // but that is only possible because `String` implements `Unpin`.
+/// mem::replace(&amp;mut *pinned_string, &quot;other&quot;.to_string());
+/// ```
+///
+/// This trait is automatically implemented for almost every type.
+///
+/// [`mem::replace`]: crate::mem::replace
+/// [Pin]: crate::pin::Pin
+/// [`pin` module]: crate::pin
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;pin&quot;</span>, since = <span class="string">&quot;1.33.0&quot;</span>)]
+#[rustc_on_unimplemented(
+    note = <span class="string">&quot;consider using `Box::pin`&quot;</span>,
+    message = <span class="string">&quot;`{Self}` cannot be unpinned&quot;
+</span>)]
+#[lang = <span class="string">&quot;unpin&quot;</span>]
+</span><span class="kw">pub </span>auto <span class="kw">trait </span>Unpin {}
+
+<span class="doccomment">/// A marker type which does not implement `Unpin`.
+///
+/// If a type contains a `PhantomPinned`, it will not implement `Unpin` by default.
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;pin&quot;</span>, since = <span class="string">&quot;1.33.0&quot;</span>)]
+#[derive(Debug, Default, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+</span><span class="kw">pub struct </span>PhantomPinned;
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;pin&quot;</span>, since = <span class="string">&quot;1.33.0&quot;</span>)]
+</span><span class="kw">impl </span>!Unpin <span class="kw">for </span>PhantomPinned {}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;pin&quot;</span>, since = <span class="string">&quot;1.33.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: <span class="question-mark">?</span>Sized + <span class="lifetime">&#39;a</span>&gt; Unpin <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T {}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;pin&quot;</span>, since = <span class="string">&quot;1.33.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: <span class="question-mark">?</span>Sized + <span class="lifetime">&#39;a</span>&gt; Unpin <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>T {}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;pin_raw&quot;</span>, since = <span class="string">&quot;1.38.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; Unpin <span class="kw">for </span><span class="kw-2">*const </span>T {}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;pin_raw&quot;</span>, since = <span class="string">&quot;1.38.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; Unpin <span class="kw">for </span><span class="kw-2">*mut </span>T {}
+
+<span class="doccomment">/// A marker for types that can be dropped.
+///
+/// This should be used for `~const` bounds,
+/// as non-const bounds will always hold for every type.
+</span><span class="attribute">#[unstable(feature = <span class="string">&quot;const_trait_impl&quot;</span>, issue = <span class="string">&quot;67792&quot;</span>)]
+#[lang = <span class="string">&quot;destruct&quot;</span>]
+#[rustc_on_unimplemented(message = <span class="string">&quot;can&#39;t drop `{Self}`&quot;</span>, append_const_msg)]
+#[const_trait]
+</span><span class="kw">pub trait </span>Destruct {}
+
+<span class="doccomment">/// A marker for tuple types.
+///
+/// The implementation of this trait is built-in and cannot be implemented
+/// for any user type.
+</span><span class="attribute">#[unstable(feature = <span class="string">&quot;tuple_trait&quot;</span>, issue = <span class="string">&quot;none&quot;</span>)]
+#[lang = <span class="string">&quot;tuple_trait&quot;</span>]
+#[rustc_on_unimplemented(message = <span class="string">&quot;`{Self}` is not a tuple&quot;</span>)]
+</span><span class="kw">pub trait </span>Tuple {}
+
+<span class="doccomment">/// Implementations of `Copy` for primitive types.
+///
+/// Implementations that cannot be described in Rust
+/// are implemented in `traits::SelectionContext::copy_clone_conditions()`
+/// in `rustc_trait_selection`.
+</span><span class="kw">mod </span>copy_impls {
+
+    <span class="kw">use </span><span class="kw">super</span>::Copy;
+
+    <span class="macro">macro_rules! </span>impl_copy {
+        ($(<span class="macro-nonterminal">$t</span>:ty)<span class="kw-2">*</span>) =&gt; {
+            $(
+                <span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+                </span><span class="kw">impl </span>Copy <span class="kw">for </span><span class="macro-nonterminal">$t </span>{}
+            )*
+        }
+    }
+
+    <span class="macro">impl_copy! </span>{
+        usize u8 u16 u32 u64 u128
+        isize i8 i16 i32 i64 i128
+        f32 f64
+        bool char
+    }
+
+    <span class="attribute">#[unstable(feature = <span class="string">&quot;never_type&quot;</span>, issue = <span class="string">&quot;35121&quot;</span>)]
+    </span><span class="kw">impl </span>Copy <span class="kw">for </span>! {}
+
+    <span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+    </span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; Copy <span class="kw">for </span><span class="kw-2">*const </span>T {}
+
+    <span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+    </span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; Copy <span class="kw">for </span><span class="kw-2">*mut </span>T {}
+
+    <span class="doccomment">/// Shared references can be copied, but mutable references *cannot*!
+    </span><span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+    </span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; Copy <span class="kw">for </span><span class="kw-2">&amp;</span>T {}
+}
+</code></pre></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0 (69f9c33d7 2022-12-12)" ></div></body></html>

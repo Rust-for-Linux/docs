@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="A simple mutex implementation."><meta name="keywords" content="rust, rustlang, rust-lang, smutex"><title>kernel::sync::smutex - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div></a><h2></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../../logo.svg" alt="logo"></div></a><h2 class="location"><a href="#">Module smutex</a></h2><div class="sidebar-elems"><section><ul class="block"><li><a href="#structs">Structs</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1 class="fqn">Module <a href="../../index.html">kernel</a>::<wbr><a href="../index.html">sync</a>::<wbr><a class="mod" href="#">smutex</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../../../src/kernel/sync/smutex.rs.html#3-290">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>A simple mutex implementation.</p>
+<p>Differently from <a href="../struct.Mutex.html" title="super::Mutex"><code>super::Mutex</code></a>, this implementation does not require pinning, so the
+ergonomics are much improved, though the implementation is not as feature-rich as the C-based
+one. The main advantage is that it doesn’t impose unsafe blocks on callers.</p>
+<p>The mutex is made up of 2 words in addition to the data it protects. The first one is accessed
+concurrently by threads trying to acquire and release the mutex, it contains a “stack” of
+waiters and a “locked” bit; the second one is only accessible by the thread holding the mutex,
+it contains a queue of waiters. Waiters are moved from the stack to the queue when the mutex is
+next unlocked while the stack is non-empty and the queue is empty. A single waiter is popped
+from the wait queue when the owner of the mutex unlocks it.</p>
+<p>The initial state of the mutex is <code>&lt;locked=0, stack=[], queue=[]&gt;</code>, meaning that it isn’t
+locked and both the waiter stack and queue are empty.</p>
+<p>A lock operation transitions the mutex to state <code>&lt;locked=1, stack=[], queue=[]&gt;</code>.</p>
+<p>An unlock operation transitions the mutex back to the initial state, however, an attempt to
+lock the mutex while it’s already locked results in a waiter being created (on the stack) and
+pushed onto the stack, so the state is <code>&lt;locked=1, stack=[W1], queue=[]&gt;</code>.</p>
+<p>Another thread trying to lock the mutex results in another waiter being pushed onto the stack,
+so the state becomes <code>&lt;locked=1, stack=[W2, W1], queue=[]&gt;</code>.</p>
+<p>In such states (queue is empty but stack is non-empty), the unlock operation is performed in
+three steps:</p>
+<ol>
+<li>The stack is popped (but the mutex remains locked), so the state is:
+<code>&lt;locked=1, stack=[], queue=[]&gt;</code></li>
+<li>The stack is turned into a queue by reversing it, so the state is:
+`&lt;locked=1, stack=[], queue=[W1, W2]&gt;</li>
+<li>Finally, the lock is released, and the first waiter is awakened, so the state is:
+<code>&lt;locked=0, stack=[], queue=[W2]&gt;</code></li>
+</ol>
+<p>The mutex remains accessible to any threads attempting to lock it in any of the intermediate
+states above. For example, while it is locked, other threads may add waiters to the stack
+(which is ok because we want to release the ones on the queue first); another example is that
+another thread may acquire the mutex before waiter W1 in the example above, this makes the
+mutex unfair but this is desirable because the thread is running already and may in fact
+release the lock before W1 manages to get scheduled – it also mitigates the lock convoy
+problem when the releasing thread wants to immediately acquire the lock again: it will be
+allowed to do so (as long as W1 doesn’t get to it first).</p>
+<p>When the waiter queue is non-empty, unlocking the mutex always results in the first waiter being
+popped form the queue and awakened.</p>
+</div></details><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2><div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Mutex.html" title="kernel::sync::smutex::Mutex struct">Mutex</a></div><div class="item-right docblock-short">A simple mutex.</div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0 (69f9c33d7 2022-12-12)" ></div></body></html>

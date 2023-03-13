@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["Registration","Registration structure for Hardware Random Number Generator driver."]],"trait":[["Operations","This trait is implemented in order to provide callbacks to `struct hwrng`."]]};

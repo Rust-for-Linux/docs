@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["Sysctl","Holds a single `sysctl` entry (and its table)."]],"trait":[["SysctlStorage","Sysctl storage."]]};

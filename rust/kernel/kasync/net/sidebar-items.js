@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["TcpListener","A socket listening on a TCP port."],["TcpStream","A connected TCP socket."]]};

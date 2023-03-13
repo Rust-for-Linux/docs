@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["PriorityBase","The base priority for [`super::Family::Ipv4`] hooks."]],"type":[["Hook","Hooks allowed in [`super::Family::Ipv4`] family."]]};

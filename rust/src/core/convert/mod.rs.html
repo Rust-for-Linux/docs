@@ -1,0 +1,1880 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/1.66.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/convert/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
+<span id="665">665</span>
+<span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
+<span id="678">678</span>
+<span id="679">679</span>
+<span id="680">680</span>
+<span id="681">681</span>
+<span id="682">682</span>
+<span id="683">683</span>
+<span id="684">684</span>
+<span id="685">685</span>
+<span id="686">686</span>
+<span id="687">687</span>
+<span id="688">688</span>
+<span id="689">689</span>
+<span id="690">690</span>
+<span id="691">691</span>
+<span id="692">692</span>
+<span id="693">693</span>
+<span id="694">694</span>
+<span id="695">695</span>
+<span id="696">696</span>
+<span id="697">697</span>
+<span id="698">698</span>
+<span id="699">699</span>
+<span id="700">700</span>
+<span id="701">701</span>
+<span id="702">702</span>
+<span id="703">703</span>
+<span id="704">704</span>
+<span id="705">705</span>
+<span id="706">706</span>
+<span id="707">707</span>
+<span id="708">708</span>
+<span id="709">709</span>
+<span id="710">710</span>
+<span id="711">711</span>
+<span id="712">712</span>
+<span id="713">713</span>
+<span id="714">714</span>
+<span id="715">715</span>
+<span id="716">716</span>
+<span id="717">717</span>
+<span id="718">718</span>
+<span id="719">719</span>
+<span id="720">720</span>
+<span id="721">721</span>
+<span id="722">722</span>
+<span id="723">723</span>
+<span id="724">724</span>
+<span id="725">725</span>
+<span id="726">726</span>
+<span id="727">727</span>
+<span id="728">728</span>
+<span id="729">729</span>
+<span id="730">730</span>
+<span id="731">731</span>
+<span id="732">732</span>
+<span id="733">733</span>
+<span id="734">734</span>
+<span id="735">735</span>
+<span id="736">736</span>
+<span id="737">737</span>
+<span id="738">738</span>
+<span id="739">739</span>
+<span id="740">740</span>
+<span id="741">741</span>
+<span id="742">742</span>
+<span id="743">743</span>
+<span id="744">744</span>
+<span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+<span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
+<span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+<span id="865">865</span>
+<span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
+<span id="899">899</span>
+<span id="900">900</span>
+<span id="901">901</span>
+<span id="902">902</span>
+<span id="903">903</span>
+<span id="904">904</span>
+<span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+<span id="911">911</span>
+<span id="912">912</span>
+<span id="913">913</span>
+<span id="914">914</span>
+<span id="915">915</span>
+<span id="916">916</span>
+<span id="917">917</span>
+<span id="918">918</span>
+<span id="919">919</span>
+<span id="920">920</span>
+<span id="921">921</span>
+<span id="922">922</span>
+<span id="923">923</span>
+<span id="924">924</span>
+<span id="925">925</span>
+<span id="926">926</span>
+<span id="927">927</span>
+<span id="928">928</span>
+<span id="929">929</span>
+<span id="930">930</span>
+<span id="931">931</span>
+<span id="932">932</span>
+<span id="933">933</span>
+<span id="934">934</span>
+<span id="935">935</span>
+<span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
+<span id="939">939</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Traits for conversions between types.
+//!
+//! The traits in this module provide a way to convert from one type to another type.
+//! Each trait serves a different purpose:
+//!
+//! - Implement the [`AsRef`] trait for cheap reference-to-reference conversions
+//! - Implement the [`AsMut`] trait for cheap mutable-to-mutable conversions
+//! - Implement the [`From`] trait for consuming value-to-value conversions
+//! - Implement the [`Into`] trait for consuming value-to-value conversions to types
+//!   outside the current crate
+//! - The [`TryFrom`] and [`TryInto`] traits behave like [`From`] and [`Into`],
+//!   but should be implemented when the conversion can fail.
+//!
+//! The traits in this module are often used as trait bounds for generic functions such that to
+//! arguments of multiple types are supported. See the documentation of each trait for examples.
+//!
+//! As a library author, you should always prefer implementing [`From&lt;T&gt;`][`From`] or
+//! [`TryFrom&lt;T&gt;`][`TryFrom`] rather than [`Into&lt;U&gt;`][`Into`] or [`TryInto&lt;U&gt;`][`TryInto`],
+//! as [`From`] and [`TryFrom`] provide greater flexibility and offer
+//! equivalent [`Into`] or [`TryInto`] implementations for free, thanks to a
+//! blanket implementation in the standard library. When targeting a version prior to Rust 1.41, it
+//! may be necessary to implement [`Into`] or [`TryInto`] directly when converting to a type
+//! outside the current crate.
+//!
+//! # Generic Implementations
+//!
+//! - [`AsRef`] and [`AsMut`] auto-dereference if the inner type is a reference
+//!   (but not generally for all [dereferenceable types][core::ops::Deref])
+//! - [`From`]`&lt;U&gt; for T` implies [`Into`]`&lt;T&gt; for U`
+//! - [`TryFrom`]`&lt;U&gt; for T` implies [`TryInto`]`&lt;T&gt; for U`
+//! - [`From`] and [`Into`] are reflexive, which means that all types can
+//!   `into` themselves and `from` themselves
+//!
+//! See each trait for usage examples.
+
+</span><span class="attribute">#![stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+
+</span><span class="kw">use </span><span class="kw">crate</span>::error::Error;
+<span class="kw">use </span><span class="kw">crate</span>::fmt;
+<span class="kw">use </span><span class="kw">crate</span>::hash::{Hash, Hasher};
+
+<span class="kw">mod </span>num;
+
+<span class="attribute">#[unstable(feature = <span class="string">&quot;convert_float_to_int&quot;</span>, issue = <span class="string">&quot;67057&quot;</span>)]
+</span><span class="kw">pub use </span>num::FloatToInt;
+
+<span class="doccomment">/// The identity function.
+///
+/// Two things are important to note about this function:
+///
+/// - It is not always equivalent to a closure like `|x| x`, since the
+///   closure may coerce `x` into a different type.
+///
+/// - It moves the input `x` passed to the function.
+///
+/// While it might seem strange to have a function that just returns back the
+/// input, there are some interesting uses.
+///
+/// # Examples
+///
+/// Using `identity` to do nothing in a sequence of other, interesting,
+/// functions:
+///
+/// ```rust
+/// use std::convert::identity;
+///
+/// fn manipulation(x: u32) -&gt; u32 {
+///     // Let&#39;s pretend that adding one is an interesting function.
+///     x + 1
+/// }
+///
+/// let _arr = &amp;[identity, manipulation];
+/// ```
+///
+/// Using `identity` as a &quot;do nothing&quot; base case in a conditional:
+///
+/// ```rust
+/// use std::convert::identity;
+///
+/// # let condition = true;
+/// #
+/// # fn manipulation(x: u32) -&gt; u32 { x + 1 }
+/// #
+/// let do_stuff = if condition { manipulation } else { identity };
+///
+/// // Do more interesting stuff...
+///
+/// let _results = do_stuff(42);
+/// ```
+///
+/// Using `identity` to keep the `Some` variants of an iterator of `Option&lt;T&gt;`:
+///
+/// ```rust
+/// use std::convert::identity;
+///
+/// let iter = [Some(1), None, Some(3)].into_iter();
+/// let filtered = iter.filter_map(identity).collect::&lt;Vec&lt;_&gt;&gt;();
+/// assert_eq!(vec![1, 3], filtered);
+/// ```
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;convert_id&quot;</span>, since = <span class="string">&quot;1.33.0&quot;</span>)]
+#[rustc_const_stable(feature = <span class="string">&quot;const_identity&quot;</span>, since = <span class="string">&quot;1.33.0&quot;</span>)]
+#[inline]
+</span><span class="kw">pub const fn </span>identity&lt;T&gt;(x: T) -&gt; T {
+    x
+}
+
+<span class="doccomment">/// Used to do a cheap reference-to-reference conversion.
+///
+/// This trait is similar to [`AsMut`] which is used for converting between mutable references.
+/// If you need to do a costly conversion it is better to implement [`From`] with type
+/// `&amp;T` or write a custom function.
+///
+/// # Relation to `Borrow`
+///
+/// `AsRef` has the same signature as [`Borrow`], but [`Borrow`] is different in a few aspects:
+///
+/// - Unlike `AsRef`, [`Borrow`] has a blanket impl for any `T`, and can be used to accept either
+///   a reference or a value. (See also note on `AsRef`&#39;s reflexibility below.)
+/// - [`Borrow`] also requires that [`Hash`], [`Eq`] and [`Ord`] for a borrowed value are
+///   equivalent to those of the owned value. For this reason, if you want to
+///   borrow only a single field of a struct you can implement `AsRef`, but not [`Borrow`].
+///
+/// **Note: This trait must not fail**. If the conversion can fail, use a
+/// dedicated method which returns an [`Option&lt;T&gt;`] or a [`Result&lt;T, E&gt;`].
+///
+/// # Generic Implementations
+///
+/// `AsRef` auto-dereferences if the inner type is a reference or a mutable reference
+/// (e.g.: `foo.as_ref()` will work the same if `foo` has type `&amp;mut Foo` or `&amp;&amp;mut Foo`).
+///
+/// Note that due to historic reasons, the above currently does not hold generally for all
+/// [dereferenceable types], e.g. `foo.as_ref()` will *not* work the same as
+/// `Box::new(foo).as_ref()`. Instead, many smart pointers provide an `as_ref` implementation which
+/// simply returns a reference to the [pointed-to value] (but do not perform a cheap
+/// reference-to-reference conversion for that value). However, [`AsRef::as_ref`] should not be
+/// used for the sole purpose of dereferencing; instead [&#39;`Deref` coercion&#39;] can be used:
+///
+/// [dereferenceable types]: core::ops::Deref
+/// [pointed-to value]: core::ops::Deref::Target
+/// [&#39;`Deref` coercion&#39;]: core::ops::Deref#more-on-deref-coercion
+///
+/// ```
+/// let x = Box::new(5i32);
+/// // Avoid this:
+/// // let y: &amp;i32 = x.as_ref();
+/// // Better just write:
+/// let y: &amp;i32 = &amp;x;
+/// ```
+///
+/// Types which implement [`Deref`] should consider implementing `AsRef&lt;T&gt;` as follows:
+///
+/// [`Deref`]: core::ops::Deref
+///
+/// ```
+/// # use core::ops::Deref;
+/// # struct SomeType;
+/// # impl Deref for SomeType {
+/// #     type Target = [u8];
+/// #     fn deref(&amp;self) -&gt; &amp;[u8] {
+/// #         &amp;[]
+/// #     }
+/// # }
+/// impl&lt;T&gt; AsRef&lt;T&gt; for SomeType
+/// where
+///     T: ?Sized,
+///     &lt;SomeType as Deref&gt;::Target: AsRef&lt;T&gt;,
+/// {
+///     fn as_ref(&amp;self) -&gt; &amp;T {
+///         self.deref().as_ref()
+///     }
+/// }
+/// ```
+///
+/// # Reflexivity
+///
+/// Ideally, `AsRef` would be reflexive, i.e. there would be an `impl&lt;T: ?Sized&gt; AsRef&lt;T&gt; for T`
+/// with [`as_ref`] simply returning its argument unchanged.
+/// Such a blanket implementation is currently *not* provided due to technical restrictions of
+/// Rust&#39;s type system (it would be overlapping with another existing blanket implementation for
+/// `&amp;T where T: AsRef&lt;U&gt;` which allows `AsRef` to auto-dereference, see &quot;Generic Implementations&quot;
+/// above).
+///
+/// [`as_ref`]: AsRef::as_ref
+///
+/// A trivial implementation of `AsRef&lt;T&gt; for T` must be added explicitly for a particular type `T`
+/// where needed or desired. Note, however, that not all types from `std` contain such an
+/// implementation, and those cannot be added by external code due to orphan rules.
+///
+/// # Examples
+///
+/// By using trait bounds we can accept arguments of different types as long as they can be
+/// converted to the specified type `T`.
+///
+/// For example: By creating a generic function that takes an `AsRef&lt;str&gt;` we express that we
+/// want to accept all references that can be converted to [`&amp;str`] as an argument.
+/// Since both [`String`] and [`&amp;str`] implement `AsRef&lt;str&gt;` we can accept both as input argument.
+///
+/// [`&amp;str`]: primitive@str
+/// [`Borrow`]: crate::borrow::Borrow
+/// [`Eq`]: crate::cmp::Eq
+/// [`Ord`]: crate::cmp::Ord
+/// [`String`]: ../../std/string/struct.String.html
+///
+/// ```
+/// fn is_hello&lt;T: AsRef&lt;str&gt;&gt;(s: T) {
+///    assert_eq!(&quot;hello&quot;, s.as_ref());
+/// }
+///
+/// let s = &quot;hello&quot;;
+/// is_hello(s);
+///
+/// let s = &quot;hello&quot;.to_string();
+/// is_hello(s);
+/// ```
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+#[cfg_attr(not(test), rustc_diagnostic_item = <span class="string">&quot;AsRef&quot;</span>)]
+#[const_trait]
+</span><span class="kw">pub trait </span>AsRef&lt;T: <span class="question-mark">?</span>Sized&gt; {
+    <span class="doccomment">/// Converts this type into a shared reference of the (usually inferred) input type.
+    </span><span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>T;
+}
+
+<span class="doccomment">/// Used to do a cheap mutable-to-mutable reference conversion.
+///
+/// This trait is similar to [`AsRef`] but used for converting between mutable
+/// references. If you need to do a costly conversion it is better to
+/// implement [`From`] with type `&amp;mut T` or write a custom function.
+///
+/// **Note: This trait must not fail**. If the conversion can fail, use a
+/// dedicated method which returns an [`Option&lt;T&gt;`] or a [`Result&lt;T, E&gt;`].
+///
+/// # Generic Implementations
+///
+/// `AsMut` auto-dereferences if the inner type is a mutable reference
+/// (e.g.: `foo.as_mut()` will work the same if `foo` has type `&amp;mut Foo` or `&amp;mut &amp;mut Foo`).
+///
+/// Note that due to historic reasons, the above currently does not hold generally for all
+/// [mutably dereferenceable types], e.g. `foo.as_mut()` will *not* work the same as
+/// `Box::new(foo).as_mut()`. Instead, many smart pointers provide an `as_mut` implementation which
+/// simply returns a reference to the [pointed-to value] (but do not perform a cheap
+/// reference-to-reference conversion for that value). However, [`AsMut::as_mut`] should not be
+/// used for the sole purpose of mutable dereferencing; instead [&#39;`Deref` coercion&#39;] can be used:
+///
+/// [mutably dereferenceable types]: core::ops::DerefMut
+/// [pointed-to value]: core::ops::Deref::Target
+/// [&#39;`Deref` coercion&#39;]: core::ops::DerefMut#more-on-deref-coercion
+///
+/// ```
+/// let mut x = Box::new(5i32);
+/// // Avoid this:
+/// // let y: &amp;mut i32 = x.as_mut();
+/// // Better just write:
+/// let y: &amp;mut i32 = &amp;mut x;
+/// ```
+///
+/// Types which implement [`DerefMut`] should consider to add an implementation of `AsMut&lt;T&gt;` as
+/// follows:
+///
+/// [`DerefMut`]: core::ops::DerefMut
+///
+/// ```
+/// # use core::ops::{Deref, DerefMut};
+/// # struct SomeType;
+/// # impl Deref for SomeType {
+/// #     type Target = [u8];
+/// #     fn deref(&amp;self) -&gt; &amp;[u8] {
+/// #         &amp;[]
+/// #     }
+/// # }
+/// # impl DerefMut for SomeType {
+/// #     fn deref_mut(&amp;mut self) -&gt; &amp;mut [u8] {
+/// #         &amp;mut []
+/// #     }
+/// # }
+/// impl&lt;T&gt; AsMut&lt;T&gt; for SomeType
+/// where
+///     &lt;SomeType as Deref&gt;::Target: AsMut&lt;T&gt;,
+/// {
+///     fn as_mut(&amp;mut self) -&gt; &amp;mut T {
+///         self.deref_mut().as_mut()
+///     }
+/// }
+/// ```
+///
+/// # Reflexivity
+///
+/// Ideally, `AsMut` would be reflexive, i.e. there would be an `impl&lt;T: ?Sized&gt; AsMut&lt;T&gt; for T`
+/// with [`as_mut`] simply returning its argument unchanged.
+/// Such a blanket implementation is currently *not* provided due to technical restrictions of
+/// Rust&#39;s type system (it would be overlapping with another existing blanket implementation for
+/// `&amp;mut T where T: AsMut&lt;U&gt;` which allows `AsMut` to auto-dereference, see &quot;Generic
+/// Implementations&quot; above).
+///
+/// [`as_mut`]: AsMut::as_mut
+///
+/// A trivial implementation of `AsMut&lt;T&gt; for T` must be added explicitly for a particular type `T`
+/// where needed or desired. Note, however, that not all types from `std` contain such an
+/// implementation, and those cannot be added by external code due to orphan rules.
+///
+/// # Examples
+///
+/// Using `AsMut` as trait bound for a generic function, we can accept all mutable references that
+/// can be converted to type `&amp;mut T`. Unlike [dereference], which has a single [target type],
+/// there can be multiple implementations of `AsMut` for a type. In particular, `Vec&lt;T&gt;` implements
+/// both `AsMut&lt;Vec&lt;T&gt;&gt;` and `AsMut&lt;[T]&gt;`.
+///
+/// In the following, the example functions `caesar` and `null_terminate` provide a generic
+/// interface which work with any type that can be converted by cheap mutable-to-mutable conversion
+/// into a byte slice (`[u8]`) or byte vector (`Vec&lt;u8&gt;`), respectively.
+///
+/// [dereference]: core::ops::DerefMut
+/// [target type]: core::ops::Deref::Target
+///
+/// ```
+/// struct Document {
+///     info: String,
+///     content: Vec&lt;u8&gt;,
+/// }
+///
+/// impl&lt;T: ?Sized&gt; AsMut&lt;T&gt; for Document
+/// where
+///     Vec&lt;u8&gt;: AsMut&lt;T&gt;,
+/// {
+///     fn as_mut(&amp;mut self) -&gt; &amp;mut T {
+///         self.content.as_mut()
+///     }
+/// }
+///
+/// fn caesar&lt;T: AsMut&lt;[u8]&gt;&gt;(data: &amp;mut T, key: u8) {
+///     for byte in data.as_mut() {
+///         *byte = byte.wrapping_add(key);
+///     }
+/// }
+///
+/// fn null_terminate&lt;T: AsMut&lt;Vec&lt;u8&gt;&gt;&gt;(data: &amp;mut T) {
+///     // Using a non-generic inner function, which contains most of the
+///     // functionality, helps to minimize monomorphization overhead.
+///     fn doit(data: &amp;mut Vec&lt;u8&gt;) {
+///         let len = data.len();
+///         if len == 0 || data[len-1] != 0 {
+///             data.push(0);
+///         }
+///     }
+///     doit(data.as_mut());
+/// }
+///
+/// fn main() {
+///     let mut v: Vec&lt;u8&gt; = vec![1, 2, 3];
+///     caesar(&amp;mut v, 5);
+///     assert_eq!(v, [6, 7, 8]);
+///     null_terminate(&amp;mut v);
+///     assert_eq!(v, [6, 7, 8, 0]);
+///     let mut doc = Document {
+///         info: String::from(&quot;Example&quot;),
+///         content: vec![17, 19, 8],
+///     };
+///     caesar(&amp;mut doc, 1);
+///     assert_eq!(doc.content, [18, 20, 9]);
+///     null_terminate(&amp;mut doc);
+///     assert_eq!(doc.content, [18, 20, 9, 0]);
+/// }
+/// ```
+///
+/// Note, however, that APIs don&#39;t need to be generic. In many cases taking a `&amp;mut [u8]` or
+/// `&amp;mut Vec&lt;u8&gt;`, for example, is the better choice (callers need to pass the correct type then).
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+#[cfg_attr(not(test), rustc_diagnostic_item = <span class="string">&quot;AsMut&quot;</span>)]
+#[const_trait]
+</span><span class="kw">pub trait </span>AsMut&lt;T: <span class="question-mark">?</span>Sized&gt; {
+    <span class="doccomment">/// Converts this type into a mutable reference of the (usually inferred) input type.
+    </span><span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+    </span><span class="kw">fn </span>as_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>T;
+}
+
+<span class="doccomment">/// A value-to-value conversion that consumes the input value. The
+/// opposite of [`From`].
+///
+/// One should avoid implementing [`Into`] and implement [`From`] instead.
+/// Implementing [`From`] automatically provides one with an implementation of [`Into`]
+/// thanks to the blanket implementation in the standard library.
+///
+/// Prefer using [`Into`] over [`From`] when specifying trait bounds on a generic function
+/// to ensure that types that only implement [`Into`] can be used as well.
+///
+/// **Note: This trait must not fail**. If the conversion can fail, use [`TryInto`].
+///
+/// # Generic Implementations
+///
+/// - [`From`]`&lt;T&gt; for U` implies `Into&lt;U&gt; for T`
+/// - [`Into`] is reflexive, which means that `Into&lt;T&gt; for T` is implemented
+///
+/// # Implementing [`Into`] for conversions to external types in old versions of Rust
+///
+/// Prior to Rust 1.41, if the destination type was not part of the current crate
+/// then you couldn&#39;t implement [`From`] directly.
+/// For example, take this code:
+///
+/// ```
+/// struct Wrapper&lt;T&gt;(Vec&lt;T&gt;);
+/// impl&lt;T&gt; From&lt;Wrapper&lt;T&gt;&gt; for Vec&lt;T&gt; {
+///     fn from(w: Wrapper&lt;T&gt;) -&gt; Vec&lt;T&gt; {
+///         w.0
+///     }
+/// }
+/// ```
+/// This will fail to compile in older versions of the language because Rust&#39;s orphaning rules
+/// used to be a little bit more strict. To bypass this, you could implement [`Into`] directly:
+///
+/// ```
+/// struct Wrapper&lt;T&gt;(Vec&lt;T&gt;);
+/// impl&lt;T&gt; Into&lt;Vec&lt;T&gt;&gt; for Wrapper&lt;T&gt; {
+///     fn into(self) -&gt; Vec&lt;T&gt; {
+///         self.0
+///     }
+/// }
+/// ```
+///
+/// It is important to understand that [`Into`] does not provide a [`From`] implementation
+/// (as [`From`] does with [`Into`]). Therefore, you should always try to implement [`From`]
+/// and then fall back to [`Into`] if [`From`] can&#39;t be implemented.
+///
+/// # Examples
+///
+/// [`String`] implements [`Into`]`&lt;`[`Vec`]`&lt;`[`u8`]`&gt;&gt;`:
+///
+/// In order to express that we want a generic function to take all arguments that can be
+/// converted to a specified type `T`, we can use a trait bound of [`Into`]`&lt;T&gt;`.
+/// For example: The function `is_hello` takes all arguments that can be converted into a
+/// [`Vec`]`&lt;`[`u8`]`&gt;`.
+///
+/// ```
+/// fn is_hello&lt;T: Into&lt;Vec&lt;u8&gt;&gt;&gt;(s: T) {
+///    let bytes = b&quot;hello&quot;.to_vec();
+///    assert_eq!(bytes, s.into());
+/// }
+///
+/// let s = &quot;hello&quot;.to_string();
+/// is_hello(s);
+/// ```
+///
+/// [`String`]: ../../std/string/struct.String.html
+/// [`Vec`]: ../../std/vec/struct.Vec.html
+</span><span class="attribute">#[rustc_diagnostic_item = <span class="string">&quot;Into&quot;</span>]
+#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+#[const_trait]
+</span><span class="kw">pub trait </span>Into&lt;T&gt;: Sized {
+    <span class="doccomment">/// Converts this type into the (usually inferred) input type.
+    </span><span class="attribute">#[must_use]
+    #[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+    </span><span class="kw">fn </span>into(<span class="self">self</span>) -&gt; T;
+}
+
+<span class="doccomment">/// Used to do value-to-value conversions while consuming the input value. It is the reciprocal of
+/// [`Into`].
+///
+/// One should always prefer implementing `From` over [`Into`]
+/// because implementing `From` automatically provides one with an implementation of [`Into`]
+/// thanks to the blanket implementation in the standard library.
+///
+/// Only implement [`Into`] when targeting a version prior to Rust 1.41 and converting to a type
+/// outside the current crate.
+/// `From` was not able to do these types of conversions in earlier versions because of Rust&#39;s
+/// orphaning rules.
+/// See [`Into`] for more details.
+///
+/// Prefer using [`Into`] over using `From` when specifying trait bounds on a generic function.
+/// This way, types that directly implement [`Into`] can be used as arguments as well.
+///
+/// The `From` is also very useful when performing error handling. When constructing a function
+/// that is capable of failing, the return type will generally be of the form `Result&lt;T, E&gt;`.
+/// The `From` trait simplifies error handling by allowing a function to return a single error type
+/// that encapsulate multiple error types. See the &quot;Examples&quot; section and [the book][book] for more
+/// details.
+///
+/// **Note: This trait must not fail**. The `From` trait is intended for perfect conversions.
+/// If the conversion can fail or is not perfect, use [`TryFrom`].
+///
+/// # Generic Implementations
+///
+/// - `From&lt;T&gt; for U` implies [`Into`]`&lt;U&gt; for T`
+/// - `From` is reflexive, which means that `From&lt;T&gt; for T` is implemented
+///
+/// # Examples
+///
+/// [`String`] implements `From&lt;&amp;str&gt;`:
+///
+/// An explicit conversion from a `&amp;str` to a String is done as follows:
+///
+/// ```
+/// let string = &quot;hello&quot;.to_string();
+/// let other_string = String::from(&quot;hello&quot;);
+///
+/// assert_eq!(string, other_string);
+/// ```
+///
+/// While performing error handling it is often useful to implement `From` for your own error type.
+/// By converting underlying error types to our own custom error type that encapsulates the
+/// underlying error type, we can return a single error type without losing information on the
+/// underlying cause. The &#39;?&#39; operator automatically converts the underlying error type to our
+/// custom error type by calling `Into&lt;CliError&gt;::into` which is automatically provided when
+/// implementing `From`. The compiler then infers which implementation of `Into` should be used.
+///
+/// ```
+/// use std::fs;
+/// use std::io;
+/// use std::num;
+///
+/// enum CliError {
+///     IoError(io::Error),
+///     ParseError(num::ParseIntError),
+/// }
+///
+/// impl From&lt;io::Error&gt; for CliError {
+///     fn from(error: io::Error) -&gt; Self {
+///         CliError::IoError(error)
+///     }
+/// }
+///
+/// impl From&lt;num::ParseIntError&gt; for CliError {
+///     fn from(error: num::ParseIntError) -&gt; Self {
+///         CliError::ParseError(error)
+///     }
+/// }
+///
+/// fn open_and_parse_file(file_name: &amp;str) -&gt; Result&lt;i32, CliError&gt; {
+///     let mut contents = fs::read_to_string(&amp;file_name)?;
+///     let num: i32 = contents.trim().parse()?;
+///     Ok(num)
+/// }
+/// ```
+///
+/// [`String`]: ../../std/string/struct.String.html
+/// [`from`]: From::from
+/// [book]: ../../book/ch09-00-error-handling.html
+</span><span class="attribute">#[rustc_diagnostic_item = <span class="string">&quot;From&quot;</span>]
+#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+#[rustc_on_unimplemented(on(
+    all(_Self = <span class="string">&quot;&amp;str&quot;</span>, T = <span class="string">&quot;std::string::String&quot;</span>),
+    note = <span class="string">&quot;to coerce a `{T}` into a `{Self}`, use `&amp;*` as a prefix&quot;</span>,
+))]
+#[const_trait]
+</span><span class="kw">pub trait </span>From&lt;T&gt;: Sized {
+    <span class="doccomment">/// Converts to this type from the input type.
+    </span><span class="attribute">#[lang = <span class="string">&quot;from&quot;</span>]
+    #[must_use]
+    #[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+    </span><span class="kw">fn </span>from(value: T) -&gt; <span class="self">Self</span>;
+}
+
+<span class="doccomment">/// An attempted conversion that consumes `self`, which may or may not be
+/// expensive.
+///
+/// Library authors should usually not directly implement this trait,
+/// but should prefer implementing the [`TryFrom`] trait, which offers
+/// greater flexibility and provides an equivalent `TryInto`
+/// implementation for free, thanks to a blanket implementation in the
+/// standard library. For more information on this, see the
+/// documentation for [`Into`].
+///
+/// # Implementing `TryInto`
+///
+/// This suffers the same restrictions and reasoning as implementing
+/// [`Into`], see there for details.
+</span><span class="attribute">#[rustc_diagnostic_item = <span class="string">&quot;TryInto&quot;</span>]
+#[stable(feature = <span class="string">&quot;try_from&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+#[const_trait]
+</span><span class="kw">pub trait </span>TryInto&lt;T&gt;: Sized {
+    <span class="doccomment">/// The type returned in the event of a conversion error.
+    </span><span class="attribute">#[stable(feature = <span class="string">&quot;try_from&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+    </span><span class="kw">type </span>Error;
+
+    <span class="doccomment">/// Performs the conversion.
+    </span><span class="attribute">#[stable(feature = <span class="string">&quot;try_from&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+    </span><span class="kw">fn </span>try_into(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;T, <span class="self">Self</span>::Error&gt;;
+}
+
+<span class="doccomment">/// Simple and safe type conversions that may fail in a controlled
+/// way under some circumstances. It is the reciprocal of [`TryInto`].
+///
+/// This is useful when you are doing a type conversion that may
+/// trivially succeed but may also need special handling.
+/// For example, there is no way to convert an [`i64`] into an [`i32`]
+/// using the [`From`] trait, because an [`i64`] may contain a value
+/// that an [`i32`] cannot represent and so the conversion would lose data.
+/// This might be handled by truncating the [`i64`] to an [`i32`] (essentially
+/// giving the [`i64`]&#39;s value modulo [`i32::MAX`]) or by simply returning
+/// [`i32::MAX`], or by some other method.  The [`From`] trait is intended
+/// for perfect conversions, so the `TryFrom` trait informs the
+/// programmer when a type conversion could go bad and lets them
+/// decide how to handle it.
+///
+/// # Generic Implementations
+///
+/// - `TryFrom&lt;T&gt; for U` implies [`TryInto`]`&lt;U&gt; for T`
+/// - [`try_from`] is reflexive, which means that `TryFrom&lt;T&gt; for T`
+/// is implemented and cannot fail -- the associated `Error` type for
+/// calling `T::try_from()` on a value of type `T` is [`Infallible`].
+/// When the [`!`] type is stabilized [`Infallible`] and [`!`] will be
+/// equivalent.
+///
+/// `TryFrom&lt;T&gt;` can be implemented as follows:
+///
+/// ```
+/// struct GreaterThanZero(i32);
+///
+/// impl TryFrom&lt;i32&gt; for GreaterThanZero {
+///     type Error = &amp;&#39;static str;
+///
+///     fn try_from(value: i32) -&gt; Result&lt;Self, Self::Error&gt; {
+///         if value &lt;= 0 {
+///             Err(&quot;GreaterThanZero only accepts values greater than zero!&quot;)
+///         } else {
+///             Ok(GreaterThanZero(value))
+///         }
+///     }
+/// }
+/// ```
+///
+/// # Examples
+///
+/// As described, [`i32`] implements `TryFrom&lt;`[`i64`]`&gt;`:
+///
+/// ```
+/// let big_number = 1_000_000_000_000i64;
+/// // Silently truncates `big_number`, requires detecting
+/// // and handling the truncation after the fact.
+/// let smaller_number = big_number as i32;
+/// assert_eq!(smaller_number, -727379968);
+///
+/// // Returns an error because `big_number` is too big to
+/// // fit in an `i32`.
+/// let try_smaller_number = i32::try_from(big_number);
+/// assert!(try_smaller_number.is_err());
+///
+/// // Returns `Ok(3)`.
+/// let try_successful_smaller_number = i32::try_from(3);
+/// assert!(try_successful_smaller_number.is_ok());
+/// ```
+///
+/// [`try_from`]: TryFrom::try_from
+</span><span class="attribute">#[rustc_diagnostic_item = <span class="string">&quot;TryFrom&quot;</span>]
+#[stable(feature = <span class="string">&quot;try_from&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+#[const_trait]
+</span><span class="kw">pub trait </span>TryFrom&lt;T&gt;: Sized {
+    <span class="doccomment">/// The type returned in the event of a conversion error.
+    </span><span class="attribute">#[stable(feature = <span class="string">&quot;try_from&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+    </span><span class="kw">type </span>Error;
+
+    <span class="doccomment">/// Performs the conversion.
+    </span><span class="attribute">#[stable(feature = <span class="string">&quot;try_from&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+    </span><span class="kw">fn </span>try_from(value: T) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt;;
+}
+
+<span class="comment">////////////////////////////////////////////////////////////////////////////////
+// GENERIC IMPLS
+////////////////////////////////////////////////////////////////////////////////
+
+// As lifts over &amp;
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+#[rustc_const_unstable(feature = <span class="string">&quot;const_convert&quot;</span>, issue = <span class="string">&quot;88674&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized, U: <span class="question-mark">?</span>Sized&gt; <span class="kw">const </span>AsRef&lt;U&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>T
+<span class="kw">where
+    </span>T: ~<span class="kw">const </span>AsRef&lt;U&gt;,
+{
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>U {
+        &lt;T <span class="kw">as </span>AsRef&lt;U&gt;&gt;::as_ref(<span class="kw-2">*</span><span class="self">self</span>)
+    }
+}
+
+<span class="comment">// As lifts over &amp;mut
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+#[rustc_const_unstable(feature = <span class="string">&quot;const_convert&quot;</span>, issue = <span class="string">&quot;88674&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized, U: <span class="question-mark">?</span>Sized&gt; <span class="kw">const </span>AsRef&lt;U&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>T
+<span class="kw">where
+    </span>T: ~<span class="kw">const </span>AsRef&lt;U&gt;,
+{
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>U {
+        &lt;T <span class="kw">as </span>AsRef&lt;U&gt;&gt;::as_ref(<span class="kw-2">*</span><span class="self">self</span>)
+    }
+}
+
+<span class="comment">// FIXME (#45742): replace the above impls for &amp;/&amp;mut with the following more general one:
+// // As lifts over Deref
+// impl&lt;D: ?Sized + Deref&lt;Target: AsRef&lt;U&gt;&gt;, U: ?Sized&gt; AsRef&lt;U&gt; for D {
+//     fn as_ref(&amp;self) -&gt; &amp;U {
+//         self.deref().as_ref()
+//     }
+// }
+
+// AsMut lifts over &amp;mut
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+#[rustc_const_unstable(feature = <span class="string">&quot;const_convert&quot;</span>, issue = <span class="string">&quot;88674&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized, U: <span class="question-mark">?</span>Sized&gt; <span class="kw">const </span>AsMut&lt;U&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>T
+<span class="kw">where
+    </span>T: ~<span class="kw">const </span>AsMut&lt;U&gt;,
+{
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>as_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>U {
+        (<span class="kw-2">*</span><span class="self">self</span>).as_mut()
+    }
+}
+
+<span class="comment">// FIXME (#45742): replace the above impl for &amp;mut with the following more general one:
+// // AsMut lifts over DerefMut
+// impl&lt;D: ?Sized + Deref&lt;Target: AsMut&lt;U&gt;&gt;, U: ?Sized&gt; AsMut&lt;U&gt; for D {
+//     fn as_mut(&amp;mut self) -&gt; &amp;mut U {
+//         self.deref_mut().as_mut()
+//     }
+// }
+
+// From implies Into
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+#[rustc_const_unstable(feature = <span class="string">&quot;const_convert&quot;</span>, issue = <span class="string">&quot;88674&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T, U&gt; <span class="kw">const </span>Into&lt;U&gt; <span class="kw">for </span>T
+<span class="kw">where
+    </span>U: ~<span class="kw">const </span>From&lt;T&gt;,
+{
+    <span class="doccomment">/// Calls `U::from(self)`.
+    ///
+    /// That is, this conversion is whatever the implementation of
+    /// &lt;code&gt;[From]&amp;lt;T&amp;gt; for U&lt;/code&gt; chooses to do.
+    </span><span class="kw">fn </span>into(<span class="self">self</span>) -&gt; U {
+        U::from(<span class="self">self</span>)
+    }
+}
+
+<span class="comment">// From (and thus Into) is reflexive
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+#[rustc_const_unstable(feature = <span class="string">&quot;const_convert&quot;</span>, issue = <span class="string">&quot;88674&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T&gt; <span class="kw">const </span>From&lt;T&gt; <span class="kw">for </span>T {
+    <span class="doccomment">/// Returns the argument unchanged.
+    </span><span class="attribute">#[inline(always)]
+    </span><span class="kw">fn </span>from(t: T) -&gt; T {
+        t
+    }
+}
+
+<span class="doccomment">/// **Stability note:** This impl does not yet exist, but we are
+/// &quot;reserving space&quot; to add it in the future. See
+/// [rust-lang/rust#64715][#64715] for details.
+///
+/// [#64715]: https://github.com/rust-lang/rust/issues/64715
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;convert_infallible&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+#[allow(unused_attributes)] </span><span class="comment">// FIXME(#58633): do a principled fix instead.
+</span><span class="attribute">#[rustc_reservation_impl = <span class="string">&quot;permitting this impl would forbid us from adding \
+                            `impl&lt;T&gt; From&lt;!&gt; for T` later; see rust-lang/rust#64715 for details&quot;</span>]
+#[rustc_const_unstable(feature = <span class="string">&quot;const_convert&quot;</span>, issue = <span class="string">&quot;88674&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T&gt; <span class="kw">const </span>From&lt;!&gt; <span class="kw">for </span>T {
+    <span class="kw">fn </span>from(t: !) -&gt; T {
+        t
+    }
+}
+
+<span class="comment">// TryFrom implies TryInto
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;try_from&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+#[rustc_const_unstable(feature = <span class="string">&quot;const_convert&quot;</span>, issue = <span class="string">&quot;88674&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T, U&gt; <span class="kw">const </span>TryInto&lt;U&gt; <span class="kw">for </span>T
+<span class="kw">where
+    </span>U: ~<span class="kw">const </span>TryFrom&lt;T&gt;,
+{
+    <span class="kw">type </span>Error = U::Error;
+
+    <span class="kw">fn </span>try_into(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;U, U::Error&gt; {
+        U::try_from(<span class="self">self</span>)
+    }
+}
+
+<span class="comment">// Infallible conversions are semantically equivalent to fallible conversions
+// with an uninhabited error type.
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;try_from&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+#[rustc_const_unstable(feature = <span class="string">&quot;const_convert&quot;</span>, issue = <span class="string">&quot;88674&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T, U&gt; <span class="kw">const </span>TryFrom&lt;U&gt; <span class="kw">for </span>T
+<span class="kw">where
+    </span>U: ~<span class="kw">const </span>Into&lt;T&gt;,
+{
+    <span class="kw">type </span>Error = Infallible;
+
+    <span class="kw">fn </span>try_from(value: U) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+        <span class="prelude-val">Ok</span>(U::into(value))
+    }
+}
+
+<span class="comment">////////////////////////////////////////////////////////////////////////////////
+// CONCRETE IMPLS
+////////////////////////////////////////////////////////////////////////////////
+
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T&gt; AsRef&lt;[T]&gt; <span class="kw">for </span>[T] {
+    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[T] {
+        <span class="self">self
+    </span>}
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;T&gt; AsMut&lt;[T]&gt; <span class="kw">for </span>[T] {
+    <span class="kw">fn </span>as_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[T] {
+        <span class="self">self
+    </span>}
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;rust1&quot;</span>, since = <span class="string">&quot;1.0.0&quot;</span>)]
+</span><span class="kw">impl </span>AsRef&lt;str&gt; <span class="kw">for </span>str {
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        <span class="self">self
+    </span>}
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;as_mut_str_for_str&quot;</span>, since = <span class="string">&quot;1.51.0&quot;</span>)]
+</span><span class="kw">impl </span>AsMut&lt;str&gt; <span class="kw">for </span>str {
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>as_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>str {
+        <span class="self">self
+    </span>}
+}
+
+<span class="comment">////////////////////////////////////////////////////////////////////////////////
+// THE NO-ERROR ERROR TYPE
+////////////////////////////////////////////////////////////////////////////////
+
+</span><span class="doccomment">/// The error type for errors that can never happen.
+///
+/// Since this enum has no variant, a value of this type can never actually exist.
+/// This can be useful for generic APIs that use [`Result`] and parameterize the error type,
+/// to indicate that the result is always [`Ok`].
+///
+/// For example, the [`TryFrom`] trait (conversion that returns a [`Result`])
+/// has a blanket implementation for all types where a reverse [`Into`] implementation exists.
+///
+/// ```ignore (illustrates std code, duplicating the impl in a doctest would be an error)
+/// impl&lt;T, U&gt; TryFrom&lt;U&gt; for T where U: Into&lt;T&gt; {
+///     type Error = Infallible;
+///
+///     fn try_from(value: U) -&gt; Result&lt;Self, Infallible&gt; {
+///         Ok(U::into(value))  // Never returns `Err`
+///     }
+/// }
+/// ```
+///
+/// # Future compatibility
+///
+/// This enum has the same role as [the `!` “never” type][never],
+/// which is unstable in this version of Rust.
+/// When `!` is stabilized, we plan to make `Infallible` a type alias to it:
+///
+/// ```ignore (illustrates future std change)
+/// pub type Infallible = !;
+/// ```
+///
+/// … and eventually deprecate `Infallible`.
+///
+/// However there is one case where `!` syntax can be used
+/// before `!` is stabilized as a full-fledged type: in the position of a function’s return type.
+/// Specifically, it is possible to have implementations for two different function pointer types:
+///
+/// ```
+/// trait MyTrait {}
+/// impl MyTrait for fn() -&gt; ! {}
+/// impl MyTrait for fn() -&gt; std::convert::Infallible {}
+/// ```
+///
+/// With `Infallible` being an enum, this code is valid.
+/// However when `Infallible` becomes an alias for the never type,
+/// the two `impl`s will start to overlap
+/// and therefore will be disallowed by the language’s trait coherence rules.
+</span><span class="attribute">#[stable(feature = <span class="string">&quot;convert_infallible&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+#[derive(Copy)]
+</span><span class="kw">pub enum </span>Infallible {}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;convert_infallible&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+#[rustc_const_unstable(feature = <span class="string">&quot;const_clone&quot;</span>, issue = <span class="string">&quot;91805&quot;</span>)]
+</span><span class="kw">impl const </span>Clone <span class="kw">for </span>Infallible {
+    <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Infallible {
+        <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{}
+    }
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;convert_infallible&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+</span><span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Infallible {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{}
+    }
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;convert_infallible&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+</span><span class="kw">impl </span>fmt::Display <span class="kw">for </span>Infallible {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{}
+    }
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;str_parse_error2&quot;</span>, since = <span class="string">&quot;1.8.0&quot;</span>)]
+</span><span class="kw">impl </span>Error <span class="kw">for </span>Infallible {
+    <span class="kw">fn </span>description(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{}
+    }
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;convert_infallible&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+</span><span class="kw">impl </span>PartialEq <span class="kw">for </span>Infallible {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span>Infallible) -&gt; bool {
+        <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{}
+    }
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;convert_infallible&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+</span><span class="kw">impl </span>Eq <span class="kw">for </span>Infallible {}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;convert_infallible&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+</span><span class="kw">impl </span>PartialOrd <span class="kw">for </span>Infallible {
+    <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, _other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::cmp::Ordering&gt; {
+        <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{}
+    }
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;convert_infallible&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+</span><span class="kw">impl </span>Ord <span class="kw">for </span>Infallible {
+    <span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, _other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="kw">crate</span>::cmp::Ordering {
+        <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{}
+    }
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;convert_infallible&quot;</span>, since = <span class="string">&quot;1.34.0&quot;</span>)]
+#[rustc_const_unstable(feature = <span class="string">&quot;const_convert&quot;</span>, issue = <span class="string">&quot;88674&quot;</span>)]
+</span><span class="kw">impl const </span>From&lt;!&gt; <span class="kw">for </span>Infallible {
+    <span class="kw">fn </span>from(x: !) -&gt; <span class="self">Self </span>{
+        x
+    }
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;convert_infallible_hash&quot;</span>, since = <span class="string">&quot;1.44.0&quot;</span>)]
+</span><span class="kw">impl </span>Hash <span class="kw">for </span>Infallible {
+    <span class="kw">fn </span>hash&lt;H: Hasher&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>H) {
+        <span class="kw">match </span><span class="kw-2">*</span><span class="self">self </span>{}
+    }
+}
+</code></pre></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0 (69f9c33d7 2022-12-12)" ></div></body></html>

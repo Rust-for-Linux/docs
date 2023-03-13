@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["Clk","Represents `struct clk *`."],["EnabledClk","A clock variant that is prepared and enabled."]]};

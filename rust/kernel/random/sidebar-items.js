@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["add_randomness","Contributes the contents of a byte slice to the kernel’s entropy pool."],["getrandom","Fills a byte slice with random bytes generated from the kernel’s CSPRNG."],["getrandom_nonblock","Fills a byte slice with random bytes generated from the kernel’s CSPRNG."]]};

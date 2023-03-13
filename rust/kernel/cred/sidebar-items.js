@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["Credential","Wraps the kernel’s `struct cred`."]]};

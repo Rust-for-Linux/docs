@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["IovIter","Wraps the kernel’s `struct iov_iter`."]]};

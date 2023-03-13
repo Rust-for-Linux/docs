@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `rust/macros/vtable.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>vtable.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../macros/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+</pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0
+
+</span><span class="kw">use </span>proc_macro::{Delimiter, Group, TokenStream, TokenTree};
+<span class="kw">use </span>std::collections::HashSet;
+<span class="kw">use </span>std::fmt::Write;
+
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>vtable(_attr: TokenStream, ts: TokenStream) -&gt; TokenStream {
+    <span class="kw">let </span><span class="kw-2">mut </span>tokens: Vec&lt;<span class="kw">_</span>&gt; = ts.into_iter().collect();
+
+    <span class="comment">// Scan for the `trait` or `impl` keyword.
+    </span><span class="kw">let </span>is_trait = tokens
+        .iter()
+        .find_map(|token| <span class="kw">match </span>token {
+            TokenTree::Ident(ident) =&gt; <span class="kw">match </span>ident.to_string().as_str() {
+                <span class="string">&quot;trait&quot; </span>=&gt; <span class="prelude-val">Some</span>(<span class="bool-val">true</span>),
+                <span class="string">&quot;impl&quot; </span>=&gt; <span class="prelude-val">Some</span>(<span class="bool-val">false</span>),
+                <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
+            },
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
+        })
+        .expect(<span class="string">&quot;#[vtable] attribute should only be applied to trait or impl block&quot;</span>);
+
+    <span class="comment">// Retrieve the main body. The main body should be the last token tree.
+    </span><span class="kw">let </span>body = <span class="kw">match </span>tokens.pop() {
+        <span class="prelude-val">Some</span>(TokenTree::Group(group)) <span class="kw">if </span>group.delimiter() == Delimiter::Brace =&gt; group,
+        <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;cannot locate main body of trait or impl block&quot;</span>),
+    };
+
+    <span class="kw">let </span><span class="kw-2">mut </span>body_it = body.stream().into_iter();
+    <span class="kw">let </span><span class="kw-2">mut </span>functions = Vec::new();
+    <span class="kw">let </span><span class="kw-2">mut </span>consts = HashSet::new();
+    <span class="kw">while let </span><span class="prelude-val">Some</span>(token) = body_it.next() {
+        <span class="kw">match </span>token {
+            TokenTree::Ident(ident) <span class="kw">if </span>ident.to_string() == <span class="string">&quot;fn&quot; </span>=&gt; {
+                <span class="kw">let </span>fn_name = <span class="kw">match </span>body_it.next() {
+                    <span class="prelude-val">Some</span>(TokenTree::Ident(ident)) =&gt; ident.to_string(),
+                    <span class="comment">// Possibly we&#39;ve encountered a fn pointer type instead.
+                    </span><span class="kw">_ </span>=&gt; <span class="kw">continue</span>,
+                };
+                functions.push(fn_name);
+            }
+            TokenTree::Ident(ident) <span class="kw">if </span>ident.to_string() == <span class="string">&quot;const&quot; </span>=&gt; {
+                <span class="kw">let </span>const_name = <span class="kw">match </span>body_it.next() {
+                    <span class="prelude-val">Some</span>(TokenTree::Ident(ident)) =&gt; ident.to_string(),
+                    <span class="comment">// Possibly we&#39;ve encountered an inline const block instead.
+                    </span><span class="kw">_ </span>=&gt; <span class="kw">continue</span>,
+                };
+                consts.insert(const_name);
+            }
+            <span class="kw">_ </span>=&gt; (),
+        }
+    }
+
+    <span class="kw">let </span><span class="kw-2">mut </span>const_items;
+    <span class="kw">if </span>is_trait {
+        const_items = <span class="string">&quot;
+                /// A marker to prevent implementors from forgetting to use [`#[vtable]`](vtable)
+                /// attribute when implementing this trait.
+                const USE_VTABLE_ATTR: ();
+        &quot;
+        </span>.to_owned();
+
+        <span class="kw">for </span>f <span class="kw">in </span>functions {
+            <span class="kw">let </span>gen_const_name = <span class="macro">format!</span>(<span class="string">&quot;HAS_{}&quot;</span>, f.to_uppercase());
+            <span class="comment">// Skip if it&#39;s declared already -- this allows user override.
+            </span><span class="kw">if </span>consts.contains(<span class="kw-2">&amp;</span>gen_const_name) {
+                <span class="kw">continue</span>;
+            }
+            <span class="comment">// We don&#39;t know on the implementation-site whether a method is required or provided
+            // so we have to generate a const for all methods.
+            </span><span class="macro">write!</span>(
+                const_items,
+                <span class="string">&quot;/// Indicates if the `{f}` method is overridden by the implementor.
+                const {gen_const_name}: bool = false;&quot;</span>,
+            )
+            .unwrap();
+        }
+    } <span class="kw">else </span>{
+        const_items = <span class="string">&quot;const USE_VTABLE_ATTR: () = ();&quot;</span>.to_owned();
+
+        <span class="kw">for </span>f <span class="kw">in </span>functions {
+            <span class="kw">let </span>gen_const_name = <span class="macro">format!</span>(<span class="string">&quot;HAS_{}&quot;</span>, f.to_uppercase());
+            <span class="kw">if </span>consts.contains(<span class="kw-2">&amp;</span>gen_const_name) {
+                <span class="kw">continue</span>;
+            }
+            <span class="macro">write!</span>(const_items, <span class="string">&quot;const {gen_const_name}: bool = true;&quot;</span>).unwrap();
+        }
+    }
+
+    <span class="kw">let </span>new_body = <span class="macro">vec!</span>[const_items.parse().unwrap(), body.stream()]
+        .into_iter()
+        .collect();
+    tokens.push(TokenTree::Group(Group::new(Delimiter::Brace, new_body)));
+    tokens.into_iter().collect()
+}
+</code></pre></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="macros" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0 (69f9c33d7 2022-12-12)" ></div></body></html>

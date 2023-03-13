@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["DeviceId","An open firmware device id."]]};

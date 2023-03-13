@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["AsyncRevocable","An object that can become inaccessible at runtime."],["AsyncRevocableGuard","A guard that allows access to a revocable object and keeps it alive."],["Revocable","An object that can become inaccessible at runtime."],["RevocableGuard","A guard that allows access to a revocable object and keeps it alive."]]};

@@ -1,0 +1,254 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/root/.rustup/toolchains/1.66.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/future/future.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>future.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../logo.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+</pre><pre class="rust"><code><span class="attribute">#![stable(feature = <span class="string">&quot;futures_api&quot;</span>, since = <span class="string">&quot;1.36.0&quot;</span>)]
+
+</span><span class="kw">use </span><span class="kw">crate</span>::marker::Unpin;
+<span class="kw">use </span><span class="kw">crate</span>::ops;
+<span class="kw">use </span><span class="kw">crate</span>::pin::Pin;
+<span class="kw">use </span><span class="kw">crate</span>::task::{Context, Poll};
+
+<span class="doccomment">/// A future represents an asynchronous computation obtained by use of [`async`].
+///
+/// A future is a value that might not have finished computing yet. This kind of
+/// &quot;asynchronous value&quot; makes it possible for a thread to continue doing useful
+/// work while it waits for the value to become available.
+///
+/// # The `poll` method
+///
+/// The core method of future, `poll`, *attempts* to resolve the future into a
+/// final value. This method does not block if the value is not ready. Instead,
+/// the current task is scheduled to be woken up when it&#39;s possible to make
+/// further progress by `poll`ing again. The `context` passed to the `poll`
+/// method can provide a [`Waker`], which is a handle for waking up the current
+/// task.
+///
+/// When using a future, you generally won&#39;t call `poll` directly, but instead
+/// `.await` the value.
+///
+/// [`async`]: ../../std/keyword.async.html
+/// [`Waker`]: crate::task::Waker
+</span><span class="attribute">#[doc(notable_trait)]
+#[must_use = <span class="string">&quot;futures do nothing unless you `.await` or poll them&quot;</span>]
+#[stable(feature = <span class="string">&quot;futures_api&quot;</span>, since = <span class="string">&quot;1.36.0&quot;</span>)]
+#[lang = <span class="string">&quot;future_trait&quot;</span>]
+#[rustc_on_unimplemented(
+    label = <span class="string">&quot;`{Self}` is not a future&quot;</span>,
+    message = <span class="string">&quot;`{Self}` is not a future&quot;</span>,
+    note = <span class="string">&quot;{Self} must be a future or must implement `IntoFuture` to be awaited&quot;
+</span>)]
+</span><span class="kw">pub trait </span>Future {
+    <span class="doccomment">/// The type of value produced on completion.
+    </span><span class="attribute">#[stable(feature = <span class="string">&quot;futures_api&quot;</span>, since = <span class="string">&quot;1.36.0&quot;</span>)]
+    </span><span class="kw">type </span>Output;
+
+    <span class="doccomment">/// Attempt to resolve the future to a final value, registering
+    /// the current task for wakeup if the value is not yet available.
+    ///
+    /// # Return value
+    ///
+    /// This function returns:
+    ///
+    /// - [`Poll::Pending`] if the future is not ready yet
+    /// - [`Poll::Ready(val)`] with the result `val` of this future if it
+    ///   finished successfully.
+    ///
+    /// Once a future has finished, clients should not `poll` it again.
+    ///
+    /// When a future is not ready yet, `poll` returns `Poll::Pending` and
+    /// stores a clone of the [`Waker`] copied from the current [`Context`].
+    /// This [`Waker`] is then woken once the future can make progress.
+    /// For example, a future waiting for a socket to become
+    /// readable would call `.clone()` on the [`Waker`] and store it.
+    /// When a signal arrives elsewhere indicating that the socket is readable,
+    /// [`Waker::wake`] is called and the socket future&#39;s task is awoken.
+    /// Once a task has been woken up, it should attempt to `poll` the future
+    /// again, which may or may not produce a final value.
+    ///
+    /// Note that on multiple calls to `poll`, only the [`Waker`] from the
+    /// [`Context`] passed to the most recent call should be scheduled to
+    /// receive a wakeup.
+    ///
+    /// # Runtime characteristics
+    ///
+    /// Futures alone are *inert*; they must be *actively* `poll`ed to make
+    /// progress, meaning that each time the current task is woken up, it should
+    /// actively re-`poll` pending futures that it still has an interest in.
+    ///
+    /// The `poll` function is not called repeatedly in a tight loop -- instead,
+    /// it should only be called when the future indicates that it is ready to
+    /// make progress (by calling `wake()`). If you&#39;re familiar with the
+    /// `poll(2)` or `select(2)` syscalls on Unix it&#39;s worth noting that futures
+    /// typically do *not* suffer the same problems of &quot;all wakeups must poll
+    /// all events&quot;; they are more like `epoll(4)`.
+    ///
+    /// An implementation of `poll` should strive to return quickly, and should
+    /// not block. Returning quickly prevents unnecessarily clogging up
+    /// threads or event loops. If it is known ahead of time that a call to
+    /// `poll` may end up taking awhile, the work should be offloaded to a
+    /// thread pool (or something similar) to ensure that `poll` can return
+    /// quickly.
+    ///
+    /// # Panics
+    ///
+    /// Once a future has completed (returned `Ready` from `poll`), calling its
+    /// `poll` method again may panic, block forever, or cause other kinds of
+    /// problems; the `Future` trait places no requirements on the effects of
+    /// such a call. However, as the `poll` method is not marked `unsafe`,
+    /// Rust&#39;s usual rules apply: calls must never cause undefined behavior
+    /// (memory corruption, incorrect use of `unsafe` functions, or the like),
+    /// regardless of the future&#39;s state.
+    ///
+    /// [`Poll::Ready(val)`]: Poll::Ready
+    /// [`Waker`]: crate::task::Waker
+    /// [`Waker::wake`]: crate::task::Waker::wake
+    </span><span class="attribute">#[lang = <span class="string">&quot;poll&quot;</span>]
+    #[stable(feature = <span class="string">&quot;futures_api&quot;</span>, since = <span class="string">&quot;1.36.0&quot;</span>)]
+    </span><span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt;;
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;futures_api&quot;</span>, since = <span class="string">&quot;1.36.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;F: <span class="question-mark">?</span>Sized + Future + Unpin&gt; Future <span class="kw">for </span><span class="kw-2">&amp;mut </span>F {
+    <span class="kw">type </span>Output = F::Output;
+
+    <span class="kw">fn </span>poll(<span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+        F::poll(Pin::new(<span class="kw-2">&amp;mut **</span><span class="self">self</span>), cx)
+    }
+}
+
+<span class="attribute">#[stable(feature = <span class="string">&quot;futures_api&quot;</span>, since = <span class="string">&quot;1.36.0&quot;</span>)]
+</span><span class="kw">impl</span>&lt;P&gt; Future <span class="kw">for </span>Pin&lt;P&gt;
+<span class="kw">where
+    </span>P: ops::DerefMut&lt;Target: Future&gt;,
+{
+    <span class="kw">type </span>Output = &lt;&lt;P <span class="kw">as </span>ops::Deref&gt;::Target <span class="kw">as </span>Future&gt;::Output;
+
+    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+        &lt;P::Target <span class="kw">as </span>Future&gt;::poll(<span class="self">self</span>.as_deref_mut(), cx)
+    }
+}
+</code></pre></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="core" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0 (69f9c33d7 2022-12-12)" ></div></body></html>
