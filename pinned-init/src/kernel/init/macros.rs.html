@@ -452,6 +452,38 @@
 <span id="447">447</span>
 <span id="448">448</span>
 <span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
 
 <span class="doccomment">//! This module provides the macros that actually implement the proc-macros `pin_data` and</span>
@@ -479,19 +511,8 @@
         <span class="kw">unsafe</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">impl_sig</span>)<span class="op">*</span> {
             <span class="comment">// Inherit all attributes and the type/ident tokens for the signature.</span>
             $(<span class="attribute">#[$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>)<span class="kw-2">*</span>]</span>)<span class="op">*</span>
-            <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">drop</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">self</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">st</span>) {
+            <span class="kw">fn</span> <span class="ident">drop</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">self</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">st</span>, <span class="kw">_</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::OnlyCallFromDrop</span>) {
                 $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>)<span class="op">*</span>
-            }
-
-            <span class="comment">// The `drop` function has to be `unsafe`, since calling it twice is UB. But the</span>
-            <span class="comment">// `drop` function the user declared is safe. We need to prevent users from doing</span>
-            <span class="comment">// `unsafe` operations inside the body. Hence we declare this function which should not</span>
-            <span class="comment">// be called (see the `PinnedDrop` trait) and which does nothing, we rely on type</span>
-            <span class="comment">// checking to catch `unsafe` operations without `unsafe` blocks.</span>
-            <span class="kw">fn</span> <span class="ident">__ensure_no_unsafe_op_in_drop</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">self</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">st</span>) {
-                <span class="kw">if</span> <span class="bool-val">false</span> {
-                    $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>)<span class="op">*</span>
-                }
             }
         }
     }
@@ -550,6 +571,44 @@
             <span class="comment">// Contains `yes` or `` to indicate if `#[pin]` was found on the current field.</span>
             @<span class="ident">is_pinned</span>(),
             <span class="comment">// The proc-macro argument, this should be `PinnedDrop` or ``.</span>
+            @<span class="ident">pinned_drop</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">pinned_drop</span>)<span class="question-mark">?</span>),
+        );
+    };
+    (<span class="ident">find_pinned_fields</span>:
+        @<span class="ident">struct_attrs</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">struct_attrs</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
+        @<span class="ident">vis</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">vis</span>:<span class="ident">vis</span>),
+        @<span class="ident">name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>),
+        @<span class="ident">impl_generics</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">impl_generics</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
+        @<span class="ident">ty_generics</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_generics</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
+        @<span class="kw">where</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">whr</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
+        <span class="comment">// We found a PhantomPinned field, this should generally be pinned!</span>
+        @<span class="ident">fields_munch</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span> : $($($(::)<span class="question-mark">?</span><span class="ident">core</span>::)<span class="question-mark">?</span><span class="ident">marker</span>::)<span class="question-mark">?</span><span class="ident">PhantomPinned</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
+        @<span class="ident">pinned</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">pinned</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
+        @<span class="ident">not_pinned</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">not_pinned</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
+        @<span class="ident">fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
+        @<span class="ident">accum</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">accum</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
+        <span class="comment">// This field is not pinned.</span>
+        @<span class="ident">is_pinned</span>(),
+        @<span class="ident">pinned_drop</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">pinned_drop</span>:<span class="ident">ident</span>)<span class="question-mark">?</span>),
+    ) =&gt; {
+        <span class="macro">::core::compile_error!</span>(<span class="macro">concat!</span>(
+            <span class="string">&quot;The field `&quot;</span>,
+            <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>),
+            <span class="string">&quot;` of type `PhantomPinned` only has an effect, if it has the `#[pin]` attribute.&quot;</span>,
+        ));
+        <span class="macro-nonterminal">$</span><span class="macro">crate::__pin_data!</span>(<span class="macro-nonterminal">find_pinned_fields</span>:
+            @<span class="ident">struct_attrs</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">struct_attrs</span>)<span class="kw-2">*</span>),
+            @<span class="ident">vis</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">vis</span>),
+            @<span class="ident">name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>),
+            @<span class="ident">impl_generics</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">impl_generics</span>)<span class="kw-2">*</span>),
+            @<span class="ident">ty_generics</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_generics</span>)<span class="kw-2">*</span>),
+            @<span class="kw">where</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">whr</span>)<span class="kw-2">*</span>),
+            @<span class="ident">fields_munch</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>),
+            @<span class="ident">pinned</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">pinned</span>)<span class="op">*</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">accum</span>)<span class="op">*</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>: <span class="ident">::core::marker::PhantomPinned</span>,),
+            @<span class="ident">not_pinned</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">not_pinned</span>)<span class="kw-2">*</span>),
+            @<span class="ident">fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="op">*</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">accum</span>)<span class="op">*</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>: <span class="ident">::core::marker::PhantomPinned</span>,),
+            @<span class="ident">accum</span>(),
+            @<span class="ident">is_pinned</span>(),
             @<span class="ident">pinned_drop</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">pinned_drop</span>)<span class="question-mark">?</span>),
         );
     };
@@ -847,8 +906,13 @@
         <span class="kw">where</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">whr</span>)<span class="op">*</span>
         {
             <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+                <span class="comment">// SAFETY: since this is a destructor, `self` will not move after this function</span>
+                <span class="comment">// terminates, since it is inaccessible.</span>
                 <span class="kw">let</span> <span class="ident">pinned</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">::core::pin::Pin::new_unchecked</span>(<span class="self">self</span>) };
-                <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::PinnedDrop::drop</span>(<span class="ident">pinned</span>) }
+                <span class="comment">// SAFETY: since this is a drop function, we can create this token to call the</span>
+                <span class="comment">// pinned destructor of this type.</span>
+                <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::OnlyCallFromDrop::create</span>() };
+                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::PinnedDrop::drop</span>(<span class="ident">pinned</span>, <span class="ident">token</span>);
             }
         }
     };

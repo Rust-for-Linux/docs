@@ -116,7 +116,39 @@
 <span id="111">111</span>
 <span id="112">112</span>
 <span id="113">113</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">proc_macro</span>::{<span class="ident">TokenStream</span>, <span class="ident">TokenTree</span>};
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+</pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
+
+<span class="kw">use</span> <span class="ident">proc_macro</span>::{<span class="ident">TokenStream</span>, <span class="ident">TokenTree</span>};
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">ToTokens</span> {
     <span class="kw">fn</span> <span class="ident">to_tokens</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">tokens</span>: <span class="kw-2">&amp;mut</span> <span class="ident">TokenStream</span>);
@@ -148,8 +180,16 @@
     }
 }
 
+<span class="doccomment">/// Converts tokens into [`proc_macro::TokenStream`] and performs variable interpolations with</span>
+<span class="doccomment">/// the given span.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This is a similar to the</span>
+<span class="doccomment">/// [`quote_spanned!`](https://docs.rs/quote/latest/quote/macro.quote_spanned.html) macro from the</span>
+<span class="doccomment">/// `quote` crate but provides only just enough functionality needed by the current `macros` crate.</span>
 <span class="macro">macro_rules!</span> <span class="ident">quote_spanned</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span>:<span class="ident">expr</span> =&gt; $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {{
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span>:<span class="ident">expr</span> =&gt; $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::vec_init_then_push</span>)]</span>
+    {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tokens</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
         <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span>;
         <span class="macro">quote_spanned!</span>(@<span class="ident">proc</span> <span class="ident">tokens</span> <span class="ident">span</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>);
@@ -198,24 +238,36 @@
         <span class="macro">quote_spanned!</span>(@<span class="ident">proc</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>);
     };
     (@<span class="ident">proc</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>:<span class="ident">ident</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span>:<span class="ident">ident</span> :: $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {
-        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>.<span class="ident">push</span>(<span class="ident">proc_macro::TokenTree::Punct</span>(<span class="ident">proc_macro::Punct::new</span>(<span class="string">&#39;:&#39;</span>, <span class="ident">proc_macro::Spacing::Joint</span>)));
-        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>.<span class="ident">push</span>(<span class="ident">proc_macro::TokenTree::Punct</span>(<span class="ident">proc_macro::Punct::new</span>(<span class="string">&#39;:&#39;</span>, <span class="ident">proc_macro::Spacing::Alone</span>)));
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>.<span class="ident">push</span>(
+            <span class="ident">proc_macro::TokenTree::Punct</span>(<span class="ident">proc_macro::Punct::new</span>(<span class="string">&#39;:&#39;</span>, <span class="ident">proc_macro::Spacing::Joint</span>))
+        );
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>.<span class="ident">push</span>(
+            <span class="ident">proc_macro::TokenTree::Punct</span>(<span class="ident">proc_macro::Punct::new</span>(<span class="string">&#39;:&#39;</span>, <span class="ident">proc_macro::Spacing::Alone</span>))
+        );
         <span class="macro">quote_spanned!</span>(@<span class="ident">proc</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>);
     };
     (@<span class="ident">proc</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>:<span class="ident">ident</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span>:<span class="ident">ident</span> : $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {
-        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>.<span class="ident">push</span>(<span class="ident">proc_macro::TokenTree::Punct</span>(<span class="ident">proc_macro::Punct::new</span>(<span class="string">&#39;:&#39;</span>, <span class="ident">proc_macro::Spacing::Alone</span>)));
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>.<span class="ident">push</span>(
+            <span class="ident">proc_macro::TokenTree::Punct</span>(<span class="ident">proc_macro::Punct::new</span>(<span class="string">&#39;:&#39;</span>, <span class="ident">proc_macro::Spacing::Alone</span>))
+        );
         <span class="macro">quote_spanned!</span>(@<span class="ident">proc</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>);
     };
     (@<span class="ident">proc</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>:<span class="ident">ident</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span>:<span class="ident">ident</span> , $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {
-        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>.<span class="ident">push</span>(<span class="ident">proc_macro::TokenTree::Punct</span>(<span class="ident">proc_macro::Punct::new</span>(<span class="string">&#39;,&#39;</span>, <span class="ident">proc_macro::Spacing::Alone</span>)));
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>.<span class="ident">push</span>(
+            <span class="ident">proc_macro::TokenTree::Punct</span>(<span class="ident">proc_macro::Punct::new</span>(<span class="string">&#39;,&#39;</span>, <span class="ident">proc_macro::Spacing::Alone</span>))
+        );
         <span class="macro">quote_spanned!</span>(@<span class="ident">proc</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>);
     };
     (@<span class="ident">proc</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>:<span class="ident">ident</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span>:<span class="ident">ident</span> @ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {
-        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>.<span class="ident">push</span>(<span class="ident">proc_macro::TokenTree::Punct</span>(<span class="ident">proc_macro::Punct::new</span>(<span class="string">&#39;@&#39;</span>, <span class="ident">proc_macro::Spacing::Alone</span>)));
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>.<span class="ident">push</span>(
+            <span class="ident">proc_macro::TokenTree::Punct</span>(<span class="ident">proc_macro::Punct::new</span>(<span class="string">&#39;@&#39;</span>, <span class="ident">proc_macro::Spacing::Alone</span>))
+        );
         <span class="macro">quote_spanned!</span>(@<span class="ident">proc</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>);
     };
     (@<span class="ident">proc</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>:<span class="ident">ident</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span>:<span class="ident">ident</span> <span class="op">!</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {
-        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>.<span class="ident">push</span>(<span class="ident">proc_macro::TokenTree::Punct</span>(<span class="ident">proc_macro::Punct::new</span>(<span class="string">&#39;!&#39;</span>, <span class="ident">proc_macro::Spacing::Alone</span>)));
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>.<span class="ident">push</span>(
+            <span class="ident">proc_macro::TokenTree::Punct</span>(<span class="ident">proc_macro::Punct::new</span>(<span class="string">&#39;!&#39;</span>, <span class="ident">proc_macro::Spacing::Alone</span>))
+        );
         <span class="macro">quote_spanned!</span>(@<span class="ident">proc</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>);
     };
     (@<span class="ident">proc</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>:<span class="ident">ident</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span>:<span class="ident">ident</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">id</span>:<span class="ident">ident</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {
@@ -224,6 +276,14 @@
     };
 }
 
+<span class="doccomment">/// Converts tokens into [`proc_macro::TokenStream`] and performs variable interpolations with</span>
+<span class="doccomment">/// mixed site span ([`Span::mixed_site()`]).</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This is a similar to the [`quote!`](https://docs.rs/quote/latest/quote/macro.quote.html) macro</span>
+<span class="doccomment">/// from the `quote` crate but provides only just enough functionality needed by the current</span>
+<span class="doccomment">/// `macros` crate.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`Span::mixed_site()`]: https://doc.rust-lang.org/proc_macro/struct.Span.html#method.mixed_site</span>
 <span class="macro">macro_rules!</span> <span class="ident">quote</span> {
     ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {
         <span class="macro">quote_spanned!</span>(<span class="ident">proc_macro::Span::mixed_site</span>() =&gt; $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>)
