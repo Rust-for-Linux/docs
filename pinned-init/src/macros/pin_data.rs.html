@@ -88,7 +88,7 @@
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">pin_data</span>(<span class="ident">args</span>: <span class="ident">TokenStream</span>, <span class="ident">input</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
     <span class="comment">// This proc-macro only does some pre-parsing and then delegates the actual parsing to</span>
-    <span class="comment">// `kernel::_pin_data!`.</span>
+    <span class="comment">// `kernel::__pin_data!`.</span>
     <span class="comment">//</span>
     <span class="comment">// In here we only collect the generics, since parsing them in declarative macros is very</span>
     <span class="comment">// elaborate. We also do not need to analyse their structure, we only need to collect them.</span>
@@ -102,7 +102,7 @@
     <span class="comment">// The current level of `&lt;`.</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">nesting</span> <span class="op">=</span> <span class="number">0</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">toks</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">into_iter</span>();
-    <span class="comment">// if we are at the beginning of a generic parameter</span>
+    <span class="comment">// If we are at the beginning of a generic parameter.</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">at_start</span> <span class="op">=</span> <span class="bool-val">true</span>;
     <span class="kw">for</span> <span class="ident">tt</span> <span class="kw">in</span> <span class="kw-2">&amp;mut</span> <span class="ident">toks</span> {
         <span class="kw">match</span> <span class="ident">tt</span>.<span class="ident">clone</span>() {

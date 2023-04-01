@@ -9,7 +9,7 @@
 <a href="https://crates.io/crates/pin-project-lite">pin-project-lite</a>.
 Place this macro on a struct definition and then <code>#[pin]</code> in front of the attributes of each
 field you want to structurally pin.</p>
-<p>This macro enables the use of the <a href="../kernel/macro.pin_init.html"><code>pin_init!</code></a> macro. When pinned-initializing a <code>struct</code>,
+<p>This macro enables the use of the <a href="../kernel/macro.pin_init.html"><code>pin_init!</code></a> macro. When pin-initializing a <code>struct</code>,
 then <code>#[pin]</code> directs the type of intializer that is required.</p>
 <p>If your <code>struct</code> implements <code>Drop</code>, then you need to add <code>PinnedDrop</code> as arguments to this
 macro, and change your <code>Drop</code> implementation to <code>PinnedDrop</code> annotated with

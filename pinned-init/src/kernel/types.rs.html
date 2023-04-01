@@ -261,10 +261,58 @@
 <span id="256">256</span>
 <span id="257">257</span>
 <span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: GPL-2.0</span>
 
 <span class="doccomment">//! Kernel types.</span>
 
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::init</span>::{<span class="self">self</span>, <span class="ident">PinInit</span>};
 <span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
 <span class="kw">use</span> <span class="ident">core</span>::{
     <span class="ident">cell::UnsafeCell</span>,
@@ -509,6 +557,52 @@
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">raw_get</span>(<span class="ident">this</span>: <span class="kw-2">*const</span> <span class="self">Self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">T</span> {
         <span class="ident">UnsafeCell::raw_get</span>(<span class="ident">this</span>.<span class="ident">cast</span>::<span class="op">&lt;</span><span class="ident">UnsafeCell</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>())
     }
+}
+
+<span class="macro">macro_rules!</span> <span class="ident">opaque_init_funcs</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">abi</span>:<span class="ident">literal</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg_name</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg_typ</span>:<span class="ident">ident</span>),<span class="kw-2">*</span>);)<span class="kw-2">*</span>) =&gt; {
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Opaque</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+            $(
+                <span class="doccomment">/// Create an initializer using the given initializer function.</span>
+                <span class="doccomment">///</span>
+                <span class="doccomment">/// # Safety</span>
+                <span class="doccomment">///</span>
+                <span class="doccomment">/// The given function **must** under all circumstances initialize the memory</span>
+                <span class="doccomment">/// location to a valid `T`. If it fails to do so it results in UB.</span>
+                <span class="doccomment">///</span>
+                <span class="doccomment">/// If any parameters are given, those need to be valid for the function. Valid</span>
+                <span class="doccomment">/// means that calling the function with those parameters complies with the above</span>
+                <span class="doccomment">/// requirement **and** every other requirement on the function itself.</span>
+                <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg_typ</span>),<span class="kw-2">*</span><span class="op">&gt;</span>(
+                    <span class="ident">init_func</span>: <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">abi</span> <span class="kw">fn</span>(<span class="kw-2">*mut</span> <span class="ident">T</span> $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg_typ</span>)<span class="kw-2">*</span>),
+                    $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg_name</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg_typ</span>,)<span class="op">*</span>
+                ) -&gt; <span class="kw">impl</span> <span class="ident">PinInit</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+                    <span class="comment">// SAFETY: The safety contract of this function ensures that `init_func` fully</span>
+                    <span class="comment">// initializes `slot`.</span>
+                    <span class="kw">unsafe</span> {
+                        <span class="ident">init::pin_init_from_closure</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">slot</span><span class="op">|</span> {
+                            <span class="ident">init_func</span>(<span class="ident"><span class="self">Self</span>::raw_get</span>(<span class="ident">slot</span>) $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg_name</span>)<span class="kw-2">*</span>);
+                            <span class="prelude-val">Ok</span>(())
+                        })
+                    }
+                }
+            )<span class="op">*</span>
+        }
+    }
+}
+
+<span class="macro">opaque_init_funcs!</span> {
+    <span class="string">&quot;C&quot;</span> <span class="ident">ffi_init</span>();
+    <span class="string">&quot;C&quot;</span> <span class="ident">ffi_init1</span>(<span class="ident">arg1</span>: <span class="ident">A1</span>);
+    <span class="string">&quot;C&quot;</span> <span class="ident">ffi_init2</span>(<span class="ident">arg1</span>: <span class="ident">A1</span>, <span class="ident">arg2</span>: <span class="ident">A2</span>);
+    <span class="string">&quot;C&quot;</span> <span class="ident">ffi_init3</span>(<span class="ident">arg1</span>: <span class="ident">A1</span>, <span class="ident">arg2</span>: <span class="ident">A2</span>, <span class="ident">arg3</span>: <span class="ident">A3</span>);
+    <span class="string">&quot;C&quot;</span> <span class="ident">ffi_init4</span>(<span class="ident">arg1</span>: <span class="ident">A1</span>, <span class="ident">arg2</span>: <span class="ident">A2</span>, <span class="ident">arg3</span>: <span class="ident">A3</span>, <span class="ident">arg4</span>: <span class="ident">A4</span>);
+
+    <span class="string">&quot;Rust&quot;</span> <span class="ident">manual_init</span>();
+    <span class="string">&quot;Rust&quot;</span> <span class="ident">manual_init1</span>(<span class="ident">arg1</span>: <span class="ident">A1</span>);
+    <span class="string">&quot;Rust&quot;</span> <span class="ident">manual_init2</span>(<span class="ident">arg1</span>: <span class="ident">A1</span>, <span class="ident">arg2</span>: <span class="ident">A2</span>);
+    <span class="string">&quot;Rust&quot;</span> <span class="ident">manual_init3</span>(<span class="ident">arg1</span>: <span class="ident">A1</span>, <span class="ident">arg2</span>: <span class="ident">A2</span>, <span class="ident">arg3</span>: <span class="ident">A3</span>);
+    <span class="string">&quot;Rust&quot;</span> <span class="ident">manual_init4</span>(<span class="ident">arg1</span>: <span class="ident">A1</span>, <span class="ident">arg2</span>: <span class="ident">A2</span>, <span class="ident">arg3</span>: <span class="ident">A3</span>, <span class="ident">arg4</span>: <span class="ident">A4</span>);
 }
 
 <span class="doccomment">/// A sum type that always holds either a value of type `L` or `R`.</span>

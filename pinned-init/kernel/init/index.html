@@ -3,8 +3,8 @@
         </a><h2 class="location"></h2>
     </nav>
     <nav class="sidebar"><a class="sidebar-logo" href="../../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../../logo.svg" alt="logo"></div>
-        </a><h2 class="location"><a href="#">Module init</a></h2><div class="sidebar-elems"><section><div class="block"><ul><li><a href="#modules">Modules</a></li><li><a href="#traits">Traits</a></li><li><a href="#functions">Functions</a></li></ul></div></section><div id="sidebar-vars" data-name="init" data-ty="mod" data-relpath="./"></div><script defer src="./sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
-    <h1 class="fqn"><span class="in-band">Module <a href="../index.html">kernel</a>::<wbr><a class="mod" href="#">init</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../../src/kernel/init.rs.html#3-1429">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>API to safely and fallibly initialize pinned <code>struct</code>s using in-place constructors.</p>
+        </a><h2 class="location"><a href="#">Module init</a></h2><div class="sidebar-elems"><section><div class="block"><ul><li><a href="#traits">Traits</a></li><li><a href="#functions">Functions</a></li></ul></div></section><div id="sidebar-vars" data-name="init" data-ty="mod" data-relpath="./"></div><script defer src="./sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Module <a href="../index.html">kernel</a>::<wbr><a class="mod" href="#">init</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../../src/kernel/init.rs.html#3-1433">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>API to safely and fallibly initialize pinned <code>struct</code>s using in-place constructors.</p>
 <p>It also allows in-place initialization of big <code>struct</code>s that would otherwise produce a stack
 overflow.</p>
 <p>Most <code>struct</code>s from the <a href="../sync/index.html"><code>sync</code></a> module need to be pinned, because they contain self-referential
@@ -23,7 +23,7 @@ overflow.</p>
 <li>using the unsafe function <a href="fn.pin_init_from_closure.html" title="pin_init_from_closure()"><code>pin_init_from_closure()</code></a> to manually create an initializer.</li>
 </ul>
 <p>Aside from pinned initialization, this API also supports in-place construction without pinning,
-the marcos/types/functions are generally named like the pinned variants without the <code>pin</code>
+the macros/types/functions are generally named like the pinned variants without the <code>pin</code>
 prefix.</p>
 <h2 id="examples"><a href="#examples">Examples</a></h2><h3 id="using-the-pin_init-macro"><a href="#using-the-pin_init-macro">Using the <code>pin_init!</code> macro</a></h3>
 <p>If you want to use <a href="trait.PinInit.html" title="PinInit"><code>PinInit</code></a>, then you will have to annotate your <code>struct</code> with
@@ -86,13 +86,16 @@ you need to take care to clean up anything if your initialization fails mid-way,
 <code>slot</code> gets called.</li>
 </ul>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">kernel::init</span>::{<span class="ident">PinInit</span>, <span class="self">self</span>};
-<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">ptr::addr_of_mut</span>, <span class="ident">marker::PhantomPinned</span>};
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">kernel</span>::{<span class="ident">prelude</span>::<span class="kw-2">*</span>, <span class="ident">init</span>};
+<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">ptr::addr_of_mut</span>, <span class="ident">marker::PhantomPinned</span>, <span class="ident">pin::Pin</span>};
 <span class="doccomment">/// # Invariants</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// `foo` is always initialized</span>
+<span class="attribute">#[<span class="ident">pin_data</span>(<span class="ident">PinnedDrop</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RawFoo</span> {
+    <span class="attribute">#[<span class="ident">pin</span>]</span>
     <span class="ident">foo</span>: <span class="ident">Opaque</span><span class="op">&lt;</span><span class="ident">bindings::foo</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">pin</span>]</span>
     <span class="ident">_p</span>: <span class="ident">PhantomPinned</span>,
 }
 
@@ -125,29 +128,27 @@ you need to take care to clean up anything if your initialization fails mid-way,
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">RawFoo</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+<span class="attribute">#[<span class="ident">pinned_drop</span>]</span>
+<span class="kw">impl</span> <span class="ident">PinnedDrop</span> <span class="kw">for</span> <span class="ident">RawFoo</span> {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="self">Self</span><span class="op">&gt;</span>) {
         <span class="comment">// SAFETY: Since `foo` is initialized, destroying is safe.</span>
         <span class="kw">unsafe</span> { <span class="ident">bindings::destroy_foo</span>(<span class="self">self</span>.<span class="ident">foo</span>.<span class="ident">get</span>()) };
     }
 }</code></pre></div>
 <p>For the special case where initializing a field is a single FFI-function call that cannot fail,
-there exist helper functions in <a href="common/index.html" title="kernel::init::common"><code>kernel::init::common</code></a>. These functions initialize a single
+there exist helper functions <a href="../types/struct.Opaque.html#method.ffi_init"><code>Opaque::ffi_init</code></a>. These functions initialize a single
 <a href="../types/struct.Opaque.html"><code>Opaque</code></a> field by just delegating to the FFI-function. You can use these in combination with
 <a href="../macro.pin_init.html" title="pin_init!"><code>pin_init!</code></a>.</p>
 <p>For more information on how to use <a href="fn.pin_init_from_closure.html" title="pin_init_from_closure()"><code>pin_init_from_closure()</code></a>, take a look at the uses inside
 the <code>kernel</code> crate. The <a href="../sync/index.html"><code>sync</code></a> module is a good starting point.</p>
-</div></details><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2>
-<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="common/index.html" title="kernel::init::common mod">common</a></div><div class="item-right docblock-short"><p>Module containing common kernel initializer functions.</p>
-</div></div></div><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2>
+</div></details><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2>
 <div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.InPlaceInit.html" title="kernel::init::InPlaceInit trait">InPlaceInit</a></div><div class="item-right docblock-short"><p>Smart pointer that can initialize memory in-place.</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Init.html" title="kernel::init::Init trait">Init</a></div><div class="item-right docblock-short"><p>An initializer for <code>T</code>.</p>
-</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.PinInit.html" title="kernel::init::PinInit trait">PinInit</a></div><div class="item-right docblock-short"><p>A pinned initializer for <code>T</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.PinInit.html" title="kernel::init::PinInit trait">PinInit</a></div><div class="item-right docblock-short"><p>A pin-initializer for the type <code>T</code>.</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.PinnedDrop.html" title="kernel::init::PinnedDrop trait">PinnedDrop</a></div><div class="item-right docblock-short"><p>Trait facilitating pinned destruction.</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Zeroable.html" title="kernel::init::Zeroable trait">Zeroable</a></div><div class="item-right docblock-short"><p>Marker trait for types that can be initialized by writing just zeroes.</p>
 </div></div></div><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2>
-<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.from_value.html" title="kernel::init::from_value fn">from_value</a></div><div class="item-right docblock-short"><p>Convert a value into an initializer.</p>
-</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.init_from_closure.html" title="kernel::init::init_from_closure fn">init_from_closure</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Creates a new <a href="trait.Init.html" title="Init&lt;T, E&gt;"><code>Init&lt;T, E&gt;</code></a> from the given closure.</p>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.init_from_closure.html" title="kernel::init::init_from_closure fn">init_from_closure</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Creates a new <a href="trait.Init.html" title="Init&lt;T, E&gt;"><code>Init&lt;T, E&gt;</code></a> from the given closure.</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.pin_init_from_closure.html" title="kernel::init::pin_init_from_closure fn">pin_init_from_closure</a><a title="unsafe function" href="#"><sup>⚠</sup></a></div><div class="item-right docblock-short"><p>Creates a new <a href="trait.PinInit.html" title="PinInit&lt;T, E&gt;"><code>PinInit&lt;T, E&gt;</code></a> from the given closure.</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.uninit.html" title="kernel::init::uninit fn">uninit</a></div><div class="item-right docblock-short"><p>An initializer that leaves the memory uninitialized.</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.zeroed.html" title="kernel::init::zeroed fn">zeroed</a></div><div class="item-right docblock-short"><p>Create a new zeroed T.</p>

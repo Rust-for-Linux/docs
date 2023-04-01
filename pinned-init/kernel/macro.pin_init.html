@@ -4,7 +4,7 @@
     </nav>
     <nav class="sidebar"><a class="sidebar-logo" href="../kernel/index.html"><div class="logo-container"><img class="rust-logo" src="../logo.svg" alt="logo"></div>
         </a><div class="sidebar-elems"><h2 class="location"><a href="index.html">In kernel</a></h2><div id="sidebar-vars" data-name="pin_init" data-ty="macro" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../kernel/index.html"><img class="rust-logo" src="../logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
-    <h1 class="fqn"><span class="in-band">Macro <a href="index.html">kernel</a>::<wbr><a class="macro" href="#">pin_init</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/kernel/init.rs.html#450-462">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><div class="docblock item-decl"><div class="example-wrap"><pre class="rust macro"><code><span class="macro">macro_rules!</span> <span class="ident">pin_init</span> {
+    <h1 class="fqn"><span class="in-band">Macro <a href="index.html">kernel</a>::<wbr><a class="macro" href="#">pin_init</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/kernel/init.rs.html#542-553">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><div class="docblock item-decl"><div class="example-wrap"><pre class="rust macro"><code><span class="macro">macro_rules!</span> <span class="ident">pin_init</span> {
     ($(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>:<span class="ident">ident</span> <span class="kw">in</span>)<span class="question-mark">?</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span> $(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>:<span class="ident">ty</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span><span class="op">&gt;</span>)<span class="question-mark">?</span> {
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>:<span class="ident">tt</span>)<span class="op">*</span>
     }) =&gt; { ... };
@@ -34,6 +34,10 @@
     },
 });</code></pre></div>
 <p>Arbitrary Rust expressions can be used to set the value of a variable.</p>
+<p>The fields are initialized in the order that they appear in the initializer. So it is possible
+to read already initialized fields using raw pointers.</p>
+<p>IMPORTANT: You are not allowed to create references to fields of the struct inside of the
+initializer.</p>
 <h2 id="init-functions"><a href="#init-functions">Init-functions</a></h2>
 <p>When working with this API it is often desired to let others construct your types without
 giving access to all fields. This is where you would normally write a plain function <code>new</code>
@@ -41,8 +45,7 @@ that would return a new instance of your type. With this API that is also possib
 However, there are a few extra things to keep in mind.</p>
 <p>To create an initializer function, simply declare it like this:</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>
-<span class="kw">impl</span> <span class="ident">Foo</span> {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">impl</span> <span class="ident">Foo</span> {
     <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="kw">impl</span> <span class="ident">PinInit</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="macro">pin_init!</span>(<span class="self">Self</span> {
             <span class="ident">a</span>: <span class="number">42</span>,
@@ -90,6 +93,7 @@ pointer named <code>this</code> inside of the initializer.</li>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#[<span class="ident">pin_data</span>]</span>
 <span class="kw">struct</span> <span class="ident">Buf</span> {
+    <span class="comment">// `ptr` points into `buf`.</span>
     <span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>,
     <span class="ident">buf</span>: [<span class="ident">u8</span>; <span class="number">64</span>],
     <span class="attribute">#[<span class="ident">pin</span>]</span>

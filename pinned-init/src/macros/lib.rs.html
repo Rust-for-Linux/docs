@@ -431,7 +431,7 @@
 <span class="doccomment">/// Place this macro on a struct definition and then `#[pin]` in front of the attributes of each</span>
 <span class="doccomment">/// field you want to structurally pin.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// This macro enables the use of the [`pin_init!`] macro. When pinned-initializing a `struct`,</span>
+<span class="doccomment">/// This macro enables the use of the [`pin_init!`] macro. When pin-initializing a `struct`,</span>
 <span class="doccomment">/// then `#[pin]` directs the type of intializer that is required.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// If your `struct` implements `Drop`, then you need to add `PinnedDrop` as arguments to this</span>
@@ -467,7 +467,7 @@
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`pin_init!`]: ../kernel/macro.pin_init.html</span>
-<span class="comment">//  ^ cannot use direct link, since `kernel` is not a dependency of `macros`</span>
+<span class="comment">//  ^ cannot use direct link, since `kernel` is not a dependency of `macros`.</span>
 <span class="attribute">#[<span class="ident">proc_macro_attribute</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pin_data</span>(<span class="ident">inner</span>: <span class="ident">TokenStream</span>, <span class="ident">item</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
     <span class="ident">pin_data::pin_data</span>(<span class="ident">inner</span>, <span class="ident">item</span>)

@@ -1432,6 +1432,10 @@
 <span id="1427">1427</span>
 <span id="1428">1428</span>
 <span id="1429">1429</span>
+<span id="1430">1430</span>
+<span id="1431">1431</span>
+<span id="1432">1432</span>
+<span id="1433">1433</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
 
 <span class="doccomment">//! API to safely and fallibly initialize pinned `struct`s using in-place constructors.</span>
@@ -1455,7 +1459,7 @@
 <span class="doccomment">//! - using the unsafe function [`pin_init_from_closure()`] to manually create an initializer.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Aside from pinned initialization, this API also supports in-place construction without pinning,</span>
-<span class="doccomment">//! the marcos/types/functions are generally named like the pinned variants without the `pin`</span>
+<span class="doccomment">//! the macros/types/functions are generally named like the pinned variants without the `pin`</span>
 <span class="doccomment">//! prefix.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Examples</span>
@@ -1554,8 +1558,8 @@
 <span class="doccomment">//!   `slot` gets called.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```rust</span>
-<span class="doccomment">//! use kernel::init::{PinInit, self};</span>
-<span class="doccomment">//! use core::{ptr::addr_of_mut, marker::PhantomPinned};</span>
+<span class="doccomment">//! use kernel::{prelude::*, init};</span>
+<span class="doccomment">//! use core::{ptr::addr_of_mut, marker::PhantomPinned, pin::Pin};</span>
 <span class="doccomment">//! # mod bindings {</span>
 <span class="doccomment">//! #     pub struct foo;</span>
 <span class="doccomment">//! #     pub unsafe fn init_foo(_ptr: *mut foo) {}</span>
@@ -1565,8 +1569,11 @@
 <span class="doccomment">//! /// # Invariants</span>
 <span class="doccomment">//! ///</span>
 <span class="doccomment">//! /// `foo` is always initialized</span>
+<span class="doccomment">//! #[pin_data(PinnedDrop)]</span>
 <span class="doccomment">//! pub struct RawFoo {</span>
+<span class="doccomment">//!     #[pin]</span>
 <span class="doccomment">//!     foo: Opaque&lt;bindings::foo&gt;,</span>
+<span class="doccomment">//!     #[pin]</span>
 <span class="doccomment">//!     _p: PhantomPinned,</span>
 <span class="doccomment">//! }</span>
 <span class="doccomment">//!</span>
@@ -1599,8 +1606,9 @@
 <span class="doccomment">//!     }</span>
 <span class="doccomment">//! }</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! impl Drop for RawFoo {</span>
-<span class="doccomment">//!     fn drop(&amp;mut self) {</span>
+<span class="doccomment">//! #[pinned_drop]</span>
+<span class="doccomment">//! impl PinnedDrop for RawFoo {</span>
+<span class="doccomment">//!     fn drop(self: Pin&lt;&amp;mut Self&gt;) {</span>
 <span class="doccomment">//!         // SAFETY: Since `foo` is initialized, destroying is safe.</span>
 <span class="doccomment">//!         unsafe { bindings::destroy_foo(self.foo.get()) };</span>
 <span class="doccomment">//!     }</span>
@@ -1608,7 +1616,7 @@
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! For the special case where initializing a field is a single FFI-function call that cannot fail,</span>
-<span class="doccomment">//! there exist helper functions in [`kernel::init::common`]. These functions initialize a single</span>
+<span class="doccomment">//! there exist helper functions [`Opaque::ffi_init`]. These functions initialize a single</span>
 <span class="doccomment">//! [`Opaque`] field by just delegating to the FFI-function. You can use these in combination with</span>
 <span class="doccomment">//! [`pin_init!`].</span>
 <span class="doccomment">//!</span>
@@ -1625,6 +1633,7 @@
 <span class="doccomment">//! [`impl PinInit&lt;T, E&gt;`]: PinInit</span>
 <span class="doccomment">//! [`impl Init&lt;T, E&gt;`]: Init</span>
 <span class="doccomment">//! [`Opaque`]: kernel::types::Opaque</span>
+<span class="doccomment">//! [`Opaque::ffi_init`]: kernel::types::Opaque::ffi_init</span>
 <span class="doccomment">//! [`pin_data`]: ::macros::pin_data</span>
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -1633,15 +1642,18 @@
 };
 <span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
 <span class="kw">use</span> <span class="ident">core</span>::{
+    <span class="ident">alloc::AllocError</span>,
     <span class="ident">cell::Cell</span>,
     <span class="ident">convert::Infallible</span>,
-    <span class="ident">marker</span>::{<span class="ident">PhantomData</span>, <span class="ident">Unpin</span>},
+    <span class="ident">marker::PhantomData</span>,
     <span class="ident">mem::MaybeUninit</span>,
+    <span class="ident">num</span>::<span class="kw-2">*</span>,
     <span class="ident">pin::Pin</span>,
-    <span class="ident">ptr</span>,
+    <span class="ident">ptr</span>::{<span class="self">self</span>, <span class="ident">NonNull</span>},
 };
 
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">common</span>;
+<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">__internal</span>;
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">macros</span>;
 
@@ -1666,37 +1678,113 @@
 <span class="doccomment">///     x: u32,</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// let a = new_mutex!(42, &quot;Foo::a&quot;);</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// stack_pin_init!(let foo =? pin_init!(Foo {</span>
-<span class="doccomment">///     a,</span>
+<span class="doccomment">/// stack_pin_init!(let foo = pin_init!(Foo {</span>
+<span class="doccomment">///     a &lt;- new_mutex!(42),</span>
 <span class="doccomment">///     b: Bar {</span>
 <span class="doccomment">///         x: 64,</span>
 <span class="doccomment">///     },</span>
 <span class="doccomment">/// }));</span>
 <span class="doccomment">/// let foo: Pin&lt;&amp;mut Foo&gt; = foo;</span>
-<span class="doccomment">/// # Ok::&lt;(), core::convert::Infallible&gt;(())</span>
+<span class="doccomment">/// pr_info!(&quot;a: {}&quot;, &amp;*foo.a.lock());</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Syntax</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// A normal `let` binding with optional type annotation. The expression is expected to implement</span>
-<span class="doccomment">/// [`PinInit`]. Additionally a `?` can be put after the `=`, this will assign `Pin&lt;&amp;mut T&gt;` to the</span>
-<span class="doccomment">/// variable instead of `Result&lt;Pin&lt;&amp;mut T&gt;, E&gt;`.</span>
+<span class="doccomment">/// [`PinInit`]/[`Init`] with the error type [`Infallible`]. If you want to use a different error</span>
+<span class="doccomment">/// type, then use [`stack_try_pin_init!`].</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">stack_pin_init</span> {
     (<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ty</span>)<span class="question-mark">?</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>) =&gt; {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::StackInit</span>$(::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span><span class="op">&gt;</span>)<span class="question-mark">?</span><span class="ident">::uninit</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span> <span class="op">=</span> <span class="macro">::core::pin::pin!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::StackInit</span>$(::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span><span class="op">&gt;</span>)<span class="question-mark">?</span><span class="ident">::uninit</span>());
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span> <span class="op">=</span> {
             <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>;
-            <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::StackInit::init</span>(<span class="kw-2">&amp;mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span>, <span class="ident">val</span>) }
+            <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::StackInit::init</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span>, <span class="ident">val</span>) {
+                <span class="prelude-val">Ok</span>(<span class="ident">res</span>) =&gt; <span class="ident">res</span>,
+                <span class="prelude-val">Err</span>(<span class="ident">x</span>) =&gt; {
+                    <span class="kw">let</span> <span class="ident">x</span>: <span class="ident">::core::convert::Infallible</span> <span class="op">=</span> <span class="ident">x</span>;
+                    <span class="kw">match</span> <span class="ident">x</span> {}
+                }
+            }
+        };
+    };
+}
+
+<span class="doccomment">/// Initialize and pin a type directly on the stack.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust</span>
+<span class="doccomment">/// # #![allow(clippy::disallowed_names, clippy::new_ret_no_self)]</span>
+<span class="doccomment">/// # use kernel::{init, pin_init, stack_try_pin_init, init::*, sync::Mutex, new_mutex};</span>
+<span class="doccomment">/// # use macros::pin_data;</span>
+<span class="doccomment">/// # use core::{alloc::AllocError, pin::Pin};</span>
+<span class="doccomment">/// #[pin_data]</span>
+<span class="doccomment">/// struct Foo {</span>
+<span class="doccomment">///     #[pin]</span>
+<span class="doccomment">///     a: Mutex&lt;usize&gt;,</span>
+<span class="doccomment">///     b: Box&lt;Bar&gt;,</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// struct Bar {</span>
+<span class="doccomment">///     x: u32,</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// stack_try_pin_init!(let foo: Result&lt;Pin&lt;&amp;mut Foo&gt;, AllocError&gt; = pin_init!(Foo {</span>
+<span class="doccomment">///     a &lt;- new_mutex!(42),</span>
+<span class="doccomment">///     b: Box::try_new(Bar {</span>
+<span class="doccomment">///         x: 64,</span>
+<span class="doccomment">///     })?,</span>
+<span class="doccomment">/// }));</span>
+<span class="doccomment">/// let foo = foo.unwrap();</span>
+<span class="doccomment">/// pr_info!(&quot;a: {}&quot;, &amp;*foo.a.lock());</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```rust</span>
+<span class="doccomment">/// # #![allow(clippy::disallowed_names, clippy::new_ret_no_self)]</span>
+<span class="doccomment">/// # use kernel::{init, pin_init, stack_try_pin_init, init::*, sync::Mutex, new_mutex};</span>
+<span class="doccomment">/// # use macros::pin_data;</span>
+<span class="doccomment">/// # use core::{alloc::AllocError, pin::Pin};</span>
+<span class="doccomment">/// #[pin_data]</span>
+<span class="doccomment">/// struct Foo {</span>
+<span class="doccomment">///     #[pin]</span>
+<span class="doccomment">///     a: Mutex&lt;usize&gt;,</span>
+<span class="doccomment">///     b: Box&lt;Bar&gt;,</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// struct Bar {</span>
+<span class="doccomment">///     x: u32,</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// stack_try_pin_init!(let foo: Pin&lt;&amp;mut Foo&gt; =? pin_init!(Foo {</span>
+<span class="doccomment">///     a &lt;- new_mutex!(42),</span>
+<span class="doccomment">///     b: Box::try_new(Bar {</span>
+<span class="doccomment">///         x: 64,</span>
+<span class="doccomment">///     })?,</span>
+<span class="doccomment">/// }));</span>
+<span class="doccomment">/// pr_info!(&quot;a: {}&quot;, &amp;*foo.a.lock());</span>
+<span class="doccomment">/// # Ok::&lt;_, AllocError&gt;(())</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Syntax</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// A normal `let` binding with optional type annotation. The expression is expected to implement</span>
+<span class="doccomment">/// [`PinInit`]/[`Init`]. This macro assigns a result to the given variable, adding a `?` after the</span>
+<span class="doccomment">/// `=` will propagate this error.</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">stack_try_pin_init</span> {
+    (<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ty</span>)<span class="question-mark">?</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>) =&gt; {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span> <span class="op">=</span> <span class="macro">::core::pin::pin!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::StackInit</span>$(::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span><span class="op">&gt;</span>)<span class="question-mark">?</span><span class="ident">::uninit</span>());
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span> <span class="op">=</span> {
+            <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>;
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::StackInit::init</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span>, <span class="ident">val</span>)
         };
     };
     (<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ty</span>)<span class="question-mark">?</span> <span class="op">=</span><span class="question-mark">?</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>) =&gt; {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::StackInit</span>$(::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span><span class="op">&gt;</span>)<span class="question-mark">?</span><span class="ident">::uninit</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span> <span class="op">=</span> <span class="macro">::core::pin::pin!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::StackInit</span>$(::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span><span class="op">&gt;</span>)<span class="question-mark">?</span><span class="ident">::uninit</span>());
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span> <span class="op">=</span> {
             <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>;
-            <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::StackInit::init</span>(<span class="kw-2">&amp;mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span>, <span class="ident">val</span>)<span class="question-mark">?</span> }
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::StackInit::init</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">var</span>, <span class="ident">val</span>)<span class="question-mark">?</span>
         };
     };
 }
@@ -1738,6 +1826,12 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// Arbitrary Rust expressions can be used to set the value of a variable.</span>
 <span class="doccomment">///</span>
+<span class="doccomment">/// The fields are initialized in the order that they appear in the initializer. So it is possible</span>
+<span class="doccomment">/// to read already initialized fields using raw pointers.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// IMPORTANT: You are not allowed to create references to fields of the struct inside of the</span>
+<span class="doccomment">/// initializer.</span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// # Init-functions</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// When working with this API it is often desired to let others construct your types without</span>
@@ -1760,7 +1854,6 @@
 <span class="doccomment">/// # struct Bar {</span>
 <span class="doccomment">/// #     x: u32,</span>
 <span class="doccomment">/// # }</span>
-<span class="doccomment">///</span>
 <span class="doccomment">/// impl Foo {</span>
 <span class="doccomment">///     fn new() -&gt; impl PinInit&lt;Self&gt; {</span>
 <span class="doccomment">///         pin_init!(Self {</span>
@@ -1866,6 +1959,7 @@
 <span class="doccomment">/// # use core::{ptr::addr_of_mut, marker::PhantomPinned};</span>
 <span class="doccomment">/// #[pin_data]</span>
 <span class="doccomment">/// struct Buf {</span>
+<span class="doccomment">///     // `ptr` points into `buf`.</span>
 <span class="doccomment">///     ptr: *mut u8,</span>
 <span class="doccomment">///     buf: [u8; 64],</span>
 <span class="doccomment">///     #[pin]</span>
@@ -1880,6 +1974,8 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`try_pin_init!`]: kernel::try_pin_init</span>
 <span class="doccomment">/// [`NonNull&lt;Self&gt;`]: core::ptr::NonNull</span>
+<span class="comment">// For a detailed example of how this macro works, see the module documentation of the hidden</span>
+<span class="comment">// module `__internal` inside of `init/__internal.rs`.</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">pin_init</span> {
     ($(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>:<span class="ident">ident</span> <span class="kw">in</span>)<span class="question-mark">?</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span> $(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>:<span class="ident">ty</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span><span class="op">&gt;</span>)<span class="question-mark">?</span> {
@@ -1887,8 +1983,7 @@
     }) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_pin_init!</span>(
             @<span class="macro-nonterminal">this</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>)<span class="question-mark">?</span>),
-            @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>),
-            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="question-mark">?</span>),
+            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> $(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="question-mark">?</span>),
             @<span class="ident">fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="kw-2">*</span>),
             @<span class="ident">error</span>(<span class="ident">::core::convert::Infallible</span>),
         )
@@ -1913,7 +2008,9 @@
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
-<span class="doccomment">/// use kernel::{init::PinInit, error::Error};</span>
+<span class="doccomment">/// # #![feature(new_uninit)]</span>
+<span class="doccomment">/// use kernel::{init::{self, PinInit}, error::Error};</span>
+<span class="doccomment">/// #[pin_data]</span>
 <span class="doccomment">/// struct BigBuf {</span>
 <span class="doccomment">///     big: Box&lt;[u8; 1024 * 1024 * 1024]&gt;,</span>
 <span class="doccomment">///     small: [u8; 1024 * 1024],</span>
@@ -1923,16 +2020,15 @@
 <span class="doccomment">/// impl BigBuf {</span>
 <span class="doccomment">///     fn new() -&gt; impl PinInit&lt;Self, Error&gt; {</span>
 <span class="doccomment">///         try_pin_init!(Self {</span>
-<span class="doccomment">///             big: {</span>
-<span class="doccomment">///                 let zero = Box::try_new_zeroed()?;</span>
-<span class="doccomment">///                 unsafe { zero.assume_init() }</span>
-<span class="doccomment">///             },</span>
+<span class="doccomment">///             big: Box::init(init::zeroed())?,</span>
 <span class="doccomment">///             small: [0; 1024 * 1024],</span>
 <span class="doccomment">///             ptr: core::ptr::null_mut(),</span>
 <span class="doccomment">///         }? Error)</span>
 <span class="doccomment">///     }</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
+<span class="comment">// For a detailed example of how this macro works, see the module documentation of the hidden</span>
+<span class="comment">// module `__internal` inside of `init/__internal.rs`.</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">try_pin_init</span> {
     ($(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>:<span class="ident">ident</span> <span class="kw">in</span>)<span class="question-mark">?</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span> $(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>:<span class="ident">ty</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span><span class="op">&gt;</span>)<span class="question-mark">?</span> {
@@ -1940,27 +2036,24 @@
     }) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_pin_init!</span>(
             @<span class="macro-nonterminal">this</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>)<span class="question-mark">?</span>),
-            @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>),
-            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="question-mark">?</span>),
+            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> $(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="question-mark">?</span> ),
             @<span class="ident">fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="kw-2">*</span>),
             @<span class="ident">error</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::error::Error</span>),
         )
     };
-    ($(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>:<span class="ident">ident</span> <span class="kw">in</span>)<span class="question-mark">?</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>:<span class="ident">ty</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span><span class="op">&gt;</span>)<span class="question-mark">?</span> {
+    ($(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>:<span class="ident">ident</span> <span class="kw">in</span>)<span class="question-mark">?</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span> $(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>:<span class="ident">ty</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span><span class="op">&gt;</span>)<span class="question-mark">?</span> {
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>:<span class="ident">tt</span>)<span class="op">*</span>
     }<span class="question-mark">?</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span>:<span class="ident">ty</span>) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_pin_init!</span>(
             @<span class="macro-nonterminal">this</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>)<span class="question-mark">?</span>),
-            @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>),
-            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="question-mark">?</span>),
+            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> $(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="question-mark">?</span> ),
             @<span class="ident">fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="kw-2">*</span>),
             @<span class="ident">error</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span>),
         )
     };
     (
         @<span class="ident">this</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>:<span class="ident">ident</span>)<span class="question-mark">?</span>),
-        @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span>),
-        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>),
+        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span> $(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>:<span class="ident">ty</span>),<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="question-mark">?</span>),
         @<span class="ident">fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
         @<span class="ident">error</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span>:<span class="ident">ty</span>),
     ) =&gt; {{
@@ -1968,53 +2061,62 @@
         <span class="comment">// type and shadow it later when we insert the arbitrary user code. That way there will be</span>
         <span class="comment">// no possibility of returning without `unsafe`.</span>
         <span class="kw">struct</span> <span class="ident">__InitOk</span>;
-        <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="kw">move</span> <span class="op">|</span><span class="ident">slot</span>: <span class="kw-2">*mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">|</span> -&gt; <span class="ident">::core::result::Result</span><span class="op">&lt;</span><span class="ident">__InitOk</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span><span class="op">&gt;</span> {
-            {
-                <span class="comment">// Shadow the structure so it cannot be used to return early.</span>
-                <span class="kw">struct</span> <span class="ident">__InitOk</span>;
-                <span class="comment">// Create the `this` so it can be referenced by the user inside of the expressions</span>
-                <span class="comment">// creating the individual fields.</span>
-                $(<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">::core::ptr::NonNull::new_unchecked</span>(<span class="ident">slot</span>) };)<span class="question-mark">?</span>
-                <span class="comment">// Initialize every field.</span>
-                <span class="macro-nonterminal">$</span><span class="macro">crate::try_pin_init!</span>(<span class="macro-nonterminal">init_slot</span>:
-                    @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>),
-                    @<span class="ident">slot</span>(<span class="ident">slot</span>),
-                    @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="kw-2">*</span>,),
-                );
-                <span class="comment">// We use unreachable code to ensure that all fields have been mentioned exactly</span>
-                <span class="comment">// once, this struct initializer will still be type-checked and complain with a</span>
-                <span class="comment">// very natural error message if a field is forgotten/mentioned more than once.</span>
-                <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_code</span>, <span class="ident">clippy::diverging_sub_expression</span>)]</span>
-                <span class="kw">if</span> <span class="bool-val">false</span> {
-                    <span class="macro-nonterminal">$</span><span class="macro">crate::try_pin_init!</span>(<span class="macro-nonterminal">make_initializer</span>:
-                        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>),
-                        @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>),
+        <span class="comment">// Get the pin data from the supplied type.</span>
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw">unsafe</span> {
+            <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::HasPinData</span>;
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>$(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="question-mark">?</span><span class="ident">::__pin_data</span>()
+        };
+        <span class="comment">// Ensure that `data` really is of type `PinData` and help with type inference:</span>
+        <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::PinData::make_closure</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">__InitOk</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span><span class="op">&gt;</span>(
+            <span class="ident">data</span>,
+            <span class="kw">move</span> <span class="op">|</span><span class="ident">slot</span><span class="op">|</span> {
+                {
+                    <span class="comment">// Shadow the structure so it cannot be used to return early.</span>
+                    <span class="kw">struct</span> <span class="ident">__InitOk</span>;
+                    <span class="comment">// Create the `this` so it can be referenced by the user inside of the</span>
+                    <span class="comment">// expressions creating the individual fields.</span>
+                    $(<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">::core::ptr::NonNull::new_unchecked</span>(<span class="ident">slot</span>) };)<span class="question-mark">?</span>
+                    <span class="comment">// Initialize every field.</span>
+                    <span class="macro-nonterminal">$</span><span class="macro">crate::try_pin_init!</span>(<span class="macro-nonterminal">init_slot</span>:
+                        @<span class="ident">data</span>(<span class="ident">data</span>),
+                        @<span class="ident">slot</span>(<span class="ident">slot</span>),
                         @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="kw-2">*</span>,),
-                        @<span class="ident">acc</span>(),
+                    );
+                    <span class="comment">// We use unreachable code to ensure that all fields have been mentioned exactly</span>
+                    <span class="comment">// once, this struct initializer will still be type-checked and complain with a</span>
+                    <span class="comment">// very natural error message if a field is forgotten/mentioned more than once.</span>
+                    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_code</span>, <span class="ident">clippy::diverging_sub_expression</span>)]</span>
+                    <span class="kw">if</span> <span class="bool-val">false</span> {
+                        <span class="macro-nonterminal">$</span><span class="macro">crate::try_pin_init!</span>(<span class="macro-nonterminal">make_initializer</span>:
+                            @<span class="ident">slot</span>(<span class="ident">slot</span>),
+                            @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>),
+                            @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="kw-2">*</span>,),
+                            @<span class="ident">acc</span>(),
+                        );
+                    }
+                    <span class="comment">// Forget all guards, since initialization was a success.</span>
+                    <span class="macro-nonterminal">$</span><span class="macro">crate::try_pin_init!</span>(<span class="macro-nonterminal">forget_guards</span>:
+                        @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="kw-2">*</span>,),
                     );
                 }
-                <span class="comment">// Forget all guards, since initialization was a success.</span>
-                <span class="macro-nonterminal">$</span><span class="macro">crate::try_pin_init!</span>(<span class="macro-nonterminal">forget_guards</span>:
-                    @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="kw-2">*</span>,),
-                );
+                <span class="prelude-val">Ok</span>(<span class="ident">__InitOk</span>)
             }
-            <span class="prelude-val">Ok</span>(<span class="ident">__InitOk</span>)
-        };
-        <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="kw">move</span> <span class="op">|</span><span class="ident">slot</span>: <span class="kw-2">*mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">|</span> -&gt; <span class="ident">::core::result::Result</span><span class="op">&lt;</span>(), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span><span class="op">&gt;</span> {
+        );
+        <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="kw">move</span> <span class="op">|</span><span class="ident">slot</span><span class="op">|</span> -&gt; <span class="ident">::core::result::Result</span><span class="op">&lt;</span>(), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span><span class="op">&gt;</span> {
             <span class="ident">init</span>(<span class="ident">slot</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">__InitOk</span><span class="op">|</span> ())
         };
-        <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::pin_init_from_closure</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span><span class="op">&gt;</span>(<span class="ident">init</span>) };
+        <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::pin_init_from_closure</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span><span class="op">&gt;</span>(<span class="ident">init</span>) };
         <span class="ident">init</span>
     }};
     (<span class="ident">init_slot</span>:
-        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>),
+        @<span class="ident">data</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">data</span>:<span class="ident">ident</span>),
         @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>:<span class="ident">ident</span>),
         @<span class="ident">munch_fields</span>($(,)<span class="question-mark">?</span>),
     ) =&gt; {
         <span class="comment">// Endpoint of munching, no fields are left.</span>
     };
     (<span class="ident">init_slot</span>:
-        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>),
+        @<span class="ident">data</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">data</span>:<span class="ident">ident</span>),
         @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>:<span class="ident">ident</span>),
         <span class="comment">// In-place initialization syntax.</span>
         @<span class="ident">munch_fields</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span> <span class="op">&lt;</span><span class="op">-</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
@@ -2024,86 +2126,85 @@
         <span class="comment">//</span>
         <span class="comment">// SAFETY: `slot` is valid, because we are inside of an initializer closure, we</span>
         <span class="comment">// return when an error/panic occurs.</span>
-        <span class="comment">// We also use the `__PinData` to request the correct trait (`Init` or `PinInit`).</span>
-        <span class="kw">unsafe</span> {
-            <span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__PinData</span><span class="op">&gt;</span><span class="ident">::__PinData</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>(
-                <span class="macro">::core::ptr::addr_of_mut!</span>((<span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>),
-                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>,
-            )<span class="question-mark">?</span>;
-        }
+        <span class="comment">// We also use the `data` to require the correct trait (`Init` or `PinInit`) for `$field`.</span>
+        <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">data</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>(<span class="macro">::core::ptr::addr_of_mut!</span>((<span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>)<span class="question-mark">?</span> };
         <span class="comment">// Create the drop guard.</span>
         <span class="comment">//</span>
         <span class="comment">// We only give access to `&amp;DropGuard`, so it cannot be forgotten via safe code.</span>
         <span class="comment">//</span>
         <span class="comment">// SAFETY: We forget the guard later when initialization has succeeded.</span>
         <span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw">unsafe</span> {
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::DropGuard::new</span>(<span class="macro">::core::ptr::addr_of_mut!</span>((<span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>))
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::DropGuard::new</span>(<span class="macro">::core::ptr::addr_of_mut!</span>((<span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>))
         };
 
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_pin_init!</span>(<span class="macro-nonterminal">init_slot</span>:
-            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>),
+            @<span class="ident">data</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">data</span>),
             @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>),
             @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>),
         );
     };
     (<span class="ident">init_slot</span>:
-        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>),
+        @<span class="ident">data</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">data</span>:<span class="ident">ident</span>),
         @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>:<span class="ident">ident</span>),
         <span class="comment">// Direct value init, this is safe for every field.</span>
         @<span class="ident">munch_fields</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>)<span class="question-mark">?</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
     ) =&gt; {
         $(<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>;)<span class="question-mark">?</span>
-        <span class="comment">// Call the initializer.</span>
+        <span class="comment">// Initialize the field.</span>
         <span class="comment">//</span>
         <span class="comment">// SAFETY: The memory at `slot` is uninitialized.</span>
-        <span class="kw">unsafe</span> { <span class="macro">::core::ptr::addr_of_mut!</span>((<span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>).<span class="ident">write</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>) };
+        <span class="kw">unsafe</span> { <span class="ident">::core::ptr::write</span>(<span class="macro">::core::ptr::addr_of_mut!</span>((<span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>) };
         <span class="comment">// Create the drop guard:</span>
         <span class="comment">//</span>
         <span class="comment">// We only give access to `&amp;DropGuard`, so it cannot be accidentally forgotten.</span>
         <span class="comment">//</span>
         <span class="comment">// SAFETY: We forget the guard later when initialization has succeeded.</span>
         <span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw">unsafe</span> {
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::DropGuard::new</span>(<span class="macro">::core::ptr::addr_of_mut!</span>((<span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>))
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::DropGuard::new</span>(<span class="macro">::core::ptr::addr_of_mut!</span>((<span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>))
         };
 
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_pin_init!</span>(<span class="macro-nonterminal">init_slot</span>:
-            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>),
+            @<span class="ident">data</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">data</span>),
             @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>),
             @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>),
         );
     };
     (<span class="ident">make_initializer</span>:
-        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>),
+        @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>:<span class="ident">ident</span>),
         @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span>),
         @<span class="ident">munch_fields</span>($(,)<span class="question-mark">?</span>),
         @<span class="ident">acc</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">acc</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
     ) =&gt; {
-        <span class="comment">// Endpoint, nothing more to munch.</span>
-        <span class="kw">let</span> <span class="kw">_</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> {
-            $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">acc</span>)<span class="op">*</span>
-        };
+        <span class="comment">// Endpoint, nothing more to munch, create the initializer.</span>
+        <span class="comment">// Since we are in the `if false` branch, this will never get executed. We abuse `slot` to</span>
+        <span class="comment">// get the correct type inference here:</span>
+        <span class="kw">unsafe</span> {
+            <span class="ident">::core::ptr::write</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> {
+                $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">acc</span>)<span class="op">*</span>
+            });
+        }
     };
     (<span class="ident">make_initializer</span>:
-        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>),
+        @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>:<span class="ident">ident</span>),
         @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span>),
         @<span class="ident">munch_fields</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span> <span class="op">&lt;</span><span class="op">-</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
         @<span class="ident">acc</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">acc</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
     ) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_pin_init!</span>(<span class="macro-nonterminal">make_initializer</span>:
-            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>),
+            @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>),
             @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>),
             @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>),
             @<span class="ident">acc</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">acc</span>)<span class="op">*</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>: <span class="macro">::core::panic!</span>(),),
         );
     };
     (<span class="ident">make_initializer</span>:
-        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>),
+        @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>:<span class="ident">ident</span>),
         @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span>),
         @<span class="ident">munch_fields</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>)<span class="question-mark">?</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
         @<span class="ident">acc</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">acc</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
     ) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_pin_init!</span>(<span class="macro-nonterminal">make_initializer</span>:
-            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>),
+            @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>),
             @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>),
             @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>),
             @<span class="ident">acc</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">acc</span>)<span class="op">*</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>: <span class="macro">::core::panic!</span>(),),
@@ -2117,7 +2218,7 @@
     (<span class="ident">forget_guards</span>:
         @<span class="ident">munch_fields</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span> <span class="op">&lt;</span><span class="op">-</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
     ) =&gt; {
-        <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::DropGuard::forget</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>) };
+        <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::DropGuard::forget</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>) };
 
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_pin_init!</span>(<span class="macro-nonterminal">forget_guards</span>:
             @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>),
@@ -2126,7 +2227,7 @@
     (<span class="ident">forget_guards</span>:
         @<span class="ident">munch_fields</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>)<span class="question-mark">?</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
     ) =&gt; {
-        <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::DropGuard::forget</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>) };
+        <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::DropGuard::forget</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>) };
 
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_pin_init!</span>(<span class="macro-nonterminal">forget_guards</span>:
             @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>),
@@ -2139,10 +2240,16 @@
 <span class="doccomment">/// This macro defaults the error to [`Infallible`]. If you need [`Error`], then use</span>
 <span class="doccomment">/// [`try_init!`].</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// The syntax is identical to [`pin_init!`].</span>
+<span class="doccomment">/// The syntax is identical to [`pin_init!`] and its safety caveats also apply:</span>
+<span class="doccomment">/// - `unsafe` code must guarantee either full initialization or return an error and allow</span>
+<span class="doccomment">///   deallocation of the memory.</span>
+<span class="doccomment">/// - the fields are initialized in the order given in the initializer.</span>
+<span class="doccomment">/// - no references to fields are allowed to be created inside of the initializer.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This initializer is for initializing data in-place that might later be moved. If you want to</span>
 <span class="doccomment">/// pin-initialize, use [`pin_init!`].</span>
+<span class="comment">// For a detailed example of how this macro works, see the module documentation of the hidden</span>
+<span class="comment">// module `__internal` inside of `init/__internal.rs`.</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">init</span> {
     ($(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>:<span class="ident">ident</span> <span class="kw">in</span>)<span class="question-mark">?</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span> $(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>:<span class="ident">ty</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span><span class="op">&gt;</span>)<span class="question-mark">?</span> {
@@ -2150,8 +2257,7 @@
     }) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_init!</span>(
             @<span class="macro-nonterminal">this</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>)<span class="question-mark">?</span>),
-            @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>),
-            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="question-mark">?</span>),
+            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> $(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="question-mark">?</span>),
             @<span class="ident">fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="kw-2">*</span>),
             @<span class="ident">error</span>(<span class="ident">::core::convert::Infallible</span>),
         )
@@ -2165,6 +2271,11 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// The syntax is identical to [`try_pin_init!`]. If you want to specify a custom error,</span>
 <span class="doccomment">/// append `? $type` after the `struct` initializer.</span>
+<span class="doccomment">/// The safety caveats from [`try_pin_init!`] also apply:</span>
+<span class="doccomment">/// - `unsafe` code must guarantee either full initialization or return an error and allow</span>
+<span class="doccomment">///   deallocation of the memory.</span>
+<span class="doccomment">/// - the fields are initialized in the order given in the initializer.</span>
+<span class="doccomment">/// - no references to fields are allowed to be created inside of the initializer.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">///</span>
@@ -2187,6 +2298,8 @@
 <span class="doccomment">///     }</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
+<span class="comment">// For a detailed example of how this macro works, see the module documentation of the hidden</span>
+<span class="comment">// module `__internal` inside of `init/__internal.rs`.</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">try_init</span> {
     ($(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>:<span class="ident">ident</span> <span class="kw">in</span>)<span class="question-mark">?</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span> $(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>:<span class="ident">ty</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span><span class="op">&gt;</span>)<span class="question-mark">?</span> {
@@ -2194,27 +2307,24 @@
     }) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_init!</span>(
             @<span class="macro-nonterminal">this</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>)<span class="question-mark">?</span>),
-            @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>),
-            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="question-mark">?</span>),
+            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> $(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="question-mark">?</span>),
             @<span class="ident">fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="kw-2">*</span>),
             @<span class="ident">error</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::error::Error</span>),
         )
     };
-    ($(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>:<span class="ident">ident</span> <span class="kw">in</span>)<span class="question-mark">?</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>:<span class="ident">ty</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span><span class="op">&gt;</span>)<span class="question-mark">?</span> {
+    ($(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>:<span class="ident">ident</span> <span class="kw">in</span>)<span class="question-mark">?</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span> $(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>:<span class="ident">ty</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span><span class="op">&gt;</span>)<span class="question-mark">?</span> {
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>:<span class="ident">tt</span>)<span class="op">*</span>
     }<span class="question-mark">?</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span>:<span class="ident">ty</span>) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_init!</span>(
             @<span class="macro-nonterminal">this</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>)<span class="question-mark">?</span>),
-            @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>),
-            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="question-mark">?</span>),
+            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> $(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="question-mark">?</span>),
             @<span class="ident">fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="kw-2">*</span>),
             @<span class="ident">error</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span>),
         )
     };
     (
         @<span class="ident">this</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>:<span class="ident">ident</span>)<span class="question-mark">?</span>),
-        @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span>),
-        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>),
+        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span> $(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>:<span class="ident">ty</span>),<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="question-mark">?</span>),
         @<span class="ident">fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
         @<span class="ident">error</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span>:<span class="ident">ty</span>),
     ) =&gt; {{
@@ -2222,53 +2332,59 @@
         <span class="comment">// type and shadow it later when we insert the arbitrary user code. That way there will be</span>
         <span class="comment">// no possibility of returning without `unsafe`.</span>
         <span class="kw">struct</span> <span class="ident">__InitOk</span>;
-        <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="kw">move</span> <span class="op">|</span><span class="ident">slot</span>: <span class="kw-2">*mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">|</span> -&gt; <span class="ident">::core::result::Result</span><span class="op">&lt;</span><span class="ident">__InitOk</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span><span class="op">&gt;</span> {
-            {
-                <span class="comment">// Shadow the structure so it cannot be used to return early.</span>
-                <span class="kw">struct</span> <span class="ident">__InitOk</span>;
-                <span class="comment">// Create the `this` so it can be referenced by the user inside of the expressions</span>
-                <span class="comment">// creating the individual fields.</span>
-                $(<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">::core::ptr::NonNull::new_unchecked</span>(<span class="ident">slot</span>) };)<span class="question-mark">?</span>
-                <span class="comment">// Initialize every field.</span>
-                <span class="macro-nonterminal">$</span><span class="macro">crate::try_init!</span>(<span class="macro-nonterminal">init_slot</span>:
-                    @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>),
-                    @<span class="ident">slot</span>(<span class="ident">slot</span>),
-                    @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="kw-2">*</span>,),
-                );
-                <span class="comment">// We use unreachable code to ensure that all fields have been mentioned exactly</span>
-                <span class="comment">// once, this struct initializer will still be type-checked and complain with a</span>
-                <span class="comment">// very natural error message if a field is forgotten/mentioned more than once.</span>
-                <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_code</span>, <span class="ident">clippy::diverging_sub_expression</span>)]</span>
-                <span class="kw">if</span> <span class="bool-val">false</span> {
-                    <span class="macro-nonterminal">$</span><span class="macro">crate::try_init!</span>(<span class="macro-nonterminal">make_initializer</span>:
-                        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>),
-                        @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>),
+        <span class="comment">// Get the init data from the supplied type.</span>
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw">unsafe</span> {
+            <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::HasInitData</span>;
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>$(::<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="question-mark">?</span><span class="ident">::__init_data</span>()
+        };
+        <span class="comment">// Ensure that `data` really is of type `InitData` and help with type inference:</span>
+        <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::InitData::make_closure</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">__InitOk</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span><span class="op">&gt;</span>(
+            <span class="ident">data</span>,
+            <span class="kw">move</span> <span class="op">|</span><span class="ident">slot</span><span class="op">|</span> {
+                {
+                    <span class="comment">// Shadow the structure so it cannot be used to return early.</span>
+                    <span class="kw">struct</span> <span class="ident">__InitOk</span>;
+                    <span class="comment">// Create the `this` so it can be referenced by the user inside of the</span>
+                    <span class="comment">// expressions creating the individual fields.</span>
+                    $(<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">::core::ptr::NonNull::new_unchecked</span>(<span class="ident">slot</span>) };)<span class="question-mark">?</span>
+                    <span class="comment">// Initialize every field.</span>
+                    <span class="macro-nonterminal">$</span><span class="macro">crate::try_init!</span>(<span class="macro-nonterminal">init_slot</span>:
+                        @<span class="ident">slot</span>(<span class="ident">slot</span>),
                         @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="kw-2">*</span>,),
-                        @<span class="ident">acc</span>(),
+                    );
+                    <span class="comment">// We use unreachable code to ensure that all fields have been mentioned exactly</span>
+                    <span class="comment">// once, this struct initializer will still be type-checked and complain with a</span>
+                    <span class="comment">// very natural error message if a field is forgotten/mentioned more than once.</span>
+                    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_code</span>, <span class="ident">clippy::diverging_sub_expression</span>)]</span>
+                    <span class="kw">if</span> <span class="bool-val">false</span> {
+                        <span class="macro-nonterminal">$</span><span class="macro">crate::try_init!</span>(<span class="macro-nonterminal">make_initializer</span>:
+                            @<span class="ident">slot</span>(<span class="ident">slot</span>),
+                            @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>),
+                            @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="kw-2">*</span>,),
+                            @<span class="ident">acc</span>(),
+                        );
+                    }
+                    <span class="comment">// Forget all guards, since initialization was a success.</span>
+                    <span class="macro-nonterminal">$</span><span class="macro">crate::try_init!</span>(<span class="macro-nonterminal">forget_guards</span>:
+                        @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="kw-2">*</span>,),
                     );
                 }
-                <span class="comment">// Forget all guards, since initialization was a success.</span>
-                <span class="macro-nonterminal">$</span><span class="macro">crate::try_init!</span>(<span class="macro-nonterminal">forget_guards</span>:
-                    @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fields</span>)<span class="kw-2">*</span>,),
-                );
+                <span class="prelude-val">Ok</span>(<span class="ident">__InitOk</span>)
             }
-            <span class="prelude-val">Ok</span>(<span class="ident">__InitOk</span>)
-        };
-        <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="kw">move</span> <span class="op">|</span><span class="ident">slot</span>: <span class="kw-2">*mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">|</span> -&gt; <span class="ident">::core::result::Result</span><span class="op">&lt;</span>(), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span><span class="op">&gt;</span> {
+        );
+        <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="kw">move</span> <span class="op">|</span><span class="ident">slot</span><span class="op">|</span> -&gt; <span class="ident">::core::result::Result</span><span class="op">&lt;</span>(), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span><span class="op">&gt;</span> {
             <span class="ident">init</span>(<span class="ident">slot</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">__InitOk</span><span class="op">|</span> ())
         };
-        <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::init_from_closure</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span><span class="op">&gt;</span>(<span class="ident">init</span>) };
+        <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::init_from_closure</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">err</span><span class="op">&gt;</span>(<span class="ident">init</span>) };
         <span class="ident">init</span>
     }};
     (<span class="ident">init_slot</span>:
-        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>),
         @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>:<span class="ident">ident</span>),
         @<span class="ident">munch_fields</span>( $(,)<span class="question-mark">?</span>),
     ) =&gt; {
         <span class="comment">// Endpoint of munching, no fields are left.</span>
     };
     (<span class="ident">init_slot</span>:
-        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>),
         @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>:<span class="ident">ident</span>),
         @<span class="ident">munch_fields</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span> <span class="op">&lt;</span><span class="op">-</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
     ) =&gt; {
@@ -2286,17 +2402,15 @@
         <span class="comment">//</span>
         <span class="comment">// SAFETY: We forget the guard later when initialization has succeeded.</span>
         <span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw">unsafe</span> {
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::DropGuard::new</span>(<span class="macro">::core::ptr::addr_of_mut!</span>((<span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>))
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::DropGuard::new</span>(<span class="macro">::core::ptr::addr_of_mut!</span>((<span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>))
         };
 
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_init!</span>(<span class="macro-nonterminal">init_slot</span>:
-            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>),
             @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>),
             @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>),
         );
     };
     (<span class="ident">init_slot</span>:
-        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>),
         @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>:<span class="ident">ident</span>),
         <span class="comment">// Direct value init.</span>
         @<span class="ident">munch_fields</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>)<span class="question-mark">?</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
@@ -2305,54 +2419,57 @@
         <span class="comment">// Call the initializer.</span>
         <span class="comment">//</span>
         <span class="comment">// SAFETY: The memory at `slot` is uninitialized.</span>
-        <span class="kw">unsafe</span> { <span class="macro">::core::ptr::addr_of_mut!</span>((<span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>).<span class="ident">write</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>) };
+        <span class="kw">unsafe</span> { <span class="ident">::core::ptr::write</span>(<span class="macro">::core::ptr::addr_of_mut!</span>((<span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>) };
         <span class="comment">// Create the drop guard.</span>
         <span class="comment">//</span>
         <span class="comment">// We only give access to `&amp;DropGuard`, so it cannot be accidentally forgotten.</span>
         <span class="comment">//</span>
         <span class="comment">// SAFETY: We forget the guard later when initialization has succeeded.</span>
         <span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw">unsafe</span> {
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::DropGuard::new</span>(<span class="macro">::core::ptr::addr_of_mut!</span>((<span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>))
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::DropGuard::new</span>(<span class="macro">::core::ptr::addr_of_mut!</span>((<span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>).<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>))
         };
 
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_init!</span>(<span class="macro-nonterminal">init_slot</span>:
-            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>),
             @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>),
             @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>),
         );
     };
     (<span class="ident">make_initializer</span>:
-        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>),
+        @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>:<span class="ident">ident</span>),
         @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span>),
         @<span class="ident">munch_fields</span>( $(,)<span class="question-mark">?</span>),
         @<span class="ident">acc</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">acc</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
     ) =&gt; {
-        <span class="comment">// Endpoint, nothing more to munch.</span>
-        <span class="kw">let</span> <span class="kw">_</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> {
-            $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">acc</span>)<span class="op">*</span>
-        };
+        <span class="comment">// Endpoint, nothing more to munch, create the initializer.</span>
+        <span class="comment">// Since we are in the `if false` branch, this will never get executed. We abuse `slot` to</span>
+        <span class="comment">// get the correct type inference here:</span>
+        <span class="kw">unsafe</span> {
+            <span class="ident">::core::ptr::write</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> {
+                $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">acc</span>)<span class="op">*</span>
+            });
+        }
     };
     (<span class="ident">make_initializer</span>:
-        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>),
+        @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>:<span class="ident">ident</span>),
         @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span>),
         @<span class="ident">munch_fields</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span> <span class="op">&lt;</span><span class="op">-</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
         @<span class="ident">acc</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">acc</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
     ) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_init!</span>(<span class="macro-nonterminal">make_initializer</span>:
-            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>),
+            @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>),
             @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>),
             @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>),
             @<span class="ident">acc</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">acc</span>)<span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>: <span class="macro">::core::panic!</span>(),),
         );
     };
     (<span class="ident">make_initializer</span>:
-        @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>),
+        @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>:<span class="ident">ident</span>),
         @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ident</span>),
         @<span class="ident">munch_fields</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>)<span class="question-mark">?</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
         @<span class="ident">acc</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">acc</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
     ) =&gt; {
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_init!</span>(<span class="macro-nonterminal">make_initializer</span>:
-            @<span class="ident">typ</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>),
+            @<span class="ident">slot</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">slot</span>),
             @<span class="ident">type_name</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>),
             @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>),
             @<span class="ident">acc</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">acc</span>)<span class="kw-2">*</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>: <span class="macro">::core::panic!</span>(),),
@@ -2366,7 +2483,7 @@
     (<span class="ident">forget_guards</span>:
         @<span class="ident">munch_fields</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span> <span class="op">&lt;</span><span class="op">-</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
     ) =&gt; {
-        <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::DropGuard::forget</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>) };
+        <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::DropGuard::forget</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>) };
 
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_init!</span>(<span class="macro-nonterminal">forget_guards</span>:
             @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>),
@@ -2375,7 +2492,7 @@
     (<span class="ident">forget_guards</span>:
         @<span class="ident">munch_fields</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>)<span class="question-mark">?</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
     ) =&gt; {
-        <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::DropGuard::forget</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>) };
+        <span class="kw">unsafe</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::DropGuard::forget</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>) };
 
         <span class="macro-nonterminal">$</span><span class="macro">crate::try_init!</span>(<span class="macro-nonterminal">forget_guards</span>:
             @<span class="ident">munch_fields</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>),
@@ -2383,19 +2500,18 @@
     };
 }
 
-<span class="doccomment">/// A pinned initializer for `T`.</span>
+<span class="doccomment">/// A pin-initializer for the type `T`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// To use this initializer, you will need a suitable memory location that can hold a `T`. This can</span>
 <span class="doccomment">/// be [`Box&lt;T&gt;`], [`Arc&lt;T&gt;`], [`UniqueArc&lt;T&gt;`] or even the stack (see [`stack_pin_init!`]). Use the</span>
-<span class="doccomment">/// [`InPlaceInit::pin_init`] function of a smart pointer like [`Arc::pin_init`] on this.</span>
+<span class="doccomment">/// [`InPlaceInit::pin_init`] function of a smart pointer like [`Arc&lt;T&gt;`] on this.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Also see the [module description](self).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Safety</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// When implementing this type you will need to take great care. Also there are probably very few</span>
-<span class="doccomment">/// cases where a manual implementation is necessary. Use [`from_value`] and</span>
-<span class="doccomment">/// [`pin_init_from_closure`] where possible.</span>
+<span class="doccomment">/// cases where a manual implementation is necessary. Use [`pin_init_from_closure`] where possible.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The [`PinInit::__pinned_init`] function</span>
 <span class="doccomment">/// - returns `Ok(())` if it initialized every field of `slot`,</span>
@@ -2424,16 +2540,15 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// To use this initializer, you will need a suitable memory location that can hold a `T`. This can</span>
 <span class="doccomment">/// be [`Box&lt;T&gt;`], [`Arc&lt;T&gt;`], [`UniqueArc&lt;T&gt;`] or even the stack (see [`stack_pin_init!`]). Use the</span>
-<span class="doccomment">/// `init` function of a smart pointer like [`Box::init`] on this. Because [`PinInit&lt;T, E&gt;`] is a</span>
-<span class="doccomment">/// super trait, you can use every function that takes it as well.</span>
+<span class="doccomment">/// [`InPlaceInit::init`] function of a smart pointer like [`Arc&lt;T&gt;`] on this. Because</span>
+<span class="doccomment">/// [`PinInit&lt;T, E&gt;`] is a super trait, you can use every function that takes it as well.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Also see the [module description](self).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Safety</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// When implementing this type you will need to take great care. Also there are probably very few</span>
-<span class="doccomment">/// cases where a manual implementation is necessary. Use [`from_value`] and</span>
-<span class="doccomment">/// [`init_from_closure`] where possible.</span>
+<span class="doccomment">/// cases where a manual implementation is necessary. Use [`init_from_closure`] where possible.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The [`Init::__init`] function</span>
 <span class="doccomment">/// - returns `Ok(())` if it initialized every field of `slot`,</span>
@@ -2451,7 +2566,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`Arc&lt;T&gt;`]: crate::sync::Arc</span>
 <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;An initializer must be used in order to create its value.&quot;</span>]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">E</span> <span class="op">=</span> <span class="ident">Infallible</span><span class="op">&gt;</span>: <span class="ident">PinInit</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">E</span> <span class="op">=</span> <span class="ident">Infallible</span><span class="op">&gt;</span>: <span class="ident">Sized</span> {
     <span class="doccomment">/// Initializes `slot`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Safety</span>
@@ -2462,33 +2577,15 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__init</span>(<span class="self">self</span>, <span class="ident">slot</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">E</span><span class="op">&gt;</span>;
 }
 
-<span class="kw">type</span> <span class="ident">Invariant</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw">fn</span>(<span class="kw-2">*mut</span> <span class="ident">T</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">T</span><span class="op">&gt;</span>;
-<span class="comment">// This is the module-internal type implementing `PinInit` and `Init`. It is unsafe to create this</span>
-<span class="comment">// type, since the closure needs to fulfill the same safety requirement as the</span>
-<span class="comment">// `__pinned_init`/`__init` functions.</span>
-<span class="kw">struct</span> <span class="ident">InitClosure</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">F</span>, <span class="ident">Invariant</span><span class="op">&lt;</span>(<span class="ident">E</span>, <span class="ident">T</span>)<span class="op">&gt;</span>);
-
-<span class="comment">// SAFETY: While constructing the `InitClosure`, the user promised that it upholds the</span>
-<span class="comment">// `__pinned_init` invariants.</span>
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">F</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">PinInit</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">InitClosure</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>
+<span class="comment">// SAFETY: Every in-place initializer can also be used as a pin-initializer.</span>
+<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">E</span>, <span class="ident">I</span><span class="op">&gt;</span> <span class="ident">PinInit</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">I</span>
 <span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">*mut</span> <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">E</span><span class="op">&gt;</span>,
+    <span class="ident">I</span>: <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>,
 {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__pinned_init</span>(<span class="self">self</span>, <span class="ident">slot</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">E</span><span class="op">&gt;</span> {
-        (<span class="self">self</span>.<span class="number">0</span>)(<span class="ident">slot</span>)
-    }
-}
-
-<span class="comment">// SAFETY: While constructing the `InitClosure`, the user promised that it upholds the</span>
-<span class="comment">// `__init` invariants.</span>
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">F</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">InitClosure</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">*mut</span> <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">E</span><span class="op">&gt;</span>,
-{
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__init</span>(<span class="self">self</span>, <span class="ident">slot</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">E</span><span class="op">&gt;</span> {
-        (<span class="self">self</span>.<span class="number">0</span>)(<span class="ident">slot</span>)
+        <span class="comment">// SAFETY: `__init` meets the same requirements as `__pinned_init`, except that it does not</span>
+        <span class="comment">// require `slot` to not move after init.</span>
+        <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">__init</span>(<span class="ident">slot</span>) }
     }
 }
 
@@ -2508,7 +2605,7 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">pin_init_from_closure</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">E</span><span class="op">&gt;</span>(
     <span class="ident">f</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">*mut</span> <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">E</span><span class="op">&gt;</span>,
 ) -&gt; <span class="kw">impl</span> <span class="ident">PinInit</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="ident">InitClosure</span>(<span class="ident">f</span>, <span class="ident">PhantomData</span>)
+    <span class="ident">__internal::InitClosure</span>(<span class="ident">f</span>, <span class="ident">PhantomData</span>)
 }
 
 <span class="doccomment">/// Creates a new [`Init&lt;T, E&gt;`] from the given closure.</span>
@@ -2527,7 +2624,127 @@
 <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">init_from_closure</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span>, <span class="ident">E</span><span class="op">&gt;</span>(
     <span class="ident">f</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>(<span class="kw-2">*mut</span> <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">E</span><span class="op">&gt;</span>,
 ) -&gt; <span class="kw">impl</span> <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="ident">InitClosure</span>(<span class="ident">f</span>, <span class="ident">PhantomData</span>)
+    <span class="ident">__internal::InitClosure</span>(<span class="ident">f</span>, <span class="ident">PhantomData</span>)
+}
+
+<span class="doccomment">/// An initializer that leaves the memory uninitialized.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The initializer is a no-op. The `slot` memory is not changed.</span>
+<span class="attribute">#[<span class="ident">inline</span>]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">uninit</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">E</span><span class="op">&gt;</span> {
+    <span class="comment">// SAFETY: The memory is allowed to be uninitialized.</span>
+    <span class="kw">unsafe</span> { <span class="ident">init_from_closure</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(())) }
+}
+
+<span class="comment">// SAFETY: Every type can be initialized by-value.</span>
+<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">T</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__init</span>(<span class="self">self</span>, <span class="ident">slot</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Infallible</span><span class="op">&gt;</span> {
+        <span class="kw">unsafe</span> { <span class="ident">slot</span>.<span class="ident">write</span>(<span class="self">self</span>) };
+        <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="doccomment">/// Smart pointer that can initialize memory in-place.</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">InPlaceInit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>: <span class="ident">Sized</span> {
+    <span class="doccomment">/// Use the given pin-initializer to pin-initialize a `T` inside of a new smart pointer of this</span>
+    <span class="doccomment">/// type.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If `T: !Unpin` it will not be able to move afterwards.</span>
+    <span class="kw">fn</span> <span class="ident">try_pin_init</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">init</span>: <span class="kw">impl</span> <span class="ident">PinInit</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">E</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">E</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">AllocError</span><span class="op">&gt;</span>;
+
+    <span class="doccomment">/// Use the given pin-initializer to pin-initialize a `T` inside of a new smart pointer of this</span>
+    <span class="doccomment">/// type.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If `T: !Unpin` it will not be able to move afterwards.</span>
+    <span class="kw">fn</span> <span class="ident">pin_init</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">init</span>: <span class="kw">impl</span> <span class="ident">PinInit</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="ident">error::Result</span><span class="op">&lt;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">Error</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>,
+    {
+        <span class="comment">// SAFETY: We delegate to `init` and only change the error type.</span>
+        <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="kw">unsafe</span> {
+            <span class="ident">pin_init_from_closure</span>(<span class="op">|</span><span class="ident">slot</span><span class="op">|</span> <span class="ident">init</span>.<span class="ident">__pinned_init</span>(<span class="ident">slot</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Error::from</span>(<span class="ident">e</span>)))
+        };
+        <span class="ident"><span class="self">Self</span>::try_pin_init</span>(<span class="ident">init</span>)
+    }
+
+    <span class="doccomment">/// Use the given initializer to in-place initialize a `T`.</span>
+    <span class="kw">fn</span> <span class="ident">try_init</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">init</span>: <span class="kw">impl</span> <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">E</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">E</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">AllocError</span><span class="op">&gt;</span>;
+
+    <span class="doccomment">/// Use the given initializer to in-place initialize a `T`.</span>
+    <span class="kw">fn</span> <span class="ident">init</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">init</span>: <span class="kw">impl</span> <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="ident">error::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">Error</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>,
+    {
+        <span class="comment">// SAFETY: We delegate to `init` and only change the error type.</span>
+        <span class="kw">let</span> <span class="ident">init</span> <span class="op">=</span> <span class="kw">unsafe</span> {
+            <span class="ident">init_from_closure</span>(<span class="op">|</span><span class="ident">slot</span><span class="op">|</span> <span class="ident">init</span>.<span class="ident">__pinned_init</span>(<span class="ident">slot</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">Error::from</span>(<span class="ident">e</span>)))
+        };
+        <span class="ident"><span class="self">Self</span>::try_init</span>(<span class="ident">init</span>)
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">InPlaceInit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">fn</span> <span class="ident">try_pin_init</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">init</span>: <span class="kw">impl</span> <span class="ident">PinInit</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">E</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">E</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">AllocError</span><span class="op">&gt;</span>,
+    {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="ident">Box::try_new_uninit</span>()<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">slot</span> <span class="op">=</span> <span class="ident">this</span>.<span class="ident">as_mut_ptr</span>();
+        <span class="comment">// SAFETY: When init errors/panics, slot will get deallocated but not dropped,</span>
+        <span class="comment">// slot is valid and will not be moved, because we pin it later.</span>
+        <span class="kw">unsafe</span> { <span class="ident">init</span>.<span class="ident">__pinned_init</span>(<span class="ident">slot</span>)<span class="question-mark">?</span> };
+        <span class="comment">// SAFETY: All fields have been initialized.</span>
+        <span class="prelude-val">Ok</span>(<span class="kw">unsafe</span> { <span class="ident">this</span>.<span class="ident">assume_init</span>() }.<span class="ident">into</span>())
+    }
+
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">fn</span> <span class="ident">try_init</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">init</span>: <span class="kw">impl</span> <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">E</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">E</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">AllocError</span><span class="op">&gt;</span>,
+    {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="ident">Box::try_new_uninit</span>()<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">slot</span> <span class="op">=</span> <span class="ident">this</span>.<span class="ident">as_mut_ptr</span>();
+        <span class="comment">// SAFETY: When init errors/panics, slot will get deallocated but not dropped,</span>
+        <span class="comment">// slot is valid.</span>
+        <span class="kw">unsafe</span> { <span class="ident">init</span>.<span class="ident">__init</span>(<span class="ident">slot</span>)<span class="question-mark">?</span> };
+        <span class="comment">// SAFETY: All fields have been initialized.</span>
+        <span class="prelude-val">Ok</span>(<span class="kw">unsafe</span> { <span class="ident">this</span>.<span class="ident">assume_init</span>() })
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">InPlaceInit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">UniqueArc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">fn</span> <span class="ident">try_pin_init</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">init</span>: <span class="kw">impl</span> <span class="ident">PinInit</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">E</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">E</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">AllocError</span><span class="op">&gt;</span>,
+    {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="ident">UniqueArc::try_new_uninit</span>()<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">slot</span> <span class="op">=</span> <span class="ident">this</span>.<span class="ident">as_mut_ptr</span>();
+        <span class="comment">// SAFETY: When init errors/panics, slot will get deallocated but not dropped,</span>
+        <span class="comment">// slot is valid and will not be moved, because we pin it later.</span>
+        <span class="kw">unsafe</span> { <span class="ident">init</span>.<span class="ident">__pinned_init</span>(<span class="ident">slot</span>)<span class="question-mark">?</span> };
+        <span class="comment">// SAFETY: All fields have been initialized.</span>
+        <span class="prelude-val">Ok</span>(<span class="kw">unsafe</span> { <span class="ident">this</span>.<span class="ident">assume_init</span>() }.<span class="ident">into</span>())
+    }
+
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">fn</span> <span class="ident">try_init</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">init</span>: <span class="kw">impl</span> <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">E</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">E</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">AllocError</span><span class="op">&gt;</span>,
+    {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="ident">UniqueArc::try_new_uninit</span>()<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">slot</span> <span class="op">=</span> <span class="ident">this</span>.<span class="ident">as_mut_ptr</span>();
+        <span class="comment">// SAFETY: When init errors/panics, slot will get deallocated but not dropped,</span>
+        <span class="comment">// slot is valid.</span>
+        <span class="kw">unsafe</span> { <span class="ident">init</span>.<span class="ident">__init</span>(<span class="ident">slot</span>)<span class="question-mark">?</span> };
+        <span class="comment">// SAFETY: All fields have been initialized.</span>
+        <span class="prelude-val">Ok</span>(<span class="kw">unsafe</span> { <span class="ident">this</span>.<span class="ident">assume_init</span>() })
+    }
 }
 
 <span class="doccomment">/// Trait facilitating pinned destruction.</span>
@@ -2557,7 +2774,7 @@
 <span class="doccomment">/// This trait must be implemented via the [`pinned_drop`] proc-macro attribute on the impl.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`pinned_drop`]: kernel::macros::pinned_drop</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">PinnedDrop</span>: <span class="ident">__PinData</span> {
+<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">PinnedDrop</span>: <span class="ident">__internal::HasPinData</span> {
     <span class="doccomment">/// Executes the pinned destructor of this type.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// While this function is marked safe, it is actually unsafe to call it manually. For this</span>
@@ -2566,97 +2783,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This extra parameter will be generated by the `#[pinned_drop]` proc-macro attribute</span>
     <span class="doccomment">/// automatically.</span>
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">only_call_from_drop</span>: <span class="ident">OnlyCallFromDrop</span>);
-}
-
-<span class="comment">// We need one private field, because otherwise it can be constructed.</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OnlyCallFromDrop</span>(());
-
-<span class="kw">impl</span> <span class="ident">OnlyCallFromDrop</span> {
-    <span class="doccomment">/// # Safety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function should only be called from the [`Drop::drop`] function and only be used to</span>
-    <span class="doccomment">/// delegate the destruction to the pinned destructor [`PinnedDrop::drop`] of the same type.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">create</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span>(())
-    }
-}
-
-<span class="doccomment">/// Smart pointer that can initialize memory in-place.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">InPlaceInit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>: <span class="ident">Sized</span> {
-    <span class="doccomment">/// Use the given initializer to in-place initialize a `T`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `T: !Unpin` it will not be able to move afterwards.</span>
-    <span class="kw">fn</span> <span class="ident">pin_init</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">init</span>: <span class="kw">impl</span> <span class="ident">PinInit</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="ident">error::Result</span><span class="op">&lt;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">Error</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>;
-
-    <span class="doccomment">/// Use the given initializer to in-place initialize a `T`.</span>
-    <span class="kw">fn</span> <span class="ident">init</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">init</span>: <span class="kw">impl</span> <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="ident">error::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">Error</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>;
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">InPlaceInit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">pin_init</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">init</span>: <span class="kw">impl</span> <span class="ident">PinInit</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="ident">error::Result</span><span class="op">&lt;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">Error</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>,
-    {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="ident">Box::try_new_uninit</span>()<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">slot</span> <span class="op">=</span> <span class="ident">this</span>.<span class="ident">as_mut_ptr</span>();
-        <span class="comment">// SAFETY: When init errors/panics, slot will get deallocated but not dropped,</span>
-        <span class="comment">// slot is valid and will not be moved because of the `Pin::new_unchecked`</span>
-        <span class="kw">unsafe</span> { <span class="ident">init</span>.<span class="ident">__pinned_init</span>(<span class="ident">slot</span>)<span class="question-mark">?</span> };
-        <span class="comment">// SAFETY: All fields have been initialized.</span>
-        <span class="prelude-val">Ok</span>(<span class="kw">unsafe</span> { <span class="ident">Pin::new_unchecked</span>(<span class="ident">this</span>.<span class="ident">assume_init</span>()) })
-    }
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">init</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">init</span>: <span class="kw">impl</span> <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="ident">error::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">Error</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>,
-    {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="ident">Box::try_new_uninit</span>()<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">slot</span> <span class="op">=</span> <span class="ident">this</span>.<span class="ident">as_mut_ptr</span>();
-        <span class="comment">// SAFETY: When init errors/panics, slot will get deallocated but not dropped,</span>
-        <span class="comment">// slot is valid</span>
-        <span class="kw">unsafe</span> { <span class="ident">init</span>.<span class="ident">__init</span>(<span class="ident">slot</span>)<span class="question-mark">?</span> };
-        <span class="comment">// SAFETY: All fields have been initialized.</span>
-        <span class="prelude-val">Ok</span>(<span class="kw">unsafe</span> { <span class="ident">this</span>.<span class="ident">assume_init</span>() })
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">InPlaceInit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">UniqueArc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">pin_init</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">init</span>: <span class="kw">impl</span> <span class="ident">PinInit</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="ident">error::Result</span><span class="op">&lt;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">Error</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>,
-    {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="ident">UniqueArc::try_new_uninit</span>()<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">slot</span> <span class="op">=</span> <span class="ident">this</span>.<span class="ident">as_mut_ptr</span>();
-        <span class="comment">// SAFETY: When init errors/panics, slot will get deallocated but not dropped,</span>
-        <span class="comment">// slot is valid and will not be moved because of the `Pin::new_unchecked`.</span>
-        <span class="kw">unsafe</span> { <span class="ident">init</span>.<span class="ident">__pinned_init</span>(<span class="ident">slot</span>)<span class="question-mark">?</span> };
-        <span class="comment">// SAFETY: All fields have been initialized.</span>
-        <span class="prelude-val">Ok</span>(<span class="kw">unsafe</span> { <span class="ident">Pin::new_unchecked</span>(<span class="ident">this</span>.<span class="ident">assume_init</span>()) })
-    }
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">init</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">init</span>: <span class="kw">impl</span> <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="ident">error::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">Error</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>,
-    {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="ident">UniqueArc::try_new_uninit</span>()<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">slot</span> <span class="op">=</span> <span class="ident">this</span>.<span class="ident">as_mut_ptr</span>();
-        <span class="comment">// SAFETY: When init errors/panics, slot will get deallocated but not dropped,</span>
-        <span class="comment">// slot is valid.</span>
-        <span class="kw">unsafe</span> { <span class="ident">init</span>.<span class="ident">__init</span>(<span class="ident">slot</span>)<span class="question-mark">?</span> };
-        <span class="comment">// SAFETY: All fields have been initialized.</span>
-        <span class="prelude-val">Ok</span>(<span class="kw">unsafe</span> { <span class="ident">this</span>.<span class="ident">assume_init</span>() })
-    }
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">only_call_from_drop</span>: <span class="ident">__internal::OnlyCallFromDrop</span>);
 }
 
 <span class="doccomment">/// Marker trait for types that can be initialized by writing just zeroes.</span>
@@ -2686,51 +2813,12 @@
     }
 }
 
-<span class="doccomment">/// An initializer that leaves the memory uninitialized.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The initializer is a no-op. The `slot` memory is not changed.</span>
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">uninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() -&gt; <span class="kw">impl</span> <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="comment">// SAFETY: The memory is allowed to be uninitialized.</span>
-    <span class="kw">unsafe</span> { <span class="ident">init_from_closure</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(())) }
-}
-
-<span class="doccomment">/// Convert a value into an initializer.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Directly moves the value into the given `slot`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Note that you can just write `field: value,` in all initializer macros. This function&#39;s purpose</span>
-<span class="doccomment">/// is to provide compatibility with APIs that only have `PinInit`/`Init` as parameters.</span>
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_value</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">value</span>: <span class="ident">T</span>) -&gt; <span class="kw">impl</span> <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="comment">// SAFETY: We use the value to initialize the slot.</span>
-    <span class="kw">unsafe</span> {
-        <span class="ident">init_from_closure</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">slot</span>: <span class="kw-2">*mut</span> <span class="ident">T</span><span class="op">|</span> {
-            <span class="ident">slot</span>.<span class="ident">write</span>(<span class="ident">value</span>);
-            <span class="prelude-val">Ok</span>(())
-        })
-    }
-}
-
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">PinInit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">T</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__pinned_init</span>(<span class="self">self</span>, <span class="ident">slot</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Infallible</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> { <span class="ident">slot</span>.<span class="ident">write</span>(<span class="self">self</span>) };
-        <span class="prelude-val">Ok</span>(())
-    }
-}
-
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Init</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">T</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">__init</span>(<span class="self">self</span>, <span class="ident">slot</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Infallible</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> { <span class="ident">slot</span>.<span class="ident">write</span>(<span class="self">self</span>) };
-        <span class="prelude-val">Ok</span>(())
-    }
-}
-
 <span class="macro">macro_rules!</span> <span class="ident">impl_zeroable</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ty</span>, )<span class="kw-2">*</span>) =&gt; {
-        $(<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Zeroable</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> {})<span class="op">*</span>
+    ($($({$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>})<span class="question-mark">?</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ty</span>, )<span class="kw-2">*</span>) =&gt; {
+        $(<span class="kw">unsafe</span> <span class="kw">impl</span>$($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>)<span class="kw-2">*</span>)<span class="question-mark">?</span> <span class="ident">Zeroable</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span> {})<span class="op">*</span>
     };
 }
+
 <span class="macro">impl_zeroable!</span> {
     <span class="comment">// SAFETY: All primitives that are allowed to be zero.</span>
     <span class="ident">bool</span>,
@@ -2738,19 +2826,38 @@
     <span class="ident">u8</span>, <span class="ident">u16</span>, <span class="ident">u32</span>, <span class="ident">u64</span>, <span class="ident">u128</span>, <span class="ident">usize</span>,
     <span class="ident">i8</span>, <span class="ident">i16</span>, <span class="ident">i32</span>, <span class="ident">i64</span>, <span class="ident">i128</span>, <span class="ident">isize</span>,
     <span class="ident">f32</span>, <span class="ident">f64</span>,
-    <span class="comment">// SAFETY: There is nothing to zero.</span>
-    <span class="ident">core::marker::PhantomPinned</span>, <span class="ident">Infallible</span>, (),
+
+    <span class="comment">// SAFETY: These are ZSTs, there is nothing to zero.</span>
+    {<span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>} <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">core::marker::PhantomPinned</span>, <span class="ident">Infallible</span>, (),
+
+    <span class="comment">// SAFETY: Type is allowed to take any value, including all zeros.</span>
+    {<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+
+    <span class="comment">// SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee).</span>
+    <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroU8</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroU16</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroU32</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroU64</span><span class="op">&gt;</span>,
+    <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroU128</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroUsize</span><span class="op">&gt;</span>,
+    <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroI8</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroI16</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroI32</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroI64</span><span class="op">&gt;</span>,
+    <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroI128</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroIsize</span><span class="op">&gt;</span>,
+
+    <span class="comment">// SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee).</span>
+    <span class="comment">//</span>
+    <span class="comment">// In this case we are allowed to use `T: ?Sized`, since all zeros is the `None` variant.</span>
+    {<span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>} <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    {<span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>} <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+
+    <span class="comment">// SAFETY: `null` pointer is valid.</span>
+    <span class="comment">//</span>
+    <span class="comment">// We cannot use `T: ?Sized`, since the VTABLE pointer part of fat pointers is not allowed to be</span>
+    <span class="comment">// null.</span>
+    {<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="kw-2">*mut</span> <span class="ident">T</span>, {<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="kw-2">*const</span> <span class="ident">T</span>,
+
+    <span class="comment">// SAFETY: `null` pointer is valid and the metadata part of these fat pointers is allowed to be</span>
+    <span class="comment">// zero.</span>
+    {<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="kw-2">*mut</span> [<span class="ident">T</span>], {<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>} <span class="kw-2">*const</span> [<span class="ident">T</span>], <span class="kw-2">*mut</span> <span class="ident">str</span>, <span class="kw-2">*const</span> <span class="ident">str</span>,
+
+    <span class="comment">// SAFETY: `T` is `Zeroable`.</span>
+    {<span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span>, <span class="ident">T</span>: <span class="ident">Zeroable</span><span class="op">&gt;</span>} [<span class="ident">T</span>; <span class="ident">N</span>], {<span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Zeroable</span><span class="op">&gt;</span>} <span class="ident">Wrapping</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 }
-
-<span class="comment">// SAFETY: We are allowed to zero padding bytes.</span>
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span>, <span class="ident">T</span>: <span class="ident">Zeroable</span><span class="op">&gt;</span> <span class="ident">Zeroable</span> <span class="kw">for</span> [<span class="ident">T</span>; <span class="ident">N</span>] {}
-
-<span class="comment">// SAFETY: There is nothing to zero.</span>
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Zeroable</span> <span class="kw">for</span> <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {}
-
-<span class="comment">// SAFETY: `null` pointer is valid.</span>
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Zeroable</span> <span class="kw">for</span> <span class="kw-2">*mut</span> <span class="ident">T</span> {}
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Zeroable</span> <span class="kw">for</span> <span class="kw-2">*const</span> <span class="ident">T</span> {}
 
 <span class="macro">macro_rules!</span> <span class="ident">impl_tuple_zeroable</span> {
     ($(,)<span class="question-mark">?</span>) =&gt; {};
@@ -2762,105 +2869,6 @@
 }
 
 <span class="macro">impl_tuple_zeroable!</span>(<span class="ident">A</span>, <span class="ident">B</span>, <span class="ident">C</span>, <span class="ident">D</span>, <span class="ident">E</span>, <span class="ident">F</span>, <span class="ident">G</span>, <span class="ident">H</span>, <span class="ident">I</span>, <span class="ident">J</span>);
-
-<span class="comment">// This trait is only implemented via the `#[pin_data]` proc-macro. It is used to facilitate</span>
-<span class="comment">// the pin projections within the initializers.</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">__PinData</span> {
-    <span class="kw">type</span> <span class="ident">__PinData</span>;
-}
-
-<span class="doccomment">/// Stack initializer helper type. Use [`stack_pin_init`] instead of this primitive.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Invariants</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If `self.1` is true, then `self.0` is initialized.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`stack_pin_init`]: kernel::stack_pin_init</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StackInit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">bool</span>);
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">StackInit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="number">1</span> {
-            <span class="comment">// SAFETY: As we are being dropped, we only call this once. And since `self.1 == true`,</span>
-            <span class="comment">// `self.0` has to be initialized.</span>
-            <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">assume_init_drop</span>() };
-        }
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">StackInit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Creates a new [`StackInit&lt;T&gt;`] that is uninitialized. Use [`stack_pin_init`] instead of this</span>
-    <span class="doccomment">/// primitive.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`stack_pin_init`]: kernel::stack_pin_init</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">uninit</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span>(<span class="ident">MaybeUninit::uninit</span>(), <span class="bool-val">false</span>)
-    }
-
-    <span class="doccomment">/// Initializes the contents and returns the result.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Safety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The caller ensures that `self` is on the stack and not accessible in any other way, if this</span>
-    <span class="doccomment">/// function returns `Ok`.</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">init</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">init</span>: <span class="kw">impl</span> <span class="ident">PinInit</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;mut</span> <span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">E</span><span class="op">&gt;</span> {
-        <span class="comment">// SAFETY: The memory slot is valid and this type ensures that it will stay pinned.</span>
-        <span class="kw">unsafe</span> { <span class="ident">init</span>.<span class="ident">__pinned_init</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_mut_ptr</span>())<span class="question-mark">?</span> };
-        <span class="self">self</span>.<span class="number">1</span> <span class="op">=</span> <span class="bool-val">true</span>;
-        <span class="comment">// SAFETY: The slot is now pinned, since we will never give access to `&amp;mut T`.</span>
-        <span class="prelude-val">Ok</span>(<span class="kw">unsafe</span> { <span class="ident">Pin::new_unchecked</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">assume_init_mut</span>()) })
-    }
-}
-
-<span class="doccomment">/// When a value of this type is dropped, it drops a `T`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Public, but hidden type, since it should only be used by the macros of this module.</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DropGuard</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>);
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">DropGuard</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Creates a new [`DropGuard&lt;T&gt;`]. It will [`ptr::drop_in_place`] `ptr` when it gets dropped.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Safety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `ptr` must be a valid pointer.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It is the callers responsibility that `self` will only get dropped if the pointee of `ptr`:</span>
-    <span class="doccomment">/// - has not been dropped,</span>
-    <span class="doccomment">/// - is not accessible by any other means,</span>
-    <span class="doccomment">/// - will not be dropped by any other means.</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span>(<span class="ident">ptr</span>, <span class="ident">Cell::new</span>(<span class="bool-val">true</span>))
-    }
-
-    <span class="doccomment">/// Prevents this guard from dropping the supplied pointer.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Safety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function is unsafe in order to prevent safe code from forgetting this guard. It should</span>
-    <span class="doccomment">/// only be called by the macros in this module.</span>
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">forget</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="self">self</span>.<span class="number">1</span>.<span class="ident">set</span>(<span class="bool-val">false</span>);
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">DropGuard</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="number">1</span>.<span class="ident">get</span>() {
-            <span class="comment">// SAFETY: A `DropGuard` can only be constructed using the unsafe `new` function</span>
-            <span class="comment">// ensuring that this operation is safe.</span>
-            <span class="kw">unsafe</span> { <span class="ident">ptr::drop_in_place</span>(<span class="self">self</span>.<span class="number">0</span>) }
-        }
-    }
-}
 </code></pre></div>
 </section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="kernel" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.62.0 (a8314ef7d 2022-06-27)" ></div>
 </body></html>
