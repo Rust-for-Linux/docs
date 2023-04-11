@@ -1036,7 +1036,7 @@
 <span class="doccomment">//! - use global paths, similarly to file paths, these start with the separator: `::core::panic!()`</span>
 <span class="doccomment">//!   this ensures that the correct item is used, since users could define their own `mod core {}`</span>
 <span class="doccomment">//!   and then their own `panic!` inside to execute arbitrary code inside of our macro.</span>
-<span class="doccomment">//! - macro `unsafe` hygene: we need to ensure that we do not expand arbitrary, user-supplied</span>
+<span class="doccomment">//! - macro `unsafe` hygiene: we need to ensure that we do not expand arbitrary, user-supplied</span>
 <span class="doccomment">//!   expressions inside of an `unsafe` block in the macro, because this would allow users to do</span>
 <span class="doccomment">//!   `unsafe` operations without an associated `unsafe` block.</span>
 <span class="doccomment">//!</span>
@@ -1459,15 +1459,15 @@
         @<span class="ident">impl_sig</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">impl_sig</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
         @<span class="ident">impl_body</span>(
             $(<span class="attribute">#[$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>]</span>)<span class="op">*</span>
-            <span class="kw">fn</span> <span class="ident">drop</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">self</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">st</span>:<span class="ident">ty</span>) {
-                $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>:<span class="ident">stmt</span>)<span class="op">*</span>
+            <span class="kw">fn</span> <span class="ident">drop</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">sig</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) {
+                $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>:<span class="ident">tt</span>)<span class="op">*</span>
             }
         ),
     ) =&gt; {
         <span class="kw">unsafe</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">impl_sig</span>)<span class="op">*</span> {
             <span class="comment">// Inherit all attributes and the type/ident tokens for the signature.</span>
             $(<span class="attribute">#[$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attr</span>)<span class="kw-2">*</span>]</span>)<span class="op">*</span>
-            <span class="kw">fn</span> <span class="ident">drop</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">self</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">st</span>, <span class="kw">_</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::OnlyCallFromDrop</span>) {
+            <span class="kw">fn</span> <span class="ident">drop</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">sig</span>)<span class="kw-2">*</span>, <span class="kw">_</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::init::__internal::OnlyCallFromDrop</span>) {
                 $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">inner</span>)<span class="op">*</span>
             }
         }

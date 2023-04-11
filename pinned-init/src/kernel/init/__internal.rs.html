@@ -225,6 +225,19 @@
 <span id="220">220</span>
 <span id="221">221</span>
 <span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
 </pre><pre class="rust"><code><span class="comment">// SPDX-License-Identifier: Apache-2.0 OR MIT</span>
 
 <span class="doccomment">//! This module contains API-internal items for pin-init.</span>
@@ -343,18 +356,21 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Invariants</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// If `self.1` is true, then `self.0` is initialized.</span>
+<span class="doccomment">/// If `self.is_init` is true, then `self.value` is initialized.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`stack_pin_init`]: kernel::stack_pin_init</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StackInit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">bool</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StackInit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="ident">value</span>: <span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+    <span class="ident">is_init</span>: <span class="ident">bool</span>,
+}
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">StackInit</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="number">1</span> {
-            <span class="comment">// SAFETY: As we are being dropped, we only call this once. And since `self.1 == true`,</span>
-            <span class="comment">// `self.0` has to be initialized.</span>
-            <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="number">0</span>.<span class="ident">assume_init_drop</span>() };
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_init</span> {
+            <span class="comment">// SAFETY: As we are being dropped, we only call this once. And since `self.is_init` is</span>
+            <span class="comment">// true, `self.value` is initialized.</span>
+            <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">value</span>.<span class="ident">assume_init_drop</span>() };
         }
     }
 }
@@ -366,7 +382,10 @@
     <span class="doccomment">/// [`stack_pin_init`]: kernel::stack_pin_init</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">uninit</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span>(<span class="ident">MaybeUninit::uninit</span>(), <span class="bool-val">false</span>)
+        <span class="self">Self</span> {
+            <span class="ident">value</span>: <span class="ident">MaybeUninit::uninit</span>(),
+            <span class="ident">is_init</span>: <span class="bool-val">false</span>,
+        }
     }
 
     <span class="doccomment">/// Initializes the contents and returns the result.</span>
@@ -376,23 +395,27 @@
         <span class="kw">let</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">Pin::into_inner_unchecked</span>(<span class="self">self</span>) };
         <span class="comment">// The value is currently initialized, so it needs to be dropped before we can reuse</span>
         <span class="comment">// the memory (this is a safety guarantee of `Pin`).</span>
-        <span class="kw">if</span> <span class="ident">this</span>.<span class="number">1</span> {
-            <span class="comment">// SAFETY: `this.1` is true and we set it to false after this.</span>
-            <span class="kw">unsafe</span> { <span class="ident">this</span>.<span class="number">0</span>.<span class="ident">assume_init_drop</span>() };
-            <span class="ident">this</span>.<span class="number">1</span> <span class="op">=</span> <span class="bool-val">false</span>;
+        <span class="kw">if</span> <span class="ident">this</span>.<span class="ident">is_init</span> {
+            <span class="ident">this</span>.<span class="ident">is_init</span> <span class="op">=</span> <span class="bool-val">false</span>;
+            <span class="comment">// SAFETY: `this.is_init` was true and therefore `this.value` is initialized.</span>
+            <span class="kw">unsafe</span> { <span class="ident">this</span>.<span class="ident">value</span>.<span class="ident">assume_init_drop</span>() };
         }
         <span class="comment">// SAFETY: The memory slot is valid and this type ensures that it will stay pinned.</span>
-        <span class="kw">unsafe</span> { <span class="ident">init</span>.<span class="ident">__pinned_init</span>(<span class="ident">this</span>.<span class="number">0</span>.<span class="ident">as_mut_ptr</span>())<span class="question-mark">?</span> };
-        <span class="ident">this</span>.<span class="number">1</span> <span class="op">=</span> <span class="bool-val">true</span>;
+        <span class="kw">unsafe</span> { <span class="ident">init</span>.<span class="ident">__pinned_init</span>(<span class="ident">this</span>.<span class="ident">value</span>.<span class="ident">as_mut_ptr</span>())<span class="question-mark">?</span> };
+        <span class="comment">// INVARIANT: `this.value` is initialized above.</span>
+        <span class="ident">this</span>.<span class="ident">is_init</span> <span class="op">=</span> <span class="bool-val">true</span>;
         <span class="comment">// SAFETY: The slot is now pinned, since we will never give access to `&amp;mut T`.</span>
-        <span class="prelude-val">Ok</span>(<span class="kw">unsafe</span> { <span class="ident">Pin::new_unchecked</span>(<span class="ident">this</span>.<span class="number">0</span>.<span class="ident">assume_init_mut</span>()) })
+        <span class="prelude-val">Ok</span>(<span class="kw">unsafe</span> { <span class="ident">Pin::new_unchecked</span>(<span class="ident">this</span>.<span class="ident">value</span>.<span class="ident">assume_init_mut</span>()) })
     }
 }
 
 <span class="doccomment">/// When a value of this type is dropped, it drops a `T`.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Can be forgotton to prevent the drop.</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DropGuard</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>);
+<span class="doccomment">/// Can be forgotten to prevent the drop.</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DropGuard</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> {
+    <span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>,
+    <span class="ident">do_drop</span>: <span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
+}
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">DropGuard</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Creates a new [`DropGuard&lt;T&gt;`]. It will [`ptr::drop_in_place`] `ptr` when it gets dropped.</span>
@@ -407,7 +430,10 @@
     <span class="doccomment">/// - will not be dropped by any other means.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">T</span>) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span>(<span class="ident">ptr</span>, <span class="ident">Cell::new</span>(<span class="bool-val">true</span>))
+        <span class="self">Self</span> {
+            <span class="ident">ptr</span>,
+            <span class="ident">do_drop</span>: <span class="ident">Cell::new</span>(<span class="bool-val">true</span>),
+        }
     }
 
     <span class="doccomment">/// Prevents this guard from dropping the supplied pointer.</span>
@@ -418,17 +444,17 @@
     <span class="doccomment">/// only be called by the macros in this module.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">forget</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="self">self</span>.<span class="number">1</span>.<span class="ident">set</span>(<span class="bool-val">false</span>);
+        <span class="self">self</span>.<span class="ident">do_drop</span>.<span class="ident">set</span>(<span class="bool-val">false</span>);
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">DropGuard</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="number">1</span>.<span class="ident">get</span>() {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">do_drop</span>.<span class="ident">get</span>() {
             <span class="comment">// SAFETY: A `DropGuard` can only be constructed using the unsafe `new` function</span>
             <span class="comment">// ensuring that this operation is safe.</span>
-            <span class="kw">unsafe</span> { <span class="ident">ptr::drop_in_place</span>(<span class="self">self</span>.<span class="number">0</span>) }
+            <span class="kw">unsafe</span> { <span class="ident">ptr::drop_in_place</span>(<span class="self">self</span>.<span class="ident">ptr</span>) }
         }
     }
 }

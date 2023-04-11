@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["code","Contains the C-compatible error codes."]],"struct":[["Error","Generic integer kernel error."]],"type":[["Result","A [`Result`] with an [`Error`] error type."]]});
+initSidebarItems({"fn":[["to_result","Converts an integer as returned by a C kernel function to an error if it’s negative, and `Ok(())` otherwise."]],"mod":[["code","Contains the C-compatible error codes."]],"struct":[["Error","Generic integer kernel error."]],"type":[["Result","A [`Result`] with an [`Error`] error type."]]});
