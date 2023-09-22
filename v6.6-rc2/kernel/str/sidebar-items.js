@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["CStrConvertError"],"struct":["CStr","CString"],"type":["BStr"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"macro":["build_assert","current","init","pin_init","pr_alert","pr_crit","pr_debug","pr_emerg","pr_err","pr_info","pr_notice","pr_warn","static_assert","try_init","try_pin_init"]};

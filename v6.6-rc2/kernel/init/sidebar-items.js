@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["init_array_from_fn","init_from_closure","pin_init_array_from_fn","pin_init_from_closure","uninit","zeroed"],"struct":["ChainInit","ChainPinInit"],"trait":["InPlaceInit","Init","PinInit","PinnedDrop","Zeroable"]};
