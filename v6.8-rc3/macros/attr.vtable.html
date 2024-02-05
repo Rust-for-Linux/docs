@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Declares or implements a vtable trait."><title>vtable in macros - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" type="image/svg+xml" href="../static.files/logo.svg"></head><body class="rustdoc attr"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../macros/index.html"><img class="rust-logo" src="../static.files/logo.svg" alt="logo"></a></nav><nav class="sidebar"><a class="logo-container" href="../macros/index.html"><img class="rust-logo" src="../static.files/logo.svg" alt="logo"></a><div class="sidebar-elems"><h2><a href="index.html">In macros</a></h2></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Attribute Macro <a href="index.html">macros</a>::<wbr><a class="attr" href="#">vtable</a><button id="copy-path" title="Copy item path to clipboard"><img src="../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../src/macros/lib.rs.html#153-155">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>#[vtable]</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Declares or implements a vtable trait.</p>
+<p>Linux’s use of pure vtables is very close to Rust traits, but they differ
+in how unimplemented functions are represented. In Rust, traits can provide
+default implementation for all non-required methods (and the default
+implementation could just return <code>Error::EINVAL</code>); Linux typically use C
+<code>NULL</code> pointers to represent these functions.</p>
+<p>This attribute closes that gap. A trait can be annotated with the
+<code>#[vtable]</code> attribute. Implementers of the trait will then also have to
+annotate the trait with <code>#[vtable]</code>. This attribute generates a <code>HAS_*</code>
+associated constant bool for each method in the trait that is set to true if
+the implementer has overridden the associated method.</p>
+<p>For a trait method to be optional, it must have a default implementation.
+This is also the case for traits annotated with <code>#[vtable]</code>, but in this
+case the default implementation will never be executed. The reason for this
+is that the functions will be called through function pointers installed in
+C side vtables. When an optional method is not implemented on a <code>#[vtable]</code>
+trait, a NULL entry is installed in the vtable. Thus the default
+implementation is never called. Since these traits are not designed to be
+used on the Rust side, it should not be possible to call the default
+implementation. This is done to ensure that we call the vtable methods
+through the C vtable, and not through the Rust vtable. Therefore, the
+default implementation should call <code>kernel::build_error</code>, which prevents
+calls to this function at compile time:</p>
+
+<div class="example-wrap compile_fail"><a href="#" class="tooltip" title="This example deliberately fails to compile">ⓘ</a><pre class="rust rust-example-rendered"><code>kernel::build_error(VTABLE_DEFAULT_ERROR)</code></pre></div>
+<p>Note that you might need to import <a href="../kernel/error/constant.VTABLE_DEFAULT_ERROR.html"><code>kernel::error::VTABLE_DEFAULT_ERROR</code></a>.</p>
+<p>This macro should not be used when all functions are required.</p>
+<h2 id="examples"><a href="#examples">Examples</a></h2>
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">use </span>kernel::error::VTABLE_DEFAULT_ERROR;
+<span class="kw">use </span>kernel::prelude::<span class="kw-2">*</span>;
+
+<span class="comment">// Declares a `#[vtable]` trait
+</span><span class="attr">#[vtable]
+</span><span class="kw">pub trait </span>Operations: Send + Sync + Sized {
+    <span class="kw">fn </span>foo(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        kernel::build_error(VTABLE_DEFAULT_ERROR)
+    }
+
+    <span class="kw">fn </span>bar(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        kernel::build_error(VTABLE_DEFAULT_ERROR)
+    }
+}
+
+<span class="kw">struct </span>Foo;
+
+<span class="comment">// Implements the `#[vtable]` trait
+</span><span class="attr">#[vtable]
+</span><span class="kw">impl </span>Operations <span class="kw">for </span>Foo {
+    <span class="kw">fn </span>foo(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="comment">// ...
+    </span>}
+}
+
+<span class="macro">assert_eq!</span>(&lt;Foo <span class="kw">as </span>Operations&gt;::HAS_FOO, <span class="bool-val">true</span>);
+<span class="macro">assert_eq!</span>(&lt;Foo <span class="kw">as </span>Operations&gt;::HAS_BAR, <span class="bool-val">false</span>);</code></pre></div>
+</div></details></section></div></main></body></html>

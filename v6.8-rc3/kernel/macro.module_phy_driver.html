@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Declares a kernel module for PHYs drivers."><title>module_phy_driver in kernel - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="kernel" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" type="image/svg+xml" href="../static.files/logo.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../kernel/index.html"><img class="rust-logo" src="../static.files/logo.svg" alt="logo"></a></nav><nav class="sidebar"><a class="logo-container" href="../kernel/index.html"><img class="rust-logo" src="../static.files/logo.svg" alt="logo"></a><div class="sidebar-elems"><h2><a href="index.html">In kernel</a></h2></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Macro <a href="index.html">kernel</a>::<wbr><a class="macro" href="#">module_phy_driver</a><button id="copy-path" title="Copy item path to clipboard"><img src="../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../src/kernel/net/phy.rs.html#849-901">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><span class="macro">macro_rules! </span>module_phy_driver {
+    (@replace_expr <span class="macro-nonterminal">$_t</span>:tt <span class="macro-nonterminal">$sub</span>:expr) =&gt; { ... };
+    (@count_devices $(<span class="macro-nonterminal">$x</span>:expr),<span class="kw-2">*</span>) =&gt; { ... };
+    (@device_table [$(<span class="macro-nonterminal">$dev</span>:expr),+]) =&gt; { ... };
+    (drivers: [$(<span class="macro-nonterminal">$driver</span>:ident),+ $(,)<span class="question-mark">?</span>], device_table: [$(<span class="macro-nonterminal">$dev</span>:expr),+ $(,)<span class="question-mark">?</span>], $(<span class="macro-nonterminal">$f</span>:tt)<span class="kw-2">*</span>) =&gt; { ... };
+}</pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Declares a kernel module for PHYs drivers.</p>
+<p>This creates a static array of kernel’s <code>struct phy_driver</code> and registers it.
+This also corresponds to the kernel’s <code>MODULE_DEVICE_TABLE</code> macro, which embeds the information
+for module loading into the module binary file. Every driver needs an entry in <code>device_table</code>.</p>
+<h2 id="examples"><a href="#examples">Examples</a></h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>kernel::c_str;
+<span class="kw">use </span>kernel::net::phy::{<span class="self">self</span>, DeviceId};
+<span class="kw">use </span>kernel::prelude::<span class="kw-2">*</span>;
+
+<span class="macro">kernel::module_phy_driver! </span>{
+    drivers: [PhySample],
+    device_table: [
+        DeviceId::new_with_driver::&lt;PhySample&gt;()
+    ],
+    name: <span class="string">&quot;rust_sample_phy&quot;</span>,
+    author: <span class="string">&quot;Rust for Linux Contributors&quot;</span>,
+    description: <span class="string">&quot;Rust sample PHYs driver&quot;</span>,
+    license: <span class="string">&quot;GPL&quot;</span>,
+}
+
+<span class="kw">struct </span>PhySample;
+
+<span class="attr">#[vtable]
+</span><span class="kw">impl </span>phy::Driver <span class="kw">for </span>PhySample {
+    <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>CStr = <span class="macro">c_str!</span>(<span class="string">&quot;PhySample&quot;</span>);
+    <span class="kw">const </span>PHY_DEVICE_ID: phy::DeviceId = phy::DeviceId::new_with_exact_mask(<span class="number">0x00000001</span>);
+}</code></pre></div>
+<p>This expands to the following code:</p>
+
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">use </span>kernel::c_str;
+<span class="kw">use </span>kernel::net::phy::{<span class="self">self</span>, DeviceId};
+<span class="kw">use </span>kernel::prelude::<span class="kw-2">*</span>;
+
+<span class="kw">struct </span>Module {
+    _reg: ::kernel::net::phy::Registration,
+}
+
+<span class="macro">module! </span>{
+    <span class="kw">type</span>: Module,
+    name: <span class="string">&quot;rust_sample_phy&quot;</span>,
+    author: <span class="string">&quot;Rust for Linux Contributors&quot;</span>,
+    description: <span class="string">&quot;Rust sample PHYs driver&quot;</span>,
+    license: <span class="string">&quot;GPL&quot;</span>,
+}
+
+<span class="kw">struct </span>PhySample;
+
+<span class="attr">#[vtable]
+</span><span class="kw">impl </span>phy::Driver <span class="kw">for </span>PhySample {
+    <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>CStr = <span class="macro">c_str!</span>(<span class="string">&quot;PhySample&quot;</span>);
+    <span class="kw">const </span>PHY_DEVICE_ID: phy::DeviceId = phy::DeviceId::new_with_exact_mask(<span class="number">0x00000001</span>);
+}
+
+<span class="kw">const _</span>: () = {
+    <span class="kw">static </span><span class="kw-2">mut </span>DRIVERS: [::kernel::net::phy::DriverVTable; <span class="number">1</span>] =
+        [::kernel::net::phy::create_phy_driver::&lt;PhySample&gt;()];
+
+    <span class="kw">impl </span>::kernel::Module <span class="kw">for </span>Module {
+        <span class="kw">fn </span>init(module: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ThisModule) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+            <span class="kw">let </span>drivers = <span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut </span>DRIVERS };
+            <span class="kw">let </span><span class="kw-2">mut </span>reg = ::kernel::net::phy::Registration::register(
+                module,
+                ::core::pin::Pin::static_mut(drivers),
+            )<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(Module { _reg: reg })
+        }
+    }
+};
+
+<span class="attr">#[cfg(MODULE)]
+#[no_mangle]
+</span><span class="kw">static </span>__mod_mdio__phydev_device_table: [::kernel::bindings::mdio_device_id; <span class="number">2</span>] = [
+    ::kernel::bindings::mdio_device_id {
+        phy_id: <span class="number">0x00000001</span>,
+        phy_id_mask: <span class="number">0xffffffff</span>,
+    },
+    ::kernel::bindings::mdio_device_id {
+        phy_id: <span class="number">0</span>,
+        phy_id_mask: <span class="number">0</span>,
+    },
+];</code></pre></div>
+</div></details></section></div></main></body></html>

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["VTABLE_DEFAULT_ERROR"],"fn":["to_result"],"mod":["code"],"struct":["Error"],"type":["Result"]};
