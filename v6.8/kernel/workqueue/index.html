@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Work queues."><title>kernel::workqueue - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="kernel" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" type="image/svg+xml" href="../../static.files/logo.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../static.files/logo.svg" alt="logo"></a></nav><nav class="sidebar"><a class="logo-container" href="../../kernel/index.html"><img class="rust-logo" src="../../static.files/logo.svg" alt="logo"></a><h2 class="location"><a href="#">Module workqueue</a></h2><div class="sidebar-elems"><section><ul class="block"><li><a href="#structs">Structs</a></li><li><a href="#traits">Traits</a></li><li><a href="#functions">Functions</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Module <a href="../index.html">kernel</a>::<wbr><a class="mod" href="#">workqueue</a><button id="copy-path" title="Copy item path to clipboard"><img src="../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../../src/kernel/workqueue.rs.html#3-679">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Work queues.</p>
+<p>This file has two components: The raw work item API, and the safe work item API.</p>
+<p>One pattern that is used in both APIs is the <code>ID</code> const generic, which exists to allow a single
+type to define multiple <code>work_struct</code> fields. This is done by choosing an id for each field,
+and using that id to specify which field you wish to use. (The actual value doesn’t matter, as
+long as you use different values for different fields of the same struct.) Since these IDs are
+generic, they are used only at compile-time, so they shouldn’t exist in the final binary.</p>
+<h2 id="the-raw-api"><a href="#the-raw-api">The raw API</a></h2>
+<p>The raw API consists of the <code>RawWorkItem</code> trait, where the work item needs to provide an
+arbitrary function that knows how to enqueue the work item. It should usually not be used
+directly, but if you want to, you can use it without using the pieces from the safe API.</p>
+<h2 id="the-safe-api"><a href="#the-safe-api">The safe API</a></h2>
+<p>The safe API is used via the <code>Work</code> struct and <code>WorkItem</code> traits. Furthermore, it also includes
+a trait called <code>WorkItemPointer</code>, which is usually not used directly by the user.</p>
+<ul>
+<li>The <code>Work</code> struct is the Rust wrapper for the C <code>work_struct</code> type.</li>
+<li>The <code>WorkItem</code> trait is implemented for structs that can be enqueued to a workqueue.</li>
+<li>The <code>WorkItemPointer</code> trait is implemented for the pointer type that points at a something
+that implements <code>WorkItem</code>.</li>
+</ul>
+<h3 id="example"><a href="#example">Example</a></h3>
+<p>This example defines a struct that holds an integer and can be scheduled on the workqueue. When
+the struct is executed, it will print the integer. Since there is only one <code>work_struct</code> field,
+we do not need to specify ids for the fields.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>kernel::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>kernel::sync::Arc;
+<span class="kw">use </span>kernel::workqueue::{<span class="self">self</span>, Work, WorkItem};
+<span class="kw">use </span>kernel::{impl_has_work, new_work};
+
+<span class="attr">#[pin_data]
+</span><span class="kw">struct </span>MyStruct {
+    value: i32,
+    <span class="attr">#[pin]
+    </span>work: Work&lt;MyStruct&gt;,
+}
+
+<span class="macro">impl_has_work! </span>{
+    <span class="kw">impl </span>HasWork&lt;<span class="self">Self</span>&gt; <span class="kw">for </span>MyStruct { <span class="self">self</span>.work }
+}
+
+<span class="kw">impl </span>MyStruct {
+    <span class="kw">fn </span>new(value: i32) -&gt; <span class="prelude-ty">Result</span>&lt;Arc&lt;<span class="self">Self</span>&gt;&gt; {
+        Arc::pin_init(<span class="macro">pin_init!</span>(MyStruct {
+            value,
+            work &lt;- <span class="macro">new_work!</span>(<span class="string">&quot;MyStruct::work&quot;</span>),
+        }))
+    }
+}
+
+<span class="kw">impl </span>WorkItem <span class="kw">for </span>MyStruct {
+    <span class="kw">type </span>Pointer = Arc&lt;MyStruct&gt;;
+
+    <span class="kw">fn </span>run(this: Arc&lt;MyStruct&gt;) {
+        <span class="macro">pr_info!</span>(<span class="string">&quot;The value is: {}&quot;</span>, this.value);
+    }
+}
+
+<span class="doccomment">/// This method will enqueue the struct for execution on the system workqueue, where its value
+/// will be printed.
+</span><span class="kw">fn </span>print_later(val: Arc&lt;MyStruct&gt;) {
+    <span class="kw">let _ </span>= workqueue::system().enqueue(val);
+}</code></pre></div>
+<p>The following example shows how multiple <code>work_struct</code> fields can be used:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>kernel::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>kernel::sync::Arc;
+<span class="kw">use </span>kernel::workqueue::{<span class="self">self</span>, Work, WorkItem};
+<span class="kw">use </span>kernel::{impl_has_work, new_work};
+
+<span class="attr">#[pin_data]
+</span><span class="kw">struct </span>MyStruct {
+    value_1: i32,
+    value_2: i32,
+    <span class="attr">#[pin]
+    </span>work_1: Work&lt;MyStruct, <span class="number">1</span>&gt;,
+    <span class="attr">#[pin]
+    </span>work_2: Work&lt;MyStruct, <span class="number">2</span>&gt;,
+}
+
+<span class="macro">impl_has_work! </span>{
+    <span class="kw">impl </span>HasWork&lt;<span class="self">Self</span>, <span class="number">1</span>&gt; <span class="kw">for </span>MyStruct { <span class="self">self</span>.work_1 }
+    <span class="kw">impl </span>HasWork&lt;<span class="self">Self</span>, <span class="number">2</span>&gt; <span class="kw">for </span>MyStruct { <span class="self">self</span>.work_2 }
+}
+
+<span class="kw">impl </span>MyStruct {
+    <span class="kw">fn </span>new(value_1: i32, value_2: i32) -&gt; <span class="prelude-ty">Result</span>&lt;Arc&lt;<span class="self">Self</span>&gt;&gt; {
+        Arc::pin_init(<span class="macro">pin_init!</span>(MyStruct {
+            value_1,
+            value_2,
+            work_1 &lt;- <span class="macro">new_work!</span>(<span class="string">&quot;MyStruct::work_1&quot;</span>),
+            work_2 &lt;- <span class="macro">new_work!</span>(<span class="string">&quot;MyStruct::work_2&quot;</span>),
+        }))
+    }
+}
+
+<span class="kw">impl </span>WorkItem&lt;<span class="number">1</span>&gt; <span class="kw">for </span>MyStruct {
+    <span class="kw">type </span>Pointer = Arc&lt;MyStruct&gt;;
+
+    <span class="kw">fn </span>run(this: Arc&lt;MyStruct&gt;) {
+        <span class="macro">pr_info!</span>(<span class="string">&quot;The value is: {}&quot;</span>, this.value_1);
+    }
+}
+
+<span class="kw">impl </span>WorkItem&lt;<span class="number">2</span>&gt; <span class="kw">for </span>MyStruct {
+    <span class="kw">type </span>Pointer = Arc&lt;MyStruct&gt;;
+
+    <span class="kw">fn </span>run(this: Arc&lt;MyStruct&gt;) {
+        <span class="macro">pr_info!</span>(<span class="string">&quot;The second value is: {}&quot;</span>, this.value_2);
+    }
+}
+
+<span class="kw">fn </span>print_1_later(val: Arc&lt;MyStruct&gt;) {
+    <span class="kw">let _ </span>= workqueue::system().enqueue::&lt;Arc&lt;MyStruct&gt;, <span class="number">1</span>&gt;(val);
+}
+
+<span class="kw">fn </span>print_2_later(val: Arc&lt;MyStruct&gt;) {
+    <span class="kw">let _ </span>= workqueue::system().enqueue::&lt;Arc&lt;MyStruct&gt;, <span class="number">2</span>&gt;(val);
+}</code></pre></div>
+<p>C header: <a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/workqueue.h?h=v6.8"><code>include/linux/workqueue.h</code></a></p>
+</div></details><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.Queue.html" title="struct kernel::workqueue::Queue">Queue</a></div><div class="desc docblock-short">A kernel work queue.</div></li><li><div class="item-name"><a class="struct" href="struct.Work.html" title="struct kernel::workqueue::Work">Work</a></div><div class="desc docblock-short">Links for a work item.</div></li></ul><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2><ul class="item-table"><li><div class="item-name"><a class="trait" href="trait.HasWork.html" title="trait kernel::workqueue::HasWork">HasWork</a></div><div class="desc docblock-short">Declares that a type has a <a href="struct.Work.html" title="struct kernel::workqueue::Work"><code>Work&lt;T, ID&gt;</code></a> field.</div></li><li><div class="item-name"><a class="trait" href="trait.RawWorkItem.html" title="trait kernel::workqueue::RawWorkItem">RawWorkItem</a></div><div class="desc docblock-short">A raw work item.</div></li><li><div class="item-name"><a class="trait" href="trait.WorkItem.html" title="trait kernel::workqueue::WorkItem">WorkItem</a></div><div class="desc docblock-short">Defines the method that should be called when this work item is executed.</div></li><li><div class="item-name"><a class="trait" href="trait.WorkItemPointer.html" title="trait kernel::workqueue::WorkItemPointer">WorkItemPointer</a></div><div class="desc docblock-short">Defines the method that should be called directly when a work item is executed.</div></li></ul><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2><ul class="item-table"><li><div class="item-name"><a class="fn" href="fn.system.html" title="fn kernel::workqueue::system">system</a></div><div class="desc docblock-short">Returns the system work queue (<code>system_wq</code>).</div></li><li><div class="item-name"><a class="fn" href="fn.system_freezable.html" title="fn kernel::workqueue::system_freezable">system_freezable</a></div><div class="desc docblock-short">Returns the system freezable work queue (<code>system_freezable_wq</code>).</div></li><li><div class="item-name"><a class="fn" href="fn.system_freezable_power_efficient.html" title="fn kernel::workqueue::system_freezable_power_efficient">system_freezable_power_efficient</a></div><div class="desc docblock-short">Returns the system freezable power-efficient work queue (<code>system_freezable_power_efficient_wq</code>).</div></li><li><div class="item-name"><a class="fn" href="fn.system_highpri.html" title="fn kernel::workqueue::system_highpri">system_highpri</a></div><div class="desc docblock-short">Returns the system high-priority work queue (<code>system_highpri_wq</code>).</div></li><li><div class="item-name"><a class="fn" href="fn.system_long.html" title="fn kernel::workqueue::system_long">system_long</a></div><div class="desc docblock-short">Returns the system work queue for potentially long-running work items (<code>system_long_wq</code>).</div></li><li><div class="item-name"><a class="fn" href="fn.system_power_efficient.html" title="fn kernel::workqueue::system_power_efficient">system_power_efficient</a></div><div class="desc docblock-short">Returns the system power-efficient work queue (<code>system_power_efficient_wq</code>).</div></li><li><div class="item-name"><a class="fn" href="fn.system_unbound.html" title="fn kernel::workqueue::system_unbound">system_unbound</a></div><div class="desc docblock-short">Returns the system unbound work queue (<code>system_unbound_wq</code>).</div></li></ul></section></div></main></body></html>

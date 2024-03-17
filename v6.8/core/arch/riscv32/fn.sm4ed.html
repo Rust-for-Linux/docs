@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Accelerates the block encrypt/decrypt operation of the SM4 block cipher [5, 31]."><title>sm4ed in core::arch::riscv32 - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../static.files/logo.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../static.files/logo.svg" alt="logo"></a></nav><nav class="sidebar"><a class="logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../static.files/logo.svg" alt="logo"></a><div class="sidebar-elems"><h2><a href="index.html">In core::arch::riscv32</a></h2></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Function <a href="../../index.html">core</a>::<wbr><a href="../index.html">arch</a>::<wbr><a href="index.html">riscv32</a>::<wbr><a class="fn" href="#">sm4ed</a><button id="copy-path" title="Copy item path to clipboard"><img src="../../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../../../src/core/stdarch/crates/core_arch/src/riscv_shared/zk.rs.html#294-298">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub unsafe fn sm4ed(rs1: <a class="primitive" href="../../primitive.u32.html">u32</a>, rs2: <a class="primitive" href="../../primitive.u32.html">u32</a>, const BS: <a class="primitive" href="../../primitive.u8.html">u8</a>) -&gt; <a class="primitive" href="../../primitive.u32.html">u32</a></code></pre><span class="item-info"><div class="stab unstable"><span class="emoji">🔬</span><span>This is a nightly-only experimental API. (<code>stdsimd</code>&nbsp;<a href="https://github.com/rust-lang/rust/issues/48556">#48556</a>)</span></div><div class="stab portability">Available on <strong>RISC-V RV32 and target feature <code>zksed</code></strong> only.</div></span><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Accelerates the block encrypt/decrypt operation of the SM4 block cipher [5, 31].</p>
+<p>Implements a T-tables in hardware style approach to accelerating the SM4 round function. A
+byte is extracted from rs2 based on bs, to which the SBox and linear layer transforms are
+applied, before the result is XOR’d with rs1 and written back to rd. This instruction
+exists on RV32 and RV64 base architectures. On RV64, the 32-bit result is sign extended to
+XLEN bits. This instruction must always be implemented such that its execution latency does
+not depend on the data being operated on.</p>
+<p>Source: RISC-V Cryptography Extensions Volume I: Scalar &amp; Entropy Source Instructions</p>
+<p>Version: v1.0.1</p>
+<p>Section: 3.43</p>
+<h2 id="note"><a href="#note">Note</a></h2>
+<p>The <code>BS</code> parameter is expected to be a constant value and only the bottom 2 bits of <code>bs</code> are
+used.</p>
+<h2 id="safety"><a href="#safety">Safety</a></h2>
+<p>This function is safe to use if the <code>zksed</code> target feature is present.</p>
+<h2 id="details"><a href="#details">Details</a></h2>
+<p>Accelerates the round function <code>F</code> in the SM4 block cipher algorithm</p>
+<p>This instruction is included in extension <code>Zksed</code>. It’s defined as:</p>
+<div class="example-wrap"><pre class="language-text"><code>SM4ED(x, a, BS) = x ⊕ T(ai)
+... where
+ai = a.bytes[BS]
+T(ai) = L(τ(ai))
+bi = τ(ai) = SM4-S-Box(ai)
+ci = L(bi) = bi ⊕ (bi ≪ 2) ⊕ (bi ≪ 10) ⊕ (bi ≪ 18) ⊕ (bi ≪ 24)
+SM4ED = (ci ≪ (BS * 8)) ⊕ x
+</code></pre></div>
+<p>where <code>⊕</code> represents 32-bit xor, and <code>≪ k</code> represents rotate left by <code>k</code> bits.
+As is defined above, <code>T</code> is a combined transformation of non linear S-Box transform <code>τ</code>
+and linear layer transform <code>L</code>.</p>
+<p>In the SM4 algorithm, the round function <code>F</code> is defined as:</p>
+<div class="example-wrap"><pre class="language-text"><code>F(x0, x1, x2, x3, rk) = x0 ⊕ T(x1 ⊕ x2 ⊕ x3 ⊕ rk)
+... where
+T(A) = L(τ(A))
+B = τ(A) = (SM4-S-Box(a0), SM4-S-Box(a1), SM4-S-Box(a2), SM4-S-Box(a3))
+C = L(B) = B ⊕ (B ≪ 2) ⊕ (B ≪ 10) ⊕ (B ≪ 18) ⊕ (B ≪ 24)
+</code></pre></div>
+<p>It can be implemented by <code>sm4ed</code> instruction like:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>a = x1 ^ x2 ^ x3 ^ rk;
+<span class="kw">let </span>c0 = sm4ed(x0, a, <span class="number">0</span>);
+<span class="kw">let </span>c1 = sm4ed(c0, a, <span class="number">1</span>); <span class="comment">// c1 represents c[0..=1], etc.
+</span><span class="kw">let </span>c2 = sm4ed(c1, a, <span class="number">2</span>);
+<span class="kw">let </span>c3 = sm4ed(c2, a, <span class="number">3</span>);
+<span class="kw">return </span>c3; <span class="comment">// c3 represents c[0..=3]</span></code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0A%23%5Ballow(unused_extern_crates)%5D%0Aextern+crate+r%23core;%0Afn+main()+%7B%0A%23%5Bcfg(any(target_arch+=+%22riscv32%22,+target_arch+=+%22riscv64%22))%5D%0Afn+round_function(x0:+u32,+x1:+u32,+x2:+u32,+x3:+u32,+rk:+u32)+-%3E+u32+%7B%0A%23%5Bcfg(target_arch+=+%22riscv32%22)%5D+use+core::arch::riscv32::sm4ed;%0A%23%5Bcfg(target_arch+=+%22riscv64%22)%5D+use+core::arch::riscv64::sm4ed;%0Alet+a+=+x1+%5E+x2+%5E+x3+%5E+rk;%0Alet+c0+=+sm4ed(x0,+a,+0);%0Alet+c1+=+sm4ed(c0,+a,+1);+//+c1+represents+c%5B0..=1%5D,+etc.%0Alet+c2+=+sm4ed(c1,+a,+2);%0Alet+c3+=+sm4ed(c2,+a,+3);%0Areturn+c3;+//+c3+represents+c%5B0..=3%5D%0A%7D%0A%7D&amp;edition=2021">Run</a></div>
+</div></details></section></div></main></body></html>

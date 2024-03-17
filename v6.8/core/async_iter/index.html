@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Composable asynchronous iteration."><title>core::async_iter - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" type="image/svg+xml" href="../../static.files/logo.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../core/index.html"><img class="rust-logo" src="../../static.files/logo.svg" alt="logo"></a></nav><nav class="sidebar"><a class="logo-container" href="../../core/index.html"><img class="rust-logo" src="../../static.files/logo.svg" alt="logo"></a><h2 class="location"><a href="#">Module async_iter</a></h2><div class="sidebar-elems"><section><ul class="block"><li><a href="#structs">Structs</a></li><li><a href="#traits">Traits</a></li><li><a href="#functions">Functions</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Module <a href="../index.html">core</a>::<wbr><a class="mod" href="#">async_iter</a><button id="copy-path" title="Copy item path to clipboard"><img src="../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../../src/core/async_iter/mod.rs.html#1-128">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><span class="item-info"><div class="stab unstable"><span class="emoji">🔬</span><span>This is a nightly-only experimental API. (<code>async_iterator</code>&nbsp;<a href="https://github.com/rust-lang/rust/issues/79024">#79024</a>)</span></div></span><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Composable asynchronous iteration.</p>
+<p>If you’ve found yourself with an asynchronous collection of some kind,
+and needed to perform an operation on the elements of said collection,
+you’ll quickly run into ‘async iterators’. Async Iterators are heavily used in
+idiomatic asynchronous Rust code, so it’s worth becoming familiar with them.</p>
+<p>Before explaining more, let’s talk about how this module is structured:</p>
+<h2 id="organization"><a href="#organization">Organization</a></h2>
+<p>This module is largely organized by type:</p>
+<ul>
+<li><a href="#traits">Traits</a> are the core portion: these traits define what kind of async iterators
+exist and what you can do with them. The methods of these traits are worth
+putting some extra study time into.</li>
+<li>Functions provide some helpful ways to create some basic async iterators.</li>
+<li>Structs are often the return types of the various methods on this
+module’s traits. You’ll usually want to look at the method that creates
+the <code>struct</code>, rather than the <code>struct</code> itself. For more detail about why,
+see ‘<a href="#implementing-async-iterator">Implementing Async Iterator</a>’.</li>
+</ul>
+<p>That’s it! Let’s dig into async iterators.</p>
+<h2 id="async-iterators"><a href="#async-iterators">Async Iterators</a></h2>
+<p>The heart and soul of this module is the <a href="trait.AsyncIterator.html" title="trait core::async_iter::AsyncIterator"><code>AsyncIterator</code></a> trait. The core of
+<a href="trait.AsyncIterator.html" title="trait core::async_iter::AsyncIterator"><code>AsyncIterator</code></a> looks like this:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">trait </span>AsyncIterator {
+    <span class="kw">type </span>Item;
+    <span class="kw">fn </span>poll_next(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt;&gt;;
+}</code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0A%23%5Ballow(unused_extern_crates)%5D%0Aextern+crate+r%23core;%0Afn+main()+%7B%0Ause+core::task::%7BContext,+Poll%7D;%0Ause+core::pin::Pin;%0Atrait+AsyncIterator+%7B%0A++++type+Item;%0A++++fn+poll_next(self:+Pin%3C%26mut+Self%3E,+cx:+%26mut+Context%3C'_%3E)+-%3E+Poll%3COption%3CSelf::Item%3E%3E;%0A%7D%0A%7D&amp;edition=2021">Run</a></div>
+<p>Unlike <code>Iterator</code>, <code>AsyncIterator</code> makes a distinction between the <a href="trait.AsyncIterator.html#tymethod.poll_next" title="method core::async_iter::AsyncIterator::poll_next"><code>poll_next</code></a>
+method which is used when implementing an <code>AsyncIterator</code>, and a (to-be-implemented)
+<code>next</code> method which is used when consuming an async iterator. Consumers of <code>AsyncIterator</code>
+only need to consider <code>next</code>, which when called, returns a future which
+yields <code>Option&lt;AsyncIterator::Item&gt;</code>.</p>
+<p>The future returned by <code>next</code> will yield <code>Some(Item)</code> as long as there are
+elements, and once they’ve all been exhausted, will yield <code>None</code> to indicate
+that iteration is finished. If we’re waiting on something asynchronous to
+resolve, the future will wait until the async iterator is ready to yield again.</p>
+<p>Individual async iterators may choose to resume iteration, and so calling <code>next</code>
+again may or may not eventually yield <code>Some(Item)</code> again at some point.</p>
+<p><a href="trait.AsyncIterator.html" title="trait core::async_iter::AsyncIterator"><code>AsyncIterator</code></a>’s full definition includes a number of other methods as well,
+but they are default methods, built on top of <a href="trait.AsyncIterator.html#tymethod.poll_next" title="method core::async_iter::AsyncIterator::poll_next"><code>poll_next</code></a>, and so you get
+them for free.</p>
+<h2 id="implementing-async-iterator"><a href="#implementing-async-iterator">Implementing Async Iterator</a></h2>
+<p>Creating an async iterator of your own involves two steps: creating a <code>struct</code> to
+hold the async iterator’s state, and then implementing <a href="trait.AsyncIterator.html" title="trait core::async_iter::AsyncIterator"><code>AsyncIterator</code></a> for that
+<code>struct</code>.</p>
+<p>Let’s make an async iterator named <code>Counter</code> which counts from <code>1</code> to <code>5</code>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#![feature(async_iterator)]
+
+</span><span class="comment">// First, the struct:
+
+</span><span class="doccomment">/// An async iterator which counts from one to five
+</span><span class="kw">struct </span>Counter {
+    count: usize,
+}
+
+<span class="comment">// we want our count to start at one, so let&#39;s add a new() method to help.
+// This isn&#39;t strictly necessary, but is convenient. Note that we start
+// `count` at zero, we&#39;ll see why in `poll_next()`&#39;s implementation below.
+</span><span class="kw">impl </span>Counter {
+    <span class="kw">fn </span>new() -&gt; Counter {
+        Counter { count: <span class="number">0 </span>}
+    }
+}
+
+<span class="comment">// Then, we implement `AsyncIterator` for our `Counter`:
+
+</span><span class="kw">impl </span>AsyncIterator <span class="kw">for </span>Counter {
+    <span class="comment">// we will be counting with usize
+    </span><span class="kw">type </span>Item = usize;
+
+    <span class="comment">// poll_next() is the only required method
+    </span><span class="kw">fn </span>poll_next(<span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; Poll&lt;<span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt;&gt; {
+        <span class="comment">// Increment our count. This is why we started at zero.
+        </span><span class="self">self</span>.count += <span class="number">1</span>;
+
+        <span class="comment">// Check to see if we&#39;ve finished counting or not.
+        </span><span class="kw">if </span><span class="self">self</span>.count &lt; <span class="number">6 </span>{
+            Poll::Ready(<span class="prelude-val">Some</span>(<span class="self">self</span>.count))
+        } <span class="kw">else </span>{
+            Poll::Ready(<span class="prelude-val">None</span>)
+        }
+    }
+}</code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0A%23!%5Bfeature(async_iterator)%5D%0A%23%5Ballow(unused_extern_crates)%5D%0Aextern+crate+r%23core;%0Afn+main()+%7B%0Ause+core::async_iter::AsyncIterator;%0Ause+core::task::%7BContext,+Poll%7D;%0Ause+core::pin::Pin;%0A%0A//+First,+the+struct:%0A%0A///+An+async+iterator+which+counts+from+one+to+five%0Astruct+Counter+%7B%0A++++count:+usize,%0A%7D%0A%0A//+we+want+our+count+to+start+at+one,+so+let's+add+a+new()+method+to+help.%0A//+This+isn't+strictly+necessary,+but+is+convenient.+Note+that+we+start%0A//+%60count%60+at+zero,+we'll+see+why+in+%60poll_next()%60's+implementation+below.%0Aimpl+Counter+%7B%0A++++fn+new()+-%3E+Counter+%7B%0A++++++++Counter+%7B+count:+0+%7D%0A++++%7D%0A%7D%0A%0A//+Then,+we+implement+%60AsyncIterator%60+for+our+%60Counter%60:%0A%0Aimpl+AsyncIterator+for+Counter+%7B%0A++++//+we+will+be+counting+with+usize%0A++++type+Item+=+usize;%0A%0A++++//+poll_next()+is+the+only+required+method%0A++++fn+poll_next(mut+self:+Pin%3C%26mut+Self%3E,+cx:+%26mut+Context%3C'_%3E)+-%3E+Poll%3COption%3CSelf::Item%3E%3E+%7B%0A++++++++//+Increment+our+count.+This+is+why+we+started+at+zero.%0A++++++++self.count+%2B=+1;%0A%0A++++++++//+Check+to+see+if+we've+finished+counting+or+not.%0A++++++++if+self.count+%3C+6+%7B%0A++++++++++++Poll::Ready(Some(self.count))%0A++++++++%7D+else+%7B%0A++++++++++++Poll::Ready(None)%0A++++++++%7D%0A++++%7D%0A%7D%0A%7D&amp;version=nightly&amp;edition=2021">Run</a></div>
+<h2 id="laziness"><a href="#laziness">Laziness</a></h2>
+<p>Async iterators are <em>lazy</em>. This means that just creating an async iterator doesn’t
+<em>do</em> a whole lot. Nothing really happens until you call <code>poll_next</code>. This is
+sometimes a source of confusion when creating an async iterator solely for its side
+effects. The compiler will warn us about this kind of behavior:</p>
+<div class="example-wrap"><pre class="language-text"><code>warning: unused result that must be used: async iterators do nothing unless polled
+</code></pre></div></div></details><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.FromIter.html" title="struct core::async_iter::FromIter">FromIter</a><span class="stab unstable" title="">Experimental</span></div><div class="desc docblock-short">An async iterator that was created from iterator.</div></li></ul><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2><ul class="item-table"><li><div class="item-name"><a class="trait" href="trait.AsyncIterator.html" title="trait core::async_iter::AsyncIterator">AsyncIterator</a><span class="stab unstable" title="">Experimental</span></div><div class="desc docblock-short">A trait for dealing with asynchronous iterators.</div></li></ul><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2><ul class="item-table"><li><div class="item-name"><a class="fn" href="fn.from_iter.html" title="fn core::async_iter::from_iter">from_iter</a><span class="stab unstable" title="">Experimental</span></div><div class="desc docblock-short">Converts an iterator into an async iterator.</div></li></ul></section></div></main></body></html>

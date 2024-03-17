@@ -1,0 +1,907 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.rustup/toolchains/1.74.1-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ops/try_trait.rs`."><title>try_trait.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../static.files/logo.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../core/index.html"><img class="rust-logo" src="../../../static.files/logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<a href="#2" id="2">2</a>
+<a href="#3" id="3">3</a>
+<a href="#4" id="4">4</a>
+<a href="#5" id="5">5</a>
+<a href="#6" id="6">6</a>
+<a href="#7" id="7">7</a>
+<a href="#8" id="8">8</a>
+<a href="#9" id="9">9</a>
+<a href="#10" id="10">10</a>
+<a href="#11" id="11">11</a>
+<a href="#12" id="12">12</a>
+<a href="#13" id="13">13</a>
+<a href="#14" id="14">14</a>
+<a href="#15" id="15">15</a>
+<a href="#16" id="16">16</a>
+<a href="#17" id="17">17</a>
+<a href="#18" id="18">18</a>
+<a href="#19" id="19">19</a>
+<a href="#20" id="20">20</a>
+<a href="#21" id="21">21</a>
+<a href="#22" id="22">22</a>
+<a href="#23" id="23">23</a>
+<a href="#24" id="24">24</a>
+<a href="#25" id="25">25</a>
+<a href="#26" id="26">26</a>
+<a href="#27" id="27">27</a>
+<a href="#28" id="28">28</a>
+<a href="#29" id="29">29</a>
+<a href="#30" id="30">30</a>
+<a href="#31" id="31">31</a>
+<a href="#32" id="32">32</a>
+<a href="#33" id="33">33</a>
+<a href="#34" id="34">34</a>
+<a href="#35" id="35">35</a>
+<a href="#36" id="36">36</a>
+<a href="#37" id="37">37</a>
+<a href="#38" id="38">38</a>
+<a href="#39" id="39">39</a>
+<a href="#40" id="40">40</a>
+<a href="#41" id="41">41</a>
+<a href="#42" id="42">42</a>
+<a href="#43" id="43">43</a>
+<a href="#44" id="44">44</a>
+<a href="#45" id="45">45</a>
+<a href="#46" id="46">46</a>
+<a href="#47" id="47">47</a>
+<a href="#48" id="48">48</a>
+<a href="#49" id="49">49</a>
+<a href="#50" id="50">50</a>
+<a href="#51" id="51">51</a>
+<a href="#52" id="52">52</a>
+<a href="#53" id="53">53</a>
+<a href="#54" id="54">54</a>
+<a href="#55" id="55">55</a>
+<a href="#56" id="56">56</a>
+<a href="#57" id="57">57</a>
+<a href="#58" id="58">58</a>
+<a href="#59" id="59">59</a>
+<a href="#60" id="60">60</a>
+<a href="#61" id="61">61</a>
+<a href="#62" id="62">62</a>
+<a href="#63" id="63">63</a>
+<a href="#64" id="64">64</a>
+<a href="#65" id="65">65</a>
+<a href="#66" id="66">66</a>
+<a href="#67" id="67">67</a>
+<a href="#68" id="68">68</a>
+<a href="#69" id="69">69</a>
+<a href="#70" id="70">70</a>
+<a href="#71" id="71">71</a>
+<a href="#72" id="72">72</a>
+<a href="#73" id="73">73</a>
+<a href="#74" id="74">74</a>
+<a href="#75" id="75">75</a>
+<a href="#76" id="76">76</a>
+<a href="#77" id="77">77</a>
+<a href="#78" id="78">78</a>
+<a href="#79" id="79">79</a>
+<a href="#80" id="80">80</a>
+<a href="#81" id="81">81</a>
+<a href="#82" id="82">82</a>
+<a href="#83" id="83">83</a>
+<a href="#84" id="84">84</a>
+<a href="#85" id="85">85</a>
+<a href="#86" id="86">86</a>
+<a href="#87" id="87">87</a>
+<a href="#88" id="88">88</a>
+<a href="#89" id="89">89</a>
+<a href="#90" id="90">90</a>
+<a href="#91" id="91">91</a>
+<a href="#92" id="92">92</a>
+<a href="#93" id="93">93</a>
+<a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
+<a href="#107" id="107">107</a>
+<a href="#108" id="108">108</a>
+<a href="#109" id="109">109</a>
+<a href="#110" id="110">110</a>
+<a href="#111" id="111">111</a>
+<a href="#112" id="112">112</a>
+<a href="#113" id="113">113</a>
+<a href="#114" id="114">114</a>
+<a href="#115" id="115">115</a>
+<a href="#116" id="116">116</a>
+<a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a>
+<a href="#119" id="119">119</a>
+<a href="#120" id="120">120</a>
+<a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
+<a href="#161" id="161">161</a>
+<a href="#162" id="162">162</a>
+<a href="#163" id="163">163</a>
+<a href="#164" id="164">164</a>
+<a href="#165" id="165">165</a>
+<a href="#166" id="166">166</a>
+<a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+<a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
+<a href="#191" id="191">191</a>
+<a href="#192" id="192">192</a>
+<a href="#193" id="193">193</a>
+<a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
+<a href="#196" id="196">196</a>
+<a href="#197" id="197">197</a>
+<a href="#198" id="198">198</a>
+<a href="#199" id="199">199</a>
+<a href="#200" id="200">200</a>
+<a href="#201" id="201">201</a>
+<a href="#202" id="202">202</a>
+<a href="#203" id="203">203</a>
+<a href="#204" id="204">204</a>
+<a href="#205" id="205">205</a>
+<a href="#206" id="206">206</a>
+<a href="#207" id="207">207</a>
+<a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+<a href="#224" id="224">224</a>
+<a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
+<a href="#227" id="227">227</a>
+<a href="#228" id="228">228</a>
+<a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
+<a href="#235" id="235">235</a>
+<a href="#236" id="236">236</a>
+<a href="#237" id="237">237</a>
+<a href="#238" id="238">238</a>
+<a href="#239" id="239">239</a>
+<a href="#240" id="240">240</a>
+<a href="#241" id="241">241</a>
+<a href="#242" id="242">242</a>
+<a href="#243" id="243">243</a>
+<a href="#244" id="244">244</a>
+<a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
+<a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
+<a href="#255" id="255">255</a>
+<a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
+<a href="#258" id="258">258</a>
+<a href="#259" id="259">259</a>
+<a href="#260" id="260">260</a>
+<a href="#261" id="261">261</a>
+<a href="#262" id="262">262</a>
+<a href="#263" id="263">263</a>
+<a href="#264" id="264">264</a>
+<a href="#265" id="265">265</a>
+<a href="#266" id="266">266</a>
+<a href="#267" id="267">267</a>
+<a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
+<a href="#270" id="270">270</a>
+<a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+<a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
+<a href="#325" id="325">325</a>
+<a href="#326" id="326">326</a>
+<a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
+<a href="#329" id="329">329</a>
+<a href="#330" id="330">330</a>
+<a href="#331" id="331">331</a>
+<a href="#332" id="332">332</a>
+<a href="#333" id="333">333</a>
+<a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
+<a href="#337" id="337">337</a>
+<a href="#338" id="338">338</a>
+<a href="#339" id="339">339</a>
+<a href="#340" id="340">340</a>
+<a href="#341" id="341">341</a>
+<a href="#342" id="342">342</a>
+<a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+<a href="#398" id="398">398</a>
+<a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
+<a href="#402" id="402">402</a>
+<a href="#403" id="403">403</a>
+<a href="#404" id="404">404</a>
+<a href="#405" id="405">405</a>
+<a href="#406" id="406">406</a>
+<a href="#407" id="407">407</a>
+<a href="#408" id="408">408</a>
+<a href="#409" id="409">409</a>
+<a href="#410" id="410">410</a>
+<a href="#411" id="411">411</a>
+<a href="#412" id="412">412</a>
+<a href="#413" id="413">413</a>
+<a href="#414" id="414">414</a>
+<a href="#415" id="415">415</a>
+<a href="#416" id="416">416</a>
+<a href="#417" id="417">417</a>
+<a href="#418" id="418">418</a>
+<a href="#419" id="419">419</a>
+<a href="#420" id="420">420</a>
+<a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
+<a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
+<a href="#427" id="427">427</a>
+<a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
+<a href="#430" id="430">430</a>
+<a href="#431" id="431">431</a>
+<a href="#432" id="432">432</a>
+<a href="#433" id="433">433</a>
+<a href="#434" id="434">434</a>
+<a href="#435" id="435">435</a>
+<a href="#436" id="436">436</a>
+<a href="#437" id="437">437</a>
+<a href="#438" id="438">438</a>
+<a href="#439" id="439">439</a>
+<a href="#440" id="440">440</a>
+<a href="#441" id="441">441</a>
+<a href="#442" id="442">442</a>
+<a href="#443" id="443">443</a>
+<a href="#444" id="444">444</a>
+<a href="#445" id="445">445</a>
+<a href="#446" id="446">446</a>
+<a href="#447" id="447">447</a>
+<a href="#448" id="448">448</a>
+<a href="#449" id="449">449</a>
+<a href="#450" id="450">450</a>
+<a href="#451" id="451">451</a>
+<a href="#452" id="452">452</a>
+<a href="#453" id="453">453</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::ops::ControlFlow;
+
+<span class="doccomment">/// The `?` operator and `try {}` blocks.
+///
+/// `try_*` methods typically involve a type implementing this trait.  For
+/// example, the closures passed to [`Iterator::try_fold`] and
+/// [`Iterator::try_for_each`] must return such a type.
+///
+/// `Try` types are typically those containing two or more categories of values,
+/// some subset of which are so commonly handled via early returns that it&#39;s
+/// worth providing a terse (but still visible) syntax to make that easy.
+///
+/// This is most often seen for error handling with [`Result`] and [`Option`].
+/// The quintessential implementation of this trait is on [`ControlFlow`].
+///
+/// # Using `Try` in Generic Code
+///
+/// `Iterator::try_fold` was stabilized to call back in Rust 1.27, but
+/// this trait is much newer.  To illustrate the various associated types and
+/// methods, let&#39;s implement our own version.
+///
+/// As a reminder, an infallible version of a fold looks something like this:
+/// ```
+/// fn simple_fold&lt;A, T&gt;(
+///     iter: impl Iterator&lt;Item = T&gt;,
+///     mut accum: A,
+///     mut f: impl FnMut(A, T) -&gt; A,
+/// ) -&gt; A {
+///     for x in iter {
+///         accum = f(accum, x);
+///     }
+///     accum
+/// }
+/// ```
+///
+/// So instead of `f` returning just an `A`, we&#39;ll need it to return some other
+/// type that produces an `A` in the &quot;don&#39;t short circuit&quot; path.  Conveniently,
+/// that&#39;s also the type we need to return from the function.
+///
+/// Let&#39;s add a new generic parameter `R` for that type, and bound it to the
+/// output type that we want:
+/// ```
+/// # #![feature(try_trait_v2)]
+/// # use std::ops::Try;
+/// fn simple_try_fold_1&lt;A, T, R: Try&lt;Output = A&gt;&gt;(
+///     iter: impl Iterator&lt;Item = T&gt;,
+///     mut accum: A,
+///     mut f: impl FnMut(A, T) -&gt; R,
+/// ) -&gt; R {
+///     todo!()
+/// }
+/// ```
+///
+/// If we get through the entire iterator, we need to wrap up the accumulator
+/// into the return type using [`Try::from_output`]:
+/// ```
+/// # #![feature(try_trait_v2)]
+/// # use std::ops::{ControlFlow, Try};
+/// fn simple_try_fold_2&lt;A, T, R: Try&lt;Output = A&gt;&gt;(
+///     iter: impl Iterator&lt;Item = T&gt;,
+///     mut accum: A,
+///     mut f: impl FnMut(A, T) -&gt; R,
+/// ) -&gt; R {
+///     for x in iter {
+///         let cf = f(accum, x).branch();
+///         match cf {
+///             ControlFlow::Continue(a) =&gt; accum = a,
+///             ControlFlow::Break(_) =&gt; todo!(),
+///         }
+///     }
+///     R::from_output(accum)
+/// }
+/// ```
+///
+/// We&#39;ll also need [`FromResidual::from_residual`] to turn the residual back
+/// into the original type.  But because it&#39;s a supertrait of `Try`, we don&#39;t
+/// need to mention it in the bounds.  All types which implement `Try` can be
+/// recreated from their corresponding residual, so we&#39;ll just call it:
+/// ```
+/// # #![feature(try_trait_v2)]
+/// # use std::ops::{ControlFlow, Try};
+/// pub fn simple_try_fold_3&lt;A, T, R: Try&lt;Output = A&gt;&gt;(
+///     iter: impl Iterator&lt;Item = T&gt;,
+///     mut accum: A,
+///     mut f: impl FnMut(A, T) -&gt; R,
+/// ) -&gt; R {
+///     for x in iter {
+///         let cf = f(accum, x).branch();
+///         match cf {
+///             ControlFlow::Continue(a) =&gt; accum = a,
+///             ControlFlow::Break(r) =&gt; return R::from_residual(r),
+///         }
+///     }
+///     R::from_output(accum)
+/// }
+/// ```
+///
+/// But this &quot;call `branch`, then `match` on it, and `return` if it was a
+/// `Break`&quot; is exactly what happens inside the `?` operator.  So rather than
+/// do all this manually, we can just use `?` instead:
+/// ```
+/// # #![feature(try_trait_v2)]
+/// # use std::ops::Try;
+/// fn simple_try_fold&lt;A, T, R: Try&lt;Output = A&gt;&gt;(
+///     iter: impl Iterator&lt;Item = T&gt;,
+///     mut accum: A,
+///     mut f: impl FnMut(A, T) -&gt; R,
+/// ) -&gt; R {
+///     for x in iter {
+///         accum = f(accum, x)?;
+///     }
+///     R::from_output(accum)
+/// }
+/// ```
+</span><span class="attr">#[unstable(feature = <span class="string">&quot;try_trait_v2&quot;</span>, issue = <span class="string">&quot;84277&quot;</span>)]
+#[rustc_on_unimplemented(
+    on(
+        all(from_desugaring = <span class="string">&quot;TryBlock&quot;</span>),
+        message = <span class="string">&quot;a `try` block must return `Result` or `Option` \
+                    (or another type that implements `{Try}`)&quot;</span>,
+        label = <span class="string">&quot;could not wrap the final value of the block as `{Self}` doesn&#39;t implement `Try`&quot;</span>,
+    ),
+    on(
+        all(from_desugaring = <span class="string">&quot;QuestionMark&quot;</span>),
+        message = <span class="string">&quot;the `?` operator can only be applied to values that implement `{Try}`&quot;</span>,
+        label = <span class="string">&quot;the `?` operator cannot be applied to type `{Self}`&quot;
+    </span>)
+)]
+#[doc(alias = <span class="string">&quot;?&quot;</span>)]
+#[lang = <span class="string">&quot;Try&quot;</span>]
+</span><span class="kw">pub trait </span>Try: FromResidual {
+    <span class="doccomment">/// The type of the value produced by `?` when *not* short-circuiting.
+    </span><span class="attr">#[unstable(feature = <span class="string">&quot;try_trait_v2&quot;</span>, issue = <span class="string">&quot;84277&quot;</span>)]
+    </span><span class="kw">type </span>Output;
+
+    <span class="doccomment">/// The type of the value passed to [`FromResidual::from_residual`]
+    /// as part of `?` when short-circuiting.
+    ///
+    /// This represents the possible values of the `Self` type which are *not*
+    /// represented by the `Output` type.
+    ///
+    /// # Note to Implementors
+    ///
+    /// The choice of this type is critical to interconversion.
+    /// Unlike the `Output` type, which will often be a raw generic type,
+    /// this type is typically a newtype of some sort to &quot;color&quot; the type
+    /// so that it&#39;s distinguishable from the residuals of other types.
+    ///
+    /// This is why `Result&lt;T, E&gt;::Residual` is not `E`, but `Result&lt;Infallible, E&gt;`.
+    /// That way it&#39;s distinct from `ControlFlow&lt;E&gt;::Residual`, for example,
+    /// and thus `?` on `ControlFlow` cannot be used in a method returning `Result`.
+    ///
+    /// If you&#39;re making a generic type `Foo&lt;T&gt;` that implements `Try&lt;Output = T&gt;`,
+    /// then typically you can use `Foo&lt;std::convert::Infallible&gt;` as its `Residual`
+    /// type: that type will have a &quot;hole&quot; in the correct place, and will maintain the
+    /// &quot;foo-ness&quot; of the residual so other types need to opt-in to interconversion.
+    </span><span class="attr">#[unstable(feature = <span class="string">&quot;try_trait_v2&quot;</span>, issue = <span class="string">&quot;84277&quot;</span>)]
+    </span><span class="kw">type </span>Residual;
+
+    <span class="doccomment">/// Constructs the type from its `Output` type.
+    ///
+    /// This should be implemented consistently with the `branch` method
+    /// such that applying the `?` operator will get back the original value:
+    /// `Try::from_output(x).branch() --&gt; ControlFlow::Continue(x)`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// #![feature(try_trait_v2)]
+    /// use std::ops::Try;
+    ///
+    /// assert_eq!(&lt;Result&lt;_, String&gt; as Try&gt;::from_output(3), Ok(3));
+    /// assert_eq!(&lt;Option&lt;_&gt; as Try&gt;::from_output(4), Some(4));
+    /// assert_eq!(
+    ///     &lt;std::ops::ControlFlow&lt;String, _&gt; as Try&gt;::from_output(5),
+    ///     std::ops::ControlFlow::Continue(5),
+    /// );
+    ///
+    /// # fn make_question_mark_work() -&gt; Option&lt;()&gt; {
+    /// assert_eq!(Option::from_output(4)?, 4);
+    /// # None }
+    /// # make_question_mark_work();
+    ///
+    /// // This is used, for example, on the accumulator in `try_fold`:
+    /// let r = std::iter::empty().try_fold(4, |_, ()| -&gt; Option&lt;_&gt; { unreachable!() });
+    /// assert_eq!(r, Some(4));
+    /// ```
+    </span><span class="attr">#[lang = <span class="string">&quot;from_output&quot;</span>]
+    #[unstable(feature = <span class="string">&quot;try_trait_v2&quot;</span>, issue = <span class="string">&quot;84277&quot;</span>)]
+    </span><span class="kw">fn </span>from_output(output: <span class="self">Self</span>::Output) -&gt; <span class="self">Self</span>;
+
+    <span class="doccomment">/// Used in `?` to decide whether the operator should produce a value
+    /// (because this returned [`ControlFlow::Continue`])
+    /// or propagate a value back to the caller
+    /// (because this returned [`ControlFlow::Break`]).
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// #![feature(try_trait_v2)]
+    /// use std::ops::{ControlFlow, Try};
+    ///
+    /// assert_eq!(Ok::&lt;_, String&gt;(3).branch(), ControlFlow::Continue(3));
+    /// assert_eq!(Err::&lt;String, _&gt;(3).branch(), ControlFlow::Break(Err(3)));
+    ///
+    /// assert_eq!(Some(3).branch(), ControlFlow::Continue(3));
+    /// assert_eq!(None::&lt;String&gt;.branch(), ControlFlow::Break(None));
+    ///
+    /// assert_eq!(ControlFlow::&lt;String, _&gt;::Continue(3).branch(), ControlFlow::Continue(3));
+    /// assert_eq!(
+    ///     ControlFlow::&lt;_, String&gt;::Break(3).branch(),
+    ///     ControlFlow::Break(ControlFlow::Break(3)),
+    /// );
+    /// ```
+    </span><span class="attr">#[lang = <span class="string">&quot;branch&quot;</span>]
+    #[unstable(feature = <span class="string">&quot;try_trait_v2&quot;</span>, issue = <span class="string">&quot;84277&quot;</span>)]
+    </span><span class="kw">fn </span>branch(<span class="self">self</span>) -&gt; ControlFlow&lt;<span class="self">Self</span>::Residual, <span class="self">Self</span>::Output&gt;;
+}
+
+<span class="doccomment">/// Used to specify which residuals can be converted into which [`crate::ops::Try`] types.
+///
+/// Every `Try` type needs to be recreatable from its own associated
+/// `Residual` type, but can also have additional `FromResidual` implementations
+/// to support interconversion with other `Try` types.
+</span><span class="attr">#[rustc_on_unimplemented(
+    on(
+        all(
+            from_desugaring = <span class="string">&quot;QuestionMark&quot;</span>,
+            any(
+                _Self = <span class="string">&quot;core::result::Result&lt;T, E&gt;&quot;</span>,
+                _Self = <span class="string">&quot;std::result::Result&lt;T, E&gt;&quot;</span>,
+            ),
+            any(
+                R = <span class="string">&quot;core::option::Option&lt;core::convert::Infallible&gt;&quot;</span>,
+                R = <span class="string">&quot;std::option::Option&lt;std::convert::Infallible&gt;&quot;</span>,
+            )
+        ),
+        message = <span class="string">&quot;the `?` operator can only be used on `Result`s, not `Option`s, \
+            in {ItemContext} that returns `Result`&quot;</span>,
+        label = <span class="string">&quot;use `.ok_or(...)?` to provide an error compatible with `{Self}`&quot;</span>,
+        parent_label = <span class="string">&quot;this function returns a `Result`&quot;
+    </span>),
+    on(
+        all(
+            from_desugaring = <span class="string">&quot;QuestionMark&quot;</span>,
+            any(
+                _Self = <span class="string">&quot;core::result::Result&lt;T, E&gt;&quot;</span>,
+                _Self = <span class="string">&quot;std::result::Result&lt;T, E&gt;&quot;</span>,
+            )
+        ),
+        <span class="comment">// There&#39;s a special error message in the trait selection code for
+        // `From` in `?`, so this is not shown for result-in-result errors,
+        // and thus it can be phrased more strongly than `ControlFlow`&#39;s.
+        </span>message = <span class="string">&quot;the `?` operator can only be used on `Result`s \
+            in {ItemContext} that returns `Result`&quot;</span>,
+        label = <span class="string">&quot;this `?` produces `{R}`, which is incompatible with `{Self}`&quot;</span>,
+        parent_label = <span class="string">&quot;this function returns a `Result`&quot;
+    </span>),
+    on(
+        all(
+            from_desugaring = <span class="string">&quot;QuestionMark&quot;</span>,
+            any(
+                _Self = <span class="string">&quot;core::option::Option&lt;T&gt;&quot;</span>,
+                _Self = <span class="string">&quot;std::option::Option&lt;T&gt;&quot;</span>,
+            ),
+            any(
+                R = <span class="string">&quot;core::result::Result&lt;T, E&gt;&quot;</span>,
+                R = <span class="string">&quot;std::result::Result&lt;T, E&gt;&quot;</span>,
+            )
+        ),
+        message = <span class="string">&quot;the `?` operator can only be used on `Option`s, not `Result`s, \
+            in {ItemContext} that returns `Option`&quot;</span>,
+        label = <span class="string">&quot;use `.ok()?` if you want to discard the `{R}` error information&quot;</span>,
+        parent_label = <span class="string">&quot;this function returns an `Option`&quot;
+    </span>),
+    on(
+        all(
+            from_desugaring = <span class="string">&quot;QuestionMark&quot;</span>,
+            any(
+                _Self = <span class="string">&quot;core::option::Option&lt;T&gt;&quot;</span>,
+                _Self = <span class="string">&quot;std::option::Option&lt;T&gt;&quot;</span>,
+            )
+        ),
+        <span class="comment">// `Option`-in-`Option` always works, as there&#39;s only one possible
+        // residual, so this can also be phrased strongly.
+        </span>message = <span class="string">&quot;the `?` operator can only be used on `Option`s \
+            in {ItemContext} that returns `Option`&quot;</span>,
+        label = <span class="string">&quot;this `?` produces `{R}`, which is incompatible with `{Self}`&quot;</span>,
+        parent_label = <span class="string">&quot;this function returns an `Option`&quot;
+    </span>),
+    on(
+        all(
+            from_desugaring = <span class="string">&quot;QuestionMark&quot;</span>,
+            any(
+                _Self = <span class="string">&quot;core::ops::ControlFlow&lt;B, C&gt;&quot;</span>,
+                _Self = <span class="string">&quot;std::ops::ControlFlow&lt;B, C&gt;&quot;</span>,
+            ),
+            any(
+                R = <span class="string">&quot;core::ops::ControlFlow&lt;B, C&gt;&quot;</span>,
+                R = <span class="string">&quot;std::ops::ControlFlow&lt;B, C&gt;&quot;</span>,
+            )
+        ),
+        message = <span class="string">&quot;the `?` operator in {ItemContext} that returns `ControlFlow&lt;B, _&gt;` \
+            can only be used on other `ControlFlow&lt;B, _&gt;`s (with the same Break type)&quot;</span>,
+        label = <span class="string">&quot;this `?` produces `{R}`, which is incompatible with `{Self}`&quot;</span>,
+        parent_label = <span class="string">&quot;this function returns a `ControlFlow`&quot;</span>,
+        note = <span class="string">&quot;unlike `Result`, there&#39;s no `From`-conversion performed for `ControlFlow`&quot;
+    </span>),
+    on(
+        all(
+            from_desugaring = <span class="string">&quot;QuestionMark&quot;</span>,
+            any(
+                _Self = <span class="string">&quot;core::ops::ControlFlow&lt;B, C&gt;&quot;</span>,
+                _Self = <span class="string">&quot;std::ops::ControlFlow&lt;B, C&gt;&quot;</span>,
+            )
+            <span class="comment">// `R` is not a `ControlFlow`, as that case was matched previously
+        </span>),
+        message = <span class="string">&quot;the `?` operator can only be used on `ControlFlow`s \
+            in {ItemContext} that returns `ControlFlow`&quot;</span>,
+        label = <span class="string">&quot;this `?` produces `{R}`, which is incompatible with `{Self}`&quot;</span>,
+        parent_label = <span class="string">&quot;this function returns a `ControlFlow`&quot;</span>,
+    ),
+    on(
+        all(from_desugaring = <span class="string">&quot;QuestionMark&quot;</span>),
+        message = <span class="string">&quot;the `?` operator can only be used in {ItemContext} \
+                    that returns `Result` or `Option` \
+                    (or another type that implements `{FromResidual}`)&quot;</span>,
+        label = <span class="string">&quot;cannot use the `?` operator in {ItemContext} that returns `{Self}`&quot;</span>,
+        parent_label = <span class="string">&quot;this function should return `Result` or `Option` to accept `?`&quot;
+    </span>),
+)]
+#[rustc_diagnostic_item = <span class="string">&quot;FromResidual&quot;</span>]
+#[unstable(feature = <span class="string">&quot;try_trait_v2&quot;</span>, issue = <span class="string">&quot;84277&quot;</span>)]
+</span><span class="kw">pub trait </span>FromResidual&lt;R = &lt;<span class="self">Self </span><span class="kw">as </span>Try&gt;::Residual&gt; {
+    <span class="doccomment">/// Constructs the type from a compatible `Residual` type.
+    ///
+    /// This should be implemented consistently with the `branch` method such
+    /// that applying the `?` operator will get back an equivalent residual:
+    /// `FromResidual::from_residual(r).branch() --&gt; ControlFlow::Break(r)`.
+    /// (It must not be an *identical* residual when interconversion is involved.)
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// #![feature(try_trait_v2)]
+    /// use std::ops::{ControlFlow, FromResidual};
+    ///
+    /// assert_eq!(Result::&lt;String, i64&gt;::from_residual(Err(3_u8)), Err(3));
+    /// assert_eq!(Option::&lt;String&gt;::from_residual(None), None);
+    /// assert_eq!(
+    ///     ControlFlow::&lt;_, String&gt;::from_residual(ControlFlow::Break(5)),
+    ///     ControlFlow::Break(5),
+    /// );
+    /// ```
+    </span><span class="attr">#[lang = <span class="string">&quot;from_residual&quot;</span>]
+    #[unstable(feature = <span class="string">&quot;try_trait_v2&quot;</span>, issue = <span class="string">&quot;84277&quot;</span>)]
+    </span><span class="kw">fn </span>from_residual(residual: R) -&gt; <span class="self">Self</span>;
+}
+
+<span class="attr">#[unstable(
+    feature = <span class="string">&quot;yeet_desugar_details&quot;</span>,
+    issue = <span class="string">&quot;none&quot;</span>,
+    reason = <span class="string">&quot;just here to simplify the desugaring; will never be stabilized&quot;
+</span>)]
+#[inline]
+#[track_caller] </span><span class="comment">// because `Result::from_residual` has it
+</span><span class="attr">#[lang = <span class="string">&quot;from_yeet&quot;</span>]
+</span><span class="kw">pub fn </span>from_yeet&lt;T, Y&gt;(yeeted: Y) -&gt; T
+<span class="kw">where
+    </span>T: FromResidual&lt;Yeet&lt;Y&gt;&gt;,
+{
+    FromResidual::from_residual(Yeet(yeeted))
+}
+
+<span class="doccomment">/// Allows retrieving the canonical type implementing [`Try`] that has this type
+/// as its residual and allows it to hold an `O` as its output.
+///
+/// If you think of the `Try` trait as splitting a type into its [`Try::Output`]
+/// and [`Try::Residual`] components, this allows putting them back together.
+///
+/// For example,
+/// `Result&lt;T, E&gt;: Try&lt;Output = T, Residual = Result&lt;Infallible, E&gt;&gt;`,
+/// and in the other direction,
+/// `&lt;Result&lt;Infallible, E&gt; as Residual&lt;T&gt;&gt;::TryType = Result&lt;T, E&gt;`.
+</span><span class="attr">#[unstable(feature = <span class="string">&quot;try_trait_v2_residual&quot;</span>, issue = <span class="string">&quot;91285&quot;</span>)]
+</span><span class="kw">pub trait </span>Residual&lt;O&gt; {
+    <span class="doccomment">/// The &quot;return&quot; type of this meta-function.
+    </span><span class="attr">#[unstable(feature = <span class="string">&quot;try_trait_v2_residual&quot;</span>, issue = <span class="string">&quot;91285&quot;</span>)]
+    </span><span class="kw">type </span>TryType: Try&lt;Output = O, Residual = <span class="self">Self</span>&gt;;
+}
+
+<span class="attr">#[unstable(feature = <span class="string">&quot;pub_crate_should_not_need_unstable_attr&quot;</span>, issue = <span class="string">&quot;none&quot;</span>)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type </span>ChangeOutputType&lt;T, V&gt; = &lt;&lt;T <span class="kw">as </span>Try&gt;::Residual <span class="kw">as </span>Residual&lt;V&gt;&gt;::TryType;
+
+<span class="doccomment">/// An adapter for implementing non-try methods via the `Try` implementation.
+///
+/// Conceptually the same as `Result&lt;T, !&gt;`, but requiring less work in trait
+/// solving and inhabited-ness checking and such, by being an obvious newtype
+/// and not having `From` bounds lying around.
+///
+/// Not currently planned to be exposed publicly, so just `pub(crate)`.
+</span><span class="attr">#[repr(transparent)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>NeverShortCircuit&lt;T&gt;(<span class="kw">pub </span>T);
+
+<span class="kw">impl</span>&lt;T&gt; NeverShortCircuit&lt;T&gt; {
+    <span class="doccomment">/// Wraps a unary function to produce one that wraps the output into a `NeverShortCircuit`.
+    ///
+    /// This is useful for implementing infallible functions in terms of the `try_` ones,
+    /// without accidentally capturing extra generic parameters in a closure.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>wrap_mut_1&lt;A&gt;(<span class="kw-2">mut </span>f: <span class="kw">impl </span>FnMut(A) -&gt; T) -&gt; <span class="kw">impl </span>FnMut(A) -&gt; NeverShortCircuit&lt;T&gt; {
+        <span class="kw">move </span>|a| NeverShortCircuit(f(a))
+    }
+
+    <span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>wrap_mut_2&lt;A, B&gt;(<span class="kw-2">mut </span>f: <span class="kw">impl </span>FnMut(A, B) -&gt; T) -&gt; <span class="kw">impl </span>FnMut(A, B) -&gt; <span class="self">Self </span>{
+        <span class="kw">move </span>|a, b| NeverShortCircuit(f(a, b))
+    }
+}
+
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum </span>NeverShortCircuitResidual {}
+
+<span class="kw">impl</span>&lt;T&gt; Try <span class="kw">for </span>NeverShortCircuit&lt;T&gt; {
+    <span class="kw">type </span>Output = T;
+    <span class="kw">type </span>Residual = NeverShortCircuitResidual;
+
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>branch(<span class="self">self</span>) -&gt; ControlFlow&lt;NeverShortCircuitResidual, T&gt; {
+        ControlFlow::Continue(<span class="self">self</span>.<span class="number">0</span>)
+    }
+
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from_output(x: T) -&gt; <span class="self">Self </span>{
+        NeverShortCircuit(x)
+    }
+}
+
+<span class="kw">impl</span>&lt;T&gt; FromResidual <span class="kw">for </span>NeverShortCircuit&lt;T&gt; {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>from_residual(never: NeverShortCircuitResidual) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>never {}
+    }
+}
+
+<span class="kw">impl</span>&lt;T&gt; Residual&lt;T&gt; <span class="kw">for </span>NeverShortCircuitResidual {
+    <span class="kw">type </span>TryType = NeverShortCircuit&lt;T&gt;;
+}
+
+<span class="doccomment">/// Implement `FromResidual&lt;Yeet&lt;T&gt;&gt;` on your type to enable
+/// `do yeet expr` syntax in functions returning your type.
+</span><span class="attr">#[unstable(feature = <span class="string">&quot;try_trait_v2_yeet&quot;</span>, issue = <span class="string">&quot;96374&quot;</span>)]
+#[derive(Debug)]
+</span><span class="kw">pub struct </span>Yeet&lt;T&gt;(<span class="kw">pub </span>T);
+</code></pre></div></section></main></body></html>

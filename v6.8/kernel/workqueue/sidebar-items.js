@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["system","system_freezable","system_freezable_power_efficient","system_highpri","system_long","system_power_efficient","system_unbound"],"struct":["Queue","Work"],"trait":["HasWork","RawWorkItem","WorkItem","WorkItemPointer"]};

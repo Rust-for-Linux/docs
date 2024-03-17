@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["alloc","boxed","collections","slice","vec"]};

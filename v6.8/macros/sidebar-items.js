@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"attr":["pin_data","pinned_drop","vtable"],"derive":["Zeroable"],"macro":["concat_idents","module","paste"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["DeviceState","DuplexMode"],"fn":["create_phy_driver"],"mod":["flags"],"struct":["Device","DeviceId","DriverVTable","Registration"],"trait":["Driver"]};

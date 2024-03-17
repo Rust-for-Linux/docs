@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["alloc","alloc_zeroed","dealloc","realloc"],"struct":["AllocError","Global","Layout","LayoutError"],"trait":["Allocator","GlobalAlloc"],"type":["LayoutErr"]};

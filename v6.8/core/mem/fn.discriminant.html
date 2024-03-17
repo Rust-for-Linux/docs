@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Returns a value uniquely identifying the enum variant in `v`."><title>discriminant in core::mem - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fa3bb1812debf86c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="" data-rustdoc-version="1.74.1 (a28077b28 2023-12-04)" data-channel="1.74.1" data-search-js="search-8be46b629f5f14a8.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-c5bd66d33317d69f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="icon" type="image/svg+xml" href="../../static.files/logo.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../core/index.html"><img class="rust-logo" src="../../static.files/logo.svg" alt="logo"></a></nav><nav class="sidebar"><a class="logo-container" href="../../core/index.html"><img class="rust-logo" src="../../static.files/logo.svg" alt="logo"></a><div class="sidebar-elems"><h2><a href="index.html">In core::mem</a></h2></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Function <a href="../index.html">core</a>::<wbr><a href="index.html">mem</a>::<wbr><a class="fn" href="#">discriminant</a><button id="copy-path" title="Copy item path to clipboard"><img src="../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><span class="since" title="Stable since Rust version 1.21.0, const unstable">1.21.0 (const: <a href="https://github.com/rust-lang/rust/issues/69821" title="Tracking issue for const_discriminant">unstable</a>)</span> · <a class="src" href="../../src/core/mem/mod.rs.html#1210-1212">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub fn discriminant&lt;T&gt;(v: <a class="primitive" href="../primitive.reference.html">&amp;T</a>) -&gt; <a class="struct" href="struct.Discriminant.html" title="struct core::mem::Discriminant">Discriminant</a>&lt;T&gt;</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Returns a value uniquely identifying the enum variant in <code>v</code>.</p>
+<p>If <code>T</code> is not an enum, calling this function will not result in undefined behavior, but the
+return value is unspecified.</p>
+<h2 id="stability"><a href="#stability">Stability</a></h2>
+<p>The discriminant of an enum variant may change if the enum definition changes. A discriminant
+of some variant will not change between compilations with the same compiler. See the <a href="../../reference/items/enumerations.html#custom-discriminant-values-for-fieldless-enumerations">Reference</a>
+for more information.</p>
+<p>The value of a <a href="struct.Discriminant.html" title="struct core::mem::Discriminant"><code>Discriminant&lt;T&gt;</code></a> is independent of any <em>free lifetimes</em> in <code>T</code>. As such,
+reading or writing a <code>Discriminant&lt;Foo&lt;'a&gt;&gt;</code> as a <code>Discriminant&lt;Foo&lt;'b&gt;&gt;</code> (whether via
+<a href="fn.transmute.html" title="fn core::mem::transmute"><code>transmute</code></a> or otherwise) is always sound. Note that this is <strong>not</strong> true for other kinds
+of generic parameters and for higher-ranked lifetimes; <code>Discriminant&lt;Foo&lt;A&gt;&gt;</code> and
+<code>Discriminant&lt;Foo&lt;B&gt;&gt;</code> as well as <code>Discriminant&lt;Bar&lt;dyn for&lt;'a&gt; Trait&lt;'a&gt;&gt;&gt;</code> and
+<code>Discriminant&lt;Bar&lt;dyn Trait&lt;'static&gt;&gt;&gt;</code> may be incompatible.</p>
+<h2 id="examples"><a href="#examples">Examples</a></h2>
+<p>This can be used to compare enums that carry data, while disregarding
+the actual data:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::mem;
+
+<span class="kw">enum </span>Foo { A(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str), B(i32), C(i32) }
+
+<span class="macro">assert_eq!</span>(mem::discriminant(<span class="kw-2">&amp;</span>Foo::A(<span class="string">&quot;bar&quot;</span>)), mem::discriminant(<span class="kw-2">&amp;</span>Foo::A(<span class="string">&quot;baz&quot;</span>)));
+<span class="macro">assert_eq!</span>(mem::discriminant(<span class="kw-2">&amp;</span>Foo::B(<span class="number">1</span>)), mem::discriminant(<span class="kw-2">&amp;</span>Foo::B(<span class="number">2</span>)));
+<span class="macro">assert_ne!</span>(mem::discriminant(<span class="kw-2">&amp;</span>Foo::B(<span class="number">3</span>)), mem::discriminant(<span class="kw-2">&amp;</span>Foo::C(<span class="number">3</span>)));</code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn+main()+%7B%0Ause+std::mem;%0A%0Aenum+Foo+%7B+A(%26'static+str),+B(i32),+C(i32)+%7D%0A%0Aassert_eq!(mem::discriminant(%26Foo::A(%22bar%22)),+mem::discriminant(%26Foo::A(%22baz%22)));%0Aassert_eq!(mem::discriminant(%26Foo::B(1)),+mem::discriminant(%26Foo::B(2)));%0Aassert_ne!(mem::discriminant(%26Foo::B(3)),+mem::discriminant(%26Foo::C(3)));%0A%7D&amp;edition=2021">Run</a></div>
+<h3 id="accessing-the-numeric-value-of-the-discriminant"><a href="#accessing-the-numeric-value-of-the-discriminant">Accessing the numeric value of the discriminant</a></h3>
+<p>Note that it is <em>undefined behavior</em> to <a href="fn.transmute.html" title="fn core::mem::transmute"><code>transmute</code></a> from <a href="struct.Discriminant.html" title="struct core::mem::Discriminant"><code>Discriminant</code></a> to a primitive!</p>
+<p>If an enum has only unit variants, then the numeric value of the discriminant can be accessed
+with an <a href="../../std/keyword.as.html"><code>as</code></a> cast:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">enum </span>Enum {
+    Foo,
+    Bar,
+    Baz,
+}
+
+<span class="macro">assert_eq!</span>(<span class="number">0</span>, Enum::Foo <span class="kw">as </span>isize);
+<span class="macro">assert_eq!</span>(<span class="number">1</span>, Enum::Bar <span class="kw">as </span>isize);
+<span class="macro">assert_eq!</span>(<span class="number">2</span>, Enum::Baz <span class="kw">as </span>isize);</code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn+main()+%7B%0Aenum+Enum+%7B%0A++++Foo,%0A++++Bar,%0A++++Baz,%0A%7D%0A%0Aassert_eq!(0,+Enum::Foo+as+isize);%0Aassert_eq!(1,+Enum::Bar+as+isize);%0Aassert_eq!(2,+Enum::Baz+as+isize);%0A%7D&amp;edition=2021">Run</a></div>
+<p>If an enum has opted-in to having a <a href="../../reference/type-layout.html#primitive-representations">primitive representation</a> for its discriminant,
+then it’s possible to use pointers to read the memory location storing the discriminant.
+That <strong>cannot</strong> be done for enums using the <a href="../../reference/type-layout.html#the-default-representation">default representation</a>, however, as it’s
+undefined what layout the discriminant has and where it’s stored — it might not even be
+stored at all!</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[repr(u8)]
+</span><span class="kw">enum </span>Enum {
+    Unit,
+    Tuple(bool),
+    Struct { a: bool },
+}
+
+<span class="kw">impl </span>Enum {
+    <span class="kw">fn </span>discriminant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u8 {
+        <span class="comment">// SAFETY: Because `Self` is marked `repr(u8)`, its layout is a `repr(C)` `union`
+        // between `repr(C)` structs, each of which has the `u8` discriminant as its first
+        // field, so we can read the discriminant without offsetting the pointer.
+        </span><span class="kw">unsafe </span>{ <span class="kw-2">*</span>&lt;<span class="kw-2">*const </span><span class="kw">_</span>&gt;::from(<span class="self">self</span>).cast::&lt;u8&gt;() }
+    }
+}
+
+<span class="kw">let </span>unit_like = Enum::Unit;
+<span class="kw">let </span>tuple_like = Enum::Tuple(<span class="bool-val">true</span>);
+<span class="kw">let </span>struct_like = Enum::Struct { a: <span class="bool-val">false </span>};
+<span class="macro">assert_eq!</span>(<span class="number">0</span>, unit_like.discriminant());
+<span class="macro">assert_eq!</span>(<span class="number">1</span>, tuple_like.discriminant());
+<span class="macro">assert_eq!</span>(<span class="number">2</span>, struct_like.discriminant());
+
+<span class="comment">// ⚠️ This is undefined behavior. Don&#39;t do this. ⚠️
+// assert_eq!(0, unsafe { std::mem::transmute::&lt;_, u8&gt;(std::mem::discriminant(&amp;unit_like)) });</span></code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn+main()+%7B%0A%23%5Brepr(u8)%5D%0Aenum+Enum+%7B%0A++++Unit,%0A++++Tuple(bool),%0A++++Struct+%7B+a:+bool+%7D,%0A%7D%0A%0Aimpl+Enum+%7B%0A++++fn+discriminant(%26self)+-%3E+u8+%7B%0A++++++++//+SAFETY:+Because+%60Self%60+is+marked+%60repr(u8)%60,+its+layout+is+a+%60repr(C)%60+%60union%60%0A++++++++//+between+%60repr(C)%60+structs,+each+of+which+has+the+%60u8%60+discriminant+as+its+first%0A++++++++//+field,+so+we+can+read+the+discriminant+without+offsetting+the+pointer.%0A++++++++unsafe+%7B+*%3C*const+_%3E::from(self).cast::%3Cu8%3E()+%7D%0A++++%7D%0A%7D%0A%0Alet+unit_like+=+Enum::Unit;%0Alet+tuple_like+=+Enum::Tuple(true);%0Alet+struct_like+=+Enum::Struct+%7B+a:+false+%7D;%0Aassert_eq!(0,+unit_like.discriminant());%0Aassert_eq!(1,+tuple_like.discriminant());%0Aassert_eq!(2,+struct_like.discriminant());%0A%0A//+%E2%9A%A0%EF%B8%8F+This+is+undefined+behavior.+Don't+do+this.+%E2%9A%A0%EF%B8%8F%0A//+assert_eq!(0,+unsafe+%7B+std::mem::transmute::%3C_,+u8%3E(std::mem::discriminant(%26unit_like))+%7D);%0A%7D&amp;edition=2021">Run</a></div>
+</div></details></section></div></main></body></html>
